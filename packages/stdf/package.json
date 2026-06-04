@@ -171,8 +171,9 @@
 		},
 		"./theme": {
 			"types": "./dist/theme/index.d.ts",
+			"import": "./dist/theme/index.js",
 			"svelte": "./dist/theme/index.js",
-			"default": "./dist/theme/plugin.js"
+			"default": "./dist/theme/index.js"
 		},
 		"./lang": {
 			"types": "./dist/lang/index.d.ts",
