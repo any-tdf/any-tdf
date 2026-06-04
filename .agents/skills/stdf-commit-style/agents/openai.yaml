@@ -1,0 +1,3 @@
+display_name: STDF Commit Style
+short_description: Generate English STDF-style commit subjects
+default_prompt: Generate and run commits for the current changes using the STDF scoped English commit style.
