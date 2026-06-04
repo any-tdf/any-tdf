@@ -2,7 +2,7 @@ import { oklchStrToHex, oklchStrToRgbStr } from 'stdf/utils';
 import codeGroupSvgData from './code-group-svg-data';
 import hljs from 'highlight.js';
 // @ts-expect-error - highlightjs-svelte 缺少类型定义
-import hljs_svelte from 'highlightjs-svelte';
+import hljs_svelte from 'highlightjs-svelte/dist/index.mjs';
 
 hljs_svelte(hljs);
 

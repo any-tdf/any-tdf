@@ -3,7 +3,7 @@
 	import { Badge, Input, Button, Checkbox } from 'stdf';
 	import hljs from 'highlight.js';
 	// @ts-expect-error - highlightjs-svelte 缺少类型定义
-	import hljs_svelte from 'highlightjs-svelte';
+	import hljs_svelte from 'highlightjs-svelte/dist/index.mjs';
 	hljs_svelte(hljs);
 
 	const isZh = localStorage.getItem('lang') === 'zh_CN';
