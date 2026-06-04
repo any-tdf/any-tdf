@@ -1,3 +1,7 @@
+## 2.0.2 <font size=1>2026-06-04</font>
+
+- 修复 TimePicker 组件，详见 [时间选择器 TimePicker](https://stdf.design/components?nav=timePicker&tab=4)。
+
 ## 2.0.1 <font size=1>2026-01-23</font>
 
 - 组件目录调整：AvatarGroup 和 ButtonGroup 独立目录并修正导出路径。

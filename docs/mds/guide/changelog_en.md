@@ -1,3 +1,7 @@
+## 2.0.2 <font size=1>2026-06-04</font>
+
+- Fixed TimePicker component, please see [TimePicker](https://stdf.design/components?nav=timePicker&tab=4).
+
 ## 2.0.1 <font size=1>2026-01-23</font>
 
 - Component directory updates: AvatarGroup and ButtonGroup moved to dedicated directories with updated export paths.
