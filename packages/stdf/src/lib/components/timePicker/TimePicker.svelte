@@ -252,10 +252,11 @@
 	// 根据年份和月份获取对应的天数，更新 baseDayData
 	// Get the number of days corresponding to the year and month according to the year and month, and update baseDayData
 	const updateDayDataFunc = (dayNum: number) => {
-		baseDayData = [];
+		const data: { label: string }[] = [];
 		for (let i = 1; i <= dayNum; i++) {
-			baseDayData.push({ label: (i < 10 ? '0' + i : i).toString() });
+			data.push({ label: (i < 10 ? '0' + i : i).toString() });
 		}
+		baseDayData = data;
 	};
 
 	// 初始一下生成天数数据

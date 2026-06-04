@@ -1,6 +1,6 @@
 {
 	"name": "stdf",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Mobile web component library based on Svelte and Tailwind",
 	"author": "any-tdf",
 	"funding": "https://stdf.design?fund",
