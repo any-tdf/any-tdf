@@ -1,0 +1,102 @@
+{
+	"name": "@any-tdf/common",
+	"version": "0.0.0-alpha.1",
+	"description": "Framework agnostic shared utilities, theme, language packs, types and derived component utilities for any-tdf component libraries.",
+	"license": "MIT",
+	"author": "any-tdf",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/common"
+	},
+	"files": [
+		"dist",
+		"readme",
+		"README.md",
+		"LICENSE",
+		"CHANGELOG.md",
+		"!dist/data",
+		"!dist/data/**",
+		"!dist/assets",
+		"!dist/assets/**"
+	],
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./derived": {
+			"types": "./dist/derived/index.d.ts",
+			"import": "./dist/derived/index.js"
+		},
+		"./derived/*": {
+			"types": "./dist/derived/*.d.ts",
+			"import": "./dist/derived/*.js"
+		},
+		"./svg": {
+			"types": "./dist/svg/index.d.ts",
+			"import": "./dist/svg/index.js"
+		},
+		"./svg/*": {
+			"types": "./dist/svg/*.d.ts",
+			"import": "./dist/svg/*.js"
+		},
+		"./utils": {
+			"types": "./dist/utils/index.d.ts",
+			"import": "./dist/utils/index.js"
+		},
+		"./theme": {
+			"types": "./dist/theme/index.d.ts",
+			"import": "./dist/theme/index.js",
+			"default": "./dist/theme/index.js"
+		},
+		"./theme/runtime": {
+			"types": "./dist/theme/runtime.d.ts",
+			"import": "./dist/theme/runtime.js",
+			"default": "./dist/theme/runtime.js"
+		},
+		"./theme/plugin": {
+			"types": "./dist/theme/plugin.d.ts",
+			"import": "./dist/theme/plugin.js",
+			"default": "./dist/theme/plugin.js"
+		},
+		"./lang": {
+			"types": "./dist/lang/index.d.ts",
+			"import": "./dist/lang/index.js"
+		},
+		"./types": {
+			"types": "./dist/types/index.d.ts",
+			"import": "./dist/types/index.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public",
+		"tag": "alpha"
+	},
+	"scripts": {
+		"build": "rm -rf dist && NODE_OPTIONS=--max-old-space-size=1024 tsc -p tsconfig.json",
+		"test": "bun test",
+		"package": "bun run build && publint && bun pm pack --dry-run",
+		"release:check": "bun run test && bun run check && bun run package",
+		"prepack": "bun run ../../scripts/package-license.mjs stage",
+		"postpack": "bun run ../../scripts/package-license.mjs clean",
+		"prepublishOnly": "bun run release:check",
+		"check": "tsc -p tsconfig.json",
+		"typecheck:native": "tsc -p tsconfig.json --noEmit"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"publint": "catalog:",
+		"typescript": "catalog:typescript7"
+	},
+	"peerDependencies": {
+		"tailwindcss": "^4.0.0"
+	},
+	"peerDependenciesMeta": {
+		"tailwindcss": {
+			"optional": true
+		}
+	}
+}

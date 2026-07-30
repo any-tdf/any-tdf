@@ -1,0 +1,45 @@
+{
+	"name": "vtdf-skill",
+	"version": "0.0.1",
+	"description": "AI Skill package for building with VTDF, Vue 3, and Tailwind CSS 4.",
+	"keywords": [
+		"ai",
+		"codex",
+		"skill",
+		"tailwindcss",
+		"vtdf",
+		"vue"
+	],
+	"homepage": "https://vtdf.dev",
+	"license": "MIT",
+	"author": "any-tdf",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/skills/vtdf-skill"
+	},
+	"files": [
+		"skill",
+		"README.md",
+		"LICENSE"
+	],
+	"type": "module",
+	"scripts": {
+		"generate:components": "bun scripts/generate-components-reference.mjs",
+		"generate:themes": "bun scripts/generate-theme-data.mjs",
+		"validate": "bun scripts/validate.mjs",
+		"test:theme": "bun scripts/test-theme.mjs",
+		"test": "bun run validate && bun run test:theme",
+		"package": "bun pm pack --dry-run",
+		"release:check": "bun run test && bun run package",
+		"prepack": "bun run ../../../scripts/package-license.mjs stage",
+		"postpack": "bun run ../../../scripts/package-license.mjs clean",
+		"prepublishOnly": "bun run release:check"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:"
+	},
+	"engines": {
+		"node": ">=18.18"
+	}
+}

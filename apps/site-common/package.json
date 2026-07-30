@@ -1,0 +1,68 @@
+{
+	"name": "@any-tdf/site-common",
+	"private": true,
+	"description": "Framework agnostic shared utilities, data, and assets for any-tdf demos and documentation sites.",
+	"license": "MIT",
+	"author": "any-tdf",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "apps/site-common"
+	},
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./markdown": {
+			"types": "./dist/markdown.d.ts",
+			"import": "./dist/markdown.js"
+		},
+		"./theme": {
+			"types": "./dist/theme.d.ts",
+			"import": "./dist/theme.js"
+		},
+		"./url": {
+			"types": "./dist/url.d.ts",
+			"import": "./dist/url.js"
+		},
+		"./data": {
+			"types": "./dist/data.d.ts",
+			"import": "./dist/data.js"
+		},
+		"./cli": {
+			"types": "./dist/cli.d.ts",
+			"import": "./dist/cli.js"
+		},
+		"./outline": {
+			"types": "./dist/outline.d.ts",
+			"import": "./dist/outline.js"
+		},
+		"./site": {
+			"types": "./dist/site.d.ts",
+			"import": "./dist/site.js"
+		},
+		"./styles": "./assets/styles.css"
+	},
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.json",
+		"test": "bun test tests",
+		"docs:generate": "bun run scripts/generate-component-docs.mjs",
+		"docs:check": "bun run scripts/generate-component-docs.mjs --check",
+		"docs:init": "bun run scripts/generate-component-docs.mjs --init",
+		"verify:sites": "bun run scripts/verify-site-parity.ts",
+		"verify:ui": "bun run scripts/verify-ui-parity.ts",
+		"verify:workspace": "bun run docs:check && bun run verify:sites",
+		"check": "tsc -p tsconfig.json",
+		"typecheck:native": "tsc -p tsconfig.json --noEmit"
+	},
+	"dependencies": {
+		"@any-tdf/common": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"typescript": "catalog:typescript7"
+	}
+}

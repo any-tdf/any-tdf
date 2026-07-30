@@ -1,0 +1,28 @@
+<div className='my-6 flex justify-between px-8 text-3xl'>
+	<span className='i-duo-icons:cake text-primary dark:text-dark' />
+	<span className='i-duo-icons:brush text-primary dark:text-dark' />
+	<span className='i-bitcoin-icons:miner-filled text-warning' />
+	<span className='i-bitcoin-icons:magic-wand-outline text-primary dark:text-dark' />
+	<span className='i-fluent-color:building-store-20' />
+</div>
+<div className='px-4 text-xs'>
+	{isZh ? (
+		<>
+			<p>
+				以上图标使用 <a className='underline' href='https://iconify.design' target='_blank' rel='noreferrer'>Iconify</a> 与 <a className='underline' href='https://unocss.dev/presets/icons' target='_blank' rel='noreferrer'>UnoCSS Icons</a> 方式。
+			</p>
+			<p className='mt-2'>
+				第一与第二个来自 <a className='underline' href='https://icon-sets.iconify.design/duo-icons/' target='_blank' rel='noreferrer'>duo-icons</a>，第三与第四个来自 <a className='underline' href='https://icon-sets.iconify.design/bitcoin-icons/' target='_blank' rel='noreferrer'>bitcoin-icons</a>，最后一个来自 <a className='underline' href='https://icon-sets.iconify.design/fluent-color/' target='_blank' rel='noreferrer'>fluent-color</a>。
+			</p>
+		</>
+	) : (
+		<>
+			<p>
+				The above icons use <a className='underline' href='https://iconify.design' target='_blank' rel='noreferrer'>Iconify</a> with <a className='underline' href='https://unocss.dev/presets/icons' target='_blank' rel='noreferrer'>UnoCSS Icons</a>.
+			</p>
+			<p className='mt-2'>
+				The first and second come from <a className='underline' href='https://icon-sets.iconify.design/duo-icons/' target='_blank' rel='noreferrer'>duo-icons</a>, the third and fourth come from <a className='underline' href='https://icon-sets.iconify.design/bitcoin-icons/' target='_blank' rel='noreferrer'>bitcoin-icons</a>, and the last one comes from <a className='underline' href='https://icon-sets.iconify.design/fluent-color/' target='_blank' rel='noreferrer'>fluent-color</a>.
+			</p>
+		</>
+	)}
+</div>

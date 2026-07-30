@@ -1,0 +1,101 @@
+# STDF v2 升级到 v3 指南
+
+STDF 3.0.0-alpha.0 是破坏性版本的 alpha 版本。本次升级调整了包目录和公开入口：主题、多语言、类型、工具方法和 UI 组件能力都从 `stdf` 这一套包导出。应用代码不需要、也不应该直接安装或引用 `@any-tdf/common`。
+
+## 核心变化
+
+- 公开安装包只有 `stdf`。
+- 组件从 `stdf` 导入。
+- 主题能力从 `stdf/theme` 导入。
+- 多语言能力从 `stdf/lang` 导入。
+- 类型从 `stdf/types` 导入。
+- Tailwind CSS 只需要扫描 `stdf/dist`。
+- 旧的公共包直连路径不再作为用户 API 兼容。
+
+## 1. 升级依赖
+
+```sh
+bun add stdf@3.0.0-alpha.0
+```
+
+如果项目的 `package.json` 里直接写了 `@any-tdf/common`，请移除它。`@any-tdf/common` 仍然可能作为内部实现依赖被包管理器安装，但业务项目不要显式依赖它。
+
+## 2. 更新 Tailwind CSS 扫描源
+
+旧写法：
+
+```css
+@source "../node_modules/stdf/dist";
+@source "../node_modules/@any-tdf/common/dist";
+```
+
+v3 写法：
+
+```css
+@source "../node_modules/stdf/dist";
+```
+
+STDF 3.0.0-alpha.0 的发布产物已经包含组件和公共能力需要扫描的 class 来源，不需要额外扫描公共包目录。
+
+## 3. 更新主题插件路径
+
+如果项目仍在使用公共包主题插件：
+
+```css
+@plugin "@any-tdf/common/theme" {
+	name: 'STDF, Sage, GoldWood';
+}
+```
+
+请改为：
+
+```css
+@plugin "stdf/theme" {
+	name: 'STDF, Sage, GoldWood';
+}
+```
+
+## 4. 更新代码导入
+
+| 旧导入                  | v3 导入      |
+| ----------------------- | ------------ |
+| `@any-tdf/common/theme` | `stdf/theme` |
+| `@any-tdf/common/lang`  | `stdf/lang`  |
+| `@any-tdf/common/types` | `stdf/types` |
+| `@any-tdf/common/utils` | `stdf/utils` |
+
+示例：
+
+```ts
+import { switchMode, switchTheme, themes } from 'stdf/theme';
+import { zh_CN } from 'stdf/lang';
+import type { ThemeOptions } from 'stdf/theme';
+```
+
+组件仍然从主入口导入：
+
+```svelte
+<script lang="ts">
+	import { Button, Toast } from 'stdf';
+</script>
+```
+
+## 5. 不再兼容的使用方式
+
+以下写法不再作为用户侧兼容目标：
+
+- 从 `@any-tdf/common/*` 直接导入主题、多语言、类型或工具方法。
+- 在应用 CSS 中扫描 `../node_modules/@any-tdf/common/dist`。
+- 在应用 CSS 中使用 `@plugin "@any-tdf/common/theme"`。
+- 在业务代码里依赖公共包内部的 `derived`、`svg` 或其他实现目录。
+
+如果之前依赖了公共包内部能力，请改为使用 `stdf` 暴露的组件、主题、多语言、类型和工具方法。
+
+## 迁移检查清单
+
+- [ ] 将 `stdf` 升级到 `^3.0.0`。
+- [ ] 从项目依赖中移除直接声明的 `@any-tdf/common`。
+- [ ] 删除 CSS 中的 `@source "../node_modules/@any-tdf/common/dist";`。
+- [ ] 将主题插件改为 `@plugin "stdf/theme"`。
+- [ ] 将 `@any-tdf/common/*` 导入改为 `stdf/*` 导入。
+- [ ] 重新运行项目，检查主题、暗色模式、多语言和常用组件。

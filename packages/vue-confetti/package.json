@@ -1,0 +1,66 @@
+{
+	"name": "@any-tdf/vue-confetti",
+	"version": "0.0.1",
+	"description": "Vue port of svelte-confetti's pure HTML and CSS confetti effect.",
+	"keywords": [
+		"confetti",
+		"css animation",
+		"ssr",
+		"svelte-confetti",
+		"vue",
+		"vue3"
+	],
+	"homepage": "https://github.com/any-tdf/any-tdf/tree/main/packages/vue-confetti#readme",
+	"bugs": {
+		"url": "https://github.com/any-tdf/any-tdf/issues"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/vue-confetti"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"test": "bun test",
+		"package": "bun run build && publint && bun pm pack --dry-run",
+		"release:check": "bun run check && bun run test && bun run package",
+		"prepack": "bun run ../../scripts/package-license.mjs stage",
+		"postpack": "bun run ../../scripts/package-license.mjs clean",
+		"prepublishOnly": "bun run release:check",
+		"check": "vue-tsc -b",
+		"typecheck:native": "vue-tsc -b"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@vue/server-renderer": "catalog:vue",
+		"publint": "catalog:",
+		"typescript": "catalog:vue-native",
+		"vue": "catalog:vue",
+		"vue-tsc": "catalog:vue"
+	},
+	"peerDependencies": {
+		"vue": "^3.5.0"
+	}
+}

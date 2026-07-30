@@ -1,0 +1,13 @@
+node_modules
+dist
+.svelte-kit
+.vite
+
+.env
+.env.*
+!.env.example
+*.local
+
+*.tsbuildinfo
+public/symbols
+static/symbols

@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  TURBO_TELEMETRY_DISABLED: '1'
+
+jobs:
+  affected-workspaces:
+    name: Affected Workspaces
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Verify monorepo structure
+        run: bun run verify:structure
+
+      - name: Verify monorepo references and versions
+        run: bun run verify:references
+
+      - name: Verify generated files
+        run: bun run generate:check
+
+      - name: Check repository formatting and lint
+        run: bun run quality:check
+
+      - name: Check affected Workspaces
+        run: bunx turbo run check test verify:workspace build --affected
+
+      - name: Verify packaged Demo routes
+        run: bun run verify:routes
+
+  browser:
+    name: Browser Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Verify browser interactions
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: bun run verify:browser

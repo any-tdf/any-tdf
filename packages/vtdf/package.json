@@ -1,0 +1,124 @@
+{
+	"name": "vtdf",
+	"version": "3.0.0-alpha.0",
+	"description": "Mobile web Vue 3 component library based on Tailwind CSS and the any-tdf design system.",
+	"keywords": [
+		"component library",
+		"mobile ui",
+		"tailwind",
+		"ui framework",
+		"ui 组件库",
+		"vue",
+		"vue3",
+		"移动组件库"
+	],
+	"homepage": "https://vtdf.dev",
+	"license": "MIT",
+	"author": "any-tdf",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/vtdf"
+	},
+	"funding": "https://vtdf.dev?fund",
+	"style": "./dist/style.css",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"type": "module",
+	"sideEffects": [
+		"**/*.css",
+		"**/*.vue"
+	],
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
+		"./style.css": {
+			"default": "./dist/style.css"
+		},
+		"./components": {
+			"types": "./dist/components/index.d.ts",
+			"import": "./dist/components/index.js",
+			"default": "./dist/components/index.js"
+		},
+		"./types": {
+			"types": "./dist/types/index.d.ts",
+			"import": "./dist/types/index.js",
+			"default": "./dist/types/index.js"
+		},
+		"./theme": {
+			"types": "./dist/theme/index.d.ts",
+			"import": "./dist/theme/index.js",
+			"default": "./dist/theme/index.js"
+		},
+		"./theme/plugin": {
+			"types": "./dist/theme/plugin.d.ts",
+			"import": "./dist/theme/plugin.js",
+			"default": "./dist/theme/plugin.js"
+		},
+		"./svg": {
+			"types": "./dist/svg/index.d.ts",
+			"import": "./dist/svg/index.js",
+			"default": "./dist/svg/index.js"
+		},
+		"./lang": {
+			"types": "./dist/lang/index.d.ts",
+			"import": "./dist/lang/index.js",
+			"default": "./dist/lang/index.js"
+		},
+		"./utils": {
+			"types": "./dist/components/utils/index.d.ts",
+			"import": "./dist/components/utils/index.js",
+			"default": "./dist/components/utils/index.js"
+		}
+	},
+	"publishConfig": {
+		"tag": "alpha"
+	},
+	"scripts": {
+		"build": "vp build --config vite.lib.config.ts && mkdir -p dist/fonts && cp public/fonts/Trueno.otf dist/fonts/Trueno.otf && cp src/index.css dist/style.css && vue-tsc -p tsconfig.lib.json && bun run scripts/prepare-framework-dist.mjs dist",
+		"package": "bun run build && publint && bun pm pack --dry-run",
+		"test": "bun test scripts/release.test.ts",
+		"release:check": "bun run test && bun run check && bun run package",
+		"prepack": "bun run ../../scripts/package-license.mjs stage",
+		"postpack": "bun run ../../scripts/package-license.mjs clean",
+		"prepublishOnly": "bun run release:check",
+		"verify:workspace": "bun run test",
+		"check": "vue-tsc -p tsconfig.lib.json --noEmit",
+		"typecheck:native": "vue-tsc -p tsconfig.lib.json --noEmit"
+	},
+	"dependencies": {
+		"@any-tdf/vue-motion": "workspace:^",
+		"@iconify-json/carbon": "^1.2.24",
+		"@iconify-json/fluent-color": "^1.2.21",
+		"@iconify-json/material-symbols": "^1.2.83",
+		"@iconify-json/solar": "^1.2.5",
+		"@iconify/tailwind4": "^1.2.3"
+	},
+	"devDependencies": {
+		"@any-tdf/common": "workspace:^",
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@vitejs/plugin-vue": "catalog:vue",
+		"publint": "catalog:",
+		"typescript": "catalog:vue-native",
+		"vite": "catalog:",
+		"vite-plus": "catalog:",
+		"vue": "catalog:vue",
+		"vue-tsc": "catalog:vue"
+	},
+	"peerDependencies": {
+		"tailwindcss": "^4.3.2",
+		"vue": "^3.5.0"
+	}
+}

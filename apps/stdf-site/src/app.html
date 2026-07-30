@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#23262B" media="(prefers-color-scheme: dark)" />
+		<meta itemprop="name" content="STDF" />
+		<meta name="description" itemprop="description" content="Mobile web component library based on Svelte and Tailwind" />
+		<meta itemprop="image" content="./assets/images/logo.png" />
+		<title>STDF - 移动 web 组件库</title>
+		<link href="/favicon.ico" rel="icon" media="(prefers-color-scheme: light)" />
+		<link href="/favicon_black.ico" rel="icon" media="(prefers-color-scheme: dark)" />
+		%sveltekit.head%
+	</head>
+	<body
+		data-sveltekit-preload-data="hover"
+		class="bg-bg-base dark:bg-bg-base-dark text-text-primary dark:text-text-dark selection:bg-primary dark:selection:bg-dark selection:text-white dark:selection:text-black"
+	>
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

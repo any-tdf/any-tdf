@@ -1,0 +1,28 @@
+<div className='my-6 flex justify-between px-8'>
+	<Icon name='cake' theme path='symbols/Heroicons.svg' />
+	<Icon name='riding-line' path='symbols/Remix.svg' />
+	<Icon name='spy-line' theme path='symbols/Remix.svg' />
+	<Icon name='javascript-fill' injClass='text-error dark:text-success' path='symbols/Remix.svg' />
+	<Icon name='cup' theme path='symbols/IconPark.svg' />
+</div>
+<div className='px-4 text-xs'>
+	{isZh ? (
+		<>
+			<p>
+				以上图标通过 <a className='underline' href='https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol' target='_blank' rel='noreferrer'>@any-tdf/vite-plugin-svg-symbol</a> 使用 SVG Symbol 方式。
+			</p>
+			<p className='mt-2'>
+				第一个来自 <a className='underline' href='https://heroicons.com' target='_blank' rel='noreferrer'>Heroicons</a>，最后一个来自 <a className='underline' href='https://iconpark.oceanengine.com' target='_blank' rel='noreferrer'>IconPark</a>，其余来自 <a className='underline' href='https://remixicon.com' target='_blank' rel='noreferrer'>Remix Icon</a>。
+			</p>
+		</>
+	) : (
+		<>
+			<p>
+				The above icons use <a className='underline' href='https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol' target='_blank' rel='noreferrer'>@any-tdf/vite-plugin-svg-symbol</a> for SVG symbols.
+			</p>
+			<p className='mt-2'>
+				The first one comes from <a className='underline' href='https://heroicons.com' target='_blank' rel='noreferrer'>Heroicons</a>, the last one comes from <a className='underline' href='https://iconpark.oceanengine.com' target='_blank' rel='noreferrer'>IconPark</a>, and the rest come from <a className='underline' href='https://remixicon.com' target='_blank' rel='noreferrer'>Remix Icon</a>.
+			</p>
+		</>
+	)}
+</div>

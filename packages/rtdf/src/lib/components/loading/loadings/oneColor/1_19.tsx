@@ -1,0 +1,71 @@
+import type { FC } from 'react';
+import { parseStyle } from '../../../utils/style';
+import {
+	resolveLoadingLayoutClass,
+	resolveLoadingFourShapePositionCss,
+	resolveLoadingOneColorClassState,
+	resolveLoadingOneColorShapeStyle,
+	resolveLoadingShapeContainerStyle,
+	resolveLoadingShapePieceClass
+} from '@any-tdf/common/derived/loading';
+
+type Props = {
+	size?: string;
+	customColor?: string[];
+	speed?: number;
+	theme?: boolean;
+	inverse?: boolean;
+};
+
+const Loading1_19: FC<Props> = ({ size = 'w-8 h-8', customColor = [], speed = 1, theme = false, inverse = false }) => {
+	const loadingClassState = resolveLoadingOneColorClassState({ theme, inverse });
+
+	const css = resolveLoadingFourShapePositionCss({ scope: 'rtdf_loading_1_19' });
+
+	return (
+		<>
+			{css ? <style>{css}</style> : null}
+			<div className="rtdf_loading_1_19">
+				<div
+					className={resolveLoadingLayoutClass({ kind: 'loadingRelative', size })}
+					style={parseStyle(resolveLoadingShapeContainerStyle({ variant: '1_19', speed }))}
+				>
+					<div
+						className={resolveLoadingShapePieceClass({
+							variant: 'roundThird',
+							index: 0,
+							bgClass: loadingClassState.bgClass
+						})}
+						style={parseStyle(resolveLoadingOneColorShapeStyle({ variant: '1_19', customColor, speed }))}
+					></div>
+					<div
+						className={resolveLoadingShapePieceClass({
+							variant: 'roundThird',
+							index: 1,
+							bgClass: loadingClassState.bgClass
+						})}
+						style={parseStyle(resolveLoadingOneColorShapeStyle({ variant: '1_19', customColor, speed }))}
+					></div>
+					<div
+						className={resolveLoadingShapePieceClass({
+							variant: 'roundThird',
+							index: 2,
+							bgClass: loadingClassState.bgClass
+						})}
+						style={parseStyle(resolveLoadingOneColorShapeStyle({ variant: '1_19', customColor, speed }))}
+					></div>
+					<div
+						className={resolveLoadingShapePieceClass({
+							variant: 'roundThird',
+							index: 3,
+							bgClass: loadingClassState.bgClass
+						})}
+						style={parseStyle(resolveLoadingOneColorShapeStyle({ variant: '1_19', customColor, speed }))}
+					></div>
+				</div>
+			</div>
+		</>
+	);
+};
+
+export default Loading1_19;

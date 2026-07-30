@@ -1,0 +1,30 @@
+<div class="my-6 flex justify-between px-8">
+	<span class="i-duo-icons-cake text-2xl text-primary dark:text-dark"></span>
+	<span class="i-duo-icons-brush text-2xl text-primary dark:text-dark"></span>
+	<span class="i-bitcoin-icons-miner-filled text-2xl text-primary dark:text-dark"></span>
+	<span class="i-bitcoin-icons-magic-wand-outline text-2xl text-primary dark:text-dark"></span>
+	<span class="i-fluent-color-building-store-20 text-2xl"></span>
+</div>
+<div class="px-4 text-xs">
+	{#if lang === 'zh_CN'}
+		<p>
+			以上图标使用 <a class="underline" href="https://unocss.dev/presets/icons" target="_blank">UnoCSS Icons</a> 配合 <a class="underline" href="https://iconify.design" target="_blank">Iconify</a> 方式：
+		</p>
+		<p class="mt-2">
+			第一与第二个来自
+			<a class="underline" href="https://icon-sets.iconify.design/duo-icons/" target="_blank">duo-icons</a>，第三与第四个来自
+			<a class="underline" href="https://icon-sets.iconify.design/bitcoin-icons/" target="_blank">bitcoin-icons</a>，最后一个来自
+			<a class="underline" href="https://icon-sets.iconify.design/fluent-color/" target="_blank">fluent-color</a>。
+		</p>
+	{:else}
+		<p>
+			The above icons use <a class="underline" href="https://unocss.dev/presets/icons" target="_blank">UnoCSS Icons</a> with <a class="underline" href="https://iconify.design" target="_blank">Iconify</a> way:
+		</p>
+		<p class="mt-2">
+			The first and second come from
+			<a class="underline" href="https://icon-sets.iconify.design/duo-icons/" target="_blank">duo-icons</a>, the third and fourth come from
+			<a class="underline" href="https://icon-sets.iconify.design/bitcoin-icons/" target="_blank">bitcoin-icons</a>, the last one comes from
+			<a class="underline" href="https://icon-sets.iconify.design/fluent-color/" target="_blank">fluent-color</a>.
+		</p>
+	{/if}
+</div>

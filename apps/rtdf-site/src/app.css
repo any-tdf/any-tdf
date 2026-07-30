@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+@import '@any-tdf/site-common/styles';
+
+@plugin '@tailwindcss/typography';
+
+@plugin '@any-tdf/common/theme/plugin' {
+	all: true;
+}
+
+@source './**/*.{ts,tsx,html}';
+@source '../../../content/rtdf/**/*.md';
+@source '../../../packages/rtdf/src/**/*.{ts,tsx}';
+@source '../../../packages/rtdf/dist/**/*.{js,ts,tsx}';
+@source '../../../packages/rtdf/src/index.css';
+@source '../../../packages/common/src/**/*.{ts,tsx,vue,svelte}';
+@source '../../../packages/common/dist/**/*.{js,ts,tsx,vue,svelte}';
+@source inline('bg-bg-surface dark:bg-bg-surface-dark bg-bg-surface-dark dark:bg-bg-surface text-text-primary dark:text-text-dark text-text-primary/50 dark:text-text-dark/50 text-text-primary/70 dark:text-text-dark/70 text-text-dark dark:text-text-primary text-text-dark/50 dark:text-text-primary/50 text-text-dark/70 dark:text-text-primary/70 hover:bg-text-primary/5 dark:hover:bg-text-dark/5 active:bg-text-primary/10 dark:active:bg-text-dark/10 hover:bg-text-dark/5 dark:hover:bg-text-primary/5 active:bg-text-dark/10 dark:active:bg-text-primary/10');
+
+.fund-hover-panel {
+	width: 95%;
+	height: 95%;
+}
+
+.fund-qr-image {
+	width: 70%;
+}

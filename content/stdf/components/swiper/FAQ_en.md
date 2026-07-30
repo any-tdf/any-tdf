@@ -1,0 +1,3 @@
+## Q: Why does Swiper lag when sliding too quickly left and right?
+
+A: Initially, we considered using container scrolling and alignment to achieve the switching effect (with built-in scroll inertia). Unfortunately, web browsers currently do not support controlling the transition time for smooth scrolling, which makes the configuration of transition effects impossible. Therefore, the current solution is to listen to the distance of finger sliding to achieve slide switching, and custom configure the triggering conditions using triggerLong, notTriggerLong, and triggerSpeed. When the finger finishes sliding and leaves the screen, it indicates the end of a slide. Swiper will determine whether to trigger the slide switch based on the sliding distance and sliding speed.

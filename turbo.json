@@ -1,0 +1,38 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**", "build/**", "demo-dist/**", ".svelte-kit/**"]
+		},
+		"check": {
+			"dependsOn": ["^build"],
+			"outputs": []
+		},
+		"test": {
+			"dependsOn": ["^build"],
+			"outputs": []
+		},
+		"verify:workspace": {
+			"dependsOn": ["^build"],
+			"cache": false,
+			"outputs": []
+		},
+		"release:check": {
+			"dependsOn": ["^release:check", "^build"],
+			"cache": false,
+			"outputs": ["dist/**", "build/**", "demo-dist/**", ".svelte-kit/**"]
+		},
+		"deploy:check": {
+			"dependsOn": ["^build"],
+			"cache": false,
+			"outputs": ["build/**", ".svelte-kit/**"]
+		},
+		"dev": {
+			"dependsOn": ["^build"],
+			"cache": false,
+			"persistent": true
+		}
+	}
+}

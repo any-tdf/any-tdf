@@ -1,0 +1,322 @@
+## Light and Dark Modes
+
+### Configuration
+
+Use the Tailwind CSS dark mode configuration, please make the following `@custom-variant` configuration in the project entry CSS file, reference [Dark Mode](https://tailwindcss.com/docs/dark-mode).
+
+```css
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
+```
+
+> This configuration supports nested mode switching, allowing light areas within dark areas and vice versa.
+
+### Switching
+
+STDF provides the mode switching method in the NPM package, which essentially switches by modifying the `data-mode` attribute of the `html` tag.
+
+```javascript
+// Import switchMode, pass 'primary' to switch to light mode, pass 'dark' to switch to dark mode.
+import { switchMode } from 'stdf/theme';
+
+// Switch to light mode
+switchMode('primary');
+
+// Switch to dark mode
+switchMode('dark');
+```
+
+You can also use the `getMode` method to get the current mode:
+
+```javascript
+import { getMode } from 'stdf/theme';
+
+// Get current mode, returns 'primary' or 'dark'
+const currentMode = getMode();
+```
+
+## Multiple Theme Mode
+
+### Introduction
+
+STDF supports switching between multiple themes, including [color system](/guide/color), border radius, background color, text color, and other configurations. The essential principle is to set some attributes as CSS variables and switch themes by modifying the `data-theme` attribute.
+
+### Configuration
+
+STDF uses Tailwind CSS 4's `@plugin` syntax to define themes. The theme plugin is provided by `stdf/theme`, so use `@plugin "stdf/theme"` in the project entry CSS file.
+
+Runtime helpers such as `switchTheme`, `switchMode`, `getTheme`, and `getMode` are still imported from `stdf/theme`.
+
+#### Using Built-in Themes
+
+STDF comes with 42 carefully designed themes, just pass the theme name to use:
+
+```css
+/* Use a single built-in theme */
+@plugin "stdf/theme" {
+	name: 'Nintendo';
+}
+```
+
+If you need to use multiple built-in themes (for dynamic switching), use comma-separated theme names:
+
+```css
+/* Use multiple built-in themes (comma-separated) */
+@plugin "stdf/theme" {
+	name: 'Nintendo, Ocean, Forest';
+}
+```
+
+If you need to use all 42 built-in themes, use `all: true`:
+
+```css
+/* Load all 42 built-in themes */
+@plugin "stdf/theme" {
+	all: true;
+}
+```
+
+#### Custom Themes
+
+When creating custom themes, **`color-primary` and `color-dark` only need base color values**, the plugin will automatically calculate complete color gradients (50-950). Background colors and text colors need to be configured manually.
+
+```css
+@plugin "stdf/theme" {
+	name: 'MyTheme';
+
+	/* For primary and dark, just provide base colors, plugin auto-calculates 50-950 gradients */
+	color-primary: oklch(0.52 0.24 35);
+	color-dark: oklch(0.72 0.18 250);
+
+	/* Background colors */
+	color-bg-base: oklch(0.97 0.01 35);
+	color-bg-surface: oklch(0.99 0.005 35);
+	color-bg-overlay: oklch(0.96 0.005 35);
+	color-bg-highlight: oklch(0.98 0.008 35);
+	color-bg-base-dark: oklch(0.15 0.01 250);
+	color-bg-surface-dark: oklch(0.22 0.008 250);
+	color-bg-overlay-dark: oklch(0.19 0.007 250);
+	color-bg-highlight-dark: oklch(0.08 0.005 250);
+
+	/* Text colors */
+	color-text-primary: oklch(0.15 0.01 35);
+	color-text-dark: oklch(0.92 0.03 250);
+	color-text-on-primary: oklch(0.88 0.04 35);
+	color-text-on-dark: oklch(0.19 0.05 250);
+
+	/* Functional colors */
+	color-success: oklch(0.65 0.18 155);
+	color-warning: oklch(0.72 0.18 45);
+	color-error: oklch(0.55 0.24 15);
+	color-info: oklch(0.55 0.18 260);
+
+	/* Border radius */
+	radius-box: 1.5rem;
+	radius-form: 0.5rem;
+	radius-small: calc(infinity * 1px);
+}
+```
+
+> **Note**: Key names don't need the `--` prefix, the plugin will add it automatically.
+
+> Go to the <a href="/guide/generator" target="_blank">Theme Generator</a> to quickly select colors and generate configuration files.
+
+### Single Theme Mode
+
+If your project **doesn't need to switch themes**, you only need to configure CSS variables in `@theme`, without using `@plugin "stdf/theme"`:
+
+```css
+@theme {
+	/* Theme colors */
+	--color-primary: oklch(0.467 0.296 264.886);
+	--color-primary-50: oklch(0.967 0.0296 264.886);
+	/* ... other primary gradient colors ... */
+
+	--color-dark: oklch(0.845 0.153 80.597);
+	--color-dark-50: oklch(0.98 0.0153 80.597);
+	/* ... other dark gradient colors ... */
+
+	/* Background colors, text colors, functional colors, border radius, etc. */
+	/* ... */
+}
+```
+
+In this mode, CSS variables take effect directly without setting the `data-theme` attribute.
+
+### Default Theme for Multiple Themes
+
+When using multiple themes, you need to declare **default theme** CSS variables in `@theme`. These variables serve two purposes:
+
+1. **Generate utility classes**: Tailwind needs these variables to generate corresponding utility classes (like `bg-primary`, `text-dark`, etc.)
+2. **Act as default values**: When the `html` tag has no `data-theme` attribute, these default values are used
+
+> **Note**: Theme variables generated by `@plugin "stdf/theme"` will override the values in `@theme` through `[data-theme="xxx"]` selectors.
+
+```css
+@theme {
+	/* Default theme variables - take effect when there's no data-theme attribute */
+	--color-primary-50: oklch(0.967 0.0296 264.886);
+	--color-primary-100: oklch(0.917 0.0444 264.886);
+	--color-primary-200: oklch(0.817 0.1036 264.886);
+	--color-primary-300: oklch(0.717 0.1628 264.886);
+	--color-primary-400: oklch(0.617 0.222 264.886);
+	--color-primary-500: oklch(0.547 0.2664 264.886);
+	--color-primary: oklch(0.467 0.296 264.886);
+	--color-primary-700: oklch(0.387 0.2812 264.886);
+	--color-primary-800: oklch(0.317 0.2516 264.886);
+	--color-primary-900: oklch(0.267 0.222 264.886);
+	--color-primary-950: oklch(0.187 0.1776 264.886);
+
+	--color-dark-50: oklch(0.98 0.0153 80.597);
+	--color-dark-100: oklch(0.95 0.02295 80.597);
+	--color-dark-200: oklch(0.88 0.05355 80.597);
+	--color-dark-300: oklch(0.78 0.08415 80.597);
+	--color-dark-400: oklch(0.68 0.11475 80.597);
+	--color-dark-500: oklch(0.58 0.1377 80.597);
+	--color-dark: oklch(0.845 0.153 80.597);
+	--color-dark-700: oklch(0.765 0.14535 80.597);
+	--color-dark-800: oklch(0.695 0.13005 80.597);
+	--color-dark-900: oklch(0.645 0.11475 80.597);
+	--color-dark-950: oklch(0.565 0.0918 80.597);
+
+	/* Background colors */
+	--color-bg-base: oklch(0.967 0.0148 264.9);
+	--color-bg-surface: oklch(0.985 0.005 80.6);
+	--color-bg-overlay: oklch(0.955 0.005 80.6);
+	--color-bg-highlight: oklch(0.98 0.0089 264.9);
+	--color-bg-base-dark: oklch(0.15 0.0122 80.6);
+	--color-bg-surface-dark: oklch(0.22 0.0092 95.6);
+	--color-bg-overlay-dark: oklch(0.19 0.0077 80.6);
+	--color-bg-highlight-dark: oklch(0.08 0.0061 80.6);
+
+	/* Text colors */
+	--color-text-primary: oklch(0.144 0.0148 264.886);
+	--color-text-dark: oklch(0.917 0.03825 80.597);
+	--color-text-on-primary: oklch(0.883 0.04284 80.597);
+	--color-text-on-dark: oklch(0.189 0.05032 264.886);
+
+	/* Functional colors */
+	--color-success: oklch(0.704 0.142 167.084);
+	--color-warning: oklch(0.558 0.153 47.186);
+	--color-error: oklch(0.564 0.223 28.46);
+	--color-info: oklch(0.482 0.14 261.518);
+
+	/* Border radius */
+	--radius-box: 0.75rem;
+	--radius-form: 0.5rem;
+	--radius-small: 0.25rem;
+}
+```
+
+### Theme Variable Reference
+
+#### Built-in Themes
+
+When using built-in themes, you only need to pass the theme name, and all color values are automatically calculated by the plugin.
+
+#### Custom Themes
+
+| Variable          | Description                                                   |
+| ----------------- | ------------------------------------------------------------- |
+| `name`            | Theme name, used for `data-theme` attribute switching         |
+| `color-primary`   | Light mode base theme color (auto-generates 50-950 gradients) |
+| `color-dark`      | Dark mode base theme color (auto-generates 50-950 gradients)  |
+| `color-bg-*`      | Background colors (base, surface, overlay, highlight)         |
+| `color-bg-*-dark` | Dark mode background colors                                   |
+| `color-text-*`    | Text colors (primary, dark, on-primary, on-dark)              |
+| `color-success`   | Success state color                                           |
+| `color-warning`   | Warning state color                                           |
+| `color-error`     | Error state color                                             |
+| `color-info`      | Info state color                                              |
+| `radius-box`      | Container border radius                                       |
+| `radius-form`     | Form element border radius                                    |
+| `radius-small`    | Small element border radius                                   |
+
+The following variables are automatically calculated by the plugin based on `color-primary` and `color-dark`, no need to specify manually:
+
+- `color-primary-*` / `color-dark-*` (50-950 gradients)
+
+Tailwind v4 recommends using the oklch color mode, reference [Using CSS variables](https://tailwindcss.com/docs/customizing-colors#using-css-variables).
+
+### Switching
+
+Import the `switchTheme` method from the NPM package to switch themes by passing the theme name.
+
+```javascript
+// Import the switch theme method
+import { switchTheme } from 'stdf/theme';
+
+// Switch to Nintendo
+switchTheme('Nintendo');
+
+// Switch to MyTheme
+switchTheme('MyTheme');
+```
+
+You can also use the `getTheme` method to get the current theme:
+
+```javascript
+import { getTheme } from 'stdf/theme';
+
+// Get current theme name
+const currentTheme = getTheme();
+```
+
+### Usage in HTML
+
+Theme switching is implemented through the `data-theme` attribute:
+
+```html
+<!-- Default theme -->
+<html>
+	<!-- Use Nintendo theme -->
+	<html data-theme="Nintendo">
+		<!-- Use custom theme -->
+		<html data-theme="MyTheme"></html>
+	</html>
+</html>
+```
+
+## Built-in Themes
+
+STDF comes with 42 carefully designed themes that can be used directly:
+
+| Theme        | Description             | Theme      | Description             |
+| ------------ | ----------------------- | ---------- | ----------------------- |
+| STDF         | Default STDF theme      | Nintendo   | Red & Blue Classic      |
+| Ocean        | Ocean Blue & Sand       | Forest     | Forest & Warm Brown     |
+| Sunset       | Orange Sky & Blue       | Cherry     | Cherry & Teal           |
+| Twilight     | Purple & Gold           | Amber      | Amber & Purple          |
+| Mint         | Mint & Rose             | Coral      | Coral & Blue            |
+| Slate        | Slate & Warm Brown      | Emerald    | Emerald & Red           |
+| Crimson      | Crimson & Teal          | Navy       | Navy & Gold             |
+| Olive        | Olive & Purple          | Plum       | Plum & Green            |
+| Cyan         | Cyan & Orange           | Tangerine  | Tangerine & Blue        |
+| Sage         | Sage & Pink             | Berry      | Berry & Green           |
+| Wine         | Wine & Teal             | IKEA       | IKEA Blue & Yellow      |
+| Ferrari      | Ferrari Red & Yellow    | Tiffany    | Tiffany Blue            |
+| Pepsi        | Pepsi Blue & Red        | Spotify    | Spotify Green & Black   |
+| Netflix      | Netflix Red & Black     | Hermes     | Hermes Orange & Brown   |
+| CocaCola     | Coca-Cola Red & White   | Starbucks  | Starbucks Green & Brown |
+| McDonalds    | McDonald's Red & Yellow | Gucci      | Gucci Green & Red       |
+| Chanel       | Chanel Black & Cream    | Rolex      | Rolex Green & Gold      |
+| LouisVuitton | LV Brown & Gold         | Mastercard | Mastercard Red & Orange |
+
+## Summary
+
+### Light and Dark Modes
+
+Use the `switchMode` method from the STDF NPM package, passing `'primary'` or `'dark'` to switch between light and dark modes.
+
+### Single Theme Mode
+
+If you don't need to switch themes, just configure CSS variables in `@theme`, no need to use `@plugin`.
+
+### Multiple Theme Mode
+
+1. Configure **default theme** CSS variables in `@theme` (for generating utility classes, and as default values when there's no `data-theme`)
+2. Define switchable themes using `@plugin "stdf/theme"`:
+   - Use built-in theme: just pass `name: "ThemeName"`
+   - Use multiple built-in themes: comma-separated, e.g. `name: "Nintendo, Ocean, Forest"`
+   - Use all built-in themes: pass `all: true`
+   - Custom theme: only pass base colors, plugin auto-calculates full color scales
+3. Use the `switchTheme` method with the theme name to switch themes

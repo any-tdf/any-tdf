@@ -1,0 +1,10 @@
+test/**
+scripts/**
+*.vsix
+bun.lock
+bun.lockb
+.gitignore
+.turbo/**
+node_modules/**
+node_modules/.cache/**
+vite.config.ts

@@ -1,0 +1,119 @@
+{
+	"name": "@any-tdf/monorepo",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"workspaces": {
+		"packages": [
+			"apps/*",
+			"apps/runtime-docs/*",
+			"packages/common",
+			"packages/stdf",
+			"packages/rtdf",
+			"packages/vtdf",
+			"packages/react-confetti",
+			"packages/react-motion",
+			"packages/vue-confetti",
+			"packages/vue-motion",
+			"packages/skills/*",
+			"tooling/*"
+		],
+		"catalog": {
+			"@any-tdf/vite-plugin-md-ts": "^0.0.2",
+			"@any-tdf/vite-plugin-svg-symbol": "^0.0.3",
+			"@iconify-json/carbon": "^1.2.24",
+			"@iconify-json/fluent-color": "^1.2.21",
+			"@iconify-json/material-symbols": "^1.2.83",
+			"@iconify-json/solar": "^1.2.5",
+			"@iconify/tailwind4": "^1.2.3",
+			"@tailwindcss/typography": "^0.5.20",
+			"@tailwindcss/vite": "^4.3.2",
+			"@types/bun": "^1.3.14",
+			"@types/node": "^26.1.1",
+			"@typescript/native": "npm:typescript@7.0.2",
+			"beautify-qrcode": "^1.0.3",
+			"clipboard": "^2.0.11",
+			"highlight.js": "^11.11.1",
+			"publint": "^0.3.21",
+			"svelte-confetti": "^2.3.2",
+			"tailwindcss": "^4.3.2",
+			"typescript": "6.0.3",
+			"typescript6": "npm:typescript@6.0.3",
+			"vite": "^8.1.3",
+			"vite-plus": "^0.2.4"
+		},
+		"catalogs": {
+			"react": {
+				"@types/react": "^19.2.17",
+				"@types/react-dom": "^19.2.3",
+				"@vitejs/plugin-react": "^6.0.3",
+				"react": "^19.2.7",
+				"react-dom": "^19.2.7",
+				"react-router-dom": "^7.18.1"
+			},
+			"svelte": {
+				"@sveltejs/adapter-static": "^3.0.10",
+				"@sveltejs/kit": "^2.69.2",
+				"@sveltejs/package": "^2.5.8",
+				"@sveltejs/vite-plugin-svelte": "^7.2.0",
+				"svelte": "^5.56.4",
+				"svelte-check": "^4.7.4"
+			},
+			"typescript7": {
+				"typescript": "7.0.2"
+			},
+			"vue-native": {
+				"typescript": "npm:typescript-native-bridge@6.0.3-bridge.7.tsgo.7.0.2"
+			},
+			"vue": {
+				"@vue/server-renderer": "3.5.39",
+				"@vitejs/plugin-vue": "^6.0.7",
+				"vue": "3.5.39",
+				"vue-tsc": "^3.3.8"
+			}
+		}
+	},
+	"scripts": {
+		"build": "turbo run build",
+		"check": "bun run verify:structure && bun run verify:references && bun run quality:check && turbo run check",
+		"test": "turbo run test",
+		"verify": "bun run verify:structure && bun run verify:references && bun run verify:static && bun run verify:routes",
+		"verify:structure": "bun run scripts/verify-workspaces.mjs",
+		"verify:references": "bun run scripts/verify-references.mjs",
+		"verify:static": "turbo run verify:workspace",
+		"verify:routes": "turbo run build --filter=@any-tdf/stdf-demo --filter=@any-tdf/rtdf-demo --filter=@any-tdf/vtdf-demo && bun run scripts/verify-demo-previews.mjs",
+		"verify:browser": "bun run verify:browser:demos && bun run verify:browser:sites",
+		"verify:browser:demos": "turbo run build --filter=@any-tdf/stdf-demo --filter=@any-tdf/rtdf-demo --filter=@any-tdf/vtdf-demo && bun run scripts/verify-demo-previews.mjs --browser",
+		"verify:browser:sites": "turbo run build --filter=@any-tdf/stdf-site --filter=@any-tdf/rtdf-site --filter=@any-tdf/vtdf-site && bun run scripts/verify-site-previews.mjs",
+		"release:check": "bun run verify:structure && bun run verify:references && bun run quality:check && bun run release:check:packages && bun run --filter create-any-tdf release:check",
+		"release:check:packages": "turbo run release:check --filter=@any-tdf/common --filter=stdf --filter=rtdf --filter=vtdf --filter=@any-tdf/react-confetti --filter=@any-tdf/react-motion --filter=@any-tdf/vue-confetti --filter=@any-tdf/vue-motion --filter=stdf-skill --filter=rtdf-skill --filter=vtdf-skill",
+		"deploy:check": "bun run verify:structure && bun run quality:check && turbo run deploy:check --filter=@any-tdf/stdf-site --filter=@any-tdf/rtdf-site --filter=@any-tdf/vtdf-site",
+		"quality:prepare": "turbo run build",
+		"quality:check": "bun run quality:prepare && bun run format:check && bun run lint",
+		"format": "vp fmt --disable-nested-config",
+		"format:check": "vp fmt --check --disable-nested-config",
+		"lint": "vp lint --disable-nested-config",
+		"dev:stdf": "turbo run dev --filter=@any-tdf/stdf-demo --filter=@any-tdf/stdf-site",
+		"dev:rtdf": "turbo run dev --filter=@any-tdf/rtdf-demo --filter=@any-tdf/rtdf-site",
+		"dev:vtdf": "turbo run dev --filter=@any-tdf/vtdf-demo --filter=@any-tdf/vtdf-site",
+		"docs:check": "bun run --filter @any-tdf/site-common docs:check",
+		"generate": "bun run sync:versions && bun run scripts/generate-vtdf.mjs && bun run --filter @any-tdf/site-common docs:generate && bun run --filter @any-tdf/site-common build && bun run --filter any-tdf-vscode-extension files",
+		"generate:check": "bun run sync:versions:check && bun run scripts/generate-vtdf.mjs --check && bun run --filter @any-tdf/site-common docs:check && bun run --filter @any-tdf/site-common build && bun run --filter any-tdf-vscode-extension files:check",
+		"sync:versions": "bun run scripts/sync-version-fallbacks.mjs",
+		"sync:versions:check": "bun run scripts/sync-version-fallbacks.mjs --check",
+		"changeset": "changeset",
+		"version-packages": "changeset version && bun run sync:versions",
+		"release": "changeset publish"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.31.1",
+		"turbo": "^2.10.7",
+		"typescript": "catalog:",
+		"vite-plus": "catalog:"
+	},
+	"engines": {
+		"bun": ">=1.3.14",
+		"node": ">=24.0.0"
+	},
+	"packageManager": "bun@1.3.14"
+}

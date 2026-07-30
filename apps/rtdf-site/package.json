@@ -1,0 +1,52 @@
+{
+	"name": "@any-tdf/rtdf-site",
+	"version": "0.0.1",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "apps/rtdf-site"
+	},
+	"type": "module",
+	"scripts": {
+		"env": "bun run scripts/env.js",
+		"dev": "bun run env && vp dev",
+		"preview": "vp preview",
+		"build": "bun run env && vp build",
+		"deploy:check": "bun run check && bun run build",
+		"verify:site": "bun run scripts/verify-site.ts",
+		"verify:workspace": "bun run verify:site",
+		"verify:browser": "bun run scripts/verify-browser.ts",
+		"check": "tsc -p tsconfig.json",
+		"typecheck:native": "tsc -p tsconfig.json --noEmit"
+	},
+	"dependencies": {
+		"@any-tdf/common": "workspace:*",
+		"@any-tdf/react-confetti": "workspace:*",
+		"@any-tdf/react-motion": "workspace:*",
+		"@any-tdf/site-common": "workspace:*",
+		"lucide-react": "^1.26.0",
+		"react": "catalog:react",
+		"react-dom": "catalog:react",
+		"react-router-dom": "catalog:react",
+		"rtdf": "workspace:*"
+	},
+	"devDependencies": {
+		"@any-tdf/vite-plugin-md-ts": "catalog:",
+		"@any-tdf/vite-plugin-svg-symbol": "catalog:",
+		"@tailwindcss/typography": "catalog:",
+		"@tailwindcss/vite": "catalog:",
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:react",
+		"@types/react-dom": "catalog:react",
+		"@vitejs/plugin-react": "catalog:react",
+		"beautify-qrcode": "catalog:",
+		"clipboard": "catalog:",
+		"highlight.js": "catalog:",
+		"tailwindcss": "catalog:",
+		"typescript": "catalog:typescript7",
+		"vite": "catalog:",
+		"vite-plus": "catalog:"
+	}
+}

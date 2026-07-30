@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"types": ["node", "bun"],
+		"target": "ES2020",
+		"jsx": "react-jsx",
+		"lib": ["ES2020", "DOM", "DOM.Iterable"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"declaration": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"strict": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"include": ["src/**/*"],
+	"exclude": ["src/**/*.test.*", "src/**/*.spec.*"]
+}

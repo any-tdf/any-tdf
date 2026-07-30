@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"types": ["node", "bun"],
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"declaration": true,
+		"declarationMap": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"strict": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"sourceMap": true
+	},
+	"include": [
+		"src/index.ts",
+		"src/derived/**/*.ts",
+		"src/svg/**/*.ts",
+		"src/theme/**/*.ts",
+		"src/lang/**/*.ts",
+		"src/types/**/*.ts",
+		"src/utils/**/*.ts"
+	],
+	"exclude": ["dist", "node_modules"]
+}

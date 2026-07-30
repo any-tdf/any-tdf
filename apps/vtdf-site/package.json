@@ -1,0 +1,47 @@
+{
+	"name": "@any-tdf/vtdf-site",
+	"version": "0.0.1",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "apps/vtdf-site"
+	},
+	"type": "module",
+	"scripts": {
+		"env": "bun run scripts/env.js",
+		"dev": "bun run env && vp dev",
+		"preview": "vp preview",
+		"build": "bun run env && vue-tsc -b && vp build",
+		"deploy:check": "bun run check && bun run build",
+		"verify:site": "bun run scripts/verify-site.ts",
+		"verify:workspace": "bun run verify:site",
+		"verify:browser": "bun run scripts/verify-browser.ts",
+		"check": "vue-tsc -b",
+		"typecheck:native": "vue-tsc -b"
+	},
+	"dependencies": {
+		"@any-tdf/common": "workspace:*",
+		"@any-tdf/site-common": "workspace:*",
+		"@any-tdf/vue-confetti": "workspace:*",
+		"beautify-qrcode": "^1.0.3",
+		"lucide-vue-next": "^1.0.0",
+		"vtdf": "workspace:*",
+		"vue": "catalog:vue"
+	},
+	"devDependencies": {
+		"@any-tdf/vite-plugin-md-ts": "catalog:",
+		"@any-tdf/vite-plugin-svg-symbol": "catalog:",
+		"@tailwindcss/typography": "catalog:",
+		"@tailwindcss/vite": "catalog:",
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@vitejs/plugin-vue": "catalog:vue",
+		"highlight.js": "catalog:",
+		"tailwindcss": "catalog:",
+		"typescript": "catalog:vue-native",
+		"vite": "catalog:",
+		"vite-plus": "catalog:",
+		"vue-tsc": "catalog:vue"
+	}
+}

@@ -1,0 +1,88 @@
+{
+	"name": "@any-tdf/react-motion",
+	"version": "0.0.0-alpha.0",
+	"description": "React motion utilities compatible with Svelte transition, animate, easing, and motion APIs.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/react-motion"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
+		"./easing": {
+			"types": "./dist/easing.d.ts",
+			"import": "./dist/easing.js",
+			"default": "./dist/easing.js"
+		},
+		"./transition": {
+			"types": "./dist/transition.d.ts",
+			"import": "./dist/transition.js",
+			"default": "./dist/transition.js"
+		},
+		"./animate": {
+			"types": "./dist/animate.d.ts",
+			"import": "./dist/animate.js",
+			"default": "./dist/animate.js"
+		},
+		"./motion": {
+			"types": "./dist/motion.d.ts",
+			"import": "./dist/motion.js",
+			"default": "./dist/motion.js"
+		},
+		"./react": {
+			"types": "./dist/react.d.ts",
+			"import": "./dist/react.js",
+			"default": "./dist/react.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"test": "bun test",
+		"package": "bun run build && publint && bun pm pack --dry-run",
+		"release:check": "bun run check && bun run test && bun run package",
+		"prepack": "bun run ../../scripts/package-license.mjs stage",
+		"postpack": "bun run ../../scripts/package-license.mjs clean",
+		"prepublishOnly": "bun run release:check",
+		"check": "tsc -p tsconfig.json",
+		"typecheck:native": "tsc -p tsconfig.json --noEmit"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:react",
+		"@types/react-dom": "catalog:react",
+		"@vitejs/plugin-react": "catalog:react",
+		"lucide-react": "^1.23.0",
+		"publint": "catalog:",
+		"react": "catalog:react",
+		"react-dom": "catalog:react",
+		"typescript": "catalog:typescript7"
+	},
+	"peerDependencies": {
+		"react": "^18.0.0 || ^19.0.0",
+		"react-dom": "^18.0.0 || ^19.0.0"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		},
+		"react-dom": {
+			"optional": true
+		}
+	}
+}

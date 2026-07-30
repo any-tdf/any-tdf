@@ -1,0 +1,21 @@
+## VTDF Name
+
+Generally speaking, V stands for Visual, T stands for Tiny, D stands for Design, and F stands for Fast. So, VTDF is a visually consistent, lightweight, design-friendly, and fast UI component library.
+
+Visual reflects what VTDF cares about in interface work: clear and restrained default component styles, a theme system for brand colors, dark mode, and state colors, and enough component APIs to keep mobile interfaces visually consistent while still being flexible.
+
+Unconventional explanation: V and T stand for Vue and Tailwind respectively, because VTDF is based on Vue and Tailwind. DF can be seen as the poet Du Fu, who is not as romantic and elegant as Li Bai. He pays attention to practicality and ease of use, which is also the design concept of VTDF. I hope that every developer who uses VTDF can write code like a poem.
+
+## Why Create This Library
+
+First and foremost, it's to complement the Vue ecosystem.
+
+Regarding UI component libraries, there are many excellent products for PC, but there aren't many on the mobile side that can match the PC level. This is due to the unique characteristics of the mobile side. Most mobile products are To C businesses, which require higher flexibility in component libraries. When designing component APIs, more parameter support for configuration is required, but it cannot be designed to be too complex. In terms of UI design, there should not be too many personalized designs so that component reuse can be achieved.
+
+There are also many mobile component libraries on the market, but there are still many pain points in use. For example, some component library design styles are too personalized, resulting in low component reuse. Some component libraries have too few configurable APIs and cannot configure components that meet business requirements through a simple API. Some component library documentation is either too advanced or too rudimentary, making it difficult for beginners to understand how to use the components. Some component library documentation and demo are mixed with Chinese and English, making it difficult to browse. Some component library demos are too few or too simple, making it difficult to directly copy and use when used frequently, which reduces development efficiency, and so on.
+
+After experiencing Vue and Tailwind, I found that developing with them is really comfortable, so I thought about combining them to create a mobile UI component library. In this way, we can enjoy Vue's component model, Tailwind's styling efficiency, and the visual customization experience provided by the VTDF theme system on the mobile side too.
+
+## Applicable Scenarios
+
+There are many mobile scenarios that need sufficient interaction capabilities while staying lightweight, consistent, and configurable. VTDF is better suited for projects already using Vue, especially when teams need to build mobile pages quickly, unify visual themes, refine component states, and reuse component design across business pages.

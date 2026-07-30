@@ -1,0 +1,4 @@
+interface:
+  display_name: 'VTDF'
+  short_description: 'Build and review VTDF Vue 3 mobile UI projects.'
+  default_prompt: 'Use $vtdf for VTDF Vue 3 mobile UI components, theme configuration, docs, demos, and project setup.'

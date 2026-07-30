@@ -1,0 +1,114 @@
+{
+	"name": "stdf",
+	"version": "3.0.0-alpha.0",
+	"description": "Mobile web component library based on Svelte and Tailwind",
+	"keywords": [
+		"moblie ui",
+		"svelte",
+		"tailwind",
+		"ui framework",
+		"ui 组件库",
+		"web component",
+		"移动组件库"
+	],
+	"homepage": "https://stdf.dev",
+	"license": "MIT",
+	"author": "any-tdf",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/stdf"
+	},
+	"funding": "https://stdf.dev?fund",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"type": "module",
+	"sideEffects": [
+		"**/*.css"
+	],
+	"types": "./dist/index.d.ts",
+	"svelte": "./dist/index.js",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js"
+		},
+		"./types": {
+			"types": "./dist/types/index.d.ts",
+			"import": "./dist/types/index.js",
+			"svelte": "./dist/types/index.js",
+			"default": "./dist/types/index.js"
+		},
+		"./theme": {
+			"types": "./dist/theme/index.d.ts",
+			"import": "./dist/theme/index.js",
+			"svelte": "./dist/theme/index.js",
+			"default": "./dist/theme/index.js"
+		},
+		"./theme/plugin": {
+			"types": "./dist/theme/plugin.d.ts",
+			"import": "./dist/theme/plugin.js",
+			"svelte": "./dist/theme/plugin.js",
+			"default": "./dist/theme/plugin.js"
+		},
+		"./svg": {
+			"types": "./dist/svg/index.d.ts",
+			"import": "./dist/svg/index.js",
+			"svelte": "./dist/svg/index.js",
+			"default": "./dist/svg/index.js"
+		},
+		"./lang": {
+			"types": "./dist/lang/index.d.ts",
+			"import": "./dist/lang/index.js",
+			"svelte": "./dist/lang/index.js",
+			"default": "./dist/lang/index.js"
+		},
+		"./utils": {
+			"types": "./dist/components/utils/index.d.ts",
+			"import": "./dist/components/utils/index.js",
+			"svelte": "./dist/components/utils/index.js",
+			"default": "./dist/components/utils/index.js"
+		}
+	},
+	"publishConfig": {
+		"tag": "alpha"
+	},
+	"scripts": {
+		"build": "svelte-kit sync && svelte-package && bun run scripts/prepare-framework-dist.mjs dist",
+		"package": "bun run build && publint && bun pm pack --dry-run",
+		"test": "bun test scripts/release.test.ts",
+		"release:check": "bun run test && bun run check && bun run package",
+		"prepack": "bun run ../../scripts/package-license.mjs stage",
+		"postpack": "bun run ../../scripts/package-license.mjs clean",
+		"prepublishOnly": "bun run release:check",
+		"check": "bun run typecheck:native",
+		"check:watch": "svelte-kit sync && svelte-check --tsgo-experimental-api --tsconfig ./tsconfig.json --watch",
+		"verify:workspace": "bun run test",
+		"typecheck:native": "svelte-kit sync && svelte-check --tsgo-experimental-api --tsconfig ./tsconfig.json"
+	},
+	"devDependencies": {
+		"@any-tdf/common": "workspace:^",
+		"@sveltejs/kit": "catalog:svelte",
+		"@sveltejs/package": "catalog:svelte",
+		"@sveltejs/vite-plugin-svelte": "catalog:svelte",
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@typescript/native": "catalog:",
+		"publint": "catalog:",
+		"svelte": "catalog:svelte",
+		"svelte-check": "catalog:svelte",
+		"tailwindcss": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vite-plus": "catalog:"
+	},
+	"peerDependencies": {
+		"svelte": "^5.0.0",
+		"tailwindcss": "^4.0.0"
+	}
+}

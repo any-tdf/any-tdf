@@ -1,0 +1,4 @@
+interface:
+  display_name: 'RTDF'
+  short_description: 'Build and review RTDF React mobile UI projects.'
+  default_prompt: 'Use $rtdf for RTDF React mobile UI components, theme configuration, docs, demos, and project setup.'
