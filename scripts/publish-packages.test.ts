@@ -132,7 +132,7 @@ const applyFixtureChangeset = async (releases: Record<string, ChangesetRelease>)
 
 describe('npm Trusted Publishing fallback', () => {
 	test('ignores the setup-node authentication placeholder', () => {
-		expect(isConfiguredNodeAuthToken('XXXXX-XXXXX')).toBeFalse();
+		expect(isConfiguredNodeAuthToken('XXXXX-XXXXX-XXXXX-XXXXX')).toBeFalse();
 		expect(isConfiguredNodeAuthToken('')).toBeFalse();
 		expect(isConfiguredNodeAuthToken('npm_real_token')).toBeTrue();
 	});

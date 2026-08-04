@@ -421,7 +421,7 @@ export const isTrustedPublishingAuthenticationFailure = (error) => {
 	);
 };
 
-export const isConfiguredNodeAuthToken = (token) => Boolean(token && token !== 'XXXXX-XXXXX');
+export const isConfiguredNodeAuthToken = (token) => Boolean(token && token !== 'XXXXX-XXXXX-XXXXX-XXXXX');
 
 const npmPublish = async (packageData, dryRun) => {
 	const command = [
