@@ -70,7 +70,8 @@ export const createPublishTiers = (workspaces, changes) => {
 	return {
 		all: changes,
 		level0: changes.filter(({ name }) => depths.get(name) === 0),
-		level1: changes.filter(({ name }) => depths.get(name) === 1)
+		level1: changes.filter(({ name }) => depths.get(name) === 1),
+		releases: changes.filter(({ version }) => !/-alpha(?:[.+-]|$)/i.test(version))
 	};
 };
 
@@ -88,7 +89,8 @@ const writeGitHubOutputs = async (path, tiers) => {
 	const output = [
 		`all=${JSON.stringify(tiers.all)}`,
 		`level0=${JSON.stringify(tiers.level0)}`,
-		`level1=${JSON.stringify(tiers.level1)}`
+		`level1=${JSON.stringify(tiers.level1)}`,
+		`releases=${JSON.stringify(tiers.releases)}`
 	].join('\n');
 	await appendFile(path, `${output}\n`, 'utf-8');
 };

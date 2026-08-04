@@ -34,6 +34,7 @@ jobs:
       all: ${{ steps.versions.outputs.all }}
       level0: ${{ steps.versions.outputs.level0 }}
       level1: ${{ steps.versions.outputs.level1 }}
+      releases: ${{ steps.versions.outputs.releases }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -130,13 +131,13 @@ jobs:
     if: >-
       always() &&
       needs.detect.result == 'success' &&
-      needs.detect.outputs.all != '[]' &&
+      needs.detect.outputs.releases != '[]' &&
       (needs.publish-level-0.result == 'success' || needs.publish-level-0.result == 'skipped') &&
       (needs.publish-level-1.result == 'success' || needs.publish-level-1.result == 'skipped')
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.detect.outputs.all || '[]') }}
+        package: ${{ fromJSON(needs.detect.outputs.releases || '[]') }}
     uses: ./.github/workflows/release.yml
     with:
       packages-json: ${{ format('[{0}]', toJSON(matrix.package)) }}

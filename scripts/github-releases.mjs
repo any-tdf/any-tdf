@@ -183,21 +183,22 @@ ${changes}
 
 export const createGitHubReleasePlan = (workspaces, packages) => {
 	const workspaceByName = new Map(workspaces.map((workspace) => [workspace.manifest.name, workspace]));
-	return packages.map(({ name, version }) => {
+	return packages.flatMap(({ name, version }) => {
 		const workspace = workspaceByName.get(name);
 		if (!workspace) throw new Error(`Published package is not a Workspace: ${name}`);
 		if (workspace.manifest.private === true) throw new Error(`Private Workspace cannot have an npm release: ${name}`);
 		if (workspace.manifest.version !== version) {
 			throw new Error(`Release version mismatch for ${name}: expected ${workspace.manifest.version}, received ${version}`);
 		}
-		return {
+		if (/-alpha(?:[.+-]|$)/i.test(version)) return [];
+		return [{
 			workspace,
 			name,
 			version,
 			tag: `${name}@${version}`,
 			title: `${name}@${version}`,
 			prerelease: version.includes('-')
-		};
+		}];
 	});
 };
 
@@ -221,7 +222,7 @@ export const createGitHubReleases = async (workspaceRoot, packages, options = {}
 	const workspaces = await collectWorkspaces(workspaceRoot);
 	const plan = createGitHubReleasePlan(workspaces, packages);
 	if (!plan.length) {
-		console.log('No package versions were provided for GitHub Releases.');
+		console.log('No eligible package versions were provided for GitHub Releases.');
 		return { created: [], skipped: [] };
 	}
 

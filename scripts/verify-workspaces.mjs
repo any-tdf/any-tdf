@@ -403,7 +403,7 @@ const requiredPublishWorkflowFragments = [
   "needs.detect.result == 'success'",
   "fromJSON(needs.detect.outputs.level0 || '[]')",
   "fromJSON(needs.detect.outputs.level1 || '[]')",
-  "fromJSON(needs.detect.outputs.all || '[]')",
+  "fromJSON(needs.detect.outputs.releases || '[]')",
   "actions/download-artifact@v4",
   "name: npm-publish-metadata",
   "run-id: ${{ github.event.workflow_run.id }}",

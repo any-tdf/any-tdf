@@ -59,4 +59,17 @@ describe('changed npm package versions', () => {
 		expect(tiers.level0).toEqual(changes);
 		expect(tiers.level1).toEqual([]);
 	});
+
+	test('publishes alpha packages to npm without selecting them for GitHub Releases', () => {
+		const workspaces = [workspace('rtdf', '0.0.1-alpha.1'), workspace('stdf', '3.0.0')];
+		const changes = workspaces.map(({ manifest, manifestPath }) => ({
+			name: manifest.name,
+			version: manifest.version,
+			manifestPath
+		}));
+		const tiers = createPublishTiers(workspaces, changes);
+
+		expect(tiers.all).toEqual(changes);
+		expect(tiers.releases).toEqual([changes[1]]);
+	});
 });

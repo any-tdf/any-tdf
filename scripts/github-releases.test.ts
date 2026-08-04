@@ -41,6 +41,19 @@ describe('GitHub Release package selection', () => {
 		expect(release.title).toBe('@any-tdf/common@1.0.0');
 		expect(release.tag).toBe('@any-tdf/common@1.0.0');
 	});
+
+	test('skips alpha versions while preserving other prereleases', () => {
+		const releases = createGitHubReleasePlan(
+			[workspace('rtdf', '0.0.1-alpha.1', 'packages/rtdf'), workspace('stdf', '3.0.0-beta.1', 'packages/stdf')],
+			[
+				{ name: 'rtdf', version: '0.0.1-alpha.1' },
+				{ name: 'stdf', version: '3.0.0-beta.1' }
+			]
+		);
+
+		expect(releases.map(({ name }) => name)).toEqual(['stdf']);
+		expect(releases[0].prerelease).toBeTrue();
+	});
 });
 
 describe('Workflow responsibilities', () => {
@@ -82,7 +95,7 @@ describe('Workflow responsibilities', () => {
 		expect(publishWorkflow).toContain("needs.detect.result == 'success'");
 		expect(publishWorkflow).toContain("fromJSON(needs.detect.outputs.level0 || '[]')");
 		expect(publishWorkflow).toContain("fromJSON(needs.detect.outputs.level1 || '[]')");
-		expect(publishWorkflow).toContain("fromJSON(needs.detect.outputs.all || '[]')");
+		expect(publishWorkflow).toContain("fromJSON(needs.detect.outputs.releases || '[]')");
 		expect(publishWorkflow).toContain('uses: actions/download-artifact@v4');
 		expect(publishWorkflow).toContain('BASE_SHA: ${{ steps.comparison.outputs.base-sha }}');
 	});
