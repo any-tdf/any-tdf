@@ -1,0 +1,84 @@
+# Operating system files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+**/node_modules/
+.bun/
+
+# Build output and caches
+.svelte-kit/
+**/.svelte-kit/
+.turbo/
+**/.turbo/
+.vite/
+**/.vite/
+.vercel/
+**/.vercel/
+.output/
+**/.output/
+build/
+**/build/
+coverage/
+**/coverage/
+demo-dist/
+**/demo-dist/
+dist/
+**/dist/
+dist-ssr/
+**/dist-ssr/
+out/
+**/out/
+reports/
+**/reports/
+site-dist/
+**/site-dist/
+site-backup/
+**/site-backup/
+*.tsbuildinfo
+
+# Generated site assets
+apps/rtdf-demo/public/fonts/symbol.svg
+apps/stdf-site/static/fonts/symbol.svg
+
+# Environment and local overrides
+.env
+.env.*
+!.env.example
+*.local
+
+# Logs and temporary release artifacts
+*.log
+logs/
+**/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.tgz
+*.vsix
+
+# Local AI tools and editor settings
+.claude/
+**/.claude/
+.agent/
+**/.agent/
+.agents/
+**/.agents/
+.codex/
+**/.codex/
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+*.code-workspace
+
+# License files staged temporarily for package publishing
+apps/*/LICENSE
+packages/*/LICENSE
+packages/*/docs/LICENSE
+packages/skills/*/LICENSE
+extensions/*/LICENSE
