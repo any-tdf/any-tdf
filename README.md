@@ -5,7 +5,11 @@
 [![VS Code Publish](https://github.com/any-tdf/any-tdf/actions/workflows/publish-vscode.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-vscode.yml)
 [![Release](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml)
 
-<img src="./apps/any-tdf-site/public/favicon.svg" alt="Any TDF logo" width="120" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/any-tdf-logo-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="./.github/assets/any-tdf-logo-light.svg" />
+  <img src="./.github/assets/any-tdf-logo-light.svg" alt="Any TDF logo" width="120" />
+</picture>
 
 # Any TDF
 
