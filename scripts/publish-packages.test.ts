@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
+import { retryRegistryOperation } from './verify-package-consumers.mjs';
 import {
 	assertInternalDependencyAvailability,
 	createPublishPlan,
@@ -129,6 +130,25 @@ const applyFixtureChangeset = async (releases: Record<string, ChangesetRelease>)
 		await rm(fixtureRoot, { recursive: true, force: true });
 	}
 };
+
+describe('npm Registry consistency', () => {
+	test('retries a transient consumer dependency installation failure', async () => {
+		let attempts = 0;
+		const retries: string[] = [];
+		const result = await retryRegistryOperation(
+			async () => {
+				attempts += 1;
+				if (attempts < 3) throw new Error('Temporary npm Registry 404');
+				return 'installed';
+			},
+			{ attempts: 3, delayMs: 0, label: 'consumer install', onRetry: (message: string) => retries.push(message) }
+		);
+
+		expect(result).toBe('installed');
+		expect(attempts).toBe(3);
+		expect(retries).toHaveLength(2);
+	});
+});
 
 describe('npm Trusted Publishing fallback', () => {
 	test('ignores the setup-node authentication placeholder', () => {

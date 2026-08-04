@@ -15,6 +15,21 @@ const runCommand = async (command, cwd) => {
 	if (exitCode !== 0) throw new Error(`Command failed (${exitCode}): ${command.join(' ')}`);
 };
 
+export const retryRegistryOperation = async (
+	operation,
+	{ attempts = 12, delayMs = 5000, label = 'Registry operation', onRetry = console.warn } = {}
+) => {
+	for (let attempt = 1; attempt <= attempts; attempt += 1) {
+		try {
+			return await operation();
+		} catch (error) {
+			if (attempt === attempts) throw error;
+			onRetry(`${label} failed on attempt ${attempt}; retrying in ${delayMs}ms.`);
+			if (delayMs > 0) await Bun.sleep(delayMs);
+		}
+	}
+};
+
 const collectFiles = async (directory) => {
 	const files = [];
 	for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -134,7 +149,9 @@ export const verifyPackageConsumers = async (workspaceRoot, workspaces, packages
 			await writeFile(resolve(consumerRoot, path), content, 'utf-8');
 		}
 
-		await runCommand(['bun', 'install', '--ignore-scripts'], consumerRoot);
+		await retryRegistryOperation(() => runCommand(['bun', 'install', '--ignore-scripts'], consumerRoot), {
+			label: `${packageName} consumer dependency installation`
+		});
 		await runCommand(['bun', 'run', 'vite', 'build'], consumerRoot);
 		await runCommand(['bun', 'run', 'vite', 'build', '--ssr', 'src/entry-server.js', '--outDir', 'ssr'], consumerRoot);
 		const serverModule = await import(`${pathToFileURL(resolve(consumerRoot, 'ssr/entry-server.js')).href}?consumer`);
