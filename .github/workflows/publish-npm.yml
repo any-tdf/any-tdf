@@ -88,11 +88,11 @@ jobs:
   publish-level-0:
     name: Publish ${{ matrix.package.name }}@${{ matrix.package.version }}
     needs: detect
-    if: needs.detect.outputs.level0 != '[]'
+    if: needs.detect.result == 'success' && needs.detect.outputs.level0 != '[]'
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.detect.outputs.level0) }}
+        package: ${{ fromJSON(needs.detect.outputs.level0 || '[]') }}
     uses: ./.github/workflows/publish-npm-package.yml
     with:
       package-name: ${{ matrix.package.name }}
@@ -106,12 +106,13 @@ jobs:
       - publish-level-0
     if: >-
       always() &&
+      needs.detect.result == 'success' &&
       needs.detect.outputs.level1 != '[]' &&
       (needs.publish-level-0.result == 'success' || needs.publish-level-0.result == 'skipped')
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.detect.outputs.level1) }}
+        package: ${{ fromJSON(needs.detect.outputs.level1 || '[]') }}
     uses: ./.github/workflows/publish-npm-package.yml
     with:
       package-name: ${{ matrix.package.name }}
@@ -126,13 +127,14 @@ jobs:
       - publish-level-1
     if: >-
       always() &&
+      needs.detect.result == 'success' &&
       needs.detect.outputs.all != '[]' &&
       (needs.publish-level-0.result == 'success' || needs.publish-level-0.result == 'skipped') &&
       (needs.publish-level-1.result == 'success' || needs.publish-level-1.result == 'skipped')
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.detect.outputs.all) }}
+        package: ${{ fromJSON(needs.detect.outputs.all || '[]') }}
     uses: ./.github/workflows/release.yml
     with:
       packages-json: ${{ format('[{0}]', toJSON(matrix.package)) }}

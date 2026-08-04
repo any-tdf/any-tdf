@@ -73,6 +73,10 @@ describe('Workflow responsibilities', () => {
 		expect(publishWorkflow).toContain('workflow_run:');
 		expect(publishWorkflow).toContain('- CI');
 		expect(publishWorkflow).toContain("github.event.workflow_run.conclusion == 'success'");
+		expect(publishWorkflow).toContain("needs.detect.result == 'success'");
+		expect(publishWorkflow).toContain("fromJSON(needs.detect.outputs.level0 || '[]')");
+		expect(publishWorkflow).toContain("fromJSON(needs.detect.outputs.level1 || '[]')");
+		expect(publishWorkflow).toContain("fromJSON(needs.detect.outputs.all || '[]')");
 		expect(publishWorkflow).toContain('uses: actions/download-artifact@v4');
 		expect(publishWorkflow).toContain('BASE_SHA: ${{ steps.comparison.outputs.base-sha }}');
 	});
