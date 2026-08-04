@@ -413,6 +413,14 @@ const runPublishGates = async (workspaces) => {
 	}
 };
 
+export const isTrustedPublishingAuthenticationFailure = (error) => {
+	const message = String(error);
+	return (
+		/ENEEDAUTH|E401|E403|authenticate|authentication|not authorized/i.test(message) ||
+		(/E404/i.test(message) && /could not be found|do not have permission/i.test(message))
+	);
+};
+
 const npmPublish = async (packageData, dryRun) => {
 	const command = [
 		'npm',
@@ -444,7 +452,7 @@ const npmPublish = async (packageData, dryRun) => {
 		await publishWithEnvironment({ NPM_TOKEN: '', NODE_AUTH_TOKEN: '' });
 	} catch (error) {
 		const token = process.env.NPM_TOKEN;
-		const isAuthenticationFailure = /ENEEDAUTH|E401|E403|authenticate|authentication|not authorized/i.test(String(error));
+		const isAuthenticationFailure = isTrustedPublishingAuthenticationFailure(error);
 		if (!token || !isAuthenticationFailure) throw error;
 		console.warn('npm Trusted Publishing was unavailable; retrying with the configured npm token.');
 		await publishWithEnvironment({ NPM_TOKEN: token, NODE_AUTH_TOKEN: token });

@@ -6,6 +6,7 @@ import {
 	assertInternalDependencyAvailability,
 	createPublishPlan,
 	createSelectedPublishPlan,
+	isTrustedPublishingAuthenticationFailure,
 	parseArguments,
 	publishCandidates,
 	sortPublishCandidates,
@@ -127,6 +128,20 @@ const applyFixtureChangeset = async (releases: Record<string, ChangesetRelease>)
 		await rm(fixtureRoot, { recursive: true, force: true });
 	}
 };
+
+describe('npm Trusted Publishing fallback', () => {
+	test('retries new package creation when npm hides missing permission behind E404', () => {
+		expect(
+			isTrustedPublishingAuthenticationFailure(
+				new Error('npm error code E404\nnpm error 404 package could not be found or you do not have permission to access it.')
+			)
+		).toBeTrue();
+	});
+
+	test('does not treat an unrelated E404 as an authentication failure', () => {
+		expect(isTrustedPublishingAuthenticationFailure(new Error('npm error code E404\nmetadata endpoint not found.'))).toBeFalse();
+	});
+});
 
 describe('npm publish planning', () => {
 	test('returns no candidates when every local version is already published', async () => {
