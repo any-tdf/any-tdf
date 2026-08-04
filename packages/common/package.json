@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/common",
-	"version": "0.0.0-alpha.2",
+	"version": "0.0.0-alpha.3",
 	"description": "Framework agnostic shared utilities, theme, language packs, types and derived component utilities for any-tdf component libraries.",
 	"license": "MIT",
 	"author": "any-tdf",

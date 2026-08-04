@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/vue-motion",
-	"version": "0.0.0-alpha.2",
+	"version": "0.0.0-alpha.3",
 	"description": "Vue motion utilities compatible with Svelte transition, animate, easing, and motion APIs.",
 	"keywords": [
 		"animation",
