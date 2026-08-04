@@ -140,4 +140,5 @@ jobs:
     uses: ./.github/workflows/release.yml
     with:
       packages-json: ${{ format('[{0}]', toJSON(matrix.package)) }}
+      release-key: ${{ format('{0}@{1}', matrix.package.name, matrix.package.version) }}
     secrets: inherit

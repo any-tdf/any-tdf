@@ -7,6 +7,10 @@ on:
         description: JSON list of published package names and versions
         required: true
         type: string
+      release-key:
+        description: Stable package coordinate used to isolate matrix concurrency
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       packages-json:
@@ -15,7 +19,7 @@ on:
         type: string
 
 concurrency:
-  group: github-releases
+  group: github-releases-${{ github.run_id }}-${{ inputs.release-key }}
   cancel-in-progress: false
 
 permissions:
