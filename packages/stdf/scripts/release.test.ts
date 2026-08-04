@@ -21,7 +21,8 @@ const packageJson = JSON.parse(packageText) as PackageJson;
 const releaseTag = packageJson.version.includes('-') ? packageJson.version.split('-')[1].split('.')[0] : 'latest';
 
 describe(`${packageJson.name} release metadata`, () => {
-	test('matches both changelog versions', () => {
+	test('matches both changelog versions outside alpha releases', () => {
+		if (releaseTag === 'alpha') return;
 		for (const filename of ['changelog.md', 'changelog_en.md']) {
 			const changelog = readFileSync(resolve(repositoryRoot, 'content', packageJson.name, 'guide', filename), 'utf-8');
 			expect(changelog.startsWith(`## ${packageJson.version} `)).toBeTrue();

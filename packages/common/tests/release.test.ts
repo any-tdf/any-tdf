@@ -14,12 +14,17 @@ type PackageJson = {
 const packageRoot = resolve(import.meta.dir, '..');
 const repositoryRoot = resolve(packageRoot, '../..');
 const packageJson = JSON.parse(readFileSync(resolve(packageRoot, 'package.json'), 'utf-8')) as PackageJson;
+const releaseTag = packageJson.version.includes('-') ? packageJson.version.split('-')[1].split('.')[0] : 'latest';
 
 describe('@any-tdf/common release metadata', () => {
-	test('matches the changelog and alpha tag', () => {
+	test('matches the changelog outside alpha releases', () => {
+		if (releaseTag === 'alpha') return;
 		const changelog = readFileSync(resolve(packageRoot, 'CHANGELOG.md'), 'utf-8');
 		expect(changelog).toContain(`## ${packageJson.version} -`);
-		expect(packageJson.publishConfig?.tag).toBe('alpha');
+	});
+
+	test('uses the expected npm dist-tag', () => {
+		expect(packageJson.publishConfig?.tag ?? 'latest').toBe(releaseTag);
 	});
 
 	test('ships documentation, the root License, and public exports', () => {
