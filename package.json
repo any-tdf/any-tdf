@@ -86,7 +86,7 @@
 		"publish:npm:changed": "bun run scripts/changed-package-versions.mjs",
 		"release:check": "bun run release:test",
 		"release:test": "bun test scripts/github-releases.test.ts",
-		"deploy:check": "bun run verify:structure && bun run quality:check && turbo run deploy:check --filter=@any-tdf/stdf-site --filter=@any-tdf/rtdf-site --filter=@any-tdf/vtdf-site --filter=@any-tdf/any-tdf-site",
+		"deploy:check": "bun run verify:structure && bun run quality:check && turbo run deploy:check --filter=@any-tdf/stdf-site --filter=@any-tdf/rtdf-site --filter=@any-tdf/vtdf-site --filter=@any-tdf/any-tdf-site && bun run verify:routes",
 		"quality:prepare": "turbo run build",
 		"quality:check": "bun run quality:prepare && bun run format:check && bun run lint",
 		"format": "vp fmt --disable-nested-config",
