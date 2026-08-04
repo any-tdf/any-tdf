@@ -1,3 +1,9 @@
+## 0.0.1-alpha.1 <font size=1>2026-08-04</font>
+
+- 优化 npm 发布产物，移除 Source Map、多语言 README 和非必要文件。
+- 组件库继续使用 common 内置 SVG 图标数据，不引入仅供 Demo 使用的四套图标资源。
+- 整合发布构建流程，并补充打包与独立安装校验。
+
 ## 0.0.1-alpha.0 <font size=1>2026-07-27</font>
 
 - 首个 RTDF alpha 版本，支持 React 18、React 19 与 Tailwind CSS v4。

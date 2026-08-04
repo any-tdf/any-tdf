@@ -1,3 +1,9 @@
+## 3.0.0-alpha.1 <font size=1>2026-08-04</font>
+
+- Reduce npm package output by removing source maps, localized README files, and nonessential files.
+- Keep shared SVG icon data embedded in common without bundling the four icon sets used only by the demo.
+- Consolidate the release build pipeline and expand packaging and standalone installation checks.
+
 ## 3.0.0-alpha.0 <font size=1>2026-07-27</font>
 
 - Breaking change: updated the package output layout. Theme, locale, types, and utilities are now exposed through `stdf`, `stdf/theme`, `stdf/lang`, `stdf/types`, and `stdf/utils`.
