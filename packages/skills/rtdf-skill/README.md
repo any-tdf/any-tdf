@@ -10,17 +10,13 @@
 - `skill/scripts/generate-theme.mjs`：生成 `@plugin "rtdf/theme/plugin"` 与 `@theme` 配置。
 - `skill/data/themes.json`：从共享主题插件抽取的 42 套内置主题。
 
-## 安装
+## 本地安装
 
-本包不自动写入用户目录。安装后可以把 `skill` 目录复制或链接到 AI 工具支持的 Skills 目录，并命名为 `rtdf`。
-
-```sh
-bun add rtdf-skill
-```
+该 Skill 随源码仓库维护，不发布到 npm。克隆仓库后，可以把 `skill` 目录复制或链接到 AI 工具支持的 Skills 目录，并命名为 `rtdf`。
 
 ```sh
 mkdir -p ~/.codex/skills
-cp -R skill ~/.codex/skills/rtdf
+cp -R packages/skills/rtdf-skill/skill ~/.codex/skills/rtdf
 ```
 
 ## 开发
@@ -42,4 +38,4 @@ bun run test:theme
 
 ## 开源协议
 
-`rtdf-skill` 基于根目录的 [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE) 发布。
+`rtdf-skill` 遵循根目录的 [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)。

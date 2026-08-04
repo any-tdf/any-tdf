@@ -6,32 +6,32 @@
 <!-- bun -->
 
 ```sh
-bun create any-tdf@latest stdf-app -f svelte
+bun create any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- :: -->
 <!-- pnpm -->
 
 ```sh
-pnpm create any-tdf@latest stdf-app -f svelte
+pnpm create any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- :: -->
 <!-- npm -->
 
 ```sh
-npm create any-tdf@latest stdf-app -f svelte
+npm create any-tdf@alpha stdf-app -f svelte
 # 或
 npm init any-tdf@latest stdf-app -f svelte
 # 或
-npx create-any-tdf@latest stdf-app -f svelte
+npx create-any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- :: -->
 <!-- yarn -->
 
 ```sh
-yarn create any-tdf@latest stdf-app -f svelte
+yarn create any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- ::: -->
@@ -39,7 +39,7 @@ yarn create any-tdf@latest stdf-app -f svelte
 如果需要指定模板、提示语言、图标方案、主题模式和初始内置图标库，可以直接传入参数：
 
 ```sh
-bun create any-tdf@latest stdf-app -f svelte -t sktt -l zh_CN -i iconify -m multi -b lucide
+bun create any-tdf@alpha stdf-app -f svelte -t sktt -l zh_CN -i iconify -m multi -b lucide
 ```
 
 ## 2. 自行搭建

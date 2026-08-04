@@ -48,7 +48,9 @@ const applyFixtureChangeset = async (releases: Record<string, ChangesetRelease>)
 	const fixtureRoot = await mkdtemp(resolve(tmpdir(), 'any-tdf-changesets-'));
 	const packageDefinitions = [
 		{ directory: 'common', name: '@any-tdf/common', version: '1.1.0' },
+		{ directory: 'react-confetti', name: '@any-tdf/react-confetti', version: '1.0.0' },
 		{ directory: 'react-motion', name: '@any-tdf/react-motion', version: '1.0.0' },
+		{ directory: 'vue-confetti', name: '@any-tdf/vue-confetti', version: '1.0.0' },
 		{ directory: 'vue-motion', name: '@any-tdf/vue-motion', version: '1.0.0' },
 		{
 			directory: 'stdf',
@@ -270,8 +272,33 @@ describe('packed package validation', () => {
 	});
 });
 
+describe('npm publish scope', () => {
+	test('keeps repository Skills private and outside npm publishing pipelines', async () => {
+		const skillNames = ['rtdf-skill', 'stdf-skill', 'vtdf-skill'];
+		const [rootManifest, turboConfig, changesetConfig, publishWorkflow, ...skillManifests] = await Promise.all([
+			Bun.file(resolve(workspaceRoot, 'package.json')).json(),
+			Bun.file(resolve(workspaceRoot, 'turbo.json')).json(),
+			Bun.file(resolve(workspaceRoot, '.changeset/config.json')).json(),
+			Bun.file(resolve(workspaceRoot, '.github/workflows/publish-npm.yml')).text(),
+			...skillNames.map((name) => Bun.file(resolve(workspaceRoot, `packages/skills/${name}/package.json`)).json())
+		]);
+		expect(turboConfig.tasks['release:check'].dependsOn).toEqual(['^release:check']);
+		expect(rootManifest.scripts['publish:npm:check:packages']).toContain('--concurrency=1');
+
+		for (const [index, manifest] of skillManifests.entries()) {
+			const skillName = skillNames[index];
+			expect(manifest.private).toBeTrue();
+			expect(manifest.publishConfig).toBeUndefined();
+			expect(manifest.scripts.prepublishOnly).toBeUndefined();
+			expect(rootManifest.scripts['publish:npm:check:packages']).not.toContain(skillName);
+			expect(changesetConfig.fixed.flat()).not.toContain(skillName);
+			expect(publishWorkflow).not.toContain(`packages/skills/${skillName}/package.json`);
+		}
+	});
+});
+
 describe('Changesets dependency policy', () => {
-	test('keeps rtdf and vtdf fixed while stdf follows its independent release line', async () => {
+	test('keeps corresponding npm packages synchronized while stdf follows its independent release line', async () => {
 		const config = await Bun.file(resolve(workspaceRoot, '.changeset/config.json')).json();
 		const frameworkManifests = await Promise.all(
 			['stdf', 'rtdf', 'vtdf'].map((name) => Bun.file(resolve(workspaceRoot, `packages/${name}/package.json`)).json())
@@ -279,6 +306,8 @@ describe('Changesets dependency policy', () => {
 
 		expect(config.updateInternalDependencies).toBe('patch');
 		expect(config.bumpVersionsWithWorkspaceProtocolOnly).toBeTrue();
+		expect(config.fixed).toContainEqual(['@any-tdf/react-confetti', '@any-tdf/vue-confetti']);
+		expect(config.fixed).toContainEqual(['@any-tdf/react-motion', '@any-tdf/vue-motion']);
 		expect(config.fixed).toContainEqual(['rtdf', 'vtdf']);
 		expect(config.fixed.some((group: string[]) => group.includes('stdf'))).toBeFalse();
 		for (const manifest of frameworkManifests) {
@@ -302,10 +331,11 @@ describe('Changesets dependency policy', () => {
 		for (const name of ['rtdf', 'vtdf']) expect(manifests.get(name).version).toBe('0.1.1');
 	});
 
-	test('patches only rtdf and vtdf when react motion leaves the RTDF range', async () => {
+	test('patches the motion pair and React/Vue frameworks when react motion leaves the RTDF range', async () => {
 		const manifests = await applyFixtureChangeset({ '@any-tdf/react-motion': 'major' });
 
 		expect(manifests.get('@any-tdf/react-motion').version).toBe('2.0.0');
+		expect(manifests.get('@any-tdf/vue-motion').version).toBe('2.0.0');
 		expect(manifests.get('stdf').version).toBe('3.0.0');
 		for (const name of ['rtdf', 'vtdf']) expect(manifests.get(name).version).toBe('0.1.1');
 	});

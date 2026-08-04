@@ -1,6 +1,6 @@
 # VTDF Alpha Release Guide
 
-VTDF 0.0.0-alpha.0 is the first alpha prerelease. This release establishes the package layout and public entry points: theme, locale, types, utilities, and UI component capabilities are exported from the `vtdf` package. Application code does not need to install or import `@any-tdf/common` directly.
+VTDF 0.0.1-alpha.0 is the first alpha prerelease. This release establishes the package layout and public entry points: theme, locale, types, utilities, and UI component capabilities are exported from the `vtdf` package. Application code does not need to install or import `@any-tdf/common` directly.
 
 ## Core Changes
 
@@ -15,7 +15,7 @@ VTDF 0.0.0-alpha.0 is the first alpha prerelease. This release establishes the p
 ## 1. Install Dependency
 
 ```sh
-bun add vtdf@0.0.0-alpha.0
+bun add vtdf@0.0.1-alpha.0
 ```
 
 If your `package.json` lists `@any-tdf/common` directly, remove it. `@any-tdf/common` may still be installed as an internal implementation dependency, but application projects should not depend on it explicitly.
@@ -35,7 +35,7 @@ Current syntax:
 @source "../node_modules/vtdf/dist";
 ```
 
-The VTDF 0.0.0-alpha.0 package output includes the class sources needed by components and shared capabilities, so there is no extra shared package directory to scan.
+The VTDF 0.0.1-alpha.0 package output includes the class sources needed by components and shared capabilities, so there is no extra shared package directory to scan.
 
 ## 3. Update Theme Plugin Path
 
@@ -93,7 +93,7 @@ If you previously depended on shared package internals, migrate to the component
 
 ## Migration Checklist
 
-- [ ] Install `vtdf@0.0.0-alpha.0`.
+- [ ] Install `vtdf@0.0.1-alpha.0`.
 - [ ] Remove direct `@any-tdf/common` declarations from project dependencies.
 - [ ] Remove `@source "../node_modules/@any-tdf/common/dist";` from CSS.
 - [ ] Change the theme plugin to `@plugin "vtdf/theme"`.

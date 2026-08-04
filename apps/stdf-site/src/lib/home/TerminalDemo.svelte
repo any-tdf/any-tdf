@@ -28,10 +28,10 @@
 
 	const getCommands = (manager: PackageManager): Command[] => {
 		const createCommand = {
-			bun: 'bun create any-tdf@latest my-stdf -f svelte',
-			npm: 'npm create any-tdf@latest my-stdf -f svelte',
-			pnpm: 'pnpm create any-tdf@latest my-stdf -f svelte',
-			yarn: 'yarn create any-tdf@latest my-stdf -f svelte'
+			bun: 'bun create any-tdf@alpha my-stdf -f svelte',
+			npm: 'npm create any-tdf@alpha my-stdf -f svelte',
+			pnpm: 'pnpm create any-tdf@alpha my-stdf -f svelte',
+			yarn: 'yarn create any-tdf@alpha my-stdf -f svelte'
 		};
 		const installCommand = { bun: 'bun i', npm: 'npm i', pnpm: 'pnpm i', yarn: 'yarn' };
 		const devCommand = { bun: 'bun dev', npm: 'npm run dev', pnpm: 'pnpm dev', yarn: 'yarn dev' };

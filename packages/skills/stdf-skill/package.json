@@ -1,6 +1,7 @@
 {
 	"name": "stdf-skill",
 	"version": "0.0.1",
+	"private": true,
 	"description": "AI Skill package for building with STDF, Svelte 5 and Tailwind CSS 4.",
 	"keywords": [
 		"ai",
@@ -30,16 +31,10 @@
 		"generate:themes": "bun scripts/generate-theme-data.mjs",
 		"validate": "bun scripts/validate.mjs",
 		"test:theme": "bun skill/scripts/generate-theme.mjs --preset STDF --format json && bun skill/scripts/generate-theme.mjs --random --seed 1 --name MyTheme --format plugin && bun skill/scripts/generate-theme.mjs --primary 'oklch(0.52 0.24 35)' --dark 'oklch(0.72 0.18 250)' --format both",
-		"test": "bun run validate && bun run test:theme",
-		"package": "publint && bun pm pack --dry-run --quiet",
-		"release:check": "bun run test && bun run package",
-		"prepack": "bun run ../../../scripts/package-license.mjs stage",
-		"postpack": "bun run ../../../scripts/package-license.mjs clean",
-		"prepublishOnly": "bun run release:check"
+		"test": "bun run validate && bun run test:theme"
 	},
 	"devDependencies": {
-		"@types/node": "catalog:",
-		"publint": "catalog:"
+		"@types/node": "catalog:"
 	},
 	"engines": {
 		"node": ">=18.18"

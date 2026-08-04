@@ -6,28 +6,28 @@
 <!-- bun -->
 
 ```sh
-bun create any-tdf@latest rtdf-app -f react
+bun create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- :: -->
 <!-- pnpm -->
 
 ```sh
-pnpm create any-tdf@latest rtdf-app -f react
+pnpm create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- :: -->
 <!-- npm -->
 
 ```sh
-npm create any-tdf@latest rtdf-app -f react
+npm create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- :: -->
 <!-- yarn -->
 
 ```sh
-yarn create any-tdf@latest rtdf-app -f react
+yarn create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- ::: -->
@@ -35,7 +35,7 @@ yarn create any-tdf@latest rtdf-app -f react
 You can also pass template, prompt language, icon setup, theme mode, and initial built-in icon library options directly:
 
 ```sh
-bun create any-tdf@latest rtdf-app -f react -t vrtt -l en_US -i iconify -m multi -b lucide
+bun create any-tdf@alpha rtdf-app -f react -t vrtt -l en_US -i iconify -m multi -b lucide
 ```
 
 ## 2. Self-built (Skip if you already have a project)
@@ -43,7 +43,7 @@ bun create any-tdf@latest rtdf-app -f react -t vrtt -l en_US -i iconify -m multi
 2.1 Install RTDF
 
 ```sh
-bun add rtdf@0.0.0-alpha.0
+bun add rtdf@0.0.1-alpha.0
 ```
 
 2.2 Install Tailwind CSS and Vite plugins.

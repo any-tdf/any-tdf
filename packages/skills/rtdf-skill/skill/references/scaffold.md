@@ -5,13 +5,13 @@ Use this reference when creating or modifying RTDF scaffold behavior.
 ## Recommended Command
 
 ```sh
-bun create any-tdf@latest my-app -f react
+bun create any-tdf@alpha my-app -f react
 ```
 
 Direct creation with options:
 
 ```sh
-bun create any-tdf@latest my-app -f react -t vrtt -l zh_CN -i iconify -m multi -b lucide
+bun create any-tdf@alpha my-app -f react -t vrtt -l zh_CN -i iconify -m multi -b lucide
 ```
 
 ## Options

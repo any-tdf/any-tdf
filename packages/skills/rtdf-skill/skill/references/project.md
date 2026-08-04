@@ -17,7 +17,7 @@ Use this reference for installation, entry CSS, and minimal usage.
 Recommended:
 
 ```sh
-bun create any-tdf@latest my-app -f react
+bun create any-tdf@alpha my-app -f react
 ```
 
 Manual Vite React project setup:

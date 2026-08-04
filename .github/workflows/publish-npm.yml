@@ -14,9 +14,6 @@ on:
       - packages/vue-motion/package.json
       - packages/react-confetti/package.json
       - packages/vue-confetti/package.json
-      - packages/skills/stdf-skill/package.json
-      - packages/skills/rtdf-skill/package.json
-      - packages/skills/vtdf-skill/package.json
       - packages/create-any-tdf/package.json
 
 concurrency:

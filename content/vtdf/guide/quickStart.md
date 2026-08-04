@@ -6,28 +6,28 @@
 <!-- bun -->
 
 ```sh
-bun create any-tdf@latest vtdf-app -f vue
+bun create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- :: -->
 <!-- pnpm -->
 
 ```sh
-pnpm create any-tdf@latest vtdf-app -f vue
+pnpm create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- :: -->
 <!-- npm -->
 
 ```sh
-npm create any-tdf@latest vtdf-app -f vue
+npm create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- :: -->
 <!-- yarn -->
 
 ```sh
-yarn create any-tdf@latest vtdf-app -f vue
+yarn create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- ::: -->
@@ -35,7 +35,7 @@ yarn create any-tdf@latest vtdf-app -f vue
 如果需要指定模板、提示语言、图标方案、主题模式和初始内置图标库，可以直接传入参数：
 
 ```sh
-bun create any-tdf@latest vtdf-app -f vue -t vrtt -l zh_CN -i iconify -m multi -b lucide
+bun create any-tdf@alpha vtdf-app -f vue -t vrtt -l zh_CN -i iconify -m multi -b lucide
 ```
 
 ## 2. 自行搭建（已有项目可跳到本节）

@@ -53,7 +53,7 @@ Consultez le site correspondant pour les thèmes, les imports, les composants et
 Créez un projet TypeScript pour tout framework pris en charge :
 
 ```sh
-bun create any-tdf@latest
+bun create any-tdf@alpha
 ```
 
 `create-any-tdf` fournit des modèles Vite et SvelteKit avec Tailwind CSS ou UnoCSS, ainsi que des options d’icônes et de thèmes.

@@ -1,4 +1,4 @@
-## 0.0.0-alpha.0 <font size=1>2026-07-27</font>
+## 0.0.1-alpha.0 <font size=1>2026-07-27</font>
 
 - First RTDF alpha release, supporting React 18, React 19, and Tailwind CSS v4.
 - Provides 61 mobile components aligned with the STDF public API, themes, locales, and demo routes.

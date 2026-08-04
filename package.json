@@ -80,7 +80,7 @@
 		"verify:browser:demos": "turbo run build --filter=@any-tdf/stdf-demo --filter=@any-tdf/rtdf-demo --filter=@any-tdf/vtdf-demo && bun run scripts/verify-demo-previews.mjs --browser",
 		"verify:browser:sites": "turbo run build --filter=@any-tdf/stdf-site --filter=@any-tdf/rtdf-site --filter=@any-tdf/vtdf-site && bun run scripts/verify-site-previews.mjs",
 		"publish:npm:check": "bun run verify:structure && bun run verify:references && bun run quality:check && bun run publish:npm:test && bun run publish:npm:pack:check",
-		"publish:npm:check:packages": "turbo run release:check --filter=@any-tdf/common --filter=stdf --filter=rtdf --filter=vtdf --filter=@any-tdf/react-confetti --filter=@any-tdf/react-motion --filter=@any-tdf/vue-confetti --filter=@any-tdf/vue-motion --filter=stdf-skill --filter=rtdf-skill --filter=vtdf-skill --filter=create-any-tdf",
+		"publish:npm:check:packages": "turbo run release:check --concurrency=1 --filter=@any-tdf/common --filter=stdf --filter=rtdf --filter=vtdf --filter=@any-tdf/react-confetti --filter=@any-tdf/react-motion --filter=@any-tdf/vue-confetti --filter=@any-tdf/vue-motion --filter=create-any-tdf",
 		"publish:npm:pack:check": "bun run scripts/publish-packages.mjs --pack-only",
 		"publish:npm:test": "bun test scripts/changed-package-versions.test.ts scripts/publish-packages.test.ts",
 		"publish:npm:changed": "bun run scripts/changed-package-versions.mjs",

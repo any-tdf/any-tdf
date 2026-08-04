@@ -1,6 +1,6 @@
 # VTDF alpha 版本指南
 
-VTDF 0.0.0-alpha.0 是首个 alpha 预发布版本。本版本确立了包目录和公开入口：主题、多语言、类型、工具方法和 UI 组件能力都从 `vtdf` 这一套包导出。应用代码不需要、也不应该直接安装或引用 `@any-tdf/common`。
+VTDF 0.0.1-alpha.0 是首个 alpha 预发布版本。本版本确立了包目录和公开入口：主题、多语言、类型、工具方法和 UI 组件能力都从 `vtdf` 这一套包导出。应用代码不需要、也不应该直接安装或引用 `@any-tdf/common`。
 
 ## 核心变化
 
@@ -15,7 +15,7 @@ VTDF 0.0.0-alpha.0 是首个 alpha 预发布版本。本版本确立了包目录
 ## 1. 安装依赖
 
 ```sh
-bun add vtdf@0.0.0-alpha.0
+bun add vtdf@0.0.1-alpha.0
 ```
 
 如果项目的 `package.json` 里直接写了 `@any-tdf/common`，请移除它。`@any-tdf/common` 仍然可能作为内部实现依赖被包管理器安装，但业务项目不要显式依赖它。
@@ -35,7 +35,7 @@ bun add vtdf@0.0.0-alpha.0
 @source "../node_modules/vtdf/dist";
 ```
 
-VTDF 0.0.0-alpha.0 的发布产物已经包含组件和公共能力需要扫描的 class 来源，不需要额外扫描公共包目录。
+VTDF 0.0.1-alpha.0 的发布产物已经包含组件和公共能力需要扫描的 class 来源，不需要额外扫描公共包目录。
 
 ## 3. 更新主题插件路径
 
@@ -93,7 +93,7 @@ import { Button, Toast } from 'vtdf';
 
 ## 迁移检查清单
 
-- [ ] 安装 `vtdf@0.0.0-alpha.0`。
+- [ ] 安装 `vtdf@0.0.1-alpha.0`。
 - [ ] 从项目依赖中移除直接声明的 `@any-tdf/common`。
 - [ ] 删除 CSS 中的 `@source "../node_modules/@any-tdf/common/dist";`。
 - [ ] 将主题插件改为 `@plugin "vtdf/theme"`。

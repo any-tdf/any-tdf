@@ -54,12 +54,6 @@
         "vite": "catalog:",
         "vite-plus": "catalog:",
       },
-      "peerDependencies": {
-        "tailwindcss": "*",
-      },
-      "optionalPeers": [
-        "tailwindcss",
-      ],
     },
     "apps/rtdf-site": {
       "name": "@any-tdf/rtdf-site",
@@ -255,7 +249,7 @@
     },
     "packages/create-any-tdf": {
       "name": "create-any-tdf",
-      "version": "0.0.1",
+      "version": "0.0.1-alpha.0",
       "bin": {
         "create-any-tdf": "dist/index.js",
       },
@@ -277,7 +271,7 @@
     },
     "packages/react-confetti": {
       "name": "@any-tdf/react-confetti",
-      "version": "0.0.0-alpha.0",
+      "version": "0.0.0-alpha.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -319,7 +313,7 @@
     },
     "packages/react-motion": {
       "name": "@any-tdf/react-motion",
-      "version": "0.0.0-alpha.0",
+      "version": "0.0.0-alpha.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -363,7 +357,7 @@
     },
     "packages/rtdf": {
       "name": "rtdf",
-      "version": "0.0.0-alpha.0",
+      "version": "0.0.1-alpha.0",
       "dependencies": {
         "@any-tdf/common": "workspace:^",
         "@any-tdf/react-motion": "workspace:^",
@@ -401,7 +395,6 @@
       "version": "0.0.1",
       "devDependencies": {
         "@types/node": "catalog:",
-        "publint": "catalog:",
       },
     },
     "packages/skills/stdf-skill": {
@@ -409,7 +402,6 @@
       "version": "0.0.1",
       "devDependencies": {
         "@types/node": "catalog:",
-        "publint": "catalog:",
       },
     },
     "packages/skills/vtdf-skill": {
@@ -417,7 +409,6 @@
       "version": "0.0.1",
       "devDependencies": {
         "@types/node": "catalog:",
-        "publint": "catalog:",
       },
     },
     "packages/stdf": {
@@ -448,7 +439,7 @@
     },
     "packages/vtdf": {
       "name": "vtdf",
-      "version": "0.0.0-alpha.0",
+      "version": "0.0.1-alpha.0",
       "dependencies": {
         "@any-tdf/common": "workspace:^",
         "@any-tdf/vue-motion": "workspace:^",
@@ -476,7 +467,7 @@
     },
     "packages/vue-confetti": {
       "name": "@any-tdf/vue-confetti",
-      "version": "0.0.0-alpha.0",
+      "version": "0.0.0-alpha.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -510,7 +501,7 @@
     },
     "packages/vue-motion": {
       "name": "@any-tdf/vue-motion",
-      "version": "0.0.0-alpha.0",
+      "version": "0.0.0-alpha.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",

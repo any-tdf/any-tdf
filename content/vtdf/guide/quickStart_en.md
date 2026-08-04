@@ -6,28 +6,28 @@
 <!-- bun -->
 
 ```sh
-bun create any-tdf@latest vtdf-app -f vue
+bun create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- :: -->
 <!-- pnpm -->
 
 ```sh
-pnpm create any-tdf@latest vtdf-app -f vue
+pnpm create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- :: -->
 <!-- npm -->
 
 ```sh
-npm create any-tdf@latest vtdf-app -f vue
+npm create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- :: -->
 <!-- yarn -->
 
 ```sh
-yarn create any-tdf@latest vtdf-app -f vue
+yarn create any-tdf@alpha vtdf-app -f vue
 ```
 
 <!-- ::: -->
@@ -35,7 +35,7 @@ yarn create any-tdf@latest vtdf-app -f vue
 You can also pass template, prompt language, icon setup, theme mode, and initial built-in icon library options directly:
 
 ```sh
-bun create any-tdf@latest vtdf-app -f vue -t vrtt -l en_US -i iconify -m multi -b lucide
+bun create any-tdf@alpha vtdf-app -f vue -t vrtt -l en_US -i iconify -m multi -b lucide
 ```
 
 ## 2. Self-built (Skip if you already have a project)

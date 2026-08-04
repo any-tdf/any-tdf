@@ -1,6 +1,6 @@
 {
 	"name": "rtdf",
-	"version": "0.0.0-alpha.0",
+	"version": "0.0.1-alpha.0",
 	"description": "Mobile web React component library based on Tailwind CSS and the any-tdf design system.",
 	"keywords": [
 		"component library",
@@ -92,6 +92,7 @@
 		}
 	},
 	"publishConfig": {
+		"access": "public",
 		"tag": "alpha"
 	},
 	"scripts": {

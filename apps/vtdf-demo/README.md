@@ -7,7 +7,7 @@ Mobile component library based on Vue and Tailwind CSS.
 ## 安装
 
 ```sh
-bun add vtdf@0.0.0-alpha.0
+bun add vtdf@0.0.1-alpha.0
 ```
 
 ## 使用

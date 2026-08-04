@@ -53,7 +53,7 @@ bun add vtdf vue tailwindcss
 Создайте TypeScript-проект для любого поддерживаемого фреймворка:
 
 ```sh
-bun create any-tdf@latest
+bun create any-tdf@alpha
 ```
 
 `create-any-tdf` предоставляет шаблоны Vite и SvelteKit с Tailwind CSS или UnoCSS, а также настройками значков и тем.

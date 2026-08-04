@@ -358,14 +358,10 @@ export const createRegistryClient = (registry = defaultRegistry) => {
 	};
 };
 
-const assertFrameworkReleaseLines = (workspaces) => {
-	const frameworkWorkspaces = new Map(
-		workspaces
-			.filter(({ manifest }) => ['stdf', 'rtdf', 'vtdf'].includes(manifest.name))
-			.map((workspace) => [workspace.manifest.name, workspace])
-	);
-	const stdfVersion = frameworkWorkspaces.get('stdf')?.manifest.version;
-	const reactVueFrameworks = ['rtdf', 'vtdf'].map((name) => frameworkWorkspaces.get(name)).filter(Boolean);
+const assertReleasePolicy = (workspaces) => {
+	const workspaceByName = new Map(workspaces.map((workspace) => [workspace.manifest.name, workspace]));
+	const stdfVersion = workspaceByName.get('stdf')?.manifest.version;
+	const reactVueFrameworks = ['rtdf', 'vtdf'].map((name) => workspaceByName.get(name)).filter(Boolean);
 
 	if (!stdfVersion?.startsWith('3.')) {
 		throw new Error(`stdf must remain on the 3.x release line before publishing, received ${stdfVersion ?? 'missing'}.`);
@@ -380,6 +376,22 @@ const assertFrameworkReleaseLines = (workspaces) => {
 				.map(({ manifest }) => `${manifest.name}@${manifest.version}`)
 				.join(', ')}`
 		);
+	}
+
+	const synchronizedVersionGroups = [
+		['@any-tdf/react-confetti', '@any-tdf/vue-confetti'],
+		['@any-tdf/react-motion', '@any-tdf/vue-motion'],
+		['rtdf', 'vtdf']
+	];
+	for (const packageNames of synchronizedVersionGroups) {
+		const group = packageNames.map((name) => workspaceByName.get(name)).filter(Boolean);
+		if (group.length !== packageNames.length || new Set(group.map(({ manifest }) => manifest.version)).size !== 1) {
+			throw new Error(
+				`Synchronized npm package versions must match before publishing: ${group
+					.map(({ manifest }) => `${manifest.name}@${manifest.version}`)
+					.join(', ')}`
+			);
+		}
 	}
 };
 
@@ -468,7 +480,7 @@ export const parseArguments = (arguments_) => {
 
 export const runPublish = async (workspaceRoot, options) => {
 	const workspaces = await collectWorkspaces(workspaceRoot);
-	assertFrameworkReleaseLines(workspaces);
+	assertReleasePolicy(workspaces);
 	const registryClient = createRegistryClient(options.registry);
 	const selectedNames = options.packageNames.length
 		? options.packageNames

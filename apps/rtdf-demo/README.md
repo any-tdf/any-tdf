@@ -7,7 +7,7 @@ RTDF follows the STDF component design and API shape as closely as React allows.
 ## Install
 
 ```bash
-bun add rtdf@0.0.0-alpha.0 react react-dom tailwindcss
+bun add rtdf@0.0.1-alpha.0 react react-dom tailwindcss
 ```
 
 The published package exports theme, locale, types, utilities, and UI components from `rtdf`.

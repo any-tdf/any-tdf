@@ -68,27 +68,6 @@ const releaseProfiles = new Map([
 		}
 	],
 	[
-		'stdf-skill',
-		{
-			scope: 'STDF Skill package',
-			description: 'Changes to the STDF Skill instructions and component reference material.'
-		}
-	],
-	[
-		'rtdf-skill',
-		{
-			scope: 'RTDF Skill package',
-			description: 'Changes to the RTDF Skill instructions and component reference material.'
-		}
-	],
-	[
-		'vtdf-skill',
-		{
-			scope: 'VTDF Skill package',
-			description: 'Changes to the VTDF Skill instructions and component reference material.'
-		}
-	],
-	[
 		'create-any-tdf',
 		{
 			scope: 'Project scaffolding CLI',

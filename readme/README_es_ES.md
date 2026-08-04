@@ -53,7 +53,7 @@ Consulta el sitio correspondiente para configurar temas, importaciones, componen
 Crea un proyecto TypeScript para cualquier framework compatible:
 
 ```sh
-bun create any-tdf@latest
+bun create any-tdf@alpha
 ```
 
 `create-any-tdf` ofrece plantillas Vite y SvelteKit con Tailwind CSS o UnoCSS, además de opciones de iconos y temas.

@@ -7,7 +7,7 @@ Unified scaffolding CLI for creating STDF, RTDF, and VTDF TypeScript projects.
 ## Usage
 
 ```sh
-bun create any-tdf@latest
+bun create any-tdf@alpha
 bun create any-tdf my-app -f svelte -t sktt -b lucide
 bun create any-tdf my-app -f react -t vrut -b phosphor
 bun create any-tdf my-app -f vue -t vrtt -b tabler

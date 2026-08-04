@@ -6,28 +6,28 @@
 <!-- bun -->
 
 ```sh
-bun create any-tdf@latest rtdf-app -f react
+bun create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- :: -->
 <!-- pnpm -->
 
 ```sh
-pnpm create any-tdf@latest rtdf-app -f react
+pnpm create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- :: -->
 <!-- npm -->
 
 ```sh
-npm create any-tdf@latest rtdf-app -f react
+npm create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- :: -->
 <!-- yarn -->
 
 ```sh
-yarn create any-tdf@latest rtdf-app -f react
+yarn create any-tdf@alpha rtdf-app -f react
 ```
 
 <!-- ::: -->
@@ -35,7 +35,7 @@ yarn create any-tdf@latest rtdf-app -f react
 如果需要指定模板、提示语言、图标方案、主题模式和初始内置图标库，可以直接传入参数：
 
 ```sh
-bun create any-tdf@latest rtdf-app -f react -t vrtt -l zh_CN -i iconify -m multi -b lucide
+bun create any-tdf@alpha rtdf-app -f react -t vrtt -l zh_CN -i iconify -m multi -b lucide
 ```
 
 ## 2. 自行搭建（已有项目可跳到本节）
@@ -43,7 +43,7 @@ bun create any-tdf@latest rtdf-app -f react -t vrtt -l zh_CN -i iconify -m multi
 2.1 安装 RTDF
 
 ```sh
-bun add rtdf@0.0.0-alpha.0
+bun add rtdf@0.0.1-alpha.0
 ```
 
 2.2 安装 Tailwind CSS 与 Vite 插件。

@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/vue-confetti",
-	"version": "0.0.0-alpha.0",
+	"version": "0.0.0-alpha.1",
 	"description": "Vue port of svelte-confetti's pure HTML and CSS confetti effect.",
 	"keywords": [
 		"confetti",

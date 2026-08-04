@@ -6,7 +6,7 @@
 	// Basic data
 	const basicItems: AccordionItemProps[] = [
 		{ title: 'What is STDF?', content: 'STDF is a mobile UI component library based on Svelte and Tailwind CSS, providing rich components and theme customization capabilities.' },
-		{ title: 'How to install?', content: 'You can quickly create a project with bun create any-tdf@latest my-app -f svelte, or manually install the stdf package into an existing project.' },
+		{ title: 'How to install?', content: 'You can quickly create a project with bun create any-tdf@alpha my-app -f svelte, or manually install the stdf package into an existing project.' },
 		{ title: 'Which frameworks are supported?', content: 'STDF is developed based on Svelte 5 and can be used in SvelteKit, Vite + Svelte and other projects.' }
 	];
 

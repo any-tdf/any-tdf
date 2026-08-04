@@ -20,7 +20,7 @@
 			"outputs": []
 		},
 		"release:check": {
-			"dependsOn": ["^release:check", "^build"],
+			"dependsOn": ["^release:check"],
 			"cache": false,
 			"outputs": ["dist/**", "build/**", "demo-dist/**", ".svelte-kit/**"]
 		},

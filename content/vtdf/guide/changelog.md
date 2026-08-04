@@ -1,4 +1,4 @@
-## 0.0.0-alpha.0 <font size=1>2026-07-27</font>
+## 0.0.1-alpha.0 <font size=1>2026-07-27</font>
 
 - 首个 VTDF alpha 版本，基于 Vue 3.5 与 Tailwind CSS v4。
 - 提供 61 个移动端组件，并与 STDF 的公开 API、主题、多语言和 Demo 路由保持一致。

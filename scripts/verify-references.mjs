@@ -107,16 +107,21 @@ for (const { path, manifest } of workspaces) {
   }
 }
 
-const frameworkManifests = new Map(
-  await Promise.all(
-    ["stdf", "rtdf", "vtdf"].map(async (name) => [
-      name,
-      await Bun.file(resolve(workspaceRoot, `packages/${name}/package.json`)).json(),
-    ]),
-  ),
-);
-const stdfVersion = frameworkManifests.get("stdf").version;
-const reactVueFrameworks = [frameworkManifests.get("rtdf"), frameworkManifests.get("vtdf")];
+const publicWorkspaces = workspaces.filter(({ manifest }) => manifest.private !== true);
+for (const { path, manifest } of publicWorkspaces) {
+  const expectedTag = manifest.version.includes("-") ? manifest.version.split("-")[1].split(".")[0] : "latest";
+  const actualTag = manifest.publishConfig?.tag ?? "latest";
+  if (actualTag !== expectedTag) {
+    errors.push(`${path}: publishConfig.tag must be ${expectedTag} for version ${manifest.version}, received ${actualTag}.`);
+  }
+  if (manifest.publishConfig?.access !== "public") {
+    errors.push(`${path}: publishConfig.access must be public.`);
+  }
+}
+
+const workspaceManifestByName = new Map(workspaces.map(({ manifest }) => [manifest.name, manifest]));
+const stdfVersion = workspaceManifestByName.get("stdf").version;
+const reactVueFrameworks = [workspaceManifestByName.get("rtdf"), workspaceManifestByName.get("vtdf")];
 if (!stdfVersion.startsWith("3.")) {
   errors.push(`stdf must remain on the 3.x release line, received ${stdfVersion}.`);
 }
@@ -125,21 +130,27 @@ if (reactVueFrameworks.some(({ version }) => !version.startsWith("0."))) {
     `rtdf and vtdf must remain on the 0.x release line, received ${reactVueFrameworks.map(({ name, version }) => `${name}@${version}`).join(", ")}.`,
   );
 }
-if (new Set(reactVueFrameworks.map(({ version }) => version)).size !== 1) {
-  errors.push(
-    `rtdf and vtdf versions must match, received ${reactVueFrameworks.map(({ name, version }) => `${name}@${version}`).join(", ")}.`,
-  );
-}
-
 const changesetConfig = await Bun.file(resolve(workspaceRoot, ".changeset/config.json")).json();
-const synchronizedFrameworkPackages = ["rtdf", "vtdf"];
-const hasFixedReactVueFrameworkGroup = (changesetConfig.fixed ?? []).some(
-  (group) =>
-    group.length === synchronizedFrameworkPackages.length &&
-    synchronizedFrameworkPackages.every((packageName) => group.includes(packageName)),
-);
-if (!hasFixedReactVueFrameworkGroup) {
-  errors.push("Changesets must keep rtdf and vtdf in one fixed version group, independent from stdf.");
+const synchronizedVersionGroups = [
+  ["@any-tdf/react-confetti", "@any-tdf/vue-confetti"],
+  ["@any-tdf/react-motion", "@any-tdf/vue-motion"],
+  ["rtdf", "vtdf"],
+];
+for (const packageNames of synchronizedVersionGroups) {
+  const manifests = packageNames.map((packageName) => workspaceManifestByName.get(packageName));
+  if (manifests.some((manifest) => !manifest)) {
+    errors.push(`Synchronized npm package group is missing a Workspace: ${packageNames.join(", ")}.`);
+    continue;
+  }
+  if (new Set(manifests.map(({ version }) => version)).size !== 1) {
+    errors.push(`Synchronized npm package versions must match: ${manifests.map(({ name, version }) => `${name}@${version}`).join(", ")}.`);
+  }
+  const hasFixedGroup = (changesetConfig.fixed ?? []).some(
+    (group) => group.length === packageNames.length && packageNames.every((packageName) => group.includes(packageName)),
+  );
+  if (!hasFixedGroup) {
+    errors.push(`Changesets must keep these npm packages in one fixed version group: ${packageNames.join(", ")}.`);
+  }
 }
 
 const commonManifest = await Bun.file(resolve(workspaceRoot, "packages/common/package.json")).json();

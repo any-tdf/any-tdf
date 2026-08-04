@@ -41,14 +41,14 @@ describe('package detection', () => {
 	test('continues upward when the nearest package has no target dependency', async () => {
 		const root = createTempDir();
 		const filePath = path.join(root, 'workspace/packages/demo/src/App.tsx');
-		writeJson(path.join(root, 'workspace/package.json'), { devDependencies: { rtdf: '0.0.0-alpha.0' } });
+		writeJson(path.join(root, 'workspace/package.json'), { devDependencies: { rtdf: '0.0.1-alpha.0' } });
 		writeJson(path.join(root, 'workspace/packages/demo/package.json'), { dependencies: { react: '^19.0.0' } });
 		fs.mkdirSync(path.dirname(filePath), { recursive: true });
 		fs.writeFileSync(filePath, '');
 
 		const info = await findNearestPackageInfo({ filePath, languageId: 'typescriptreact' });
 		expect(info.targetKey).toBe('rtdf');
-		expect(info.currentVersion).toBe('0.0.0-alpha.0');
+		expect(info.currentVersion).toBe('0.0.1-alpha.0');
 	});
 
 	test('detects VTDF from package name', async () => {

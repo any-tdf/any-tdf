@@ -14,7 +14,7 @@ const basicItems: AccordionItemProps[] = [
 	{
 		title: 'How to install?',
 		content:
-			'You can quickly create a project with bun create any-tdf@latest my-app -f vue, or manually install the vtdf package into an existing project.'
+			'You can quickly create a project with bun create any-tdf@alpha my-app -f vue, or manually install the vtdf package into an existing project.'
 	},
 	{
 		title: 'Which frameworks are supported?',

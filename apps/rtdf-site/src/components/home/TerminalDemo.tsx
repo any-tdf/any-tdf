@@ -41,10 +41,10 @@ const TerminalDemo = ({ lang = 'zh_CN' }: TerminalDemoProps) => {
 
 	const getCommands = (manager: PackageManager): Command[] => {
 		const createCommand = {
-			bun: 'bun create any-tdf@latest my-rtdf -f react',
-			npm: 'npm create any-tdf@latest my-rtdf -f react',
-			pnpm: 'pnpm create any-tdf@latest my-rtdf -f react',
-			yarn: 'yarn create any-tdf@latest my-rtdf -f react'
+			bun: 'bun create any-tdf@alpha my-rtdf -f react',
+			npm: 'npm create any-tdf@alpha my-rtdf -f react',
+			pnpm: 'pnpm create any-tdf@alpha my-rtdf -f react',
+			yarn: 'yarn create any-tdf@alpha my-rtdf -f react'
 		};
 		const installCommand = { bun: 'bun i', npm: 'npm i', pnpm: 'pnpm i', yarn: 'yarn' };
 		const devCommand = { bun: 'bun dev', npm: 'npm run dev', pnpm: 'pnpm dev', yarn: 'yarn dev' };

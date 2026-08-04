@@ -2,7 +2,11 @@
 	"$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
 	"changelog": "@changesets/cli/changelog",
 	"commit": false,
-	"fixed": [["rtdf", "vtdf"]],
+	"fixed": [
+		["@any-tdf/react-confetti", "@any-tdf/vue-confetti"],
+		["@any-tdf/react-motion", "@any-tdf/vue-motion"],
+		["rtdf", "vtdf"]
+	],
 	"linked": [],
 	"access": "public",
 	"baseBranch": "main",

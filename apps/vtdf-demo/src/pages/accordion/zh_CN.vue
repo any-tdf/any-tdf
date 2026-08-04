@@ -7,7 +7,7 @@ type AccordionRadius = NonNullable<AccordionProps['radius']>;
 
 const basicItems: AccordionItemProps[] = [
 	{ title: '什么是 VTDF？', content: 'VTDF 是一个基于 Vue 3 和 Tailwind CSS 的移动端 UI 组件库，提供丰富的组件和主题定制能力。' },
-	{ title: '如何安装？', content: '你可以通过 bun create any-tdf@latest my-app -f vue 快速创建项目，或者手动安装 vtdf 包到现有项目中。' },
+	{ title: '如何安装？', content: '你可以通过 bun create any-tdf@alpha my-app -f vue 快速创建项目，或者手动安装 vtdf 包到现有项目中。' },
 	{ title: '支持哪些框架？', content: 'VTDF 基于 Vue 3 开发，可以在 Vite + Vue 等项目中使用。' }
 ];
 

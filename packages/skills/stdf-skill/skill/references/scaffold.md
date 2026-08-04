@@ -5,13 +5,13 @@ Use this reference when creating or modifying STDF scaffold behavior.
 ## Recommended Command
 
 ```sh
-bun create any-tdf@latest my-app -f svelte
+bun create any-tdf@alpha my-app -f svelte
 ```
 
 Direct creation with options:
 
 ```sh
-bun create any-tdf@latest my-app -f svelte -t sktt -l zh_CN -i iconify -m multi -b lucide
+bun create any-tdf@alpha my-app -f svelte -t sktt -l zh_CN -i iconify -m multi -b lucide
 ```
 
 ## Options

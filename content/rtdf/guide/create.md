@@ -3,7 +3,7 @@
 `create-any-tdf` 是统一的 any-tdf 脚手架命令。创建 RTDF React 项目时需要选择 `react` framework：
 
 ```sh
-bun create any-tdf@latest my-app -f react
+bun create any-tdf@alpha my-app -f react
 ```
 
 快速创建默认等价于 `vrtt`、`svg-symbol`、`multi`、`default` 内置图标库和 `bun`。`default` 会按当前默认值初始化为 `remix`。
@@ -11,13 +11,13 @@ bun create any-tdf@latest my-app -f react
 创建 Tailwind CSS v4 项目：
 
 ```sh
-bun create any-tdf@latest my-app -f react -t vrtt -l zh_CN -i both -m all -b lucide
+bun create any-tdf@alpha my-app -f react -t vrtt -l zh_CN -i both -m all -b lucide
 ```
 
 创建 UnoCSS 项目：
 
 ```sh
-bun create any-tdf@latest my-app -f react -t vrut -l zh_CN -i both -m all -b lucide
+bun create any-tdf@alpha my-app -f react -t vrut -l zh_CN -i both -m all -b lucide
 ```
 
 ## 模板预设

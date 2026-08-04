@@ -4,7 +4,7 @@ import type { AccordionItemProps, AccordionProps } from 'rtdf/types';
 
 const basicItems: AccordionItemProps[] = [
 	{ title: '什么是 STDF？', content: 'STDF 是一个基于 Svelte 和 Tailwind CSS 的移动端 UI 组件库，提供丰富的组件和主题定制能力。' },
-	{ title: '如何安装？', content: '你可以通过 bun create any-tdf@latest my-app -f react 快速创建项目，或者手动安装 rtdf 包到现有项目中。' },
+	{ title: '如何安装？', content: '你可以通过 bun create any-tdf@alpha my-app -f react 快速创建项目，或者手动安装 rtdf 包到现有项目中。' },
 	{ title: '支持哪些框架？', content: 'STDF 基于 Svelte 5 开发，可以在 SvelteKit、Vite + Svelte 等项目中使用。' }
 ];
 

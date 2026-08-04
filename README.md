@@ -53,7 +53,7 @@ See the corresponding website for theme setup, imports, components, and migratio
 Create a TypeScript project for any supported framework:
 
 ```sh
-bun create any-tdf@latest
+bun create any-tdf@alpha
 ```
 
 The `create-any-tdf` CLI provides Vite and SvelteKit templates with Tailwind CSS or UnoCSS and configurable icon and theme options.

@@ -53,7 +53,7 @@ bun add vtdf vue tailwindcss
 지원되는 프레임워크의 TypeScript 프로젝트를 생성합니다.
 
 ```sh
-bun create any-tdf@latest
+bun create any-tdf@alpha
 ```
 
 `create-any-tdf` 는 Tailwind CSS 또는 UnoCSS, 아이콘, 테마 옵션을 지원하는 Vite 및 SvelteKit 템플릿을 제공합니다.

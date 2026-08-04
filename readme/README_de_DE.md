@@ -53,7 +53,7 @@ Theme-Konfiguration, Imports, Komponenten und Migrationen sind auf der jeweilige
 Erstelle ein TypeScript-Projekt für jedes unterstützte Framework:
 
 ```sh
-bun create any-tdf@latest
+bun create any-tdf@alpha
 ```
 
 `create-any-tdf` bietet Vite- und SvelteKit-Vorlagen mit Tailwind CSS oder UnoCSS sowie Optionen für Icons und Themes.

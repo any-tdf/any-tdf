@@ -32,10 +32,10 @@ const getManagerIcon = (manager: PackageManager) => codeGroupSvgData.find((item)
 
 const getCommands = (manager: PackageManager): Command[] => {
 	const createCommand = {
-		bun: 'bun create any-tdf@latest my-vtdf -f vue',
-		npm: 'npm create any-tdf@latest my-vtdf -f vue',
-		pnpm: 'pnpm create any-tdf@latest my-vtdf -f vue',
-		yarn: 'yarn create any-tdf@latest my-vtdf -f vue'
+		bun: 'bun create any-tdf@alpha my-vtdf -f vue',
+		npm: 'npm create any-tdf@alpha my-vtdf -f vue',
+		pnpm: 'pnpm create any-tdf@alpha my-vtdf -f vue',
+		yarn: 'yarn create any-tdf@alpha my-vtdf -f vue'
 	};
 	const installCommand = { bun: 'bun i', npm: 'npm i', pnpm: 'pnpm i', yarn: 'yarn' };
 	const devCommand = { bun: 'bun dev', npm: 'npm run dev', pnpm: 'pnpm dev', yarn: 'yarn dev' };

@@ -1,4 +1,4 @@
-> VTDF 0.0.0-alpha.0 is based on Vue 3.5 and Tailwind CSS v4.
+> VTDF 0.0.1-alpha.0 is based on Vue 3.5 and Tailwind CSS v4.
 
 ## Vue
 

@@ -3,7 +3,7 @@
 `create-any-tdf` is the unified any-tdf scaffolding command. Select the `react` framework to create an RTDF React project:
 
 ```sh
-bun create any-tdf@latest my-app -f react
+bun create any-tdf@alpha my-app -f react
 ```
 
 The quick command defaults to `vrtt`, `svg-symbol`, `multi`, `default` built-in icon library, and `bun`. `default` initializes the project with the current default, `remix`.
@@ -11,13 +11,13 @@ The quick command defaults to `vrtt`, `svg-symbol`, `multi`, `default` built-in 
 Create a Tailwind CSS v4 project:
 
 ```sh
-bun create any-tdf@latest my-app -f react -t vrtt -l en_US -i both -m all -b lucide
+bun create any-tdf@alpha my-app -f react -t vrtt -l en_US -i both -m all -b lucide
 ```
 
 Create an UnoCSS project:
 
 ```sh
-bun create any-tdf@latest my-app -f react -t vrut -l en_US -i both -m all -b lucide
+bun create any-tdf@alpha my-app -f react -t vrut -l en_US -i both -m all -b lucide
 ```
 
 ## Template Presets

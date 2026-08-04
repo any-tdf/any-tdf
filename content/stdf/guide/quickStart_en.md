@@ -6,32 +6,32 @@
 <!-- bun -->
 
 ```sh
-bun create any-tdf@latest stdf-app -f svelte
+bun create any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- :: -->
 <!-- pnpm -->
 
 ```sh
-pnpm create any-tdf@latest stdf-app -f svelte
+pnpm create any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- :: -->
 <!-- npm -->
 
 ```sh
-npm create any-tdf@latest stdf-app -f svelte
+npm create any-tdf@alpha stdf-app -f svelte
 # or
 npm init any-tdf@latest stdf-app -f svelte
 # or
-npx create-any-tdf@latest stdf-app -f svelte
+npx create-any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- :: -->
 <!-- yarn -->
 
 ```sh
-yarn create any-tdf@latest stdf-app -f svelte
+yarn create any-tdf@alpha stdf-app -f svelte
 ```
 
 <!-- ::: -->
@@ -39,7 +39,7 @@ yarn create any-tdf@latest stdf-app -f svelte
 You can also pass template, prompt language, icon setup, theme mode, and initial built-in icon library options directly:
 
 ```sh
-bun create any-tdf@latest stdf-app -f svelte -t sktt -l en_US -i iconify -m multi -b lucide
+bun create any-tdf@alpha stdf-app -f svelte -t sktt -l en_US -i iconify -m multi -b lucide
 ```
 
 ## 2. Self-built

@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/react-motion",
-	"version": "0.0.0-alpha.0",
+	"version": "0.0.0-alpha.1",
 	"description": "React motion utilities compatible with Svelte transition, animate, easing, and motion APIs.",
 	"license": "MIT",
 	"repository": {
