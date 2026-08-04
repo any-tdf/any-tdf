@@ -24,6 +24,48 @@ const requiredLinks = [
   "https://www.npmjs.com/package/vtdf",
   "https://github.com/any-tdf/any-tdf",
 ];
+const requiredEcosystemResources = [
+  {
+    name: "@any-tdf/react-confetti",
+    link: "https://react-confetti.any-tdf.dev",
+  },
+  {
+    name: "@any-tdf/vue-confetti",
+    link: "https://vue-confetti.any-tdf.dev",
+  },
+  {
+    name: "@any-tdf/common",
+    link: "https://www.npmjs.com/package/@any-tdf/common",
+  },
+  {
+    name: "create-any-tdf",
+    link: "https://www.npmjs.com/package/create-any-tdf",
+  },
+  {
+    name: "@any-tdf/vite-plugin-md-ts",
+    link: "https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts",
+  },
+  {
+    name: "@any-tdf/vite-plugin-svg-symbol",
+    link: "https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol",
+  },
+  {
+    name: "$stdf",
+    link: "https://github.com/any-tdf/any-tdf/tree/main/packages/skills/stdf-skill",
+  },
+  {
+    name: "$rtdf",
+    link: "https://github.com/any-tdf/any-tdf/tree/main/packages/skills/rtdf-skill",
+  },
+  {
+    name: "$vtdf",
+    link: "https://github.com/any-tdf/any-tdf/tree/main/packages/skills/vtdf-skill",
+  },
+  {
+    name: "Any TDF for VS Code",
+    link: "https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension",
+  },
+];
 const forbiddenFrameworkDependencies = ["react", "react-dom", "svelte", "vue"];
 const requiredAcronymWords = [
   "Simple",
@@ -86,6 +128,13 @@ if (!script.includes("createIcons") || !script.includes("from 'lucide'"))
 
 for (const link of requiredLinks) {
   if (!html.includes(link)) throw new Error(`The portal is missing ${link}.`);
+}
+
+for (const resource of requiredEcosystemResources) {
+  if (!html.includes(resource.name))
+    throw new Error(`The ecosystem directory is missing ${resource.name}.`);
+  if (!html.includes(resource.link))
+    throw new Error(`The ecosystem directory is missing ${resource.link}.`);
 }
 
 for (const dependency of forbiddenFrameworkDependencies) {
@@ -251,7 +300,7 @@ if (/#(?:products|architecture|principles)/.test(desktopNavigationMarkup))
 const mobileNavigationMarkup = html.match(
   /<nav class="site-mobile-menu-nav"[\s\S]*?<\/nav>/,
 )?.[0];
-for (const target of ["#products", "#architecture", "#principles"]) {
+for (const target of ["#products", "#architecture", "#principles", "#resources"]) {
   if (!mobileNavigationMarkup?.includes(`href="${target}"`))
     throw new Error(`The mobile navigation must retain ${target}.`);
 }
@@ -316,5 +365,5 @@ if (!script.includes("if (currentTheme === 'auto') applyTheme('auto', false)"))
   throw new Error("The automatic theme must react to system theme changes.");
 
 console.log(
-  `PASS Any TDF portal (${requiredLinks.length} product and repository links, pure HTML/CSS/JavaScript)`,
+  `PASS Any TDF portal (${requiredLinks.length} product and repository links, ${requiredEcosystemResources.length} ecosystem resources, pure HTML/CSS/JavaScript)`,
 );

@@ -98,6 +98,7 @@
 					<a class="site-header-link" href="#products" data-i18n="navProducts">产品</a>
 					<a class="site-header-link" href="#architecture" data-i18n="navArchitecture">架构</a>
 					<a class="site-header-link" href="#principles" data-i18n="navPrinciples">原则</a>
+					<a class="site-header-link" href="#resources" data-i18n="navResources">资源</a>
 					<a class="site-header-link portal-link-with-icon" href="https://github.com/any-tdf/any-tdf" target="_blank" rel="noreferrer">
 						GitHub
 						<svg class="portal-inline-icon" data-icon="github" viewBox="0 0 24 24" aria-hidden="true">
@@ -496,16 +497,22 @@
 									</p>
 								</div>
 								<div class="portal-motion-packages">
-									<div data-renderer="react">
-										<span>REACT</span>
+									<a href="https://react-motion.any-tdf.dev" target="_blank" rel="noreferrer" data-renderer="react">
+										<span class="portal-motion-package-label">
+											REACT
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</span>
 										<strong>@any-tdf/react-motion</strong>
 										<small data-i18n="reactMotionDescription">对齐 Svelte API 的动效函数、React 组件与 Hook。</small>
-									</div>
-									<div data-renderer="vue">
-										<span>VUE</span>
+									</a>
+									<a href="https://vue-motion.any-tdf.dev" target="_blank" rel="noreferrer" data-renderer="vue">
+										<span class="portal-motion-package-label">
+											VUE
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</span>
 										<strong>@any-tdf/vue-motion</strong>
 										<small data-i18n="vueMotionDescription">对齐 Svelte API 的动效函数、Vue 组件与组合式函数。</small>
-									</div>
+									</a>
 								</div>
 							</div>
 						</div>
@@ -556,6 +563,248 @@
 								<h3 data-i18n="deliveryTitle">独立交付</h3>
 								<p data-i18n="deliveryDescription">每个组件库都可以单独安装、构建和使用，消费者不需要了解 Monorepo。</p>
 							</article>
+						</div>
+					</section>
+
+					<section id="resources" class="site-section portal-resource-section">
+						<div class="site-section-heading" data-reveal>
+							<div class="site-section-index">04</div>
+							<div>
+								<div class="site-section-kicker">ECOSYSTEM DIRECTORY</div>
+								<h2 class="site-section-title" data-i18n="resourcesTitle">组件之外，还有完整的开发工具链</h2>
+								<p class="site-section-description" data-i18n="resourcesDescription">
+									除核心组件库与 Motion 实现外，Any TDF 还提供共享能力、脚手架、构建插件、视觉效果、AI Skill 与编辑器支持。
+								</p>
+							</div>
+						</div>
+
+						<div class="portal-resource-directory">
+							<section class="portal-resource-group" data-reveal>
+								<header class="portal-resource-group-header">
+									<span class="portal-resource-group-icon">
+										<i class="portal-layer-icon" data-lucide="package-open" aria-hidden="true"></i>
+									</span>
+									<div>
+										<span>01 / REGISTRY</span>
+										<h3 data-i18n="npmResourcesTitle">npm 包</h3>
+									</div>
+									<strong>06</strong>
+								</header>
+								<div class="portal-resource-grid">
+									<a class="portal-resource-card" href="https://react-confetti.any-tdf.dev" target="_blank" rel="noreferrer">
+										<div class="portal-resource-card-topline">
+											<span>NPM · REACT</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>@any-tdf/react-confetti</h4>
+											<p data-i18n="reactConfettiResourceDescription">
+												面向 React 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span data-i18n="officialWebsite">官网</span>
+											<code>react-confetti.any-tdf.dev</code>
+										</div>
+									</a>
+									<a class="portal-resource-card" href="https://vue-confetti.any-tdf.dev" target="_blank" rel="noreferrer">
+										<div class="portal-resource-card-topline">
+											<span>NPM · VUE</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>@any-tdf/vue-confetti</h4>
+											<p data-i18n="vueConfettiResourceDescription">
+												面向 Vue 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span data-i18n="officialWebsite">官网</span>
+											<code>vue-confetti.any-tdf.dev</code>
+										</div>
+									</a>
+									<a class="portal-resource-card" href="https://www.npmjs.com/package/@any-tdf/common" target="_blank" rel="noreferrer">
+										<div class="portal-resource-card-topline">
+											<span>NPM · CORE</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>@any-tdf/common</h4>
+											<p data-i18n="commonResourceDescription">跨框架共享工具、主题、语言包、类型，以及由组件状态派生的公共能力。</p>
+										</div>
+										<div class="portal-resource-target">
+											<span>npm</span>
+											<code>npmjs.com</code>
+										</div>
+									</a>
+									<a class="portal-resource-card" href="https://www.npmjs.com/package/create-any-tdf" target="_blank" rel="noreferrer">
+										<div class="portal-resource-card-topline">
+											<span>NPM · CLI</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>create-any-tdf</h4>
+											<p data-i18n="createAnyTdfResourceDescription">用于创建 STDF、RTDF 与 VTDF TypeScript 项目的命令行脚手架。</p>
+										</div>
+										<div class="portal-resource-target">
+											<span>npm</span>
+											<code>npmjs.com</code>
+										</div>
+									</a>
+									<a
+										class="portal-resource-card"
+										href="https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts"
+										target="_blank"
+										rel="noreferrer"
+									>
+										<div class="portal-resource-card-topline">
+											<span>NPM · VITE</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>@any-tdf/vite-plugin-md-ts</h4>
+											<p data-i18n="mdPluginResourceDescription">把 Markdown 文件转换为 JavaScript 模块的 Vite 与 Rollup 插件。</p>
+										</div>
+										<div class="portal-resource-target">
+											<span>npm</span>
+											<code>npmjs.com</code>
+										</div>
+									</a>
+									<a
+										class="portal-resource-card"
+										href="https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol"
+										target="_blank"
+										rel="noreferrer"
+									>
+										<div class="portal-resource-card-topline">
+											<span>NPM · VITE</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>@any-tdf/vite-plugin-svg-symbol</h4>
+											<p data-i18n="svgPluginResourceDescription">把多个 SVG 文件合并为 symbol sprite 的 Vite 与 Rollup 插件。</p>
+										</div>
+										<div class="portal-resource-target">
+											<span>npm</span>
+											<code>npmjs.com</code>
+										</div>
+									</a>
+								</div>
+							</section>
+
+							<section class="portal-resource-group" data-reveal>
+								<header class="portal-resource-group-header">
+									<span class="portal-resource-group-icon">
+										<i class="portal-layer-icon" data-lucide="blocks" aria-hidden="true"></i>
+									</span>
+									<div>
+										<span>02 / AI CONTEXT</span>
+										<h3 data-i18n="skillsResourcesTitle">AI Skill</h3>
+									</div>
+									<strong>03</strong>
+								</header>
+								<div class="portal-resource-grid">
+									<a
+										class="portal-resource-card"
+										href="https://github.com/any-tdf/any-tdf/tree/main/packages/skills/stdf-skill"
+										target="_blank"
+										rel="noreferrer"
+									>
+										<div class="portal-resource-card-topline">
+											<span>SKILL · SVELTE</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>$stdf</h4>
+											<p data-i18n="stdfSkillResourceDescription">
+												面向 AI 代理的 STDF 离线资料，覆盖组件、主题、色彩、国际化、脚手架与图标方案。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span data-i18n="sourceCode">源码</span>
+											<code>github.com/any-tdf</code>
+										</div>
+									</a>
+									<a
+										class="portal-resource-card"
+										href="https://github.com/any-tdf/any-tdf/tree/main/packages/skills/rtdf-skill"
+										target="_blank"
+										rel="noreferrer"
+									>
+										<div class="portal-resource-card-topline">
+											<span>SKILL · REACT</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>$rtdf</h4>
+											<p data-i18n="rtdfSkillResourceDescription">
+												面向 AI 代理的 RTDF 离线资料，覆盖组件、主题、色彩、国际化、脚手架与图标方案。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span data-i18n="sourceCode">源码</span>
+											<code>github.com/any-tdf</code>
+										</div>
+									</a>
+									<a
+										class="portal-resource-card"
+										href="https://github.com/any-tdf/any-tdf/tree/main/packages/skills/vtdf-skill"
+										target="_blank"
+										rel="noreferrer"
+									>
+										<div class="portal-resource-card-topline">
+											<span>SKILL · VUE</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>$vtdf</h4>
+											<p data-i18n="vtdfSkillResourceDescription">
+												面向 AI 代理的 VTDF 离线资料，覆盖组件、主题、色彩、国际化、脚手架与图标方案。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span data-i18n="sourceCode">源码</span>
+											<code>github.com/any-tdf</code>
+										</div>
+									</a>
+								</div>
+							</section>
+
+							<section class="portal-resource-group" data-reveal>
+								<header class="portal-resource-group-header">
+									<span class="portal-resource-group-icon">
+										<i class="portal-layer-icon" data-lucide="code-xml" aria-hidden="true"></i>
+									</span>
+									<div>
+										<span>03 / EDITOR</span>
+										<h3 data-i18n="vscodeResourcesTitle">VS Code 插件</h3>
+									</div>
+									<strong>01</strong>
+								</header>
+								<div class="portal-resource-grid portal-resource-grid-single">
+									<a
+										class="portal-resource-card portal-resource-card-wide"
+										href="https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension"
+										target="_blank"
+										rel="noreferrer"
+									>
+										<div class="portal-resource-card-topline">
+											<span>VS CODE · EXTENSION</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>Any TDF for VS Code</h4>
+											<p data-i18n="vscodeExtensionResourceDescription">
+												为 STDF、RTDF 与 VTDF 提供组件 API 悬停文档、版本信息和框架原生代码补全。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span>VS Code Marketplace</span>
+											<code>marketplace.visualstudio.com</code>
+										</div>
+									</a>
+								</div>
+							</section>
 						</div>
 					</section>
 

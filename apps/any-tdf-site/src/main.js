@@ -54,6 +54,7 @@ const translations = {
 		navProducts: '产品',
 		navArchitecture: '架构',
 		navPrinciples: '原则',
+		navResources: '资源',
 		heroDescription: '一个共享产品语言、面向三种框架原生实现的移动 Web 组件系统。选择你熟悉的框架，获得一致的设计、主题与交互体验。',
 		chooseFramework: '选择框架',
 		exploreArchitecture: '了解架构',
@@ -99,6 +100,23 @@ const translations = {
 		tailwindDescription: '三套组件库都基于 Tailwind CSS，共享清晰的主题变量和可组合样式语言。',
 		deliveryTitle: '独立交付',
 		deliveryDescription: '每个组件库都可以单独安装、构建和使用，消费者不需要了解 Monorepo。',
+		resourcesTitle: '组件之外，还有完整的开发工具链',
+		resourcesDescription: '除核心组件库与 Motion 实现外，Any TDF 还提供共享能力、脚手架、构建插件、视觉效果、AI Skill 与编辑器支持。',
+		npmResourcesTitle: 'npm 包',
+		skillsResourcesTitle: 'AI Skill',
+		vscodeResourcesTitle: 'VS Code 插件',
+		officialWebsite: '官网',
+		sourceCode: '源码',
+		reactConfettiResourceDescription: '面向 React 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。',
+		vueConfettiResourceDescription: '面向 Vue 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。',
+		commonResourceDescription: '跨框架共享工具、主题、语言包、类型，以及由组件状态派生的公共能力。',
+		createAnyTdfResourceDescription: '用于创建 STDF、RTDF 与 VTDF TypeScript 项目的命令行脚手架。',
+		mdPluginResourceDescription: '把 Markdown 文件转换为 JavaScript 模块的 Vite 与 Rollup 插件。',
+		svgPluginResourceDescription: '把多个 SVG 文件合并为 symbol sprite 的 Vite 与 Rollup 插件。',
+		stdfSkillResourceDescription: '面向 AI 代理的 STDF 离线资料，覆盖组件、主题、色彩、国际化、脚手架与图标方案。',
+		rtdfSkillResourceDescription: '面向 AI 代理的 RTDF 离线资料，覆盖组件、主题、色彩、国际化、脚手架与图标方案。',
+		vtdfSkillResourceDescription: '面向 AI 代理的 VTDF 离线资料，覆盖组件、主题、色彩、国际化、脚手架与图标方案。',
+		vscodeExtensionResourceDescription: '为 STDF、RTDF 与 VTDF 提供组件 API 悬停文档、版本信息和框架原生代码补全。',
 		ctaTitle: '从你熟悉的框架开始',
 		ctaDescription: '访问对应官网，查看指南、组件、主题生成器和在线 Demo。',
 		footerDescription: '一个共享设计系统，三套原生移动 Web 组件库。',
@@ -114,6 +132,7 @@ const translations = {
 		navProducts: 'Products',
 		navArchitecture: 'Architecture',
 		navPrinciples: 'Principles',
+		navResources: 'Resources',
 		heroDescription:
 			'One shared product language, implemented natively for three frameworks. Choose the framework you know and keep the same design, theming, and interaction experience.',
 		chooseFramework: 'Products',
@@ -165,6 +184,31 @@ const translations = {
 		deliveryTitle: 'Independent delivery',
 		deliveryDescription:
 			'Every component library installs, builds, and runs independently. Consumers do not need to know about the Monorepo.',
+		resourcesTitle: 'Beyond components, a complete development toolchain',
+		resourcesDescription:
+			'Beyond the core component libraries and Motion implementations, Any TDF also provides shared foundations, scaffolding, build plugins, visual effects, AI Skills, and editor support.',
+		npmResourcesTitle: 'npm packages',
+		skillsResourcesTitle: 'AI Skills',
+		vscodeResourcesTitle: 'VS Code extension',
+		officialWebsite: 'Website',
+		sourceCode: 'Source',
+		reactConfettiResourceDescription:
+			'A pure HTML and CSS confetti effect for React that keeps svelte-confetti’s lightweight implementation and SSR compatibility.',
+		vueConfettiResourceDescription:
+			'A pure HTML and CSS confetti effect for Vue that keeps svelte-confetti’s lightweight implementation and SSR compatibility.',
+		commonResourceDescription:
+			'Framework-agnostic utilities, themes, language packs, types, and shared capabilities derived from component state.',
+		createAnyTdfResourceDescription: 'A command-line scaffold for creating STDF, RTDF, and VTDF TypeScript projects.',
+		mdPluginResourceDescription: 'A Vite and Rollup plugin that transforms Markdown files into JavaScript modules.',
+		svgPluginResourceDescription: 'A Vite and Rollup plugin that combines SVG files into a symbol sprite.',
+		stdfSkillResourceDescription:
+			'Offline STDF context for AI agents, covering components, themes, color, internationalization, scaffolding, and icon workflows.',
+		rtdfSkillResourceDescription:
+			'Offline RTDF context for AI agents, covering components, themes, color, internationalization, scaffolding, and icon workflows.',
+		vtdfSkillResourceDescription:
+			'Offline VTDF context for AI agents, covering components, themes, color, internationalization, scaffolding, and icon workflows.',
+		vscodeExtensionResourceDescription:
+			'Component API hover documentation, version information, and framework-native completions for STDF, RTDF, and VTDF.',
 		ctaTitle: 'Start with the framework you know',
 		ctaDescription: 'Visit its website for guides, components, the theme generator, and interactive Demos.',
 		footerDescription: 'One shared design system, three native mobile Web component libraries.',
