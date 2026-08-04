@@ -17,36 +17,36 @@ One shared design system. Three framework-native mobile component libraries.
 
 **STDF for Svelte • RTDF for React • VTDF for Vue**
 
-![Svelte 5](https://img.shields.io/badge/Svelte_5-FF3E00?logo=svelte&logoColor=fff)
-![React 18 and 19](https://img.shields.io/badge/React_18_%7C_19-61DAFB?logo=react&logoColor=16181d)
-![Vue 3.5](https://img.shields.io/badge/Vue_3.5-42B883?logo=vuedotjs&logoColor=fff)
-![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS_4-00BCFF?logo=tailwindcss&logoColor=fff)
+![Svelte](https://img.shields.io/badge/Svelte-FF3E00?logo=svelte&logoColor=fff)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=16181d)
+![Vue](https://img.shields.io/badge/Vue-42B883?logo=vuedotjs&logoColor=fff)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-00BCFF?logo=tailwindcss&logoColor=fff)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)
 ![Bun](https://img.shields.io/badge/Bun-000?logo=bun&logoColor=fff)
 
 <p>
-  <a href="https://www.npmjs.com/package/stdf"><img alt="stdf npm alpha version" src="https://img.shields.io/npm/v/stdf/alpha?logo=npm&amp;label=stdf&amp;style=for-the-badge&amp;color=aeb5f4&amp;logoColor=DCE4FD&amp;labelColor=010319" /></a>
-  <a href="https://www.npmjs.com/package/rtdf"><img alt="rtdf npm alpha version" src="https://img.shields.io/npm/v/rtdf/alpha?logo=npm&amp;label=rtdf&amp;style=for-the-badge&amp;color=9adff4&amp;logoColor=D9F8FF&amp;labelColor=011519" /></a>
-  <a href="https://www.npmjs.com/package/vtdf"><img alt="vtdf npm alpha version" src="https://img.shields.io/npm/v/vtdf/alpha?logo=npm&amp;label=vtdf&amp;style=for-the-badge&amp;color=a4e2c1&amp;logoColor=E1FBEF&amp;labelColor=01190D" /></a>
+  <a href="https://www.npmjs.com/package/stdf"><img alt="stdf npm version" src="https://img.shields.io/npm/v/stdf?logo=npm&amp;label=stdf&amp;style=flat-square&amp;color=aeb5f4&amp;logoColor=DCE4FD&amp;labelColor=010319" /></a>
+  <a href="https://www.npmjs.com/package/rtdf"><img alt="rtdf npm version" src="https://img.shields.io/npm/v/rtdf?logo=npm&amp;label=rtdf&amp;style=flat-square&amp;color=9adff4&amp;logoColor=D9F8FF&amp;labelColor=011519" /></a>
+  <a href="https://www.npmjs.com/package/vtdf"><img alt="vtdf npm version" src="https://img.shields.io/npm/v/vtdf?logo=npm&amp;label=vtdf&amp;style=flat-square&amp;color=a4e2c1&amp;logoColor=E1FBEF&amp;labelColor=01190D" /></a>
 </p>
 
 <p>
-  <a href="https://www.npmjs.com/package/@any-tdf/common"><img alt="any-tdf common npm alpha version" src="https://img.shields.io/npm/v/%40any-tdf%2Fcommon/alpha?logo=npm&amp;label=common&amp;style=for-the-badge&amp;color=f4d18b&amp;logoColor=FFF4D7&amp;labelColor=191203" /></a>
-  <a href="https://www.npmjs.com/package/create-any-tdf"><img alt="create-any-tdf npm alpha version" src="https://img.shields.io/npm/v/create-any-tdf/alpha?logo=npm&amp;label=create&amp;style=for-the-badge&amp;color=ebb2ba&amp;logoColor=FBDDDD&amp;labelColor=190104" /></a>
-  <a href="https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol"><img alt="vite-plugin-svg-symbol npm version" src="https://img.shields.io/npm/v/@any-tdf/vite-plugin-svg-symbol?logo=npm&amp;label=SVG%20symbol&amp;style=for-the-badge&amp;color=8cf2be&amp;logoColor=D5FCE3&amp;labelColor=01190C" /></a>
-  <a href="https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts"><img alt="vite-plugin-md-ts npm version" src="https://img.shields.io/npm/v/@any-tdf/vite-plugin-md-ts?logo=npm&amp;label=Markdown&amp;style=for-the-badge&amp;color=fda0f0&amp;logoColor=FFDDF9&amp;labelColor=12020F" /></a>
+  <a href="https://www.npmjs.com/package/@any-tdf/common"><img alt="any-tdf common npm version" src="https://img.shields.io/npm/v/%40any-tdf%2Fcommon?logo=npm&amp;label=common&amp;style=flat-square&amp;color=f4d18b&amp;logoColor=FFF4D7&amp;labelColor=191203" /></a>
+  <a href="https://www.npmjs.com/package/create-any-tdf"><img alt="create-any-tdf npm version" src="https://img.shields.io/npm/v/create-any-tdf?logo=npm&amp;label=create&amp;style=flat-square&amp;color=ebb2ba&amp;logoColor=FBDDDD&amp;labelColor=190104" /></a>
+  <a href="https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol"><img alt="vite-plugin-svg-symbol npm version" src="https://img.shields.io/npm/v/@any-tdf/vite-plugin-svg-symbol?logo=npm&amp;label=SVG%20symbol&amp;style=flat-square&amp;color=8cf2be&amp;logoColor=D5FCE3&amp;labelColor=01190C" /></a>
+  <a href="https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts"><img alt="vite-plugin-md-ts npm version" src="https://img.shields.io/npm/v/@any-tdf/vite-plugin-md-ts?logo=npm&amp;label=Markdown&amp;style=flat-square&amp;color=fda0f0&amp;logoColor=FFDDF9&amp;labelColor=12020F" /></a>
 </p>
 
 <p>
-  <a href="https://www.npmjs.com/package/@any-tdf/react-motion"><img alt="react-motion npm alpha version" src="https://img.shields.io/npm/v/%40any-tdf%2Freact-motion/alpha?logo=npm&amp;label=React%20motion&amp;style=for-the-badge&amp;color=c6b8f4&amp;logoColor=EEE9FF&amp;labelColor=0D0719" /></a>
-  <a href="https://www.npmjs.com/package/@any-tdf/vue-motion"><img alt="vue-motion npm alpha version" src="https://img.shields.io/npm/v/%40any-tdf%2Fvue-motion/alpha?logo=npm&amp;label=Vue%20motion&amp;style=for-the-badge&amp;color=9fdfcc&amp;logoColor=E0FAF2&amp;labelColor=031814" /></a>
-  <a href="https://www.npmjs.com/package/@any-tdf/react-confetti"><img alt="react-confetti npm alpha version" src="https://img.shields.io/npm/v/%40any-tdf%2Freact-confetti/alpha?logo=npm&amp;label=React%20confetti&amp;style=for-the-badge&amp;color=f6b8d2&amp;logoColor=FFE4EF&amp;labelColor=19030C" /></a>
-  <a href="https://www.npmjs.com/package/@any-tdf/vue-confetti"><img alt="vue-confetti npm alpha version" src="https://img.shields.io/npm/v/%40any-tdf%2Fvue-confetti/alpha?logo=npm&amp;label=Vue%20confetti&amp;style=for-the-badge&amp;color=f2c49a&amp;logoColor=FFF0E2&amp;labelColor=190C02" /></a>
+  <a href="https://www.npmjs.com/package/@any-tdf/react-motion"><img alt="react-motion npm version" src="https://img.shields.io/npm/v/%40any-tdf%2Freact-motion?logo=npm&amp;label=React%20motion&amp;style=flat-square&amp;color=c6b8f4&amp;logoColor=EEE9FF&amp;labelColor=0D0719" /></a>
+  <a href="https://www.npmjs.com/package/@any-tdf/vue-motion"><img alt="vue-motion npm version" src="https://img.shields.io/npm/v/%40any-tdf%2Fvue-motion?logo=npm&amp;label=Vue%20motion&amp;style=flat-square&amp;color=9fdfcc&amp;logoColor=E0FAF2&amp;labelColor=031814" /></a>
+  <a href="https://www.npmjs.com/package/@any-tdf/react-confetti"><img alt="react-confetti npm version" src="https://img.shields.io/npm/v/%40any-tdf%2Freact-confetti?logo=npm&amp;label=React%20confetti&amp;style=flat-square&amp;color=f6b8d2&amp;logoColor=FFE4EF&amp;labelColor=19030C" /></a>
+  <a href="https://www.npmjs.com/package/@any-tdf/vue-confetti"><img alt="vue-confetti npm version" src="https://img.shields.io/npm/v/%40any-tdf%2Fvue-confetti?logo=npm&amp;label=Vue%20confetti&amp;style=flat-square&amp;color=f2c49a&amp;logoColor=FFF0E2&amp;labelColor=190C02" /></a>
 </p>
 
-[![VS Code extension](https://img.shields.io/github/package-json/v/any-tdf/any-tdf?filename=extensions%2Fvscode-extension%2Fpackage.json&logo=visualstudiocode&label=VS%20Code&style=for-the-badge&color=c7f292&logoColor=F0FCD6&labelColor=0E1901)](./extensions/vscode-extension)
-[![GitHub stars](https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&style=for-the-badge&color=A1DAD7&logoColor=D9F8F2&labelColor=011918)](https://github.com/any-tdf/any-tdf)
-[![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github&style=for-the-badge&color=B9C46A&logoColor=F3F3CB&labelColor=161901)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
+[![VS Code extension](https://img.shields.io/badge/VS_Code-Extension-c7f292?logo=visualstudiocode&logoColor=F0FCD6&labelColor=0E1901&style=flat-square)](./extensions/vscode-extension)
+[![GitHub stars](https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&style=flat-square&color=A1DAD7&logoColor=D9F8F2&labelColor=011918)](https://github.com/any-tdf/any-tdf)
+[![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github&style=flat-square&color=B9C46A&logoColor=F3F3CB&labelColor=161901)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
 
 [STDF](https://stdf.dev) • [RTDF](https://rtdf.dev) • [VTDF](https://vtdf.dev) • [Issues](https://github.com/any-tdf/any-tdf/issues) • [Discussions](https://github.com/any-tdf/any-tdf/discussions)
 
@@ -64,14 +64,14 @@ This is not a cross-framework wrapper or a single runtime hidden behind adapters
 
 | Library | Native framework | npm package                                  | Documentation and Demo       |
 | ------- | ---------------- | -------------------------------------------- | ---------------------------- |
-| STDF    | Svelte 5         | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
-| RTDF    | React 18 and 19  | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
-| VTDF    | Vue 3.5          | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
+| STDF    | Svelte           | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
+| RTDF    | React            | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
+| VTDF    | Vue              | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
 
 ## Why Any TDF
 
 - 60 aligned mobile components with framework-native APIs and predictable behavior.
-- A shared Tailwind CSS v4 theme system with dark mode, runtime switching, custom themes, and reusable semantic colors.
+- A shared Tailwind CSS theme system with dark mode, runtime switching, custom themes, and reusable semantic colors.
 - More than 60 built-in locale packages plus Chinese and English guides, API references, and component examples.
 - TypeScript-first package exports, SSR support, on-demand imports, and shared accessibility behavior.
 - Native Svelte motion semantics with matching React and Vue motion packages.
@@ -157,7 +157,7 @@ Framework-specific Skills package component references, themes, internationaliza
 
 ## Monorepo development
 
-The repository uses Bun Workspaces, Turborepo, Changesets, and a single root lockfile. Development requires Bun 1.3.14 or newer and Node.js 24 or newer. Install dependencies only from the repository root.
+The repository uses Bun Workspaces, Turborepo, Changesets, and a single root lockfile. Development uses Bun and Node.js. Install dependencies only from the repository root.
 
 ```sh
 bun install --frozen-lockfile
