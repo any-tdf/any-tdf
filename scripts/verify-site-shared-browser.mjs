@@ -209,15 +209,43 @@ const waitFor = async (predicate, label, timeout = 15000) => {
 const goto = async (baseUrl) => {
   browserErrors.length = 0;
   const url = new URL("/components?nav=button&tab=0&lang=zh_CN", baseUrl);
-  await page.call("Page.navigate", { url: url.toString() });
+  await page.call("Page.navigate", { url: "about:blank" });
   await waitFor(
     () =>
-      runInPage(`
-        return document.readyState === "complete" &&
-          Boolean(document.querySelector(".site-mobile-menu-button"));
-      `),
-    `mobile header at ${baseUrl}`,
+      runInPage(
+        `return location.href === "about:blank" && document.readyState === "complete";`,
+      ),
+    `blank page before ${baseUrl}`,
   );
+
+  const navigation = await page.call("Page.navigate", { url: url.toString() });
+  if (navigation.errorText) {
+    throw new Error(`Unable to navigate to ${url}: ${navigation.errorText}`);
+  }
+  try {
+    await waitFor(
+      () =>
+        runInPage(`
+          return location.origin === ${JSON.stringify(url.origin)} &&
+            location.pathname === ${JSON.stringify(url.pathname)} &&
+            document.readyState !== "loading" &&
+            Boolean(document.querySelector(".site-mobile-menu-button"));
+        `),
+      `mobile header at ${baseUrl}`,
+    );
+  } catch (error) {
+    const pageState = await runInPage(`
+      return {
+        href: location.href,
+        readyState: document.readyState,
+        title: document.title,
+        body: document.body?.innerText.slice(0, 240) || ""
+      };
+    `).catch((stateError) => ({ stateError: String(stateError) }));
+    throw new Error(
+      `${error instanceof Error ? error.message : String(error)}; page state: ${JSON.stringify(pageState)}; browser errors: ${browserErrors.join(" | ") || "none"}`,
+    );
+  }
   await sleep(200);
 };
 
@@ -338,7 +366,8 @@ const assertMobileLanguageSwitch = async (siteName) => {
       () =>
         runInPage(`
           const url = new URL(location.href);
-          return url.pathname === "/components" &&
+          return document.readyState !== "loading" &&
+            url.pathname === "/components" &&
             url.searchParams.get("nav") === "button" &&
             url.searchParams.get("tab") === "0" &&
             localStorage.getItem("lang") === "en_US" &&

@@ -141,6 +141,9 @@ const target = (await targetResponse.json()) as { webSocketDebuggerUrl: string }
 const page = await CDPClient.create(target.webSocketDebuggerUrl);
 await page.call('Runtime.enable');
 await page.call('Page.enable');
+await page.call('Emulation.setEmulatedMedia', {
+	features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+});
 
 const browserErrors: string[] = [];
 const ignoredErrors = ['width 或 height 小于 20 会使移动端点击困难！'];
@@ -193,7 +196,11 @@ const goto = async (site: Site, path: string, selector = '.site-app') => {
 	if ((pageState as { readyState?: string; hasSelector?: boolean }).readyState !== 'complete' || !(pageState as { hasSelector?: boolean }).hasSelector) {
 		throw new Error(`Timed out waiting for ${site.name} ${path}: ${JSON.stringify(pageState)} ${browserErrors.join('\n')}`);
 	}
-	await sleep(250);
+	await runInPage(`
+		if (document.fonts) await document.fonts.ready;
+		await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+		return true;
+	`);
 };
 
 const collectMetrics = (specs: MetricSpec[]) => {
