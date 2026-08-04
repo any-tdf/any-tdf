@@ -8,18 +8,30 @@
 <div class="px-4 text-xs">
 	<template v-if="isZh">
 		<p>
-			以上图标通过 <a class="underline" href="https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol" target="_blank" rel="noreferrer">@any-tdf/vite-plugin-svg-symbol</a> 使用 SVG Symbol 方式。
+			以上图标通过
+			<a class="underline" href="https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol" target="_blank" rel="noreferrer"
+				>@any-tdf/vite-plugin-svg-symbol</a
+			>
+			使用 SVG Symbol 方式。
 		</p>
 		<p class="mt-2">
-			第一个来自 <a class="underline" href="https://heroicons.com" target="_blank" rel="noreferrer">Heroicons</a>，最后一个来自 <a class="underline" href="https://iconpark.oceanengine.com" target="_blank" rel="noreferrer">IconPark</a>，其余来自 <a class="underline" href="https://remixicon.com" target="_blank" rel="noreferrer">Remix Icon</a>。
+			第一个来自 <a class="underline" href="https://heroicons.com" target="_blank" rel="noreferrer">Heroicons</a>，最后一个来自
+			<a class="underline" href="https://iconpark.oceanengine.com" target="_blank" rel="noreferrer">IconPark</a>，其余来自
+			<a class="underline" href="https://remixicon.com" target="_blank" rel="noreferrer">Remix Icon</a>。
 		</p>
 	</template>
 	<template v-else>
 		<p>
-			The above icons use <a class="underline" href="https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol" target="_blank" rel="noreferrer">@any-tdf/vite-plugin-svg-symbol</a> for SVG symbols.
+			The above icons use
+			<a class="underline" href="https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol" target="_blank" rel="noreferrer"
+				>@any-tdf/vite-plugin-svg-symbol</a
+			>
+			for SVG symbols.
 		</p>
 		<p class="mt-2">
-			The first one comes from <a class="underline" href="https://heroicons.com" target="_blank" rel="noreferrer">Heroicons</a>, the last one comes from <a class="underline" href="https://iconpark.oceanengine.com" target="_blank" rel="noreferrer">IconPark</a>, and the rest come from <a class="underline" href="https://remixicon.com" target="_blank" rel="noreferrer">Remix Icon</a>.
+			The first one comes from <a class="underline" href="https://heroicons.com" target="_blank" rel="noreferrer">Heroicons</a>, the
+			last one comes from <a class="underline" href="https://iconpark.oceanengine.com" target="_blank" rel="noreferrer">IconPark</a>,
+			and the rest come from <a class="underline" href="https://remixicon.com" target="_blank" rel="noreferrer">Remix Icon</a>.
 		</p>
 	</template>
 </div>

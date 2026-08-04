@@ -167,7 +167,7 @@
 		"stdf": "workspace:*"
 	},
 	"devDependencies": {
-		"@any-tdf/vite-plugin-svg-symbol": "catalog:",
+		"@any-tdf/vite-plugin-svg-symbol": "workspace:*",
 		"@iconify-json/carbon": "catalog:",
 		"@iconify-json/fluent-color": "catalog:",
 		"@iconify-json/material-symbols": "catalog:",

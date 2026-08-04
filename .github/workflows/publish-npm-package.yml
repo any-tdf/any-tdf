@@ -2,6 +2,8 @@ name: Publish One npm Package
 
 # npm Trusted Publishing validates the calling workflow for workflow_call.
 # Configure each npm package to trust publish-npm.yml, not this reusable workflow.
+# npm settings: organization any-tdf, repository any-tdf, workflow publish-npm.yml,
+# no environment, and allow npm publish.
 
 on:
   workflow_call:
@@ -30,25 +32,19 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.14
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
-          restore-keys: ${{ runner.os }}-bun-
-
       - name: Set up Node.js for npm provenance
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           registry-url: https://registry.npmjs.org
+          package-manager-cache: false
 
       # npm Trusted Publishing requires npm >= 11.5.1; pinned to the exact
       # latest release (12.0.2) so the toolchain does not float.

@@ -5,14 +5,14 @@
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"declaration": true,
-		"declarationMap": true,
+		"declarationMap": false,
 		"outDir": "dist",
 		"rootDir": "src",
 		"strict": true,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"sourceMap": true
+		"sourceMap": false
 	},
 	"include": [
 		"src/index.ts",

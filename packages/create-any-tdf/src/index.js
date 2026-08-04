@@ -1,10 +1,10 @@
-import fs from 'fs-extra';
+import fs from 'node:fs';
+import { cp, rename, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as p from '@clack/prompts';
 import { blue, bold, cyan, grey, red } from 'kleur/colors';
 import minimist from 'minimist';
-import { format } from 'oxfmt';
 
 import { fallbackVersions } from './fallbackVersions.js';
 import {
@@ -240,9 +240,9 @@ const shouldCopyTemplatePath = (sourcePath) => !sourcePath.split(path.sep).some(
 const restoreTemplateDotfiles = async (projectDir) => {
 	const packedGitignorePath = path.join(projectDir, '_gitignore');
 	if (fs.existsSync(packedGitignorePath)) {
-		await fs.move(packedGitignorePath, path.join(projectDir, '.gitignore'), {
-			overwrite: true
-		});
+		const gitignorePath = path.join(projectDir, '.gitignore');
+		await rm(gitignorePath, { force: true });
+		await rename(packedGitignorePath, gitignorePath);
 	}
 };
 
@@ -306,6 +306,24 @@ const sortPackageDependencies = (packageJson) => {
 		if (!packageJson[section]) continue;
 		packageJson[section] = Object.fromEntries(Object.entries(packageJson[section]).sort(([left], [right]) => left.localeCompare(right)));
 	}
+
+	const dependencySectionNames = ['dependencies', 'devDependencies'];
+	const dependencySectionNameSet = new Set(dependencySectionNames);
+	const orderedEntries = [];
+	let insertedDependencySections = false;
+	for (const entry of Object.entries(packageJson)) {
+		if (!dependencySectionNameSet.has(entry[0])) {
+			orderedEntries.push(entry);
+			continue;
+		}
+		if (insertedDependencySections) continue;
+		for (const section of dependencySectionNames) {
+			if (packageJson[section]) orderedEntries.push([section, packageJson[section]]);
+		}
+		insertedDependencySections = true;
+	}
+	for (const key of Object.keys(packageJson)) delete packageJson[key];
+	Object.assign(packageJson, Object.fromEntries(orderedEntries));
 };
 
 const iconUsageOptions = [
@@ -384,37 +402,6 @@ const getIconSnippetIndent = (frameworkItem) => {
 	return '\t';
 };
 
-const generatedFormatOptions = {
-	printWidth: 140,
-	semi: true,
-	singleQuote: true,
-	sortPackageJson: true,
-	trailingComma: 'none',
-	useTabs: true
-};
-
-const formatGeneratedFile = async (filePath) => {
-	const fileName = path.basename(filePath);
-	try {
-		const sourceText = fs.readFileSync(filePath, 'utf-8');
-		const result = await format(filePath, sourceText, generatedFormatOptions);
-		if (result.errors.length > 0) {
-			p.log.warn(`Failed to format ${fileName}, keeping the unformatted content: ${result.errors[0].message}`);
-			return;
-		}
-		fs.writeFileSync(filePath, result.code, 'utf-8');
-	} catch (error) {
-		p.log.warn(`Failed to format ${fileName}, keeping the unformatted content: ${error?.message || error}`);
-	}
-};
-
-const formatGeneratedProject = async (projectDir, frameworkItem, templateItem) => {
-	const filePaths = [path.join(projectDir, 'package.json'), path.join(projectDir, 'vite.config.ts')];
-	if (templateItem.css === 'unocss') filePaths.push(path.join(projectDir, 'uno.config.ts'));
-	if (frameworkItem.value !== 'svelte') filePaths.push(getAppPath(projectDir, frameworkItem, templateItem));
-	await Promise.all(filePaths.map(formatGeneratedFile));
-};
-
 const getIconMarkerReplacement = (frameworkItem, snippet) => {
 	const marker = getIconMarker(frameworkItem);
 	const indent = getIconSnippetIndent(frameworkItem);
@@ -455,8 +442,8 @@ const addUnoCssIconify = async (projectDir, packageJson, frameworkItem, template
 		presetIcons({
 \t\t\textraProperties: {
 \t\t\t\tdisplay: 'inline-block',
-\t\t\t\t'vertical-align': 'middle',
-\t\t\t},
+\t\t\t\t'vertical-align': 'middle'
+\t\t\t}
 \t\t})`
 		],
 		[
@@ -494,16 +481,15 @@ const addSvgSymbol = async (projectDir, packageJson, frameworkItem, templateItem
 		[`/* ${prefix}_SVG_SYMBOL_IMPORT */`, "import svgSymbol from '@any-tdf/vite-plugin-svg-symbol';"],
 		[
 			`\n\t\t/* ${prefix}_SVG_SYMBOL_PLUGIN */`,
-			`,
-		svgSymbol([
+			`,\n\t\tsvgSymbol([
 \t\t\t{ inFile: 'src/lib/svgs/Heroicons', outFile: '${outDir}/symbols' },
 \t\t\t{ inFile: 'src/lib/svgs/IconPark', outFile: '${outDir}/symbols' },
-\t\t\t{ inFile: 'src/lib/svgs/Remix', outFile: '${outDir}/symbols' },
+\t\t\t{ inFile: 'src/lib/svgs/Remix', outFile: '${outDir}/symbols' }
 \t\t])`
 		]
 	]);
 
-	fs.copySync(getSnippetPath(frameworkItem, 'svgs'), path.join(projectDir, 'src/lib/svgs'));
+	fs.cpSync(getSnippetPath(frameworkItem, 'svgs'), path.join(projectDir, 'src/lib/svgs'), { recursive: true });
 
 	const svgSymbolSnippet = fs.readFileSync(getSnippetPath(frameworkItem, 'svg-symbol.txt'), 'utf-8');
 	replaceFileContent(getAppPath(projectDir, frameworkItem, templateItem), [
@@ -624,7 +610,7 @@ const getReactThemeBlocks = (mode) => {
 
 	if (mode === 'all') {
 		return {
-			state: `const themeNames = useMemo(() => themes.map(item => item.name), []);
+			state: `const themeNames = useMemo(() => themes.map((item) => item.name), []);
 const [theme, setTheme] = useState('ANYTDF');
 const activeTheme = theme;
 const randomThemeFun = () => {
@@ -632,9 +618,13 @@ const randomThemeFun = () => {
 \tconst nextIndex = Math.floor(Math.random() * themeNames.length);
 \tsetTheme(themeNames[nextIndex] || 'ANYTDF');
 };`,
-			control: `<div className='my-6 flex flex-col gap-3 px-4 text-center'>
-\t<Button fill='lineState' onClick={randomThemeFun}>{isZh ? '随机主题' : 'Random theme'}</Button>
-\t<div className='text-xs opacity-70'>{isZh ? '当前主题' : 'Current theme'}: {activeTheme}</div>
+			control: `<div className="my-6 flex flex-col gap-3 px-4 text-center">
+\t<Button fill="lineState" onClick={randomThemeFun}>
+\t\t{isZh ? '随机主题' : 'Random theme'}
+\t</Button>
+\t<div className="text-xs opacity-70">
+\t\t{isZh ? '当前主题' : 'Current theme'}: {activeTheme}
+\t</div>
 </div>`
 		};
 	}
@@ -646,12 +636,9 @@ const randomThemeFun = () => {
 \t{ name: 'GoldWood', labelZh: '金色森林', labelEn: 'GoldWood' }
 ];
 const [themeIndex, setThemeIndex] = useState(0);
-const themeLabels = useMemo(
-\t() => themeOptions.map(item => ({ text: isZh ? item.labelZh : item.labelEn })),
-\t[isZh]
-);
+const themeLabels = useMemo(() => themeOptions.map((item) => ({ text: isZh ? item.labelZh : item.labelEn })), [isZh]);
 const activeTheme = themeOptions[themeIndex]?.name || 'ANYTDF';`,
-		control: `<div className='my-6 px-4'>
+		control: `<div className="my-6 px-4">
 \t<Tabs tab={{ labels: themeLabels }} active={themeIndex} onChange={setThemeIndex} transition={false} />
 </div>`
 	};
@@ -692,7 +679,7 @@ const getVueThemeBlocks = (mode) => {
 
 	if (mode === 'all') {
 		return {
-			state: `const themeNames = themes.map(item => item.name);
+			state: `const themeNames = themes.map((item) => item.name);
 const theme = ref('ANYTDF');
 const activeTheme = computed(() => theme.value);
 const randomThemeFun = () => {
@@ -711,10 +698,10 @@ const randomThemeFun = () => {
 		state: `const themeOptions = [
 \t{ name: 'ANYTDF', labelZh: 'VTDF', labelEn: 'VTDF' },
 \t{ name: 'Sage', labelZh: '草绿粉紫', labelEn: 'Sage' },
-\t{ name: 'GoldWood', labelZh: '金色森林', labelEn: 'GoldWood' },
+\t{ name: 'GoldWood', labelZh: '金色森林', labelEn: 'GoldWood' }
 ];
 const themeIndex = ref(0);
-const themeLabels = computed(() => themeOptions.map(item => ({ text: isZh.value ? item.labelZh : item.labelEn })));
+const themeLabels = computed(() => themeOptions.map((item) => ({ text: isZh.value ? item.labelZh : item.labelEn })));
 const activeTheme = computed(() => themeOptions[themeIndex.value]?.name || 'ANYTDF');`,
 		control: `<div class="my-6 px-4">
 \t<Tab v-model:active="themeIndex" :labels="themeLabels" />
@@ -727,7 +714,7 @@ const updateVueThemeApp = (appContent, mode) => {
 	return appContent
 		.replace('/* VTDF_THEME_IMPORT */', mode === 'all' ? "import { themes } from 'vtdf/theme';" : '')
 		.replace('/* VTDF_THEME_STATE */', formatBlockForMarker(themeBlocks.state, ''))
-		.replace('\t\t\t<!-- VTDF_THEME_CONTROL -->', formatBlockForMarker(themeBlocks.control, '\t\t\t'));
+		.replace('<!-- VTDF_THEME_CONTROL -->', formatBlockForMarker(themeBlocks.control, '\t\t\t'));
 };
 
 const updateThemeCss = (cssContent, frameworkItem, templateItem, themeMode) => {
@@ -766,7 +753,12 @@ const updateOptionalComponentImports = (appContent, templateItem, iconUsageItem,
 
 const finalizeOptionalMarkers = (projectDir, frameworkItem, templateItem) => {
 	const appPath = getAppPath(projectDir, frameworkItem, templateItem);
-	replaceFileContent(appPath, [[getIconMarker(frameworkItem), '']]);
+	const iconMarker = getIconMarker(frameworkItem);
+	const iconIndent = getIconSnippetIndent(frameworkItem);
+	replaceFileContent(appPath, [
+		[`${iconIndent}${iconMarker}\n\n`, ''],
+		[iconMarker, '']
+	]);
 
 	const prefix = getFrameworkMarkerPrefix(frameworkItem);
 	const viteConfigPath = path.join(projectDir, 'vite.config.ts');
@@ -890,7 +882,7 @@ const createFunc = async (
 		fs.mkdirSync(projectDir, { recursive: true });
 
 		const templatePath = path.join(packageRoot, 'templates', frameworkItem.value, templateItem.template);
-		await fs.copy(templatePath, projectDir, { filter: shouldCopyTemplatePath });
+		await cp(templatePath, projectDir, { recursive: true, filter: shouldCopyTemplatePath });
 		await restoreTemplateDotfiles(projectDir);
 
 		const packageJsonPathInner = path.join(projectDir, 'package.json');
@@ -936,9 +928,8 @@ const createFunc = async (
 		finalizeOptionalMarkers(projectDir, frameworkItem, templateItem);
 		sortPackageDependencies(packageJson);
 		writeJson(packageJsonPathInner, packageJson);
-		await formatGeneratedProject(projectDir, frameworkItem, templateItem);
 	} catch (error) {
-		await fs.remove(projectDir);
+		await rm(projectDir, { recursive: true, force: true });
 		throw error;
 	}
 

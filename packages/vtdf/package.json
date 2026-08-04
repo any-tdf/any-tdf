@@ -28,6 +28,7 @@
 		"README.md",
 		"LICENSE",
 		"CHANGELOG.md",
+		"!dist/**/*.map",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
@@ -92,7 +93,7 @@
 		"tag": "alpha"
 	},
 	"scripts": {
-		"build": "vp build --config vite.lib.config.ts && mkdir -p dist/fonts && cp public/fonts/Trueno.otf dist/fonts/Trueno.otf && cp src/index.css dist/style.css && vue-tsc -p tsconfig.lib.json",
+		"build": "vp build --config vite.lib.config.ts && cp src/index.css dist/style.css && vue-tsc -p tsconfig.lib.json && bun run ../../scripts/minify-package-js.mjs dist",
 		"package": "bun run build && publint && bun pm pack --dry-run --quiet",
 		"test": "bun test scripts/release.test.ts",
 		"release:check": "bun run test && bun run check && bun run package",
@@ -105,12 +106,7 @@
 	},
 	"dependencies": {
 		"@any-tdf/common": "workspace:^",
-		"@any-tdf/vue-motion": "workspace:^",
-		"@iconify-json/carbon": "^1.2.24",
-		"@iconify-json/fluent-color": "^1.2.21",
-		"@iconify-json/material-symbols": "^1.2.83",
-		"@iconify-json/solar": "^1.2.5",
-		"@iconify/tailwind4": "^1.2.3"
+		"@any-tdf/vue-motion": "workspace:^"
 	},
 	"devDependencies": {
 		"@types/bun": "catalog:",
@@ -124,7 +120,7 @@
 		"vue-tsc": "catalog:vue"
 	},
 	"peerDependencies": {
-		"tailwindcss": "^4.3.2",
-		"vue": "^3.5.0"
+		"tailwindcss": "catalog:",
+		"vue": "catalog:peer"
 	}
 }

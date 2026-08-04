@@ -73,6 +73,20 @@ const releaseProfiles = new Map([
 			scope: 'Project scaffolding CLI',
 			description: 'Changes to the Any TDF project generator, templates, or command-line behavior.'
 		}
+	],
+	[
+		'@any-tdf/vite-plugin-md-ts',
+		{
+			scope: 'Markdown build tooling',
+			description: 'Changes to the Vite and Rollup plugin that transforms Markdown files into JavaScript modules.'
+		}
+	],
+	[
+		'@any-tdf/vite-plugin-svg-symbol',
+		{
+			scope: 'SVG symbol build tooling',
+			description: 'Changes to the Vite and Rollup plugin that compiles SVG folders into symbol sprites.'
+		}
 	]
 ]);
 

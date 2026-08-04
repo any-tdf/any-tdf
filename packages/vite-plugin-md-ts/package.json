@@ -1,0 +1,70 @@
+{
+	"name": "@any-tdf/vite-plugin-md-ts",
+	"version": "0.0.2",
+	"description": "A Vite and Rollup plugin that transforms Markdown files into JavaScript modules.",
+	"keywords": [
+		"markdown",
+		"md",
+		"plugin",
+		"rollup",
+		"rollup-plugin",
+		"typescript",
+		"vite",
+		"vite-plugin"
+	],
+	"homepage": "https://github.com/any-tdf/any-tdf/tree/main/packages/vite-plugin-md-ts#readme",
+	"bugs": {
+		"url": "https://github.com/any-tdf/any-tdf/issues"
+	},
+	"license": "MIT",
+	"author": "any-tdf",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/vite-plugin-md-ts"
+	},
+	"funding": "https://stdf.dev?fund",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"!dist/**/*.map"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./dist/index.mjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs",
+			"default": "./dist/index.mjs"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "vp pack src/index.ts --dts --minify",
+		"test": "bun test",
+		"package": "bun run build && publint && bun pm pack --dry-run --quiet",
+		"release:check": "bun run check && bun run test && bun run package",
+		"prepack": "bun run ../../scripts/package-license.mjs stage",
+		"postpack": "bun run ../../scripts/package-license.mjs clean",
+		"prepublishOnly": "bun run release:check",
+		"check": "tsc -p tsconfig.json --noEmit",
+		"verify:workspace": "bun run test"
+	},
+	"dependencies": {
+		"marked": "^18.0.9",
+		"rollup-pluginutils": "^2.8.2"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"publint": "catalog:",
+		"typescript": "catalog:typescript7",
+		"vite-plus": "catalog:"
+	}
+}

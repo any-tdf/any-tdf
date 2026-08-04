@@ -1,8 +1,5 @@
 import { execFile } from 'node:child_process';
 import fs from 'node:fs';
-import { createRequire } from 'node:module';
-import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 
 export const builtInIconLibraryOptions = [
 	{ value: 'default', library: 'remix', label: 'Default (Remix)' },
@@ -34,7 +31,6 @@ export const createLanguageOptions = (langAll) => {
 };
 
 export const createVersionResolver = ({ packageRoot, fallbackVersions }) => {
-	const packageRequire = createRequire(path.join(packageRoot, 'package.json'));
 	// npm/npx inject npm_config_registry (e.g. a mirror); fall back to the default npm registry.
 	const registryBaseUrl = (process.env.npm_config_registry || 'https://registry.npmjs.org').replace(/\/+$/, '');
 	const matchesRequestedTag = (manifest, tag) =>
@@ -80,15 +76,7 @@ export const createVersionResolver = ({ packageRoot, fallbackVersions }) => {
 
 		const bunManifest = await getBunManifest(packageName, tag);
 		if (bunManifest?.version && matchesRequestedTag(bunManifest, tag)) return bunManifest;
-
-		try {
-			const pacotePath = packageRequire.resolve('pacote');
-			const pacote = await import(pathToFileURL(pacotePath).href);
-			const pacoteManifest = await (pacote.default || pacote).manifest(getPackageSpec(packageName, tag));
-			return matchesRequestedTag(pacoteManifest, tag) ? pacoteManifest : null;
-		} catch {
-			return null;
-		}
+		return null;
 	};
 
 	const getLatestVersion = async (packageName, tag = 'latest') => {

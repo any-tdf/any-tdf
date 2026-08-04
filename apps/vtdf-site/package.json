@@ -24,14 +24,14 @@
 		"@any-tdf/common": "workspace:*",
 		"@any-tdf/site-common": "workspace:*",
 		"@any-tdf/vue-confetti": "workspace:*",
-		"beautify-qrcode": "^1.0.3",
-		"lucide-vue-next": "^1.0.0",
+		"beautify-qrcode": "catalog:",
+		"lucide-vue-next": "catalog:vue",
 		"vtdf": "workspace:*",
 		"vue": "catalog:vue"
 	},
 	"devDependencies": {
-		"@any-tdf/vite-plugin-md-ts": "catalog:",
-		"@any-tdf/vite-plugin-svg-symbol": "catalog:",
+		"@any-tdf/vite-plugin-md-ts": "workspace:*",
+		"@any-tdf/vite-plugin-svg-symbol": "workspace:*",
 		"@tailwindcss/typography": "catalog:",
 		"@tailwindcss/vite": "catalog:",
 		"@types/bun": "catalog:",

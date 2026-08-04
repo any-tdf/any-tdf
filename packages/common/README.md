@@ -10,6 +10,7 @@
 ![](https://img.shields.io/badge/-Tailwind%20CSS-%2300a6f4?logo=tailwindcss&logoColor=ffffff)
 ![](https://img.shields.io/badge/-Alpha-%23f59e0b)
 
+<!-- npm-readme-exclude:start -->
 <p>
   <a href="https://github.com/any-tdf/any-tdf/blob/main/packages/common/README.md">English</a>
   <span> • </span>
@@ -31,6 +32,7 @@
   <span> • </span>
   <a href="https://github.com/any-tdf/any-tdf/blob/main/packages/common/readme/README_ru_RU.md">Русский</a>
 </p>
+<!-- npm-readme-exclude:end -->
 
 </div>
 

@@ -26,6 +26,7 @@
 		"README.md",
 		"LICENSE",
 		"CHANGELOG.md",
+		"!dist/**/*.map",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
@@ -116,7 +117,7 @@
 		"vite-plus": "catalog:"
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0",
-		"tailwindcss": "^4.0.0"
+		"svelte": "catalog:peer",
+		"tailwindcss": "catalog:peer"
 	}
 }

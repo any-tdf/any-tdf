@@ -25,15 +25,15 @@
 		"@any-tdf/react-confetti": "workspace:*",
 		"@any-tdf/react-motion": "workspace:*",
 		"@any-tdf/site-common": "workspace:*",
-		"lucide-react": "^1.26.0",
+		"lucide-react": "catalog:react",
 		"react": "catalog:react",
 		"react-dom": "catalog:react",
 		"react-router-dom": "catalog:react",
 		"rtdf": "workspace:*"
 	},
 	"devDependencies": {
-		"@any-tdf/vite-plugin-md-ts": "catalog:",
-		"@any-tdf/vite-plugin-svg-symbol": "catalog:",
+		"@any-tdf/vite-plugin-md-ts": "workspace:*",
+		"@any-tdf/vite-plugin-svg-symbol": "workspace:*",
 		"@tailwindcss/typography": "catalog:",
 		"@tailwindcss/vite": "catalog:",
 		"@types/bun": "catalog:",

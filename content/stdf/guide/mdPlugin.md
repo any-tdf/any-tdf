@@ -1,6 +1,6 @@
-[English](./README.md)
+[English](./mdPlugin_en.md)
 
-[![Public Status](https://github.com/any-tdf/vite-plugin-md-ts/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/vite-plugin-md-ts/actions/workflows/publish-npm.yml)
+[![Public Status](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 
 [![npm](https://img.shields.io/npm/v/@any-tdf/vite-plugin-md-ts?logo=npm&label=icon&style=for-the-badge&color=8cf2be&logoColor=D5FCE3&labelColor=01190C)](https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts)
 
@@ -90,4 +90,4 @@ export default defineConfig({
 
 ## 许可证
 
-本项目基于 [MIT 许可证](https://github.com/any-tdf/vite-plugin-md-ts/blob/main/LICENSE)。
+本项目基于 [MIT 许可证](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)。

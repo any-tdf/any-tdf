@@ -7,19 +7,25 @@
 </div>
 <div class="px-4 text-xs">
 	<template v-if="isZh">
-		<p>
-			以上图标使用 <a class="underline" href="https://iconify.design" target="_blank" rel="noreferrer">Iconify</a> 方式。
-		</p>
+		<p>以上图标使用 <a class="underline" href="https://iconify.design" target="_blank" rel="noreferrer">Iconify</a> 方式。</p>
 		<p class="mt-2">
-			第一与第二个来自 <a class="underline" href="https://icon-sets.iconify.design/duo-icons/" target="_blank" rel="noreferrer">duo-icons</a>，第三与第四个来自 <a class="underline" href="https://icon-sets.iconify.design/bitcoin-icons/" target="_blank" rel="noreferrer">bitcoin-icons</a>，最后一个来自 <a class="underline" href="https://icon-sets.iconify.design/fluent-color/" target="_blank" rel="noreferrer">fluent-color</a>。
+			第一与第二个来自
+			<a class="underline" href="https://icon-sets.iconify.design/duo-icons/" target="_blank" rel="noreferrer">duo-icons</a
+			>，第三与第四个来自
+			<a class="underline" href="https://icon-sets.iconify.design/bitcoin-icons/" target="_blank" rel="noreferrer">bitcoin-icons</a
+			>，最后一个来自
+			<a class="underline" href="https://icon-sets.iconify.design/fluent-color/" target="_blank" rel="noreferrer">fluent-color</a>。
 		</p>
 	</template>
 	<template v-else>
-		<p>
-			The above icons use <a class="underline" href="https://iconify.design" target="_blank" rel="noreferrer">Iconify</a>.
-		</p>
+		<p>The above icons use <a class="underline" href="https://iconify.design" target="_blank" rel="noreferrer">Iconify</a>.</p>
 		<p class="mt-2">
-			The first and second come from <a class="underline" href="https://icon-sets.iconify.design/duo-icons/" target="_blank" rel="noreferrer">duo-icons</a>, the third and fourth come from <a class="underline" href="https://icon-sets.iconify.design/bitcoin-icons/" target="_blank" rel="noreferrer">bitcoin-icons</a>, and the last one comes from <a class="underline" href="https://icon-sets.iconify.design/fluent-color/" target="_blank" rel="noreferrer">fluent-color</a>.
+			The first and second come from
+			<a class="underline" href="https://icon-sets.iconify.design/duo-icons/" target="_blank" rel="noreferrer">duo-icons</a>, the
+			third and fourth come from
+			<a class="underline" href="https://icon-sets.iconify.design/bitcoin-icons/" target="_blank" rel="noreferrer">bitcoin-icons</a>,
+			and the last one comes from
+			<a class="underline" href="https://icon-sets.iconify.design/fluent-color/" target="_blank" rel="noreferrer">fluent-color</a>.
 		</p>
 	</template>
 </div>

@@ -16,6 +16,8 @@ const legacyRepositories = [
   "react-confetti",
   "vue-motion",
   "vue-confetti",
+  "vite-plugin-md-ts",
+  "vite-plugin-svg-symbol",
 ];
 const ignoredDirectories = new Set([
   ".bun",

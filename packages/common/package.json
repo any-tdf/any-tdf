@@ -12,10 +12,10 @@
 	"files": [
 		"dist",
 		"source.css",
-		"readme",
 		"README.md",
 		"LICENSE",
 		"CHANGELOG.md",
+		"!dist/**/*.map",
 		"!dist/data",
 		"!dist/data/**",
 		"!dist/assets",
@@ -79,7 +79,7 @@
 		"tag": "alpha"
 	},
 	"scripts": {
-		"build": "rm -rf dist && NODE_OPTIONS=--max-old-space-size=1024 tsc -p tsconfig.json",
+		"build": "rm -rf dist && NODE_OPTIONS=--max-old-space-size=1024 tsc -p tsconfig.json && bun run ../../scripts/minify-package-js.mjs dist",
 		"test": "bun test",
 		"package": "bun run build && publint && bun pm pack --dry-run --quiet",
 		"release:check": "bun run test && bun run check && bun run package",
@@ -96,7 +96,7 @@
 		"typescript": "catalog:typescript7"
 	},
 	"peerDependencies": {
-		"tailwindcss": "^4.0.0"
+		"tailwindcss": "catalog:peer"
 	},
 	"peerDependenciesMeta": {
 		"tailwindcss": {

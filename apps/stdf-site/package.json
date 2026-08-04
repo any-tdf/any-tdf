@@ -27,8 +27,8 @@
 		"stdf": "workspace:*"
 	},
 	"devDependencies": {
-		"@any-tdf/vite-plugin-md-ts": "catalog:",
-		"@any-tdf/vite-plugin-svg-symbol": "catalog:",
+		"@any-tdf/vite-plugin-md-ts": "workspace:*",
+		"@any-tdf/vite-plugin-svg-symbol": "workspace:*",
 		"@lucide/svelte": "^1.24.0",
 		"@sveltejs/adapter-static": "catalog:svelte",
 		"@sveltejs/kit": "catalog:svelte",

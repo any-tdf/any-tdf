@@ -17,7 +17,7 @@
 	},
 	"dependencies": {
 		"@any-tdf/vue-motion": "workspace:*",
-		"lucide-vue-next": "^1.0.0",
+		"lucide-vue-next": "catalog:vue",
 		"vue": "catalog:vue"
 	},
 	"devDependencies": {

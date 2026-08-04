@@ -23,7 +23,8 @@
 		"dist",
 		"README.md",
 		"LICENSE",
-		"CHANGELOG.md"
+		"CHANGELOG.md",
+		"!dist/**/*.map"
 	],
 	"type": "module",
 	"sideEffects": false,
@@ -42,7 +43,7 @@
 		"tag": "alpha"
 	},
 	"scripts": {
-		"build": "tsc -p tsconfig.json",
+		"build": "rm -rf dist && tsc -p tsconfig.json && bun run ../../scripts/minify-package-js.mjs dist",
 		"test": "bun test",
 		"package": "bun run build && publint && bun pm pack --dry-run --quiet",
 		"release:check": "bun run check && bun run test && bun run package",
@@ -63,8 +64,8 @@
 		"typescript": "catalog:typescript7"
 	},
 	"peerDependencies": {
-		"react": "^18.0.0 || ^19.0.0",
-		"react-dom": "^18.0.0 || ^19.0.0"
+		"react": "catalog:peer",
+		"react-dom": "catalog:peer"
 	},
 	"peerDependenciesMeta": {
 		"react": {

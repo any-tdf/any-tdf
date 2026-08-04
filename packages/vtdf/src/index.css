@@ -3,10 +3,6 @@
 
 @custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
 
-@plugin "@iconify/tailwind4" {
-	prefixes: material-symbols, solar, carbon, fluent-color;
-}
-
 @source './';
 @source inline("bg-success bg-warning bg-error bg-info bg-success/10 bg-warning/10 bg-error/10 bg-info/10 bg-success/30 bg-warning/30 bg-error/30 bg-info/30 text-success text-warning text-error text-info border-success border-warning border-error border-info border-t-success border-t-warning border-t-error border-t-info border-b-success border-b-warning border-b-error border-b-info border-l-success border-l-warning border-l-error border-l-info border-r-success border-r-warning border-r-error border-r-info");
 @source inline("bg-black/20 dark:bg-white/20 bg-primary/20 dark:bg-dark/20 w-full w-2 w-4 w-6 w-8 w-12 w-16 w-24 w-32 w-48 w-64 w-96 h-1 h-2 h-4 h-6 h-8 h-12 h-16 h-24 h-32 h-48 h-64 h-96 p-0.5 p-1 p-2 p-4 p-8 w-1/2 w-1/3 w-2/3 w-1/4 w-3/4 w-2/5 w-3/5 w-4/5 w-5/6");
@@ -92,13 +88,6 @@
 	--color-React: oklch(0.702 0.194 38.137);
 	--color-extend2: oklch(0.482 0.107 161.212);
 	--color-Starbucks: oklch(0.482 0.107 161.212);
-
-	--font-Trueno: Trueno, sans-serif;
-}
-
-@font-face {
-	font-family: Trueno;
-	src: url('/fonts/Trueno.otf') format('opentype');
 }
 
 *::-webkit-scrollbar {

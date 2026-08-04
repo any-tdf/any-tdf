@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"@any-tdf/react-confetti": "workspace:*",
-		"lucide-react": "^1.23.0",
+		"lucide-react": "catalog:react",
 		"react": "catalog:react",
 		"react-dom": "catalog:react"
 	},

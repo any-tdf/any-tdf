@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"@any-tdf/vue-confetti": "workspace:*",
-		"lucide-vue-next": "^1.0.0",
+		"lucide-vue-next": "catalog:vue",
 		"vue": "catalog:vue"
 	},
 	"devDependencies": {

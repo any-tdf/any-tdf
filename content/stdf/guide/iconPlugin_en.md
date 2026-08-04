@@ -1,6 +1,6 @@
-[简体中文](https://github.com/any-tdf/vite-plugin-svg-symbol/blob/main/README_CN.md)
+[简体中文](./iconPlugin.md)
 
-[![Public Status](https://github.com/any-tdf/vite-plugin-svg-symbol/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/vite-plugin-svg-symbol/actions/workflows/publish-npm.yml)
+[![Public Status](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 
 [![npm](https://img.shields.io/npm/v/@any-tdf/vite-plugin-svg-symbol?logo=npm&label=icon&style=for-the-badge&color=8cf2be&logoColor=D5FCE3&labelColor=01190C)](https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol)
 
@@ -97,4 +97,4 @@ In general, the use of symbols is to combine a series of small, single-color SVG
 
 # License
 
-This project is licensed under the [MIT License](https://github.com/any-tdf/vite-plugin-svg-symbol/blob/main/LICENSE).
+This project is licensed under the [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE).

@@ -1,8 +1,6 @@
 # @any-tdf/react-motion
 
-`@any-tdf/react-motion` 是一个面向 React 的动画工具包，参考 Svelte 的 `svelte/easing`、`svelte/transition`、`svelte/animate` 和 `svelte/motion` API。它不是 RTDF 专用包，可以在普通 React 项目中独立使用。
-
-English: `@any-tdf/react-motion` is an independent React animation package inspired by Svelte animation APIs. It keeps familiar function names, parameter names, and runtime behavior while exposing React components and hooks.
+`@any-tdf/react-motion` is an independent React animation package inspired by Svelte animation APIs. It keeps familiar function names, parameter names, and runtime behavior while exposing React components and hooks.
 
 ## Install
 
@@ -50,17 +48,17 @@ export const Progress = ({ value }: { value: number }) => {
 
 | Module     | Import                             | Includes                                                                                |
 | ---------- | ---------------------------------- | --------------------------------------------------------------------------------------- |
-| Easing     | `@any-tdf/react-motion/easing`     | 31 个 Svelte easing 函数                                                                |
-| Transition | `@any-tdf/react-motion/transition` | `blur`、`crossfade`、`draw`、`fade`、`fly`、`scale`、`slide`                            |
-| Animate    | `@any-tdf/react-motion/animate`    | `flip`、`FlipGroup`、`useFlipList`                                                      |
-| Motion     | `@any-tdf/react-motion/motion`     | `Spring`、`Tween`、`spring`、`tweened`、`useSpring`、`useTween`、`prefersReducedMotion` |
-| React      | `@any-tdf/react-motion/react`      | `Transition`、`useTransition`                                                           |
+| Easing     | `@any-tdf/react-motion/easing`     | 31 Svelte easing functions                                                              |
+| Transition | `@any-tdf/react-motion/transition` | `blur`, `crossfade`, `draw`, `fade`, `fly`, `scale`, `slide`                            |
+| Animate    | `@any-tdf/react-motion/animate`    | `flip`, `FlipGroup`, `useFlipList`                                                      |
+| Motion     | `@any-tdf/react-motion/motion`     | `Spring`, `Tween`, `spring`, `tweened`, `useSpring`, `useTween`, `prefersReducedMotion` |
+| React      | `@any-tdf/react-motion/react`      | `Transition`, `useTransition`                                                           |
 
-更完整的对齐说明见 [API_COMPATIBILITY.md](./API_COMPATIBILITY.md)。
+See the [API compatibility notes](https://github.com/any-tdf/any-tdf/blob/main/packages/react-motion/API_COMPATIBILITY.md) for the complete alignment details.
 
 ## Documentation Site
 
-文档站位于包内的 `packages/react-motion/docs`，支持中文和英文，并包含 Svelte Playground 风格的 Easing Visualiser Demo。
+The bilingual documentation site lives in `packages/react-motion/docs` and includes a Svelte Playground-style Easing Visualiser demo.
 
 ```bash
 bun run --filter @any-tdf/react-motion-site dev
@@ -74,7 +72,7 @@ bun run build
 bun run --filter @any-tdf/react-motion-site build
 ```
 
-文档站不会进入 npm 包。
+The documentation site is not included in the npm package.
 
 ## Links
 

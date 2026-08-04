@@ -49,6 +49,7 @@ export default defineConfig({
 	build: {
 		outDir: 'dist',
 		emptyOutDir: true,
+		minify: 'oxc',
 		lib: {
 			entry: {
 				index: resolve(__dirname, 'src/lib/index.ts'),

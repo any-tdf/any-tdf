@@ -415,26 +415,17 @@ const extractCssClasses = (source: string, prefix: string) => {
 };
 
 const checkDemoAssets = () => {
-	const rtdfPackageRoot = join(workspaceRoot, 'packages/rtdf');
-	const cssPath = join(rtdfPackageRoot, 'src/index.css');
-	const fontPath = join(rtdfPackageRoot, 'public/fonts/Trueno.otf');
-	const packageJson = JSON.parse(readFileSync(join(rtdfPackageRoot, 'package.json'), 'utf8')) as { scripts?: Record<string, string> };
+	const cssPath = join(packageRoot, 'src/index.css');
+	const fontPath = join(packageRoot, 'public/fonts/Trueno.otf');
 	const css = readFileSync(cssPath, 'utf8');
-	const buildLibScript = packageJson.scripts?.build || '';
 	const missing: string[] = [];
 	if (!existsSync(fontPath)) missing.push('public/fonts/Trueno.otf');
 	if (!css.includes('@font-face')) missing.push('src/index.css @font-face');
 	if (!css.includes('/fonts/Trueno.otf')) missing.push('src/index.css /fonts/Trueno.otf');
-	if (!buildLibScript.includes('public/fonts/Trueno.otf') || !buildLibScript.includes('dist/fonts/Trueno.otf')) {
-		missing.push('build:lib Trueno.otf copy');
-	}
 	return {
 		name: 'demo assets',
 		ok: missing.length === 0,
-		details: [
-			'checked Trueno font asset, CSS face and library packaging',
-			...(missing.length > 0 ? [`missing: ${missing.join(', ')}`] : [])
-		]
+		details: ['checked demo-owned Trueno font asset and CSS face', ...(missing.length > 0 ? [`missing: ${missing.join(', ')}`] : [])]
 	} satisfies CheckResult;
 };
 

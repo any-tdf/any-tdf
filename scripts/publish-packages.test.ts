@@ -5,14 +5,18 @@ import { resolve } from 'node:path';
 import { retryRegistryOperation } from './verify-package-consumers.mjs';
 import {
 	assertInternalDependencyAvailability,
+	collectWorkspaces,
 	createPublishPlan,
 	createSelectedPublishPlan,
 	isConfiguredNodeAuthToken,
 	isTrustedPublishingAuthenticationFailure,
 	parseArguments,
 	publishCandidates,
+	sanitizePackedReadme,
 	sortPublishCandidates,
-	validatePackedManifest
+	validatePackedArchiveSize,
+	validatePackedManifest,
+	validatePackedReadme
 } from './publish-packages.mjs';
 
 type Manifest = {
@@ -241,6 +245,36 @@ describe('npm publish planning', () => {
 describe('packed package validation', () => {
 	const files = ['package/package.json', 'package/README.md', 'package/LICENSE', 'package/dist/index.js', 'package/dist/index.d.ts'];
 
+	test('removes repository-only language navigation from the packed README', () => {
+		const readme = [
+			'# Package',
+			'',
+			'<!-- npm-readme-exclude:start -->',
+			'[简体中文](./README_CN.md)',
+			'<!-- npm-readme-exclude:end -->',
+			'',
+			'English package documentation.'
+		].join('\n');
+
+		expect(sanitizePackedReadme(readme)).toBe('# Package\n\nEnglish package documentation.\n');
+	});
+
+	test('rejects malformed npm README exclusion markers', () => {
+		expect(() => sanitizePackedReadme('<!-- npm-readme-exclude:start -->\nMissing end marker.')).toThrow(
+			'npm README exclusion markers must be balanced'
+		);
+	});
+
+	test('accepts an English-only packed README', () => {
+		expect(() => validatePackedReadme(common.manifest, '# Package\n\nEnglish package documentation.\n')).not.toThrow();
+	});
+
+	test('rejects localized content and README links', () => {
+		expect(() => validatePackedReadme(common.manifest, '[简体中文](./README_CN.md)')).toThrow(
+			'README must not link to localized README files'
+		);
+	});
+
 	test('accepts converted dependency ranges and existing export targets', () => {
 		expect(() =>
 			validatePackedManifest(
@@ -312,9 +346,95 @@ describe('packed package validation', () => {
 			)
 		).toThrow('bin target is missing from the archive: dist/cli.js');
 	});
+
+	test('rejects source maps and localized README files from the archive', () => {
+		expect(() =>
+			validatePackedManifest(rtdf, rtdf.manifest, [...files, 'package/dist/index.js.map', 'package/README_CN.md'])
+		).toThrow('Source maps must not be published');
+		expect(() => validatePackedManifest(rtdf, rtdf.manifest, [...files, 'package/README_CN.md'])).toThrow(
+			'Localized README files must not be published'
+		);
+	});
+
+	test('rejects demo-only Iconify dependencies from component packages', () => {
+		expect(() =>
+			validatePackedManifest(
+				rtdf,
+				{
+					...rtdf.manifest,
+					dependencies: {
+						...rtdf.manifest.dependencies,
+						'@iconify-json/material-symbols': '^1.0.0'
+					}
+				},
+				files
+			)
+		).toThrow('must not publish demo-only Iconify dependency @iconify-json/material-symbols');
+	});
+
+	test('rejects replaceable heavyweight runtime dependencies', () => {
+		const createCli = workspace({
+			name: 'create-any-tdf',
+			version: '1.0.0',
+			dependencies: { oxfmt: '^1.0.0' }
+		});
+		expect(() => validatePackedManifest(createCli, createCli.manifest, files)).toThrow(
+			'must not publish replaceable runtime dependency oxfmt'
+		);
+	});
+
+	test('enforces an explicit compressed size budget for every published package', () => {
+		expect(() => validatePackedArchiveSize(common.manifest, 384 * 1024)).not.toThrow();
+		expect(() => validatePackedArchiveSize(common.manifest, 384 * 1024 + 1)).toThrow('packed archive exceeds its size limit');
+		expect(() => validatePackedArchiveSize({ name: 'new-package' }, 1)).toThrow('Missing packed archive size limit');
+	});
 });
 
 describe('npm publish scope', () => {
+	test('keeps every public npm package English-only and source-map-free', async () => {
+		const publicWorkspaces = (await collectWorkspaces(workspaceRoot)).filter(({ manifest }) => manifest.private !== true);
+
+		for (const publicWorkspace of publicWorkspaces) {
+			const { manifest } = publicWorkspace;
+			expect(manifest.files).toContain('README.md');
+			expect(manifest.files).toContain('!dist/**/*.map');
+			expect(manifest.files).not.toContain('README_CN.md');
+			expect(manifest.files).not.toContain('readme');
+
+			const sourceReadme = await Bun.file(resolve(publicWorkspace.directory, 'README.md')).text();
+			const packedReadme = sanitizePackedReadme(sourceReadme);
+			expect(() => validatePackedReadme(manifest, packedReadme)).not.toThrow();
+		}
+	});
+
+	test('publishes both Vite plugins through the shared npm CI workflow', async () => {
+		const packageNames = ['@any-tdf/vite-plugin-md-ts', '@any-tdf/vite-plugin-svg-symbol'];
+		const [rootManifest, publishWorkflow, packageWorkflow, ...pluginManifests] = await Promise.all([
+			Bun.file(resolve(workspaceRoot, 'package.json')).json(),
+			Bun.file(resolve(workspaceRoot, '.github/workflows/publish-npm.yml')).text(),
+			Bun.file(resolve(workspaceRoot, '.github/workflows/publish-npm-package.yml')).text(),
+			...packageNames.map((name) =>
+				Bun.file(resolve(workspaceRoot, `packages/${name.slice('@any-tdf/'.length)}/package.json`)).json()
+			)
+		]);
+
+		expect(publishWorkflow).toContain('uses: ./.github/workflows/publish-npm-package.yml');
+		expect(publishWorkflow).toContain('id-token: write');
+		expect(packageWorkflow).toContain('package-manager-cache: false');
+		expect(packageWorkflow).toContain('run: bun run publish:npm -- --package="${{ inputs.package-name }}"');
+
+		for (const [index, manifest] of pluginManifests.entries()) {
+			const packageName = packageNames[index];
+			expect(manifest.name).toBe(packageName);
+			expect(manifest.private).not.toBeTrue();
+			expect(manifest.publishConfig).toEqual({ access: 'public' });
+			expect(manifest.scripts.build).toContain('vp pack');
+			expect(manifest.scripts['release:check']).toBeDefined();
+			expect(manifest.scripts.prepublishOnly).toBe('bun run release:check');
+			expect(rootManifest.scripts['publish:npm:check:packages']).toContain(`--filter=${packageName}`);
+		}
+	});
+
 	test('keeps repository Skills private and outside npm publishing pipelines', async () => {
 		const skillNames = ['rtdf-skill', 'stdf-skill', 'vtdf-skill'];
 		const [rootManifest, turboConfig, changesetConfig, publishWorkflow, ...skillManifests] = await Promise.all([

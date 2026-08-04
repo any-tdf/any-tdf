@@ -74,6 +74,12 @@ const executableDependencyRules = new Map([
   ["vue-tsc", "vue-tsc"],
   ["vp", "vite-plus"],
 ]);
+const dependencySections = [
+  "dependencies",
+  "devDependencies",
+  "peerDependencies",
+  "optionalDependencies",
+];
 const catalogProtocols = new Map();
 
 const normalizePath = (path) => path.replaceAll("\\", "/");
@@ -251,16 +257,22 @@ const inspectManifestDependencies = (path, manifest, isRoot = false) => {
     }
   }
 
-  for (const [dependencyName, version] of Object.entries(manifest.devDependencies ?? {})) {
-    const protocols = catalogProtocols.get(dependencyName);
-    if (protocols && !protocols.has(version)) {
-      errors.push(
-        `${path}: devDependencies.${dependencyName} must use ${[...protocols].join(" or ")}, received ${version}`,
-      );
-    }
+  for (const section of dependencySections) {
+    for (const [dependencyName, version] of Object.entries(manifest[section] ?? {})) {
+      const protocols = catalogProtocols.get(dependencyName);
+      if (protocols && !protocols.has(version)) {
+        errors.push(
+          `${path}: ${section}.${dependencyName} must use ${[...protocols].join(" or ")}, received ${version}`,
+        );
+      }
 
-    if (!isRoot && rootOnlyDevDependencies.has(dependencyName)) {
-      errors.push(`${path}: ${dependencyName} is a root-only development dependency.`);
+      if (
+        section === "devDependencies" &&
+        !isRoot &&
+        rootOnlyDevDependencies.has(dependencyName)
+      ) {
+        errors.push(`${path}: ${dependencyName} is a root-only development dependency.`);
+      }
     }
   }
 };
@@ -378,6 +390,10 @@ for (const { path, manifest } of workspaces) {
 
 const publishWorkflowPath = ".github/workflows/publish-npm.yml";
 const publishWorkflow = await Bun.file(resolve(workspaceRoot, publishWorkflowPath)).text();
+const packagePublishWorkflowPath = ".github/workflows/publish-npm-package.yml";
+const packagePublishWorkflow = await Bun.file(
+  resolve(workspaceRoot, packagePublishWorkflowPath),
+).text();
 const ciWorkflowPath = ".github/workflows/ci.yml";
 const ciWorkflow = await Bun.file(resolve(workspaceRoot, ciWorkflowPath)).text();
 const requiredPublishWorkflowFragments = [
@@ -392,6 +408,16 @@ const requiredPublishWorkflowFragments = [
   "name: npm-publish-metadata",
   "run-id: ${{ github.event.workflow_run.id }}",
   "BASE_SHA: ${{ steps.comparison.outputs.base-sha }}",
+  "id-token: write",
+];
+const requiredPackagePublishWorkflowFragments = [
+  "actions/checkout@v6",
+  "actions/setup-node@v6",
+  "node-version: '24'",
+  "registry-url: https://registry.npmjs.org",
+  "package-manager-cache: false",
+  "id-token: write",
+  'run: bun run publish:npm -- --package="${{ inputs.package-name }}"',
 ];
 const requiredCiWorkflowFragments = [
   "BASE_SHA: ${{ github.event.before }}",
@@ -404,42 +430,49 @@ for (const fragment of requiredPublishWorkflowFragments) {
     errors.push(`${publishWorkflowPath}: npm publishing must wait for CI and consume ${fragment}.`);
   }
 }
+for (const fragment of requiredPackagePublishWorkflowFragments) {
+  if (!packagePublishWorkflow.includes(fragment)) {
+    errors.push(
+      `${packagePublishWorkflowPath}: npm Trusted Publishing requires ${fragment}.`,
+    );
+  }
+}
 for (const fragment of requiredCiWorkflowFragments) {
   if (!ciWorkflow.includes(fragment)) {
     errors.push(`${ciWorkflowPath}: CI must preserve npm publish metadata with ${fragment}.`);
   }
 }
 
-const sharedDevDependencies = new Map();
+const sharedExternalDependencies = new Map();
 for (const { path, manifest } of [
   { path: "package.json", manifest: rootManifest },
   ...workspaces,
 ]) {
-  for (const [dependencyName, version] of Object.entries(manifest.devDependencies ?? {})) {
-    if (version.startsWith("workspace:")) continue;
-    const consumers = sharedDevDependencies.get(dependencyName) ?? [];
-    consumers.push({ path, version });
-    sharedDevDependencies.set(dependencyName, consumers);
+  for (const section of dependencySections) {
+    for (const [dependencyName, version] of Object.entries(manifest[section] ?? {})) {
+      if (names.has(dependencyName)) continue;
+      const consumers = sharedExternalDependencies.get(dependencyName) ?? [];
+      consumers.push({ path, section, version });
+      sharedExternalDependencies.set(dependencyName, consumers);
+    }
   }
 }
 
-for (const [dependencyName, consumers] of sharedDevDependencies) {
-  if (consumers.length < 2 || consumers.every(({ version }) => version.startsWith("catalog:")))
-    continue;
+for (const [dependencyName, consumers] of sharedExternalDependencies) {
+  const consumerPaths = new Set(consumers.map(({ path }) => path));
+  if (consumerPaths.size < 2) continue;
+  const protocols = catalogProtocols.get(dependencyName);
+  if (protocols && consumers.every(({ version }) => protocols.has(version))) continue;
+
   errors.push(
-    `Shared development dependency ${dependencyName} must use a root catalog: ${consumers.map(({ path, version }) => `${path}=${version}`).join(", ")}`,
+    `Shared external dependency ${dependencyName} must use a root catalog: ${consumers.map(({ path, section, version }) => `${path}:${section}=${version}`).join(", ")}`,
   );
 }
 
 for (const { path, manifest } of workspaces) {
   const expectedProtocol = manifest.private === true ? "workspace:*" : "workspace:^";
 
-  for (const section of [
-    "dependencies",
-    "devDependencies",
-    "peerDependencies",
-    "optionalDependencies",
-  ]) {
+  for (const section of dependencySections) {
     for (const [dependencyName, version] of Object.entries(manifest[section] ?? {})) {
       if (!names.has(dependencyName)) continue;
       if (version !== expectedProtocol) {

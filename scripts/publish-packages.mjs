@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { cleanStagedLicense } from './package-license.mjs';
@@ -8,6 +8,31 @@ const dependencySections = ['dependencies', 'optionalDependencies', 'peerDepende
 const manifestDependencySections = [...dependencySections, 'devDependencies'];
 const publishLifecycleScripts = ['prepack', 'postpack', 'prepare', 'prepublish', 'prepublishOnly', 'publish', 'postpublish'];
 const defaultRegistry = 'https://registry.npmjs.org';
+const npmReadmeExcludeStart = '<!-- npm-readme-exclude:start -->';
+const npmReadmeExcludeEnd = '<!-- npm-readme-exclude:end -->';
+const npmReadmeExcludeBlockPattern =
+	/<!-- npm-readme-exclude:start -->[\s\S]*?<!-- npm-readme-exclude:end -->\r?\n?/g;
+const localizedReadmeReferencePattern = /README[_-][A-Za-z][\w-]*\.md/i;
+const nonEnglishReadmeScriptPattern = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Script=Cyrillic}]/u;
+const componentPackageNames = new Set(['stdf', 'rtdf', 'vtdf']);
+const isDemoOnlyIconDependency = (name) => name === '@iconify/tailwind4' || name.startsWith('@iconify-json/');
+const prohibitedRuntimeDependencies = new Map([
+	['create-any-tdf', new Set(['fs-extra', 'oxfmt', 'pacote'])],
+	['@any-tdf/vite-plugin-svg-symbol', new Set(['fs-extra', 'svgstore'])]
+]);
+const packedArchiveSizeLimits = new Map([
+	['@any-tdf/common', 384 * 1024],
+	['create-any-tdf', 112 * 1024],
+	['@any-tdf/react-confetti', 8 * 1024],
+	['@any-tdf/react-motion', 18 * 1024],
+	['rtdf', 120 * 1024],
+	['stdf', 170 * 1024],
+	['@any-tdf/vite-plugin-md-ts', 6 * 1024],
+	['@any-tdf/vite-plugin-svg-symbol', 8 * 1024],
+	['vtdf', 120 * 1024],
+	['@any-tdf/vue-confetti', 9 * 1024],
+	['@any-tdf/vue-motion', 19 * 1024]
+]);
 
 const normalizePath = (path) => path.replaceAll('\\', '/');
 const packageSlug = (name) => name.replace(/^@/, '').replaceAll('/', '-');
@@ -212,6 +237,36 @@ const isLocalDependencySpecifier = (value) =>
 	value.startsWith('/') ||
 	/^[a-zA-Z]:[\\/]/.test(value);
 
+export const sanitizePackedReadme = (readme) => {
+	const startCount = readme.split(npmReadmeExcludeStart).length - 1;
+	const endCount = readme.split(npmReadmeExcludeEnd).length - 1;
+	if (startCount !== endCount) throw new Error('npm README exclusion markers must be balanced.');
+
+	const sanitized = readme.replace(npmReadmeExcludeBlockPattern, '').replace(/\n{3,}/g, '\n\n');
+	if (sanitized.includes(npmReadmeExcludeStart) || sanitized.includes(npmReadmeExcludeEnd)) {
+		throw new Error('npm README exclusion markers must be ordered and cannot be nested.');
+	}
+
+	return `${sanitized.trimEnd()}\n`;
+};
+
+export const validatePackedReadme = (manifest, readme) => {
+	const errors = [];
+	if (localizedReadmeReferencePattern.test(readme)) errors.push('README must not link to localized README files.');
+	if (nonEnglishReadmeScriptPattern.test(readme)) errors.push('README must contain English content only.');
+	if (errors.length) throw new Error(`${manifest.name} packed README validation failed:\n${errors.join('\n')}`);
+};
+
+export const validatePackedArchiveSize = (manifest, archiveBytes) => {
+	const limit = packedArchiveSizeLimits.get(manifest.name);
+	if (!limit) throw new Error(`Missing packed archive size limit for ${manifest.name}.`);
+	if (archiveBytes > limit) {
+		throw new Error(
+			`${manifest.name} packed archive exceeds its size limit: ${(archiveBytes / 1024).toFixed(1)} KiB > ${(limit / 1024).toFixed(1)} KiB.`
+		);
+	}
+};
+
 export const validatePackedManifest = (sourceWorkspace, manifest, files) => {
 	const errors = [];
 	if (manifest.name !== sourceWorkspace.manifest.name || manifest.version !== sourceWorkspace.manifest.version) {
@@ -223,11 +278,33 @@ export const validatePackedManifest = (sourceWorkspace, manifest, files) => {
 	for (const requiredFile of ['package/package.json', 'package/README.md', 'package/LICENSE']) {
 		if (!files.includes(requiredFile)) errors.push(`Missing ${requiredFile.slice('package/'.length)}.`);
 	}
+	const sourceMapFiles = files.filter((file) => file.endsWith('.map'));
+	if (sourceMapFiles.length) errors.push(`Source maps must not be published: ${sourceMapFiles.join(', ')}.`);
+	const localizedReadmeFiles = files.filter((file) => {
+		const packagePath = file.startsWith('package/') ? file.slice('package/'.length) : file;
+		return (
+			packagePath.toLowerCase().startsWith('readme/') ||
+			(/^readme[^/]*\.md$/i.test(packagePath) && packagePath.toLowerCase() !== 'readme.md')
+		);
+	});
+	if (localizedReadmeFiles.length) {
+		errors.push(`Localized README files must not be published: ${localizedReadmeFiles.join(', ')}.`);
+	}
 
 	for (const section of manifestDependencySections) {
 		for (const [dependencyName, value] of Object.entries(manifest[section] ?? {})) {
 			if (typeof value !== 'string' || isLocalDependencySpecifier(value)) {
 				errors.push(`${section}.${dependencyName} contains an unpublished dependency specifier: ${value}`);
+			}
+		}
+	}
+	const prohibitedDependencies = prohibitedRuntimeDependencies.get(manifest.name);
+	if (prohibitedDependencies) {
+		for (const section of dependencySections) {
+			for (const dependencyName of Object.keys(manifest[section] ?? {})) {
+				if (prohibitedDependencies.has(dependencyName)) {
+					errors.push(`${manifest.name} must not publish replaceable runtime dependency ${dependencyName}.`);
+				}
 			}
 		}
 	}
@@ -251,12 +328,19 @@ export const validatePackedManifest = (sourceWorkspace, manifest, files) => {
 		}
 	}
 
-	if (['stdf', 'rtdf', 'vtdf'].includes(manifest.name)) {
+	if (componentPackageNames.has(manifest.name)) {
 		if (!manifest.dependencies?.['@any-tdf/common']) {
 			errors.push(`${manifest.name} must publish @any-tdf/common as a dependency.`);
 		}
 		if (files.some((file) => file.startsWith('package/dist/common/'))) {
 			errors.push(`${manifest.name} must not bundle @any-tdf/common into dist/common.`);
+		}
+		for (const section of dependencySections) {
+			for (const dependencyName of Object.keys(manifest[section] ?? {})) {
+				if (isDemoOnlyIconDependency(dependencyName)) {
+					errors.push(`${manifest.name} must not publish demo-only Iconify dependency ${dependencyName}.`);
+				}
+			}
 		}
 	}
 
@@ -292,8 +376,13 @@ export const packWorkspace = async (workspace, temporaryDirectory) => {
 	await runCommand(['tar', '-xzf', rawArchive, '-C', extractDirectory]);
 	const packageDirectory = resolve(extractDirectory, 'package');
 	const manifestPath = resolve(packageDirectory, 'package.json');
+	const readmePath = resolve(packageDirectory, 'README.md');
 	const packedManifest = sanitizePackedManifest(JSON.parse(await readFile(manifestPath, 'utf-8')));
-	await writeFile(manifestPath, `${JSON.stringify(packedManifest, null, '\t')}\n`, 'utf-8');
+	const packedReadme = sanitizePackedReadme(await readFile(readmePath, 'utf-8'));
+	await Promise.all([
+		writeFile(manifestPath, `${JSON.stringify(packedManifest, null, '\t')}\n`, 'utf-8'),
+		writeFile(readmePath, packedReadme, 'utf-8')
+	]);
 
 	const { stdout } = await runCommand(['tar', '-tzf', rawArchive], { capture: true });
 	const files = stdout
@@ -302,10 +391,13 @@ export const packWorkspace = async (workspace, temporaryDirectory) => {
 		.map((file) => file.replace(/^\.\//, '').replace(/\/$/, ''))
 		.filter(Boolean);
 	validatePackedManifest(workspace, packedManifest, files);
+	validatePackedReadme(packedManifest, packedReadme);
 	await runCommand(['tar', '-czf', finalArchive, '-C', extractDirectory, 'package']);
+	const archiveBytes = (await stat(finalArchive)).size;
+	validatePackedArchiveSize(packedManifest, archiveBytes);
 	await rm(rawArchive, { force: true });
 
-	return { workspace, manifest: packedManifest, files, archivePath: finalArchive };
+	return { workspace, manifest: packedManifest, files, archivePath: finalArchive, archiveBytes };
 };
 
 export const publishCandidates = async (packages, options) => {
