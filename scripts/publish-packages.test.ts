@@ -6,6 +6,7 @@ import {
 	assertInternalDependencyAvailability,
 	createPublishPlan,
 	createSelectedPublishPlan,
+	isConfiguredNodeAuthToken,
 	isTrustedPublishingAuthenticationFailure,
 	parseArguments,
 	publishCandidates,
@@ -130,6 +131,12 @@ const applyFixtureChangeset = async (releases: Record<string, ChangesetRelease>)
 };
 
 describe('npm Trusted Publishing fallback', () => {
+	test('ignores the setup-node authentication placeholder', () => {
+		expect(isConfiguredNodeAuthToken('XXXXX-XXXXX')).toBeFalse();
+		expect(isConfiguredNodeAuthToken('')).toBeFalse();
+		expect(isConfiguredNodeAuthToken('npm_real_token')).toBeTrue();
+	});
+
 	test('retries new package creation when npm hides missing permission behind E404', () => {
 		expect(
 			isTrustedPublishingAuthenticationFailure(

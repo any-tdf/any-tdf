@@ -421,6 +421,8 @@ export const isTrustedPublishingAuthenticationFailure = (error) => {
 	);
 };
 
+export const isConfiguredNodeAuthToken = (token) => Boolean(token && token !== 'XXXXX-XXXXX');
+
 const npmPublish = async (packageData, dryRun) => {
 	const command = [
 		'npm',
@@ -443,7 +445,7 @@ const npmPublish = async (packageData, dryRun) => {
 		if (result.stderr.trim()) console.error(result.stderr.trim());
 	};
 
-	if (process.env.NODE_AUTH_TOKEN) {
+	if (isConfiguredNodeAuthToken(process.env.NODE_AUTH_TOKEN)) {
 		await publishWithEnvironment({});
 		return;
 	}
