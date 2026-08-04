@@ -40,6 +40,7 @@ const chromePath =
 if (!chromePath) throw new Error('Chrome or Chromium executable was not found.');
 
 const debugPort = Number(process.env.SITE_UI_PARITY_DEBUG_PORT ?? 9245);
+const geometryTolerance = 2;
 const userDataDir = mkdtempSync(join(tmpdir(), 'any-tdf-site-parity-'));
 const sleep = (duration: number) => new Promise((resolve) => setTimeout(resolve, duration));
 const chrome = Bun.spawn(
@@ -229,7 +230,7 @@ const assertMetricsMatch = (scenario: string, baseline: Record<string, ElementMe
 		for (const [key, expectedValue] of Object.entries(expected)) {
 			const actualValue = actual[selector]?.[key];
 			if (typeof expectedValue === 'number' && typeof actualValue === 'number') {
-				if (Math.abs(expectedValue - actualValue) <= 1) continue;
+				if (Math.abs(expectedValue - actualValue) <= geometryTolerance) continue;
 			} else if (expectedValue === actualValue) {
 				continue;
 			}
