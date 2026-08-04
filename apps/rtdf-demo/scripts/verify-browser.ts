@@ -230,42 +230,40 @@ const clickText = async (text: string, index = 0) => {
 	await sleep(150);
 };
 
-const setFirstInputValue = async (value: string) => {
+const setInputValue = async (currentValue: string, nextValue: string) => {
 	const result = await runInPage<{ ok: boolean; reason?: string; candidates: Array<{ tag: string; type: string; value: string }> }>(`
 		const isVisible = (element) => {
 			const rect = element.getBoundingClientRect();
 			const style = getComputedStyle(element);
 			return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
 		};
-		const isTextInput = (element) => {
-			if (element instanceof HTMLTextAreaElement) return true;
-			return ['text', 'search', 'email', 'tel', 'url', 'password'].includes(element.type || 'text');
-		};
 		const all = [...document.querySelectorAll('input,textarea')];
 		const editable = all.filter((element) => !element.disabled && !element.readOnly && isVisible(element));
-		const input = editable.find(isTextInput) || editable[0];
+		const input = editable.find((element) => element.value === ${JSON.stringify(currentValue)});
 		const candidates = editable.slice(0, 8).map((element) => ({
 			tag: element.tagName.toLowerCase(),
 			type: element instanceof HTMLInputElement ? element.type : 'textarea',
 			value: element.value,
 		}));
-		if (!input) return { ok: false, reason: 'no editable input', candidates };
+		if (!input) return { ok: false, reason: 'target input not found', candidates };
 		input.scrollIntoView({ block: 'center', inline: 'center' });
 		input.focus();
-		const prototype = input instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
-		const descriptor = Object.getOwnPropertyDescriptor(prototype, 'value');
-		if (!descriptor?.set) return { ok: false, reason: 'value setter missing', candidates };
-		descriptor.set.call(input, ${JSON.stringify(value)});
-		input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: ${JSON.stringify(value)} }));
-		input.dispatchEvent(new Event('change', { bubbles: true }));
-		await new Promise((resolve) => setTimeout(resolve, 30));
+		input.select();
 		return {
-			ok: [...document.querySelectorAll('input,textarea')].some((element) => element.value === ${JSON.stringify(value)}),
-			reason: input.value,
+			ok: document.activeElement === input,
+			reason: document.activeElement === input ? '' : 'target input did not receive focus',
 			candidates,
 		};
 	`);
-	if (!result.ok) throw new Error(`Unable to set input value: ${JSON.stringify(result)}`);
+	if (!result.ok) throw new Error(`Unable to focus input: ${JSON.stringify(result)}`);
+	await page.call('Input.insertText', { text: nextValue });
+	await waitFor(
+		() =>
+			runInPage<boolean>(
+				`return [...document.querySelectorAll('input,textarea')].some((input) => input.value === ${JSON.stringify(nextValue)});`
+			),
+		'input value'
+	);
 };
 
 const bodyIncludes = (text: string) => {
@@ -759,15 +757,9 @@ const scenarios: Scenario[] = [
 		name: 'Input accepts browser input events',
 		path: '/input/en_US',
 		steps: [
-			() => setFirstInputValue('RTDF input smoke'),
-			() =>
-				waitFor(
-					() =>
-						runInPage<boolean>(
-							`return [...document.querySelectorAll('input,textarea')].some((input) => input.value === 'RTDF input smoke');`
-						),
-					'input value'
-				)
+			() => setInputValue('Initial text', 'RTDF input smoke'),
+			() => clickText('Show Current Value'),
+			() => waitFor(() => bodyIncludes('Current input text: RTDF input smoke'), 'controlled input value')
 		]
 	},
 	{
