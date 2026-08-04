@@ -214,7 +214,7 @@ const scenarios: Array<{ name: string; run: () => Promise<void> }> = [
 	{
 		name: '首页渲染（hero/主题系统/组件网格/footer）',
 		run: async () => {
-			await goto('/', '.site-hero-title');
+			await goto('/?lang=zh_CN', '.site-hero-title');
 			await assertSelector('.site-header', 'site header');
 			await assertSelector('.hero-component-preview', 'hero component preview');
 			await assertSelector('#terminal-demo', 'terminal demo');
