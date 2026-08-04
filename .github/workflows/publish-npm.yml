@@ -97,7 +97,8 @@ jobs:
     with:
       package-name: ${{ matrix.package.name }}
       package-version: ${{ matrix.package.version }}
-    secrets: inherit
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-level-1:
     name: Publish ${{ matrix.package.name }}@${{ matrix.package.version }}
@@ -117,7 +118,8 @@ jobs:
     with:
       package-name: ${{ matrix.package.name }}
       package-version: ${{ matrix.package.version }}
-    secrets: inherit
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   github-releases:
     name: Release ${{ matrix.package.name }}@${{ matrix.package.version }}

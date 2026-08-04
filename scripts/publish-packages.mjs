@@ -453,7 +453,10 @@ const npmPublish = async (packageData, dryRun) => {
 	} catch (error) {
 		const token = process.env.NPM_TOKEN;
 		const isAuthenticationFailure = isTrustedPublishingAuthenticationFailure(error);
-		if (!token || !isAuthenticationFailure) throw error;
+		if (!isAuthenticationFailure) throw error;
+		if (!token) {
+			throw new Error('npm Trusted Publishing was unavailable and NPM_TOKEN is not configured.', { cause: error });
+		}
 		console.warn('npm Trusted Publishing was unavailable; retrying with the configured npm token.');
 		await publishWithEnvironment({ NPM_TOKEN: token, NODE_AUTH_TOKEN: token });
 	}

@@ -53,7 +53,11 @@ describe('Workflow responsibilities', () => {
 		expect(publishWorkflow).toContain('run: bun run publish:npm:changed');
 		expect(publishWorkflow).toContain('uses: ./.github/workflows/publish-npm-package.yml');
 		expect(publishWorkflow).toContain('uses: ./.github/workflows/release.yml');
+		expect(publishWorkflow.match(/NPM_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/g)).toHaveLength(2);
 		expect(publishWorkflow).not.toContain('changesets/action');
+		expect(packageWorkflow).toContain('secrets:');
+		expect(packageWorkflow).toContain('NPM_TOKEN:');
+		expect(packageWorkflow).toContain('required: false');
 		expect(packageWorkflow).toContain('run: bun run publish:npm -- --package="${{ inputs.package-name }}"');
 		expect(versionWorkflow).toContain('uses: changesets/action@v1');
 		expect(versionWorkflow).toContain('version: bun run version-packages');
