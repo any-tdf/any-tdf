@@ -27,6 +27,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Record npm publish comparison base
+        if: github.event_name == 'push'
+        env:
+          BASE_SHA: ${{ github.event.before }}
+        run: printf '%s\n' "$BASE_SHA" > "$RUNNER_TEMP/base-sha"
+
+      - name: Upload npm publish metadata
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-publish-metadata
+          path: ${{ runner.temp }}/base-sha
+          retention-days: 1
+
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:

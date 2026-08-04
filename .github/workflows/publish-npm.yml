@@ -2,19 +2,13 @@ name: Publish npm Packages
 
 on:
   workflow_dispatch:
-  push:
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
     branches:
       - main
-    paths:
-      - packages/common/package.json
-      - packages/stdf/package.json
-      - packages/rtdf/package.json
-      - packages/vtdf/package.json
-      - packages/react-motion/package.json
-      - packages/vue-motion/package.json
-      - packages/react-confetti/package.json
-      - packages/vue-confetti/package.json
-      - packages/create-any-tdf/package.json
 
 concurrency:
   group: publish-npm-packages
@@ -30,9 +24,11 @@ env:
 jobs:
   detect:
     name: Detect Changed Package Versions
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
+      actions: read
       contents: read
     outputs:
       all: ${{ steps.versions.outputs.all }}
@@ -42,7 +38,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
+
+      - name: Download npm publish metadata
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-publish-metadata
+          path: ${{ runner.temp }}/npm-publish-metadata
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Resolve package comparison base
+        id: comparison
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" == 'workflow_run' ]]; then
+            echo "base-sha=$(<"$RUNNER_TEMP/npm-publish-metadata/base-sha")" >> "$GITHUB_OUTPUT"
+          else
+            echo 'base-sha=' >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
@@ -65,7 +82,7 @@ jobs:
       - name: Detect package version changes
         id: versions
         env:
-          BASE_SHA: ${{ github.event.before }}
+          BASE_SHA: ${{ steps.comparison.outputs.base-sha }}
         run: bun run publish:npm:changed
 
   publish-level-0:

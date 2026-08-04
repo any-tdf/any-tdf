@@ -378,45 +378,32 @@ for (const { path, manifest } of workspaces) {
 
 const publishWorkflowPath = ".github/workflows/publish-npm.yml";
 const publishWorkflow = await Bun.file(resolve(workspaceRoot, publishWorkflowPath)).text();
-const publishWorkflowLines = publishWorkflow.split("\n");
-const pushTriggerIndex = publishWorkflowLines.findIndex((line) => /^\s+push:\s*$/.test(line));
-const publishPaths = [];
+const ciWorkflowPath = ".github/workflows/ci.yml";
+const ciWorkflow = await Bun.file(resolve(workspaceRoot, ciWorkflowPath)).text();
+const requiredPublishWorkflowFragments = [
+  "workflow_run:",
+  "- CI",
+  "github.event.workflow_run.conclusion == 'success'",
+  "actions/download-artifact@v4",
+  "name: npm-publish-metadata",
+  "run-id: ${{ github.event.workflow_run.id }}",
+  "BASE_SHA: ${{ steps.comparison.outputs.base-sha }}",
+];
+const requiredCiWorkflowFragments = [
+  "BASE_SHA: ${{ github.event.before }}",
+  "actions/upload-artifact@v4",
+  "name: npm-publish-metadata",
+];
 
-if (pushTriggerIndex === -1) {
-  errors.push(`${publishWorkflowPath}: on.push trigger is missing.`);
-} else {
-  const pathsIndex = publishWorkflowLines.findIndex(
-    (line, index) => index > pushTriggerIndex && /^\s+paths:\s*$/.test(line),
-  );
-
-  if (pathsIndex === -1) {
-    errors.push(`${publishWorkflowPath}: on.push.paths is missing.`);
-  } else {
-    const pathsIndent = publishWorkflowLines[pathsIndex].search(/\S/);
-
-    for (let index = pathsIndex + 1; index < publishWorkflowLines.length; index += 1) {
-      const line = publishWorkflowLines[index];
-      if (!line.trim()) continue;
-      if (line.search(/\S/) <= pathsIndent) break;
-      const match = line.match(/^\s*-\s*"?([^"\s]+)"?\s*$/);
-      if (match) publishPaths.push(match[1]);
-    }
+for (const fragment of requiredPublishWorkflowFragments) {
+  if (!publishWorkflow.includes(fragment)) {
+    errors.push(`${publishWorkflowPath}: npm publishing must wait for CI and consume ${fragment}.`);
   }
 }
-
-const expectedPublishPaths = workspaces
-  .filter(({ manifest }) => manifest.private !== true)
-  .map(({ path }) => path)
-  .sort();
-publishPaths.sort();
-
-for (const path of expectedPublishPaths) {
-  if (!publishPaths.includes(path))
-    errors.push(`${publishWorkflowPath}: on.push.paths is missing public workspace ${path}.`);
-}
-for (const path of publishPaths) {
-  if (!expectedPublishPaths.includes(path))
-    errors.push(`${publishWorkflowPath}: on.push.paths lists ${path}, which is not a public workspace.`);
+for (const fragment of requiredCiWorkflowFragments) {
+  if (!ciWorkflow.includes(fragment)) {
+    errors.push(`${ciWorkflowPath}: CI must preserve npm publish metadata with ${fragment}.`);
+  }
 }
 
 const sharedDevDependencies = new Map();

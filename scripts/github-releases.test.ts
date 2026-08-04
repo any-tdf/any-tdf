@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { resolve } from 'node:path';
 import { createGitHubReleasePlan, createReleaseNotes, extractChangelogEntry, parseReleasePackages } from './github-releases.mjs';
-import { collectWorkspaces } from './publish-packages.mjs';
 
 const repositoryRoot = resolve(import.meta.dir, '..');
 
@@ -64,14 +63,18 @@ describe('Workflow responsibilities', () => {
 		expect(releaseWorkflow).not.toContain('changesets/action');
 	});
 
-	test('lists every public npm manifest as a version-sensitive workflow path', async () => {
+	test('publishes only after CI and preserves the original push comparison base', async () => {
+		const ciWorkflow = await Bun.file(resolve(repositoryRoot, '.github/workflows/ci.yml')).text();
 		const publishWorkflow = await Bun.file(resolve(repositoryRoot, '.github/workflows/publish-npm.yml')).text();
-		const workspaces = await collectWorkspaces(repositoryRoot);
-		const publicManifestPaths = workspaces
-			.filter(({ manifest }) => manifest.private !== true)
-			.map(({ manifestPath }) => manifestPath);
 
-		for (const manifestPath of publicManifestPaths) expect(publishWorkflow).toContain(`- ${manifestPath}`);
+		expect(ciWorkflow).toContain('BASE_SHA: ${{ github.event.before }}');
+		expect(ciWorkflow).toContain('uses: actions/upload-artifact@v4');
+		expect(ciWorkflow).toContain('name: npm-publish-metadata');
+		expect(publishWorkflow).toContain('workflow_run:');
+		expect(publishWorkflow).toContain('- CI');
+		expect(publishWorkflow).toContain("github.event.workflow_run.conclusion == 'success'");
+		expect(publishWorkflow).toContain('uses: actions/download-artifact@v4');
+		expect(publishWorkflow).toContain('BASE_SHA: ${{ steps.comparison.outputs.base-sha }}');
 	});
 });
 
