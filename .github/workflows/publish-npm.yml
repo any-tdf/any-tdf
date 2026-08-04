@@ -1,0 +1,125 @@
+name: Publish npm Packages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - packages/common/package.json
+      - packages/stdf/package.json
+      - packages/rtdf/package.json
+      - packages/vtdf/package.json
+      - packages/react-motion/package.json
+      - packages/vue-motion/package.json
+      - packages/react-confetti/package.json
+      - packages/vue-confetti/package.json
+      - packages/skills/stdf-skill/package.json
+      - packages/skills/rtdf-skill/package.json
+      - packages/skills/vtdf-skill/package.json
+      - packages/create-any-tdf/package.json
+
+concurrency:
+  group: publish-npm-packages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  TURBO_TELEMETRY_DISABLED: '1'
+
+jobs:
+  detect:
+    name: Detect Changed Package Versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      all: ${{ steps.versions.outputs.all }}
+      level0: ${{ steps.versions.outputs.level0 }}
+      level1: ${{ steps.versions.outputs.level1 }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Verify npm version detector and publisher
+        run: bun run publish:npm:test
+
+      - name: Detect package version changes
+        id: versions
+        env:
+          BASE_SHA: ${{ github.event.before }}
+        run: bun run publish:npm:changed
+
+  publish-level-0:
+    name: Publish ${{ matrix.package.name }}@${{ matrix.package.version }}
+    needs: detect
+    if: needs.detect.outputs.level0 != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.detect.outputs.level0) }}
+    uses: ./.github/workflows/publish-npm-package.yml
+    with:
+      package-name: ${{ matrix.package.name }}
+      package-version: ${{ matrix.package.version }}
+    secrets: inherit
+
+  publish-level-1:
+    name: Publish ${{ matrix.package.name }}@${{ matrix.package.version }}
+    needs:
+      - detect
+      - publish-level-0
+    if: >-
+      always() &&
+      needs.detect.outputs.level1 != '[]' &&
+      (needs.publish-level-0.result == 'success' || needs.publish-level-0.result == 'skipped')
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.detect.outputs.level1) }}
+    uses: ./.github/workflows/publish-npm-package.yml
+    with:
+      package-name: ${{ matrix.package.name }}
+      package-version: ${{ matrix.package.version }}
+    secrets: inherit
+
+  github-releases:
+    name: Release ${{ matrix.package.name }}@${{ matrix.package.version }}
+    needs:
+      - detect
+      - publish-level-0
+      - publish-level-1
+    if: >-
+      always() &&
+      needs.detect.outputs.all != '[]' &&
+      (needs.publish-level-0.result == 'success' || needs.publish-level-0.result == 'skipped') &&
+      (needs.publish-level-1.result == 'success' || needs.publish-level-1.result == 'skipped')
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.detect.outputs.all) }}
+    uses: ./.github/workflows/release.yml
+    with:
+      packages-json: ${{ format('[{0}]', toJSON(matrix.package)) }}
+    secrets: inherit

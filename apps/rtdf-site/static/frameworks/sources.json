@@ -1,0 +1,10 @@
+{
+	"reactLight": {
+		"source": "https://github.com/reactjs/react.dev/blob/main/public/images/brand/logo_light.svg",
+		"sha256": "f06f8906159321315b77af4e86846b95f679d74ec0d681ef92101aa7c1ec8656"
+	},
+	"reactDark": {
+		"source": "https://github.com/reactjs/react.dev/blob/main/public/images/brand/logo_dark.svg",
+		"sha256": "ad13942c43f70b5c43a04edb6e5ad6b12ff6a7c38ad301d38aaa3ed916ec904a"
+	}
+}

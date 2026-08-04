@@ -1,0 +1,79 @@
+{
+	"name": "any-tdf-vscode-extension",
+	"displayName": "Any TDF for VS Code",
+	"version": "0.0.1",
+	"private": true,
+	"description": "A VS Code extension to facilitate STDF, RTDF, and VTDF development.",
+	"categories": [
+		"Extension Packs",
+		"Programming Languages"
+	],
+	"keywords": [
+		"any-tdf",
+		"api",
+		"component",
+		"react",
+		"rtdf",
+		"stdf",
+		"svelte",
+		"vtdf",
+		"vue"
+	],
+	"homepage": "https://github.com/any-tdf/any-tdf/tree/main/extensions/vscode-extension#readme",
+	"bugs": {
+		"url": "https://github.com/any-tdf/any-tdf/issues"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "extensions/vscode-extension"
+	},
+	"sponsor": {
+		"url": "https://any-tdf.dev?fund"
+	},
+	"publisher": "any-tdf",
+	"main": "./src/extension.js",
+	"scripts": {
+		"files": "bun scripts/files.js",
+		"files:check": "bun scripts/files.js --check",
+		"marketplace:check": "bun scripts/marketplace-version.js",
+		"test": "bun test",
+		"package": "bun run ../../scripts/run-with-root-license.mjs bun run vsce package --no-dependencies && bun run verify:package",
+		"verify:package": "bun scripts/verify-package.js",
+		"publish": "bun run ../../scripts/run-with-root-license.mjs bun run vsce publish --no-dependencies --skip-duplicate"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@types/vscode": "1.80.0",
+		"@vscode/vsce": "^3.9.2"
+	},
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Any TDF",
+			"properties": {
+				"AnyTDF.English": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to enable English API docs in any-tdf-vscode-extension."
+				}
+			}
+		}
+	},
+	"activationEvents": [
+		"onLanguage:javascriptreact",
+		"onLanguage:svelte",
+		"onLanguage:typescriptreact",
+		"onLanguage:vue"
+	],
+	"extensionPack": [
+		"Vue.volar",
+		"svelte.svelte-vscode"
+	],
+	"icon": "images/icon.png",
+	"engines": {
+		"vscode": "^1.80.0"
+	}
+}

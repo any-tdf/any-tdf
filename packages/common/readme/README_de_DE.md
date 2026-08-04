@@ -10,7 +10,7 @@ Framework-unabhaengige gemeinsame Grundlage fuer das `any-tdf` Komponenten-Oekos
 
 # Einfuehrung
 
-`@any-tdf/common` ist das gemeinsame Basispaket fuer das `any-tdf` Oekosystem. Es enthaelt abgeleiteten Komponentenstatus, Klassenberechnung, Stildaten, SVG-Daten, Tailwind CSS v4 Theme-Werkzeuge, Runtime-Theme-Umschaltung, Sprachpakete, Typen und Hilfsfunktionen.
+`@any-tdf/common` ist das gemeinsame Basispaket fuer das `any-tdf` Oekosystem. Es enthaelt abgeleiteten Komponentenstatus, Klassenberechnung, Stildaten, SVG-Daten, Tailwind CSS Theme-Werkzeuge, Runtime-Theme-Umschaltung, Sprachpakete, Typen und Hilfsfunktionen.
 
 Das Paket wird derzeit im `alpha` Kanal veroeffentlicht. APIs koennen sich aendern, solange die gemeinsamen Vertraege stabilisiert werden.
 
@@ -32,7 +32,7 @@ import { switchTheme } from '@any-tdf/common/theme/runtime';
 
 - `@any-tdf/common/derived`: abgeleiteter Komponentenstatus und Klassen-Helper.
 - `@any-tdf/common/svg`: gemeinsame SVG-Daten und integrierte Icon-Maps.
-- `@any-tdf/common/theme`: Theme-Konfiguration, Tailwind CSS v4 Plugin und Runtime-Helper.
+- `@any-tdf/common/theme`: Theme-Konfiguration, Tailwind CSS Plugin und Runtime-Helper.
 - `@any-tdf/common/lang`: Sprachpakete.
 - `@any-tdf/common/types`: gemeinsame TypeScript Typen.
 - `@any-tdf/common/utils`: Plattform- und allgemeine Hilfsfunktionen.

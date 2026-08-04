@@ -1,0 +1,7 @@
+test/**
+scripts/**
+*.vsix
+.gitignore
+.turbo/**
+node_modules/**
+node_modules/.cache/**

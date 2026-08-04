@@ -1,20 +1,21 @@
 # vtdf
 
-`vtdf` is the Vue implementation of the Any TDF mobile web component system. It maps the shared Any TDF component contracts to Vue 3 components, props, emits, slots, themes, locale objects, types, and utilities.
+`vtdf` is the Vue implementation of the Any TDF mobile web component system, built on Tailwind CSS. It maps the shared Any TDF component contracts to Vue components, props, emits, slots, themes, locale objects, types, and utilities.
 
 ## Install
 
 ```sh
-bun add vtdf@alpha vue tailwindcss
+bun add vtdf vue tailwindcss
 ```
 
-`vtdf` requires Vue 3.5 or newer and Tailwind CSS v4.
+`vtdf` requires Vue and Tailwind CSS. `@any-tdf/common` is installed automatically as a runtime dependency.
 
 ## Usage
 
 ```vue
 <script setup lang="ts">
 import { Button } from 'vtdf';
+import 'vtdf/style.css';
 </script>
 
 <template>
@@ -37,11 +38,12 @@ Configure Tailwind CSS with the VTDF theme plugin:
 - `vtdf`: components, feedback APIs, themes, locales, types, and utilities.
 - `vtdf/components`: component-only exports.
 - `vtdf/theme`: built-in themes and runtime theme helpers.
-- `vtdf/theme/plugin`: Tailwind CSS v4 theme plugin.
+- `vtdf/theme/plugin`: Tailwind CSS theme plugin.
 - `vtdf/lang`: built-in locale objects.
 - `vtdf/types`: public TypeScript types.
 - `vtdf/utils`: shared component utilities.
-- `vtdf/style.css`: component styles.
+- `vtdf/style.css`: component styles and source registration for `@any-tdf/common`.
+- `vtdf/source.css`: Tailwind CSS source registration for VTDF and its transitive `@any-tdf/common` dependency.
 
 ## Development
 

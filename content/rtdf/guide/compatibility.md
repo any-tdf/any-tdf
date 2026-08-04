@@ -1,4 +1,4 @@
-> RTDF 3.0.0-alpha.0 基于 React 18/19 与 Tailwind CSS v4。
+> RTDF 0.0.0-alpha.0 基于 React 18／19 与 Tailwind CSS v4。
 
 ## React
 

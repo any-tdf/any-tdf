@@ -10,7 +10,7 @@
 
 # 介绍
 
-`@any-tdf/common` 是 `any-tdf` 组件生态的共享基础包，提供跨框架的组件派生状态、类名计算、样式数据、 SVG 图标数据、 Tailwind CSS v4 主题工具、运行时主题切换、多语言包、类型定义和工具函数。
+`@any-tdf/common` 是 `any-tdf` 组件生态的共享基础包，提供跨框架的组件派生状态、类名计算、样式数据、 SVG 图标数据、 Tailwind CSS 主题工具、运行时主题切换、多语言包、类型定义和工具函数。
 
 当前包定位为 `alpha` 版本。 React 、 Svelte 、 Vue 等框架包在对齐共享协议时， API 仍可能调整。
 
@@ -32,7 +32,7 @@ import { switchTheme } from '@any-tdf/common/theme/runtime';
 
 - `@any-tdf/common/derived`：组件派生状态和类名计算。
 - `@any-tdf/common/svg`：共享 SVG 数据和内置图标库映射。
-- `@any-tdf/common/theme`：主题配置、 Tailwind CSS v4 插件和运行时切换工具。
+- `@any-tdf/common/theme`：主题配置、 Tailwind CSS 插件和运行时切换工具。
 - `@any-tdf/common/lang`：多语言包。
 - `@any-tdf/common/types`：共享 TypeScript 类型。
 - `@any-tdf/common/utils`：平台与通用工具函数。

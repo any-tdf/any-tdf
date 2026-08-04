@@ -1,13 +1,13 @@
 # RTDF
 
-React mobile web component library based on Tailwind CSS v4 and the any-tdf design system.
+React mobile web component library based on Tailwind CSS and the any-tdf design system.
 
 RTDF follows the STDF component design and API shape as closely as React allows. Framework-specific Svelte features, such as Svelte transition functions and snippets, are mapped to React props, React nodes, render functions, and Provider-based configuration.
 
 ## Install
 
 ```bash
-bun add rtdf@3.0.0-alpha.0 react react-dom tailwindcss
+bun add rtdf@0.0.0-alpha.0 react react-dom tailwindcss
 ```
 
 The published package exports theme, locale, types, utilities, and UI components from `rtdf`.
@@ -39,7 +39,7 @@ import { Button } from 'rtdf/components';
 
 ## Theme
 
-RTDF exposes the Tailwind CSS v4 theme plugin through `rtdf/theme`.
+RTDF exposes the Tailwind CSS theme plugin through `rtdf/theme`.
 
 ```css
 @import 'tailwindcss';
@@ -82,7 +82,7 @@ const App = () => <ConfigProvider locale={zh_CN}>{/* app */}</ConfigProvider>;
 - `rtdf/theme/plugin`: Tailwind CSS plugin subpath.
 - `rtdf/lang`: built-in locale objects.
 - `rtdf/utils`: shared utility functions.
-- `rtdf/style.css`: global component styles and Tailwind CSS v4 theme declarations.
+- `rtdf/style.css`: global component styles and Tailwind CSS theme declarations.
 
 ## Development
 

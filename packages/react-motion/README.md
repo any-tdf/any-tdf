@@ -1,8 +1,8 @@
 # @any-tdf/react-motion
 
-`@any-tdf/react-motion` 是一个面向 React 的动画工具包，参考 Svelte 5.56.3 的 `svelte/easing`、`svelte/transition`、`svelte/animate` 和 `svelte/motion` API。它不是 RTDF 专用包，可以在普通 React 项目中独立使用。
+`@any-tdf/react-motion` 是一个面向 React 的动画工具包，参考 Svelte 的 `svelte/easing`、`svelte/transition`、`svelte/animate` 和 `svelte/motion` API。它不是 RTDF 专用包，可以在普通 React 项目中独立使用。
 
-English: `@any-tdf/react-motion` is an independent React animation package inspired by Svelte 5 animation APIs. It keeps familiar function names, parameter names, and runtime behavior while exposing React components and hooks.
+English: `@any-tdf/react-motion` is an independent React animation package inspired by Svelte animation APIs. It keeps familiar function names, parameter names, and runtime behavior while exposing React components and hooks.
 
 ## Install
 
@@ -10,7 +10,7 @@ English: `@any-tdf/react-motion` is an independent React animation package inspi
 bun add @any-tdf/react-motion
 ```
 
-React bindings support React 18 and React 19. The easing, transition, animate, and imperative motion modules can also be imported without mounting a React component.
+The React bindings work in React applications. The easing, transition, animate, and imperative motion modules can also be imported without mounting a React component.
 
 ## Usage
 
@@ -60,7 +60,7 @@ export const Progress = ({ value }: { value: number }) => {
 
 ## Documentation Site
 
-文档站位于 Monorepo 的 `apps/runtime-docs/react-motion`，支持中文和英文，并包含 Svelte Playground 风格的 Easing Visualiser Demo。
+文档站位于包内的 `packages/react-motion/docs`，支持中文和英文，并包含 Svelte Playground 风格的 Easing Visualiser Demo。
 
 ```bash
 bun run --filter @any-tdf/react-motion-site dev

@@ -43,6 +43,7 @@
 			"types": "./dist/site.d.ts",
 			"import": "./dist/site.js"
 		},
+		"./portal-styles": "./assets/portal.css",
 		"./styles": "./assets/styles.css"
 	},
 	"scripts": {

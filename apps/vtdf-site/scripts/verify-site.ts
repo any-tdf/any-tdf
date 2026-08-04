@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 
@@ -9,7 +10,7 @@ type CheckResult = {
 	extra?: string[];
 };
 
-const workspaceRoot = resolve(process.cwd(), '../..');
+const workspaceRoot = resolve(import.meta.dir, '../../..');
 const siteRoot = join(workspaceRoot, 'apps/vtdf-site');
 const stdfRoutesRoot = join(workspaceRoot, 'apps/stdf-demo/src/routes');
 const vtdfPagesRoot = join(workspaceRoot, 'apps/vtdf-demo/src/pages');
@@ -128,6 +129,19 @@ const missingComponentDocPatterns = ['../../../../../content/vtdf/components/*/a
 	(pattern) => !componentDocSource.includes(pattern)
 );
 
+const techStackSource = readFileSync(join(siteRoot, 'src/components/home/TechStack.vue'), 'utf8');
+const vueLogoPath = join(siteRoot, 'static/frameworks/vue.svg');
+const vueLogoIssues = [
+	...(techStackSource.includes('src="/frameworks/vue.svg"') ? [] : ['official Vue logo reference']),
+	...(techStackSource.includes('M12.001 21.406') ? ['remove custom Vue logo geometry'] : []),
+	...(!existsSync(vueLogoPath)
+		? ['missing vue.svg']
+		: createHash('sha256').update(readFileSync(vueLogoPath)).digest('hex') ===
+			  '6f97b1f82a6dafdda0b53c347bdfb0b74cb3bf1d73ce8e40bbbb914115235886'
+		? []
+		: ['modified vue.svg'])
+];
+
 const results: CheckResult[] = [
 	check(
 		'component demo routes',
@@ -153,6 +167,7 @@ const results: CheckResult[] = [
 	check('app routes', `checked ${requiredAppRoutes.length} top-level routes`, missingAppRoutes),
 	check('components page loaders', 'checked source loaders and doc renderer', missingComponentsPageImports),
 	check('component doc loader', 'checked markdown glob and language selection', missingComponentDocPatterns),
+	check('Vue brand asset', 'checked official vuejs.org logo asset', vueLogoIssues),
 	check(
 		'guide page renderer',
 		'checked custom page branch and markdown renderer',

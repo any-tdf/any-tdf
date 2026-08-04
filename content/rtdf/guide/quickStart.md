@@ -43,7 +43,7 @@ bun create any-tdf@latest rtdf-app -f react -t vrtt -l zh_CN -i iconify -m multi
 2.1 安装 RTDF
 
 ```sh
-bun add rtdf@3.0.0-alpha.0
+bun add rtdf@0.0.0-alpha.0
 ```
 
 2.2 安装 Tailwind CSS 与 Vite 插件。

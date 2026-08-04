@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+@import 'stdf/source.css';
+
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
+
+@theme {
+	--color-primary-50: oklch(0.97 0.036 276.886); /* #eef4ff rgb(238, 244, 255) */
+	--color-primary-100: oklch(0.882 0.071 274.886); /* #cad5ff rgb(202, 213, 255) */
+	--color-primary-200: oklch(0.795 0.105 272.886); /* #a5b8ff rgb(165, 184, 255) */
+	--color-primary-300: oklch(0.707 0.14 270.886); /* #809af8 rgb(128, 154, 248) */
+	--color-primary-400: oklch(0.62 0.174 268.886); /* #5c7cee rgb(92, 124, 238) */
+	--color-primary-500: oklch(0.532 0.209 266.886); /* #365ce3 rgb(54, 92, 227) */
+	--color-primary: oklch(0.444 0.243 264.886); /* #0e36d6 rgb(14, 54, 214) */
+	--color-primary-700: oklch(0.396 0.263 262.886); /* #0015d0 rgb(0, 21, 208) */
+	--color-primary-800: oklch(0.347 0.267 260.886); /* #0000c0 rgb(0, 0, 192) */
+	--color-primary-900: oklch(0.299 0.267 258.886); /* #0000af rgb(0, 0, 175) */
+	--color-primary-950: oklch(0.25 0.267 256.886); /* #01009d rgb(1, 0, 157) */
+
+	--color-dark-50: oklch(0.97 0.023 68.597); /* #fff3e5 rgb(255, 243, 229) */
+	--color-dark-100: oklch(0.949 0.045 70.597); /* #ffeace rgb(255, 234, 206) */
+	--color-dark-200: oklch(0.928 0.066 72.597); /* #ffe1b7 rgb(255, 225, 183) */
+	--color-dark-300: oklch(0.907 0.088 74.597); /* #ffd89f rgb(255, 216, 159) */
+	--color-dark-400: oklch(0.887 0.11 76.597); /* #ffd084 rgb(255, 208, 132) */
+	--color-dark-500: oklch(0.866 0.131 78.597); /* #ffc868 rgb(255, 200, 104) */
+	--color-dark: oklch(0.845 0.153 80.597); /* #ffc042 rgb(255, 192, 66) */
+	--color-dark-700: oklch(0.696 0.168 82.597); /* #cf9000 rgb(207, 144, 0) */
+	--color-dark-800: oklch(0.547 0.168 84.597); /* #9d6400 rgb(157, 100, 0) */
+	--color-dark-900: oklch(0.399 0.168 86.597); /* #6e3a00 rgb(110, 58, 0) */
+	--color-dark-950: oklch(0.25 0.168 88.597); /* #411000 rgb(65, 16, 0) */
+
+	--color-success: oklch(0.704 0.142 167.084); /* #0fbb8d rgb(15, 187, 141) */
+	--color-warning: oklch(0.558 0.153 47.186); /* #b95002 rgb(185, 80, 2) */
+	--color-error: oklch(0.564 0.223 28.46); /* #da1514 rgb(218, 21, 20) */
+	--color-info: oklch(0.482 0.14 261.518); /* #2e5aac rgb(46, 90, 172) */
+
+	--color-blue: oklch(0.6 0.2 250); /* #0081f1 rgb(0, 129, 241) */
+	--color-purple: oklch(0.6 0.2 300); /* #955be3 rgb(149, 91, 227) */
+	--color-orange: oklch(0.7 0.18 50); /* #f37513 rgb(243, 117, 19) */
+	--color-cyan: oklch(0.7 0.15 190); /* #00bbb3 rgb(0, 187, 179) */
+
+	--color-black: oklch(0 0 0); /* #000000 rgb(0, 0, 0) */
+	--color-white: oklch(1 0 0); /* #FFFFFF rgb(255, 255, 255) */
+	--color-gray-50: oklch(0.961 0 0); /* #F5F5F5 rgb(245, 245, 245) */
+	--color-gray-100: oklch(0.925 0 0); /* #E8E8E8 rgb(232, 232, 232) */
+	--color-gray-200: oklch(0.845 0 0); /* #D1D1D1 rgb(209, 209, 209) */
+	--color-gray-300: oklch(0.767 0 0); /* #B8B8B8 rgb(184, 184, 184) */
+	--color-gray-400: oklch(0.683 0 0); /* #9E9E9E rgb(158, 158, 158) */
+	--color-gray-500: oklch(0.6 0 0); /* #858585 rgb(133, 133, 133) */
+	--color-gray-600: oklch(0.51 0 0); /* #6B6B6B rgb(107, 107, 107) */
+	--color-gray-700: oklch(0.42 0 0); /* #525252 rgb(82, 82, 82) */
+	--color-gray-800: oklch(0.321 0 0); /* #383838 rgb(56, 56, 56) */
+	--color-gray-900: oklch(0.218 0 0); /* #1F1F1F rgb(31, 31, 31) */
+	--color-gray-950: oklch(0.159 0 0); /* #121212 rgb(18, 18, 18) */
+	--color-transparent: transparent;
+
+	--color-bg-base: oklch(0.967 0.016 264.84); /* #eff4ff rgb(239, 244, 255) */
+	--color-bg-surface: oklch(0.978 0 80.342); /* #f8f8f8 rgb(248, 248, 248) */
+	--color-bg-overlay: oklch(0.961 0 93.125); /* #f2f2f2 rgb(242, 242, 242) */
+	--color-bg-highlight: oklch(0.961 0.017 279.375); /* #eff1fe rgb(239, 241, 254) */
+	--color-bg-base-dark: oklch(0.167 0.015 80.342); /* #120e07 rgb(18, 14, 7) */
+	--color-bg-surface-dark: oklch(0.178 0.017 264.84); /* #0d1119 rgb(13, 17, 25) */
+	--color-bg-overlay-dark: oklch(0.233 0.001 264.84); /* #1d1e1e rgb(29, 30, 30) */
+	--color-bg-highlight-dark: oklch(0.178 0.019 80.342); /* #161008 rgb(22, 16, 8) */
+
+	--color-text-primary: oklch(0.144 0.016 245.938); /* #050b10 rgb(5, 11, 16) */
+	--color-text-dark: oklch(0.917 0.039 89.688); /* #eee3c7 rgb(238, 227, 199) */
+	--color-text-on-primary: oklch(0.883 0.043 79.063); /* #e8d6b9 rgb(232, 214, 185) */
+	--color-text-on-dark: oklch(0.189 0.05 262.813); /* #07122a rgb(7, 18, 42) */
+
+	--radius-box: 0.5rem;
+	--radius-form: 0.25rem;
+	--radius-small: calc(infinity * 1px);
+}
+
+html {
+	-webkit-tap-highlight-color: transparent;
+}

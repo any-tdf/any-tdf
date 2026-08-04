@@ -19,8 +19,8 @@ const ignorePatterns = [
 	'**/docs/site/**',
 	'**/site/**',
 	'apps/*-site/static/**/*.min.js',
-	'tooling/create-any-tdf/snippet/**',
-	'tooling/create-any-tdf/templates/**'
+	'packages/create-any-tdf/snippet/**',
+	'packages/create-any-tdf/templates/**'
 ];
 
 export default defineConfig({

@@ -10,7 +10,7 @@ Base condivisa e indipendente dal framework per l'ecosistema di componenti `any-
 
 # Introduzione
 
-`@any-tdf/common` e il pacchetto base condiviso per l'ecosistema `any-tdf`. Include stato derivato dei componenti, calcolo delle classi, dati di stile, dati SVG, strumenti tema per Tailwind CSS v4, cambio tema a runtime, pacchetti lingua, tipi e utility.
+`@any-tdf/common` e il pacchetto base condiviso per l'ecosistema `any-tdf`. Include stato derivato dei componenti, calcolo delle classi, dati di stile, dati SVG, strumenti tema per Tailwind CSS, cambio tema a runtime, pacchetti lingua, tipi e utility.
 
 Il pacchetto e attualmente pubblicato nel canale `alpha`. Le API possono cambiare mentre i contratti condivisi vengono stabilizzati.
 
@@ -32,7 +32,7 @@ import { switchTheme } from '@any-tdf/common/theme/runtime';
 
 - `@any-tdf/common/derived`: stato derivato e helper per classi.
 - `@any-tdf/common/svg`: dati SVG condivisi e mappe icone integrate.
-- `@any-tdf/common/theme`: configurazione tema, plugin Tailwind CSS v4 e helper runtime.
+- `@any-tdf/common/theme`: configurazione tema, plugin Tailwind CSS e helper runtime.
 - `@any-tdf/common/lang`: pacchetti lingua.
 - `@any-tdf/common/types`: tipi TypeScript condivisi.
 - `@any-tdf/common/utils`: utility di piattaforma e generali.

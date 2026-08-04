@@ -1,6 +1,7 @@
 <div align="center">
 
 [![CI](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml)
+[![npm Publish](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 [![Release](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml)
 [![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
 
@@ -20,16 +21,16 @@ Any TDF est une famille de composants web mobiles pour Svelte, React et Vue. STD
 
 ## Produits
 
-| Bibliothèque | Framework      | npm                                          | Documentation et Demo        |
-| ------------ | -------------- | -------------------------------------------- | ---------------------------- |
-| STDF         | Svelte 5       | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
-| RTDF         | React 18 et 19 | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
-| VTDF         | Vue 3.5        | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
+| Bibliothèque | Framework | npm                                          | Documentation et Demo        |
+| ------------ | --------- | -------------------------------------------- | ---------------------------- |
+| STDF         | Svelte    | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
+| RTDF         | React     | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
+| VTDF         | Vue       | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
 
 ## Fonctionnalités
 
 - 60 composants mobiles alignés avec des API natives pour chaque framework.
-- Thèmes Tailwind CSS v4, mode sombre, changement de thème à l’exécution et thèmes personnalisés.
+- STDF, RTDF et VTDF reposent tous sur Tailwind CSS et prennent en charge le mode sombre, le changement de thème à l’exécution et les thèmes personnalisés.
 - Plus de 60 langues intégrées et une documentation des composants en chinois et en anglais.
 - Exports TypeScript, SSR, imports à la demande et comportements d’accessibilité partagés.
 - CLI unifié, AI Skills hors ligne et extension VS Code pour consulter les API.
@@ -55,7 +56,7 @@ Créez un projet TypeScript pour tout framework pris en charge :
 bun create any-tdf@latest
 ```
 
-`create-any-tdf` fournit des modèles Vite et SvelteKit avec Tailwind CSS v4 ou UnoCSS, ainsi que des options d’icônes et de thèmes.
+`create-any-tdf` fournit des modèles Vite et SvelteKit avec Tailwind CSS ou UnoCSS, ainsi que des options d’icônes et de thèmes.
 
 ## Demo et sites
 
@@ -75,9 +76,10 @@ bun run build
 bun run verify
 ```
 
-Lancez ensemble le site et la Demo d’un framework :
+Lancez le portail Any TDF, ou le site et la Demo d’un framework ensemble :
 
 ```sh
+bun run dev:any-tdf
 bun run dev:stdf
 bun run dev:rtdf
 bun run dev:vtdf
@@ -87,10 +89,10 @@ Le développement nécessite Bun 1.3.14 ou une version ultérieure et Node.js 24
 
 ## Structure du dépôt
 
-- `apps` : sites de documentation, Demos, code de site partagé et documentation des runtimes.
-- `packages` : cœur partagé, bibliothèques de composants, Motion, Confetti et AI Skills.
+- `apps` : sites de documentation, Demos et code de site partagé.
+- `packages` : cœur partagé, bibliothèques de composants, Motion et Confetti avec leur documentation locale, AI Skills et `create-any-tdf`.
 - `content` : composants et guides STDF, RTDF et VTDF générés.
-- `tooling` : `create-any-tdf` et l’extension Any TDF pour VS Code.
+- `extensions` : l’extension Any TDF pour VS Code.
 - `scripts` : outils globaux de génération, validation, empaquetage et publication.
 
 ## Retours

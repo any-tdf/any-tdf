@@ -1,6 +1,7 @@
 <div align="center">
 
 [![CI](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml)
+[![npm Publish](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 [![Release](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml)
 [![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
 
@@ -20,16 +21,16 @@ Any TDF 是面向 Svelte、React 和 Vue 的移动端 Web 组件家族。STDF、
 
 ## 产品
 
-| 组件库 | 框架           | npm 包                                       | 文档与 Demo                  |
-| ------ | -------------- | -------------------------------------------- | ---------------------------- |
-| STDF   | Svelte 5       | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
-| RTDF   | React 18 和 19 | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
-| VTDF   | Vue 3.5        | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
+| 组件库 | 框架   | npm 包                                       | 文档与 Demo                  |
+| ------ | ------ | -------------------------------------------- | ---------------------------- |
+| STDF   | Svelte | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
+| RTDF   | React  | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
+| VTDF   | Vue    | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
 
 ## 特性
 
 - 60 个保持一致的移动端组件，并提供框架原生 API。
-- 基于 Tailwind CSS v4 的主题、暗色模式、运行时主题切换和自定义主题。
+- STDF、RTDF 和 VTDF 均基于 Tailwind CSS，支持暗色模式、运行时主题切换和自定义主题。
 - 内置 60 多种语言包，并提供中英文组件文档。
 - TypeScript 优先，支持 SSR、按需引入和共享的无障碍行为。
 - 提供统一脚手架、离线 AI Skill 和组件 API VS Code 扩展。
@@ -55,7 +56,7 @@ bun add vtdf vue tailwindcss
 bun create any-tdf@latest
 ```
 
-`create-any-tdf` 提供 Vite 和 SvelteKit 模板，可选择 Tailwind CSS v4 或 UnoCSS，并支持图标库与主题配置。
+`create-any-tdf` 提供 Vite 和 SvelteKit 模板，可选择 Tailwind CSS 或 UnoCSS，并支持图标库与主题配置。
 
 ## Demo 与官网
 
@@ -75,9 +76,10 @@ bun run build
 bun run verify
 ```
 
-同时启动某一框架的官网和 Demo：
+启动 Any TDF 综合站，或同时启动某一框架的官网和 Demo：
 
 ```sh
+bun run dev:any-tdf
 bun run dev:stdf
 bun run dev:rtdf
 bun run dev:vtdf
@@ -87,10 +89,10 @@ bun run dev:vtdf
 
 ## 仓库结构
 
-- `apps`：文档官网、组件 Demo、站点共享代码和运行时文档。
-- `packages`：公共核心、框架组件库、Motion、Confetti 和 AI Skill。
+- `apps`：文档官网、组件 Demo 和站点共享代码。
+- `packages`：公共核心、框架组件库、Motion、Confetti 及其包内文档、AI Skill 和 `create-any-tdf`。
 - `content`：生成后的 STDF、RTDF、VTDF 组件及指南内容。
-- `tooling`：`create-any-tdf` 和 Any TDF VS Code 扩展。
+- `extensions`：Any TDF VS Code 扩展。
 - `scripts`：全仓生成、验证、打包和发布工具。
 
 ## 反馈

@@ -107,31 +107,44 @@ for (const { path, manifest } of workspaces) {
   }
 }
 
-const frameworkPackagePaths = ["packages/stdf/package.json", "packages/rtdf/package.json", "packages/vtdf/package.json"];
-const frameworkManifests = await Promise.all(
-  frameworkPackagePaths.map((path) => Bun.file(resolve(workspaceRoot, path)).json()),
+const frameworkManifests = new Map(
+  await Promise.all(
+    ["stdf", "rtdf", "vtdf"].map(async (name) => [
+      name,
+      await Bun.file(resolve(workspaceRoot, `packages/${name}/package.json`)).json(),
+    ]),
+  ),
 );
-const frameworkVersions = new Set(frameworkManifests.map((manifest) => manifest.version));
-if (frameworkVersions.size !== 1) {
+const stdfVersion = frameworkManifests.get("stdf").version;
+const reactVueFrameworks = [frameworkManifests.get("rtdf"), frameworkManifests.get("vtdf")];
+if (!stdfVersion.startsWith("3.")) {
+  errors.push(`stdf must remain on the 3.x release line, received ${stdfVersion}.`);
+}
+if (reactVueFrameworks.some(({ version }) => !version.startsWith("0."))) {
   errors.push(
-    `stdf, rtdf, and vtdf versions must match, received ${frameworkManifests.map(({ name, version }) => `${name}@${version}`).join(", ")}.`,
+    `rtdf and vtdf must remain on the 0.x release line, received ${reactVueFrameworks.map(({ name, version }) => `${name}@${version}`).join(", ")}.`,
+  );
+}
+if (new Set(reactVueFrameworks.map(({ version }) => version)).size !== 1) {
+  errors.push(
+    `rtdf and vtdf versions must match, received ${reactVueFrameworks.map(({ name, version }) => `${name}@${version}`).join(", ")}.`,
   );
 }
 
 const changesetConfig = await Bun.file(resolve(workspaceRoot, ".changeset/config.json")).json();
-const synchronizedFrameworkPackages = ["stdf", "rtdf", "vtdf"];
-const hasFixedFrameworkGroup = (changesetConfig.fixed ?? []).some(
+const synchronizedFrameworkPackages = ["rtdf", "vtdf"];
+const hasFixedReactVueFrameworkGroup = (changesetConfig.fixed ?? []).some(
   (group) =>
     group.length === synchronizedFrameworkPackages.length &&
     synchronizedFrameworkPackages.every((packageName) => group.includes(packageName)),
 );
-if (!hasFixedFrameworkGroup) {
-  errors.push("Changesets must keep stdf, rtdf, and vtdf in one fixed version group.");
+if (!hasFixedReactVueFrameworkGroup) {
+  errors.push("Changesets must keep rtdf and vtdf in one fixed version group, independent from stdf.");
 }
 
 const commonManifest = await Bun.file(resolve(workspaceRoot, "packages/common/package.json")).json();
 const fallbackVersionsUrl = pathToFileURL(
-  resolve(workspaceRoot, "tooling/create-any-tdf/src/fallbackVersions.js"),
+  resolve(workspaceRoot, "packages/create-any-tdf/src/fallbackVersions.js"),
 ).href;
 const { fallbackVersions } = await import(fallbackVersionsUrl);
 if (fallbackVersions[commonManifest.name] !== commonManifest.version) {

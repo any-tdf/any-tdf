@@ -182,7 +182,7 @@ const inspectViteConfigs = async () => {
 
     if (
       normalizedPath === "vite.config.ts" ||
-      normalizedPath.startsWith("tooling/create-any-tdf/templates/") ||
+      normalizedPath.startsWith("packages/create-any-tdf/templates/") ||
       normalizedPath.includes("/node_modules/")
     )
       continue;
@@ -190,6 +190,25 @@ const inspectViteConfigs = async () => {
     const source = await Bun.file(resolve(workspaceRoot, normalizedPath)).text();
     if (/^\s*(?:fmt|lint):\s*\{/m.test(source)) {
       errors.push(`Nested Vite+ quality config found: ${normalizedPath}`);
+    }
+  }
+};
+
+const inspectTailwindTemplates = async () => {
+  const templates = new Map([
+    ["packages/create-any-tdf/templates/react/vrtt/src/index.css", "rtdf/source.css"],
+    ["packages/create-any-tdf/templates/svelte/sktt/src/app.css", "stdf/source.css"],
+    ["packages/create-any-tdf/templates/svelte/vstt/src/app.css", "stdf/source.css"],
+    ["packages/create-any-tdf/templates/vue/vrtt/src/index.css", "vtdf/source.css"],
+  ]);
+
+  for (const [path, sourceEntry] of templates) {
+    const source = await Bun.file(resolve(workspaceRoot, path)).text();
+    if (!source.includes(`@import '${sourceEntry}';`)) {
+      errors.push(`${path}: Tailwind template must import ${sourceEntry}.`);
+    }
+    if (/node_modules\/(?:@any-tdf\/common|stdf|rtdf|vtdf)\/dist/.test(source)) {
+      errors.push(`${path}: Tailwind source discovery must not depend on a hoisted node_modules path.`);
     }
   }
 };
@@ -253,6 +272,12 @@ if (rootManifest.packageManager !== "bun@1.3.14")
 if (!workspacePatterns.length) errors.push("No Bun Workspace patterns are configured.");
 if (rootManifest.devDependencies?.["vite-plus"] !== "catalog:")
   errors.push("Root vite-plus dependency must use catalog:.");
+if (rootManifest.scripts?.["publish:npm"] !== "bun run scripts/publish-packages.mjs") {
+  errors.push("Root publish:npm script must use the Bun TGZ publisher.");
+}
+if (rootManifest.scripts?.release !== "bun run scripts/github-releases.mjs") {
+  errors.push("Root release script must create GitHub Release notes.");
+}
 
 for (const [name, command] of Object.entries(rootQualityScripts)) {
   if (rootManifest.scripts?.[name] !== command) {
@@ -273,10 +298,11 @@ const publicReadmes = new Map();
 let publicWorkspaceCount = 0;
 
 for (const { path, manifest } of workspaces) {
-  if (!manifest.name) {
-    errors.push(`Workspace has no package name: ${path}`);
-    continue;
-  }
+	if (!manifest.name) {
+		errors.push(`Workspace has no package name: ${path}`);
+		continue;
+	}
+  const workspaceDirectory = path.slice(0, path.lastIndexOf("/"));
 
   const existingPath = names.get(manifest.name);
   if (existingPath)
@@ -285,11 +311,13 @@ for (const { path, manifest } of workspaces) {
 
   if (path.startsWith("apps/") && manifest.private !== true)
     errors.push(`Application must be private: ${path}`);
+  if (manifest.repository?.directory !== workspaceDirectory) {
+    errors.push(`${path}: repository.directory must be ${workspaceDirectory}.`);
+  }
 
   if (manifest.private !== true) {
     publicWorkspaceCount += 1;
-    const packageDirectory = path.slice(0, path.lastIndexOf("/"));
-    const readmePath = `${packageDirectory}/README.md`;
+    const readmePath = `${workspaceDirectory}/README.md`;
     const readmeFile = Bun.file(resolve(workspaceRoot, readmePath));
 
     if (!(await readmeFile.exists())) {
@@ -313,6 +341,30 @@ for (const { path, manifest } of workspaces) {
     if (!manifest.scripts?.postpack?.includes("package-license.mjs clean")) {
       errors.push(`${path}: postpack must remove the staged License.`);
     }
+    if (!manifest.scripts?.package?.includes("publint")) {
+      errors.push(`${path}: public package checks must run Publint.`);
+    }
+  }
+
+  if (["stdf", "rtdf", "vtdf"].includes(manifest.name)) {
+    if (manifest.dependencies?.["@any-tdf/common"] !== "workspace:^") {
+      errors.push(`${path}: @any-tdf/common must be a runtime dependency using workspace:^.`);
+    }
+    if (manifest.devDependencies?.["@any-tdf/common"]) {
+      errors.push(`${path}: @any-tdf/common must not remain in devDependencies.`);
+    }
+    if (manifest.scripts?.build?.includes("prepare-framework-dist")) {
+      errors.push(`${path}: build must not copy @any-tdf/common into the framework package.`);
+    }
+    if (!manifest.files?.includes("source.css") || !manifest.exports?.["./source.css"]) {
+      errors.push(`${path}: framework packages must publish a Tailwind source.css entry.`);
+    }
+  }
+
+  if (manifest.name === "@any-tdf/common") {
+    if (!manifest.files?.includes("source.css") || !manifest.exports?.["./source.css"]) {
+      errors.push(`${path}: common must publish the Tailwind source.css entry.`);
+    }
   }
 
   for (const [name, command] of Object.entries(manifest.scripts ?? {})) {
@@ -324,8 +376,50 @@ for (const { path, manifest } of workspaces) {
   inspectManifestDependencies(path, manifest);
 }
 
-const sharedDevDependencies = new Map();
+const publishWorkflowPath = ".github/workflows/publish-npm.yml";
+const publishWorkflow = await Bun.file(resolve(workspaceRoot, publishWorkflowPath)).text();
+const publishWorkflowLines = publishWorkflow.split("\n");
+const pushTriggerIndex = publishWorkflowLines.findIndex((line) => /^\s+push:\s*$/.test(line));
+const publishPaths = [];
 
+if (pushTriggerIndex === -1) {
+  errors.push(`${publishWorkflowPath}: on.push trigger is missing.`);
+} else {
+  const pathsIndex = publishWorkflowLines.findIndex(
+    (line, index) => index > pushTriggerIndex && /^\s+paths:\s*$/.test(line),
+  );
+
+  if (pathsIndex === -1) {
+    errors.push(`${publishWorkflowPath}: on.push.paths is missing.`);
+  } else {
+    const pathsIndent = publishWorkflowLines[pathsIndex].search(/\S/);
+
+    for (let index = pathsIndex + 1; index < publishWorkflowLines.length; index += 1) {
+      const line = publishWorkflowLines[index];
+      if (!line.trim()) continue;
+      if (line.search(/\S/) <= pathsIndent) break;
+      const match = line.match(/^\s*-\s*"?([^"\s]+)"?\s*$/);
+      if (match) publishPaths.push(match[1]);
+    }
+  }
+}
+
+const expectedPublishPaths = workspaces
+  .filter(({ manifest }) => manifest.private !== true)
+  .map(({ path }) => path)
+  .sort();
+publishPaths.sort();
+
+for (const path of expectedPublishPaths) {
+  if (!publishPaths.includes(path))
+    errors.push(`${publishWorkflowPath}: on.push.paths is missing public workspace ${path}.`);
+}
+for (const path of publishPaths) {
+  if (!expectedPublishPaths.includes(path))
+    errors.push(`${publishWorkflowPath}: on.push.paths lists ${path}, which is not a public workspace.`);
+}
+
+const sharedDevDependencies = new Map();
 for (const { path, manifest } of [
   { path: "package.json", manifest: rootManifest },
   ...workspaces,
@@ -382,6 +476,7 @@ if (lockFiles.length !== 1 || lockFiles[0] !== "bun.lock") {
 
 await inspectTree(workspaceRoot, true);
 await inspectViteConfigs();
+await inspectTailwindTemplates();
 await Promise.all(rootReadmePaths.map(inspectReadme));
 
 for (const rootFile of [".gitignore", "LICENSE"]) {

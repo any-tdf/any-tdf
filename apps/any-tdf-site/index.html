@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="auto" data-mode="light">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<meta
+			name="description"
+			content="Any TDF 是面向 Svelte、React 与 Vue 的移动 Web 组件系统，提供一致的设计语言、主题能力和原生框架体验。"
+		/>
+		<meta name="theme-color" content="#ffffff" />
+		<title>Any TDF - 一个系统，三种原生框架体验</title>
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<script>
+			const savedMode = localStorage.getItem('any-tdf-mode');
+			const initialTheme = ['auto', 'light', 'dark'].includes(savedMode) ? savedMode : 'auto';
+			const initialMode = initialTheme === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
+			document.documentElement.dataset.theme = initialTheme;
+			document.documentElement.dataset.mode = initialMode;
+		</script>
+	</head>
+	<body>
+		<div class="site-app">
+			<header class="site-header">
+				<div class="site-header-inner">
+					<div class="portal-brand-group">
+						<a class="site-brand" href="#top" aria-label="Any TDF 首页" data-i18n-aria="brandLabel">
+							<span class="site-brand-mark portal-brand-mark">
+								<svg viewBox="0 0 80 80" aria-hidden="true">
+									<path
+										class="portal-logo-primary"
+										d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
+									/>
+								</svg>
+							</span>
+						</a>
+					</div>
+
+					<nav class="site-header-nav" aria-label="主导航" data-i18n-aria="navLabel">
+						<button
+							class="site-header-action portal-icon-action portal-header-icon-only"
+							type="button"
+							aria-label="当前为自动模式，切换到浅色模式"
+							title="当前为自动模式，切换到浅色模式"
+							data-theme-toggle
+						>
+							<span class="portal-action-icon" aria-hidden="true">
+								<i class="portal-theme-icon portal-theme-icon-auto" data-lucide="monitor"></i>
+								<i class="portal-theme-icon portal-theme-icon-sun" data-lucide="sun"></i>
+								<i class="portal-theme-icon portal-theme-icon-moon" data-lucide="moon"></i>
+							</span>
+						</button>
+						<button
+							class="site-header-action portal-icon-action portal-header-icon-only"
+							type="button"
+							aria-label="Switch to English"
+							title="Switch to English"
+							data-language-toggle
+						>
+							<span class="portal-action-icon" aria-hidden="true">
+								<i data-lucide="languages"></i>
+							</span>
+						</button>
+						<a
+							class="site-header-link portal-header-icon-only"
+							href="https://github.com/any-tdf/any-tdf"
+							target="_blank"
+							rel="noreferrer"
+							aria-label="GitHub"
+							title="GitHub"
+						>
+							<svg class="portal-inline-icon" data-icon="github" viewBox="0 0 24 24" aria-hidden="true">
+								<path
+									d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.28-.36 6.72-1.61 6.72-7A5.4 5.4 0 0 0 19.28 4.7 5 5 0 0 0 19.14 1S18 .65 15 2.48a13.38 13.38 0 0 0-7 0C5 .65 3.86 1 3.86 1a5 5 0 0 0-.14 3.7 5.4 5.4 0 0 0-1.44 2.8c0 5.42 3.44 6.66 6.72 7A4.8 4.8 0 0 0 8 18v4"
+								/>
+								<path d="M9 18c-4.51 2-5-2-7-2" />
+							</svg>
+						</a>
+					</nav>
+
+					<button
+						class="site-mobile-menu-button portal-menu-button"
+						type="button"
+						aria-label="打开导航菜单"
+						aria-expanded="false"
+						aria-controls="portal-mobile-menu"
+						data-menu-toggle
+					>
+						<span class="portal-action-icon" aria-hidden="true">
+							<i class="portal-menu-icon portal-menu-icon-open" data-lucide="menu"></i>
+							<i class="portal-menu-icon portal-menu-icon-close" data-lucide="x"></i>
+						</span>
+					</button>
+				</div>
+			</header>
+
+			<div id="portal-mobile-menu" class="portal-mobile-menu" aria-hidden="true" hidden>
+				<nav class="site-mobile-menu-nav" aria-label="移动端导航" data-i18n-aria="mobileNavLabel">
+					<a class="site-header-link" href="#products" data-i18n="navProducts">产品</a>
+					<a class="site-header-link" href="#architecture" data-i18n="navArchitecture">架构</a>
+					<a class="site-header-link" href="#principles" data-i18n="navPrinciples">原则</a>
+					<a class="site-header-link portal-link-with-icon" href="https://github.com/any-tdf/any-tdf" target="_blank" rel="noreferrer">
+						GitHub
+						<svg class="portal-inline-icon" data-icon="github" viewBox="0 0 24 24" aria-hidden="true">
+							<path
+								d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.28-.36 6.72-1.61 6.72-7A5.4 5.4 0 0 0 19.28 4.7 5 5 0 0 0 19.14 1S18 .65 15 2.48a13.38 13.38 0 0 0-7 0C5 .65 3.86 1 3.86 1a5 5 0 0 0-.14 3.7 5.4 5.4 0 0 0-1.44 2.8c0 5.42 3.44 6.66 6.72 7A4.8 4.8 0 0 0 8 18v4"
+							/>
+							<path d="M9 18c-4.51 2-5-2-7-2" />
+						</svg>
+					</a>
+					<button
+						class="site-header-action portal-icon-action"
+						type="button"
+						aria-label="当前为自动模式，切换到浅色模式"
+						title="当前为自动模式，切换到浅色模式"
+						data-theme-toggle
+					>
+						<span class="portal-action-icon" aria-hidden="true">
+							<i class="portal-theme-icon portal-theme-icon-auto" data-lucide="monitor"></i>
+							<i class="portal-theme-icon portal-theme-icon-sun" data-lucide="sun"></i>
+							<i class="portal-theme-icon portal-theme-icon-moon" data-lucide="moon"></i>
+						</span>
+						<span data-theme-label>自动</span>
+					</button>
+					<button class="site-header-action portal-icon-action" type="button" data-language-toggle>
+						<span class="portal-action-icon" aria-hidden="true">
+							<i data-lucide="languages"></i>
+						</span>
+						<span data-language-label>EN</span>
+					</button>
+				</nav>
+			</div>
+
+			<main id="top" class="site-home">
+				<div class="site-home-rail">
+					<section class="site-hero portal-hero">
+						<div class="site-hero-copy" data-reveal>
+							<div class="site-eyebrow">SVELTE · REACT · VUE · TAILWIND CSS</div>
+							<h1 class="site-hero-title portal-hero-title">Any TDF</h1>
+							<p class="site-hero-description" data-i18n="heroDescription">
+								一个共享产品语言、面向三种框架原生实现的移动 Web 组件系统。选择你熟悉的框架，获得一致的设计、主题与交互体验。
+							</p>
+							<div class="site-button-row">
+								<a class="site-button site-button-primary portal-button-with-icon" href="#products">
+									<i class="portal-inline-icon" data-lucide="blocks" aria-hidden="true"></i>
+									<span data-i18n="chooseFramework">选择框架</span>
+								</a>
+								<a class="site-button site-button-transparent portal-button-with-icon" href="#architecture">
+									<i class="portal-inline-icon" data-lucide="workflow" aria-hidden="true"></i>
+									<span data-i18n="exploreArchitecture">了解架构</span>
+								</a>
+								<a
+									class="site-button site-button-transparent portal-button-with-icon"
+									href="https://github.com/any-tdf/any-tdf"
+									target="_blank"
+									rel="noreferrer"
+								>
+									<svg class="portal-inline-icon" data-icon="github" viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.28-.36 6.72-1.61 6.72-7A5.4 5.4 0 0 0 19.28 4.7 5 5 0 0 0 19.14 1S18 .65 15 2.48a13.38 13.38 0 0 0-7 0C5 .65 3.86 1 3.86 1a5 5 0 0 0-.14 3.7 5.4 5.4 0 0 0-1.44 2.8c0 5.42 3.44 6.66 6.72 7A4.8 4.8 0 0 0 8 18v4"
+										/>
+										<path d="M9 18c-4.51 2-5-2-7-2" />
+									</svg>
+									<span>GitHub</span>
+								</a>
+							</div>
+							<div class="portal-hero-note">
+								<span>01</span>
+								<p data-i18n="heroNote">共享行为契约，不共享框架限制。</p>
+							</div>
+						</div>
+
+						<div class="site-hero-visual portal-hero-visual" aria-label="Any TDF 架构概览" data-i18n-aria="architecturePreviewLabel">
+							<div class="portal-system-map" data-reveal>
+								<div class="portal-map-header">
+									<span>SYSTEM / ANY TDF</span>
+									<span class="portal-live-dot"><i></i> MONOREPO</span>
+								</div>
+								<div class="portal-map-body">
+									<div class="portal-map-layer portal-map-common">
+										<span class="portal-map-index">01 / SHARED CORE</span>
+										<strong>@any-tdf/common</strong>
+										<small data-i18n="mapCommon">状态派生 · 主题语义 · 公共类型</small>
+									</div>
+									<div class="portal-map-connector" aria-hidden="true">
+										<svg class="portal-map-flow" viewBox="0 0 1000 100" preserveAspectRatio="none" focusable="false">
+											<path class="portal-map-line" d="M500 0V50M166.667 50H833.333M166.667 50V100M500 50V100M833.333 50V100" />
+											<path class="portal-map-flow-path" pathLength="1" d="M500 0V50H166.667V100" />
+											<path class="portal-map-flow-path" pathLength="1" d="M500 0V100" />
+											<path class="portal-map-flow-path" pathLength="1" d="M500 0V50H833.333V100" />
+										</svg>
+									</div>
+									<div class="portal-map-renderers">
+										<div class="portal-renderer" data-renderer="svelte"><span>02A</span><strong>STDF</strong><small>Svelte</small></div>
+										<div class="portal-renderer" data-renderer="react"><span>02B</span><strong>RTDF</strong><small>React</small></div>
+										<div class="portal-renderer" data-renderer="vue"><span>02C</span><strong>VTDF</strong><small>Vue</small></div>
+									</div>
+									<div class="portal-map-connector portal-map-connector-down" aria-hidden="true">
+										<svg class="portal-map-flow" viewBox="0 0 1000 100" preserveAspectRatio="none" focusable="false">
+											<path class="portal-map-line" d="M500 0V100" />
+											<path class="portal-map-flow-path" pathLength="1" d="M500 0V100" />
+										</svg>
+									</div>
+									<div class="portal-map-output">
+										<span>03 / DELIVERY</span>
+										<div><b>npm</b><b>Docs</b><b>Demo</b></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section id="products" class="site-section">
+						<div class="site-section-heading" data-reveal>
+							<div class="site-section-index">01</div>
+							<div>
+								<div class="site-section-kicker">PRODUCT FAMILY</div>
+								<h2 class="site-section-title" data-i18n="productsTitle">同一套设计语言，三种原生实现</h2>
+								<p class="site-section-description" data-i18n="productsDescription">
+									每个组件库都基于 Tailwind CSS，并遵循一致的组件能力、主题语义和文档结构，同时保留对应框架最自然的开发方式。
+								</p>
+							</div>
+						</div>
+
+						<div class="site-feature-grid portal-product-grid" data-reveal-group>
+							<article class="site-feature-card portal-product-card" data-product="svelte" data-reveal>
+								<div class="portal-product-topline">
+									<span>01 / SVELTE</span>
+									<img class="portal-framework-logo" data-framework-logo="svelte" src="/frameworks/svelte.svg" alt="" aria-hidden="true" />
+								</div>
+								<div class="portal-product-identity">
+									<h3>STDF</h3>
+									<svg class="portal-product-logo" data-product-logo="stdf" viewBox="0 0 80 80" aria-hidden="true">
+										<path
+											class="portal-product-logo-base"
+											d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
+										/>
+										<path class="portal-product-logo-detail" d="M20 30H40L20 80V50H0L20 0V30Z" />
+									</svg>
+								</div>
+								<dl class="portal-acronym-list" aria-label="STDF">
+									<div>
+										<dt>S</dt>
+										<dd><span>Simple</span><small data-acronym-zh>简单</small></dd>
+									</div>
+									<div>
+										<dt>T</dt>
+										<dd><span>Tiny</span><small data-acronym-zh>轻量</small></dd>
+									</div>
+									<div>
+										<dt>D</dt>
+										<dd><span>Design</span><small data-acronym-zh>设计</small></dd>
+									</div>
+									<div>
+										<dt>F</dt>
+										<dd><span>Fast</span><small data-acronym-zh>快速</small></dd>
+									</div>
+								</dl>
+								<p data-i18n="stdfDescription">面向 Svelte 的移动 Web 组件库，保持简洁的组件语法与轻量运行时体验。</p>
+								<dl class="portal-product-facts">
+									<div>
+										<dt data-i18n="framework">框架</dt>
+										<dd>Svelte</dd>
+									</div>
+									<div>
+										<dt data-i18n="styling">样式基础</dt>
+										<dd>Tailwind CSS</dd>
+									</div>
+									<div>
+										<dt data-i18n="package">npm 包</dt>
+										<dd>stdf</dd>
+									</div>
+								</dl>
+								<div class="portal-product-actions">
+									<a href="https://stdf.dev" target="_blank" rel="noreferrer">
+										<span data-i18n="openSite">打开官网</span>
+										<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+									</a>
+									<a href="https://www.npmjs.com/package/stdf" target="_blank" rel="noreferrer">
+										<span>npm</span>
+										<i class="portal-inline-icon" data-lucide="package-open" aria-hidden="true"></i>
+									</a>
+								</div>
+							</article>
+
+							<article class="site-feature-card portal-product-card" data-product="react" data-reveal>
+								<div class="portal-product-topline">
+									<span>02 / REACT</span>
+									<span class="portal-framework-logo portal-framework-logo-switch" data-framework-logo="react" aria-hidden="true">
+										<img class="portal-framework-logo-light" src="/frameworks/react-light.svg" alt="" />
+										<img class="portal-framework-logo-dark" src="/frameworks/react-dark.svg" alt="" />
+									</span>
+								</div>
+								<div class="portal-product-identity">
+									<h3>RTDF</h3>
+									<svg class="portal-product-logo" data-product-logo="rtdf" viewBox="0 0 80 80" aria-hidden="true">
+										<path
+											class="portal-product-logo-base"
+											d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
+										/>
+										<defs>
+											<mask
+												id="portal-rtdf-react-mask"
+												class="portal-product-logo-mask"
+												maskUnits="userSpaceOnUse"
+												x="0"
+												y="0"
+												width="80"
+												height="80"
+											>
+												<image href="/frameworks/react-light.svg" width="80" height="80" />
+											</mask>
+										</defs>
+										<g data-logo-layer="react">
+											<rect class="portal-product-logo-detail" width="80" height="80" mask="url(#portal-rtdf-react-mask)" />
+										</g>
+									</svg>
+								</div>
+								<dl class="portal-acronym-list" aria-label="RTDF">
+									<div>
+										<dt>R</dt>
+										<dd><span>Ready</span><small data-acronym-zh>即用</small></dd>
+									</div>
+									<div>
+										<dt>T</dt>
+										<dd><span>Tiny</span><small data-acronym-zh>轻量</small></dd>
+									</div>
+									<div>
+										<dt>D</dt>
+										<dd><span>Design</span><small data-acronym-zh>设计</small></dd>
+									</div>
+									<div>
+										<dt>F</dt>
+										<dd><span>Fast</span><small data-acronym-zh>快速</small></dd>
+									</div>
+								</dl>
+								<p data-i18n="rtdfDescription">面向 React 的移动 Web 组件库，以组件与 Hook 适配共享交互契约。</p>
+								<dl class="portal-product-facts">
+									<div>
+										<dt data-i18n="framework">框架</dt>
+										<dd>React</dd>
+									</div>
+									<div>
+										<dt data-i18n="styling">样式基础</dt>
+										<dd>Tailwind CSS</dd>
+									</div>
+									<div>
+										<dt data-i18n="package">npm 包</dt>
+										<dd>rtdf</dd>
+									</div>
+								</dl>
+								<div class="portal-product-actions">
+									<a href="https://rtdf.dev" target="_blank" rel="noreferrer">
+										<span data-i18n="openSite">打开官网</span>
+										<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+									</a>
+									<a href="https://www.npmjs.com/package/rtdf" target="_blank" rel="noreferrer">
+										<span>npm</span>
+										<i class="portal-inline-icon" data-lucide="package-open" aria-hidden="true"></i>
+									</a>
+								</div>
+							</article>
+
+							<article class="site-feature-card portal-product-card" data-product="vue" data-reveal>
+								<div class="portal-product-topline">
+									<span>03 / VUE</span>
+									<img class="portal-framework-logo" data-framework-logo="vue" src="/frameworks/vue.svg" alt="" aria-hidden="true" />
+								</div>
+								<div class="portal-product-identity">
+									<h3>VTDF</h3>
+									<svg class="portal-product-logo" data-product-logo="vtdf" viewBox="0 0 80 80" aria-hidden="true">
+										<path
+											class="portal-product-logo-base"
+											d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
+										/>
+										<path class="portal-product-logo-detail" d="M20 30H40L20 80V50H0L20 0V30Z" />
+									</svg>
+								</div>
+								<dl class="portal-acronym-list" aria-label="VTDF">
+									<div>
+										<dt>V</dt>
+										<dd><span>Visual</span><small data-acronym-zh>视觉</small></dd>
+									</div>
+									<div>
+										<dt>T</dt>
+										<dd><span>Tiny</span><small data-acronym-zh>轻量</small></dd>
+									</div>
+									<div>
+										<dt>D</dt>
+										<dd><span>Design</span><small data-acronym-zh>设计</small></dd>
+									</div>
+									<div>
+										<dt>F</dt>
+										<dd><span>Fast</span><small data-acronym-zh>快速</small></dd>
+									</div>
+								</dl>
+								<p data-i18n="vtdfDescription">面向 Vue 的移动 Web 组件库，以组件和组合式函数提供原生 Vue 体验。</p>
+								<dl class="portal-product-facts">
+									<div>
+										<dt data-i18n="framework">框架</dt>
+										<dd>Vue</dd>
+									</div>
+									<div>
+										<dt data-i18n="styling">样式基础</dt>
+										<dd>Tailwind CSS</dd>
+									</div>
+									<div>
+										<dt data-i18n="package">npm 包</dt>
+										<dd>vtdf</dd>
+									</div>
+								</dl>
+								<div class="portal-product-actions">
+									<a href="https://vtdf.dev" target="_blank" rel="noreferrer">
+										<span data-i18n="openSite">打开官网</span>
+										<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+									</a>
+									<a href="https://www.npmjs.com/package/vtdf" target="_blank" rel="noreferrer">
+										<span>npm</span>
+										<i class="portal-inline-icon" data-lucide="package-open" aria-hidden="true"></i>
+									</a>
+								</div>
+							</article>
+						</div>
+					</section>
+
+					<section id="architecture" class="site-section">
+						<div class="site-section-heading" data-reveal>
+							<div class="site-section-index">02</div>
+							<div>
+								<div class="site-section-kicker">ARCHITECTURE</div>
+								<h2 class="site-section-title" data-i18n="architectureTitle">共享产品逻辑，保留框架原生渲染</h2>
+								<p class="site-section-description" data-i18n="architectureDescription">
+									Any TDF 共享状态推导、主题、语言、SVG 数据与公共类型，但不把 Svelte、React、Vue 强行合并为同一套渲染源码。
+								</p>
+							</div>
+						</div>
+
+						<div class="site-panel portal-architecture-panel" data-reveal>
+							<div class="portal-architecture-header">
+								<span>DEPENDENCY FLOW / TOP TO BOTTOM</span>
+								<span data-i18n="architectureRule">依赖方向保持单向</span>
+							</div>
+							<div class="portal-architecture-stack">
+								<div class="portal-architecture-row portal-architecture-core">
+									<div class="portal-architecture-label">
+										<span>01</span>
+										<i class="portal-layer-icon" data-lucide="layers" aria-hidden="true"></i>
+										<strong data-i18n="sharedLayer">共享层</strong>
+									</div>
+									<div class="portal-architecture-content">
+										<b>@any-tdf/common</b>
+										<span data-i18n="sharedLayerDetail">组件状态 · 主题语义 · 语言与类型 · SVG 数据</span>
+									</div>
+								</div>
+								<div class="portal-flow-line" aria-hidden="true">
+									<span>↓</span>
+								</div>
+								<div class="portal-architecture-row">
+									<div class="portal-architecture-label">
+										<span>02</span>
+										<i class="portal-layer-icon" data-lucide="plug" aria-hidden="true"></i>
+										<strong data-i18n="adapterLayer">适配层</strong>
+									</div>
+									<div class="portal-adapter-grid">
+										<div data-renderer="svelte"><b>stdf</b><span data-i18n="svelteAdapter">Svelte 组件、事件与插槽</span></div>
+										<div data-renderer="react"><b>rtdf</b><span data-i18n="reactAdapter">React 组件、Props 与 Hook</span></div>
+										<div data-renderer="vue"><b>vtdf</b><span data-i18n="vueAdapter">Vue 组件、事件与插槽</span></div>
+									</div>
+								</div>
+								<div class="portal-flow-line" aria-hidden="true">
+									<span>↓</span>
+								</div>
+								<div class="portal-architecture-row">
+									<div class="portal-architecture-label">
+										<span>03</span>
+										<i class="portal-layer-icon" data-lucide="panels-top-left" aria-hidden="true"></i>
+										<strong data-i18n="experienceLayer">体验层</strong>
+									</div>
+									<div class="portal-experience-grid">
+										<span data-i18n="independentPackages">独立 npm 包</span>
+										<span data-i18n="independentSites">独立官网</span>
+										<span data-i18n="frameworkDemos">框架 Demo</span>
+										<span data-i18n="sharedTooling">共享工具链</span>
+									</div>
+								</div>
+							</div>
+							<div class="portal-motion-bridge">
+								<div class="portal-motion-copy">
+									<div class="portal-motion-kicker">
+										<i class="portal-layer-icon" data-lucide="refresh-cw" aria-hidden="true"></i>
+										<span data-i18n="motionCompatibility">动效兼容</span>
+									</div>
+									<h3 data-i18n="motionTitle">Svelte 原生，React 与 Vue 对齐</h3>
+									<p data-i18n="motionDescription">
+										Svelte 直接使用框架内置的 easing、transition、animate 与 motion 能力；为了让另外两端保持一致的动效语义，Any TDF
+										分别实现了 React 和 Vue 版本。
+									</p>
+								</div>
+								<div class="portal-motion-packages">
+									<div data-renderer="react">
+										<span>REACT</span>
+										<strong>@any-tdf/react-motion</strong>
+										<small data-i18n="reactMotionDescription">对齐 Svelte API 的动效函数、React 组件与 Hook。</small>
+									</div>
+									<div data-renderer="vue">
+										<span>VUE</span>
+										<strong>@any-tdf/vue-motion</strong>
+										<small data-i18n="vueMotionDescription">对齐 Svelte API 的动效函数、Vue 组件与组合式函数。</small>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section id="principles" class="site-section">
+						<div class="site-section-heading" data-reveal>
+							<div class="site-section-index">03</div>
+							<div>
+								<div class="site-section-kicker">DESIGN PRINCIPLES</div>
+								<h2 class="site-section-title" data-i18n="principlesTitle">统一但不抹平差异</h2>
+								<p class="site-section-description" data-i18n="principlesDescription">
+									架构围绕可维护的共享边界设计，让三端保持一致，也让每个框架仍然像它自己。
+								</p>
+							</div>
+						</div>
+
+						<div class="site-feature-grid portal-principle-grid" data-reveal-group>
+							<article class="site-feature-card" data-reveal>
+								<div class="portal-card-heading">
+									<div class="portal-card-code">P / 01</div>
+									<i class="portal-card-icon" data-lucide="code-xml" aria-hidden="true"></i>
+								</div>
+								<h3 data-i18n="nativeTitle">框架原生</h3>
+								<p data-i18n="nativeDescription">组件、事件、插槽和类型都遵循各自框架的习惯，不引入额外跨框架运行时。</p>
+							</article>
+							<article class="site-feature-card" data-reveal>
+								<div class="portal-card-heading">
+									<div class="portal-card-code">P / 02</div>
+									<i class="portal-card-icon" data-lucide="repeat-2" aria-hidden="true"></i>
+								</div>
+								<h3 data-i18n="consistentTitle">体验一致</h3>
+								<p data-i18n="consistentDescription">组件范围、主题语义、文档结构和移动交互在三端保持可预测的一致性。</p>
+							</article>
+							<article class="site-feature-card" data-reveal>
+								<div class="portal-card-heading">
+									<div class="portal-card-code">P / 03</div>
+									<i class="portal-card-icon" data-lucide="paintbrush" aria-hidden="true"></i>
+								</div>
+								<h3 data-i18n="tailwindTitle">Tailwind CSS 基础</h3>
+								<p data-i18n="tailwindDescription">三套组件库都基于 Tailwind CSS，共享清晰的主题变量和可组合样式语言。</p>
+							</article>
+							<article class="site-feature-card" data-reveal>
+								<div class="portal-card-heading">
+									<div class="portal-card-code">P / 04</div>
+									<i class="portal-card-icon" data-lucide="package-check" aria-hidden="true"></i>
+								</div>
+								<h3 data-i18n="deliveryTitle">独立交付</h3>
+								<p data-i18n="deliveryDescription">每个组件库都可以单独安装、构建和使用，消费者不需要了解 Monorepo。</p>
+							</article>
+						</div>
+					</section>
+
+					<section class="site-section portal-cta-section">
+						<div class="portal-cta" data-reveal>
+							<div>
+								<div class="site-section-kicker">START BUILDING</div>
+								<h2 data-i18n="ctaTitle">从你熟悉的框架开始</h2>
+								<p data-i18n="ctaDescription">访问对应官网，查看指南、组件、主题生成器和在线 Demo。</p>
+							</div>
+							<div class="portal-cta-links">
+								<a href="https://stdf.dev" target="_blank" rel="noreferrer">
+									<span>STDF</span><small>Svelte</small>
+									<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+								</a>
+								<a href="https://rtdf.dev" target="_blank" rel="noreferrer">
+									<span>RTDF</span><small>React</small>
+									<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+								</a>
+								<a href="https://vtdf.dev" target="_blank" rel="noreferrer">
+									<span>VTDF</span><small>Vue</small>
+									<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+								</a>
+							</div>
+						</div>
+					</section>
+
+					<footer class="site-footer portal-footer">
+						<div class="portal-footer-main">
+							<div>
+								<div class="site-brand">
+									<span class="site-brand-name">ANY TDF</span>
+								</div>
+								<p data-i18n="footerDescription">一个共享设计系统，三套原生移动 Web 组件库。</p>
+							</div>
+							<div class="portal-footer-links">
+								<a href="https://stdf.dev" target="_blank" rel="noreferrer">STDF</a>
+								<a href="https://rtdf.dev" target="_blank" rel="noreferrer">RTDF</a>
+								<a href="https://vtdf.dev" target="_blank" rel="noreferrer">VTDF</a>
+								<a href="https://github.com/any-tdf/any-tdf" target="_blank" rel="noreferrer">GitHub</a>
+							</div>
+						</div>
+						<div class="portal-footer-meta">
+							<span>ANY TDF · OPEN SOURCE</span>
+							<span>SVELTE / REACT / VUE / TAILWIND CSS / MIT</span>
+							<span>© 2023–<span data-current-year></span></span>
+						</div>
+					</footer>
+				</div>
+			</main>
+		</div>
+
+		<script type="module" src="/src/main.js"></script>
+	</body>
+</html>

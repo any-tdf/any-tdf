@@ -1,0 +1,27 @@
+{
+	"name": "@any-tdf/any-tdf-site",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Framework-neutral static portal for the Any TDF component library family.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "apps/any-tdf-site"
+	},
+	"type": "module",
+	"scripts": {
+		"dev": "vp dev",
+		"build": "vp build",
+		"preview": "vp preview",
+		"check": "bun run scripts/check.mjs",
+		"deploy:check": "bun run check && bun run build"
+	},
+	"dependencies": {
+		"@any-tdf/site-common": "workspace:*",
+		"lucide": "catalog:"
+	},
+	"devDependencies": {
+		"vite-plus": "catalog:"
+	}
+}

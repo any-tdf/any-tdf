@@ -1,4 +1,4 @@
-> VTDF 3.0.0-alpha.0 基于 Vue 3.5 与 Tailwind CSS v4。
+> VTDF 0.0.0-alpha.0 基于 Vue 3.5 与 Tailwind CSS v4。
 
 ## Vue
 

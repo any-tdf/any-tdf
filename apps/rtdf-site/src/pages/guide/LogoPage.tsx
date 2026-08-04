@@ -1,3 +1,5 @@
+import { RtdfLogoMark } from '../../components/RtdfLogo';
+
 const LogoPage = () => {
 	return (
 		<div className="mx-auto max-w-full">
@@ -9,11 +11,9 @@ const LogoPage = () => {
 			</div>
 			<div className="max-w-full md:max-w-md">
 				<svg className="w-full" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M40 1C54.8054 1 67.7312 9.04427 74.6475 21H30V31H40C45.5228 31 50 35.4772 50 41C50 46.5228 45.5228 51 40 51H30V81H10V21H0V1H40ZM78.7393 31C79.5619 34.1962 80 37.547 80 41C80 63.0914 62.0914 81 40 81V61C51.0457 61 60 52.0457 60 41C60 37.3571 59.0259 33.9417 57.3242 31H78.7393Z"
-						className="fill-primary dark:fill-dark"
-					/>
-					<path d="M20 31H40L20 81V51H0L20 1V31Z" className="fill-dark dark:fill-primary" />
+					<g transform="translate(0 1)">
+						<RtdfLogoMark />
+					</g>
 					<line y1="0.9" x2="80" y2="0.9" className="stroke-gray-400 dark:stroke-gray-600" strokeWidth="0.2" strokeDasharray="2 2" />
 					<line y1="10.9" x2="80" y2="10.9" className="stroke-gray-400 dark:stroke-gray-600" strokeWidth="0.2" strokeDasharray="2 2" />
 					<line y1="20.9" x2="80" y2="20.9" className="stroke-gray-400 dark:stroke-gray-600" strokeWidth="0.2" strokeDasharray="2 2" />

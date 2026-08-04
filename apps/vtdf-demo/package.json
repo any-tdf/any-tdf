@@ -22,7 +22,6 @@
 		"directory": "apps/vtdf-demo"
 	},
 	"funding": "https://vtdf.dev?fund",
-	"style": "./dist/style.css",
 	"type": "module",
 	"sideEffects": [
 		"**/*.css",

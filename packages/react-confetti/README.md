@@ -10,7 +10,7 @@ The component renders pure HTML and CSS animation markup. It does not use canvas
 bun add @any-tdf/react-confetti react react-dom
 ```
 
-React 18 and React 19 are supported. The component is SSR-friendly and has no canvas or runtime physics dependency.
+React is supported. The component is SSR-friendly and has no canvas or runtime physics dependency.
 
 ```tsx
 import { Confetti } from '@any-tdf/react-confetti';
@@ -20,7 +20,7 @@ export const Demo = () => <Confetti rounded amount={100} />;
 
 ## Documentation
 
-The standalone React documentation app lives in `apps/runtime-docs/react-confetti` in the Any TDF Monorepo.
+The standalone React documentation app lives beside the package source in `packages/react-confetti/docs`.
 
 ```sh
 bun install

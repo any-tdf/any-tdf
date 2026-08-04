@@ -7,6 +7,8 @@ type PackageJson = {
 	version: string;
 	repository?: { url?: string };
 	files?: string[];
+	dependencies?: Record<string, string>;
+	exports?: Record<string, unknown>;
 	publishConfig?: { tag?: string };
 	scripts?: Record<string, string>;
 };
@@ -38,10 +40,13 @@ describe(`${packageJson.name} release metadata`, () => {
 		expect(packageJson.files).toContain('LICENSE');
 	});
 
-	test('is self-contained for a standalone checkout', () => {
+	test('uses published Workspace dependencies for a standalone install', () => {
 		expect(packageText).not.toContain('file:../../../');
 		expect(packageJson.repository?.url).toStartWith('git+https://');
 		expect(packageJson.scripts?.prepublishOnly).toBe('bun run release:check');
-		expect(packageJson.scripts?.build).toContain('scripts/prepare-framework-dist.mjs');
+		expect(packageJson.scripts?.build).not.toContain('prepare-framework-dist');
+		expect(packageJson.dependencies?.['@any-tdf/common']).toBe('workspace:^');
+		expect(Object.hasOwn(packageJson.exports ?? {}, './source.css')).toBeTrue();
+		expect(packageJson.files).toContain('source.css');
 	});
 });

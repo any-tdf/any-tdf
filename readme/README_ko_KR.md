@@ -1,6 +1,7 @@
 <div align="center">
 
 [![CI](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml)
+[![npm Publish](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 [![Release](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml)
 [![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
 
@@ -20,16 +21,16 @@ Any TDF 는 Svelte, React, Vue 를 위한 모바일 Web 컴포넌트 제품군�
 
 ## 제품
 
-| 라이브러리 | 프레임워크    | npm                                          | 문서와 Demo                  |
-| ---------- | ------------- | -------------------------------------------- | ---------------------------- |
-| STDF       | Svelte 5      | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
-| RTDF       | React 18 / 19 | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
-| VTDF       | Vue 3.5       | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
+| 라이브러리 | 프레임워크 | npm                                          | 문서와 Demo                  |
+| ---------- | ---------- | -------------------------------------------- | ---------------------------- |
+| STDF       | Svelte     | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
+| RTDF       | React      | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
+| VTDF       | Vue        | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
 
 ## 특징
 
 - 프레임워크 네이티브 API 를 제공하는 60 개의 정렬된 모바일 컴포넌트.
-- Tailwind CSS v4 테마, 다크 모드, 런타임 테마 전환, 사용자 정의 테마.
+- STDF, RTDF, VTDF 는 모두 Tailwind CSS 를 기반으로 하며 다크 모드, 런타임 테마 전환, 사용자 정의 테마를 지원합니다.
 - 60 개 이상의 내장 로케일과 중국어 및 영어 컴포넌트 문서.
 - TypeScript 우선 내보내기, SSR, 선택적 가져오기, 공통 접근성 동작.
 - 통합 스캐폴딩 CLI, 오프라인 AI Skill, 컴포넌트 API 용 VS Code 확장.
@@ -55,7 +56,7 @@ bun add vtdf vue tailwindcss
 bun create any-tdf@latest
 ```
 
-`create-any-tdf` 는 Tailwind CSS v4 또는 UnoCSS, 아이콘, 테마 옵션을 지원하는 Vite 및 SvelteKit 템플릿을 제공합니다.
+`create-any-tdf` 는 Tailwind CSS 또는 UnoCSS, 아이콘, 테마 옵션을 지원하는 Vite 및 SvelteKit 템플릿을 제공합니다.
 
 ## Demo 와 공식 사이트
 
@@ -75,9 +76,10 @@ bun run build
 bun run verify
 ```
 
-프레임워크별 사이트와 Demo 를 함께 실행합니다.
+Any TDF 포털 또는 프레임워크별 사이트와 Demo 를 실행합니다.
 
 ```sh
+bun run dev:any-tdf
 bun run dev:stdf
 bun run dev:rtdf
 bun run dev:vtdf
@@ -87,10 +89,10 @@ bun run dev:vtdf
 
 ## 저장소 구조
 
-- `apps`: 문서 사이트, 컴포넌트 Demo, 공통 사이트 코드, 런타임 문서.
-- `packages`: 공통 코어, 프레임워크 UI, Motion, Confetti, AI Skill.
+- `apps`: 문서 사이트, 컴포넌트 Demo, 공통 사이트 코드.
+- `packages`: 공통 코어, 프레임워크 UI, Motion, Confetti 와 각 패키지 내부 문서, AI Skill, `create-any-tdf`.
 - `content`: 생성된 STDF, RTDF, VTDF 컴포넌트와 가이드.
-- `tooling`: `create-any-tdf` 와 Any TDF VS Code 확장.
+- `extensions`: Any TDF VS Code 확장.
 - `scripts`: 저장소 전체 생성, 검증, 패키징, 릴리스 도구.
 
 ## 피드백

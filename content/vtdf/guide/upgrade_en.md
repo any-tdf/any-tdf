@@ -1,6 +1,6 @@
-# VTDF v2 to v3 Upgrade Guide
+# VTDF Alpha Release Guide
 
-VTDF 3.0.0-alpha.0 is the alpha version of a breaking release. This version changes the package layout and public entry points: theme, locale, types, utilities, and UI component capabilities are exported from the `vtdf` package. Application code does not need to install or import `@any-tdf/common` directly.
+VTDF 0.0.0-alpha.0 is the first alpha prerelease. This release establishes the package layout and public entry points: theme, locale, types, utilities, and UI component capabilities are exported from the `vtdf` package. Application code does not need to install or import `@any-tdf/common` directly.
 
 ## Core Changes
 
@@ -12,10 +12,10 @@ VTDF 3.0.0-alpha.0 is the alpha version of a breaking release. This version chan
 - Tailwind CSS only needs to scan `vtdf/dist`.
 - Direct public usage of shared package paths is no longer supported.
 
-## 1. Upgrade Dependency
+## 1. Install Dependency
 
 ```sh
-bun add vtdf@3.0.0-alpha.0
+bun add vtdf@0.0.0-alpha.0
 ```
 
 If your `package.json` lists `@any-tdf/common` directly, remove it. `@any-tdf/common` may still be installed as an internal implementation dependency, but application projects should not depend on it explicitly.
@@ -29,13 +29,13 @@ Old syntax:
 @source "../node_modules/@any-tdf/common/dist";
 ```
 
-v3 syntax:
+Current syntax:
 
 ```css
 @source "../node_modules/vtdf/dist";
 ```
 
-The VTDF 3.0.0-alpha.0 package output includes the class sources needed by components and shared capabilities, so there is no extra shared package directory to scan.
+The VTDF 0.0.0-alpha.0 package output includes the class sources needed by components and shared capabilities, so there is no extra shared package directory to scan.
 
 ## 3. Update Theme Plugin Path
 
@@ -57,12 +57,12 @@ Change it to:
 
 ## 4. Update Code Imports
 
-| Old Import              | v3 Import    |
-| ----------------------- | ------------ |
-| `@any-tdf/common/theme` | `vtdf/theme` |
-| `@any-tdf/common/lang`  | `vtdf/lang`  |
-| `@any-tdf/common/types` | `vtdf/types` |
-| `@any-tdf/common/utils` | `vtdf/utils` |
+| Old Import              | Current Import |
+| ----------------------- | -------------- |
+| `@any-tdf/common/theme` | `vtdf/theme`   |
+| `@any-tdf/common/lang`  | `vtdf/lang`    |
+| `@any-tdf/common/types` | `vtdf/types`   |
+| `@any-tdf/common/utils` | `vtdf/utils`   |
 
 Example:
 
@@ -93,7 +93,7 @@ If you previously depended on shared package internals, migrate to the component
 
 ## Migration Checklist
 
-- [ ] Upgrade `vtdf` to `^3.0.0`.
+- [ ] Install `vtdf@0.0.0-alpha.0`.
 - [ ] Remove direct `@any-tdf/common` declarations from project dependencies.
 - [ ] Remove `@source "../node_modules/@any-tdf/common/dist";` from CSS.
 - [ ] Change the theme plugin to `@plugin "vtdf/theme"`.

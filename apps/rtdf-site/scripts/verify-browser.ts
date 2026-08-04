@@ -10,7 +10,7 @@ type CDPResponse = {
 	params?: unknown;
 };
 
-const baseUrl = process.env.RTDF_SITE_VERIFY_BASE_URL || 'http://127.0.0.1:5557';
+const baseUrl = process.env.RTDF_SITE_VERIFY_BASE_URL || 'http://127.0.0.1:4173';
 const chromePath =
 	process.env.CHROME_PATH ||
 	[

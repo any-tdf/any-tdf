@@ -1,8 +1,8 @@
 # STDF
 
-基于 Svelte 5 与 Tailwind CSS v4 的移动端组件库。
+基于 Svelte 与 Tailwind CSS 的移动端组件库。
 
-Mobile component library based on Svelte 5 and Tailwind CSS v4.
+Mobile component library based on Svelte and Tailwind CSS.
 
 ## 安装
 

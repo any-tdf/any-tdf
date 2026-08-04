@@ -66,7 +66,7 @@ const selectMenu = (item: SiteMenuChild) => {
 const editUrl = computed(() => {
 	const base = 'https://github.com/any-tdf/any-tdf/edit/main/content/vtdf/guide/';
 	if (currentNav.value.nav === 'create')
-		return `https://github.com/any-tdf/any-tdf/edit/main/tooling/create-any-tdf/README${isZh.value ? '_CN' : ''}.md`;
+		return `https://github.com/any-tdf/any-tdf/edit/main/packages/create-any-tdf/README${isZh.value ? '_CN' : ''}.md`;
 	const currentDoc = currentNav.value.doc ?? guideDocMap[currentNav.value.nav];
 	return `${base}${currentDoc}${isZh.value ? '' : '_en'}.md`;
 });

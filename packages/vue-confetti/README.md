@@ -1,6 +1,6 @@
 # @any-tdf/vue-confetti
 
-Vue 3 port of `svelte-confetti@2.3.2`.
+Vue port of `svelte-confetti@2.3.2`.
 
 The component renders pure HTML and CSS animation markup. It does not use canvas, timers for animation frames, or runtime physics. The goal is API and visual behavior parity with `svelte-confetti`, with `className`, Vue `class`, and Vue `style` passthrough for integration.
 
@@ -10,7 +10,7 @@ The component renders pure HTML and CSS animation markup. It does not use canvas
 bun add @any-tdf/vue-confetti vue
 ```
 
-Vue 3.5 or newer is required. The component is SSR-friendly and has no canvas or runtime physics dependency.
+Vue is required. The component is SSR-friendly and has no canvas or runtime physics dependency.
 
 ```vue
 <script setup lang="ts">
@@ -24,7 +24,7 @@ import { Confetti } from '@any-tdf/vue-confetti';
 
 ## Documentation
 
-The standalone Vue documentation app lives in `apps/runtime-docs/vue-confetti` in the Any TDF Monorepo.
+The standalone Vue documentation app lives beside the package source in `packages/vue-confetti/docs`.
 
 ```sh
 bun install

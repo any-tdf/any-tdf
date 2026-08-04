@@ -1,0 +1,32 @@
+{
+	"name": "@any-tdf/vue-motion-site",
+	"version": "0.0.0",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/vue-motion/docs"
+	},
+	"type": "module",
+	"scripts": {
+		"dev": "vp dev --host 0.0.0.0 --port 8896",
+		"build": "vue-tsc -b && vp build",
+		"preview": "vp preview --host 0.0.0.0 --port 8897",
+		"check": "vue-tsc -b",
+		"typecheck:native": "vue-tsc -b"
+	},
+	"dependencies": {
+		"@any-tdf/vue-motion": "workspace:*",
+		"lucide-vue-next": "^1.0.0",
+		"vue": "catalog:vue"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@vitejs/plugin-vue": "catalog:vue",
+		"typescript": "catalog:vue-native",
+		"vite": "catalog:",
+		"vite-plus": "catalog:",
+		"vue-tsc": "catalog:vue"
+	}
+}

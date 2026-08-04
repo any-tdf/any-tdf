@@ -1,14 +1,14 @@
 # stdf
 
-`stdf` is the Svelte implementation of the Any TDF mobile web component system. It provides the shared Any TDF component set through Svelte 5 components, snippets, actions, transitions, themes, locale objects, types, and utilities.
+`stdf` is the Svelte implementation of the Any TDF mobile web component system, built on Tailwind CSS. It provides the shared Any TDF component set through Svelte components, snippets, actions, transitions, themes, locale objects, types, and utilities.
 
 ## Install
 
 ```sh
-bun add stdf@alpha svelte tailwindcss
+bun add stdf svelte tailwindcss
 ```
 
-`stdf` requires Svelte 5 and Tailwind CSS v4.
+`stdf` requires Svelte and Tailwind CSS.
 
 ## Usage
 
@@ -26,6 +26,7 @@ Configure Tailwind CSS with the STDF theme plugin:
 
 ```css
 @import 'tailwindcss';
+@import 'stdf/source.css';
 
 @plugin "stdf/theme" {
 	all: true;
@@ -36,10 +37,11 @@ Configure Tailwind CSS with the STDF theme plugin:
 
 - `stdf`: components, feedback APIs, themes, locales, types, and utilities.
 - `stdf/theme`: built-in themes and runtime theme helpers.
-- `stdf/theme/plugin`: Tailwind CSS v4 theme plugin.
+- `stdf/theme/plugin`: Tailwind CSS theme plugin.
 - `stdf/lang`: built-in locale objects.
 - `stdf/types`: public TypeScript types.
 - `stdf/utils`: shared component utilities.
+- `stdf/source.css`: Tailwind CSS source registration for STDF and `@any-tdf/common`.
 
 ## Development
 

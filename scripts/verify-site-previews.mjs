@@ -131,6 +131,28 @@ const runSharedBrowserVerification = async () => {
   }
 };
 
+const runUiParityVerification = async () => {
+  const verification = Bun.spawn(
+    [process.execPath, "run", "--filter", "@any-tdf/site-common", "verify:ui"],
+    {
+      cwd: workspaceRoot,
+      env: targets.reduce(
+        (environment, target) => ({
+          ...environment,
+          [target.baseUrlEnvironmentName]: target.baseUrl,
+        }),
+        { ...process.env },
+      ),
+      stdout: "inherit",
+      stderr: "inherit",
+    },
+  );
+  const exitCode = await verification.exited;
+  if (exitCode !== 0) {
+    throw new Error(`Site UI parity verification failed with code ${exitCode}.`);
+  }
+};
+
 try {
   await Promise.all(
     targets.map((target, index) => waitForPreview(target, previews[index])),
@@ -140,6 +162,7 @@ try {
     for (const target of targets) await runBrowserVerification(target);
   }
   await runSharedBrowserVerification();
+  await runUiParityVerification();
 
   const stoppedPreview = targets.find(
     (target, index) => previews[index].exitCode !== null,

@@ -22,7 +22,6 @@
 		"directory": "apps/rtdf-demo"
 	},
 	"funding": "https://rtdf.dev?fund",
-	"style": "./dist/style.css",
 	"type": "module",
 	"sideEffects": [
 		"**/*.css"
@@ -161,8 +160,8 @@
 		"modal_en": "vp dev --mode modal_en",
 		"toast_en": "vp dev --mode toast_en",
 		"feedback_en": "vp dev --mode feedback_en",
-		"check": "tsc -p tsconfig.json",
-		"typecheck:native": "tsc -p tsconfig.json --noEmit"
+		"check": "tsc -b tsconfig.json",
+		"typecheck:native": "tsc -b tsconfig.json --noEmit"
 	},
 	"dependencies": {
 		"@any-tdf/common": "workspace:*",
@@ -192,10 +191,5 @@
 		"typescript6": "catalog:",
 		"vite": "catalog:",
 		"vite-plus": "catalog:"
-	},
-	"peerDependenciesMeta": {
-		"tailwindcss": {
-			"optional": true
-		}
 	}
 }

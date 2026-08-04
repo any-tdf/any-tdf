@@ -2,7 +2,7 @@ import { expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const docsSourceRoot = resolve(import.meta.dir, '../../../apps/runtime-docs/react-confetti/src');
+const docsSourceRoot = resolve(import.meta.dir, '../docs/src');
 const appSource = readFileSync(resolve(docsSourceRoot, 'App.tsx'), 'utf8');
 const stylesSource = readFileSync(resolve(docsSourceRoot, 'styles.css'), 'utf8');
 

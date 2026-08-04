@@ -104,11 +104,7 @@ const vtdfAdvantages = computed(() => [
 			<!-- Vue 优势 -->
 			<div class="mb-12">
 				<div class="flex items-center gap-3 mb-6">
-					<svg class="size-6 text-(--brand-vue)" viewBox="0 0 24 24" fill="currentColor">
-						<path
-							d="M12.001 21.406L1.2 4.6h4.323l6.478 11.21L18.477 4.6H22.8L12.001 21.406zM6.892 4.6l5.109 8.85L17.108 4.6h-3.11l-1.997 3.457L10 4.6H6.892z"
-						/>
-					</svg>
+					<img class="size-6 object-contain" src="/frameworks/vue.svg" alt="" aria-hidden="true" />
 					<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Vue</h3>
 					<span class="text-sm text-gray-500 dark:text-gray-400">
 						{{ isZh ? '渐进式 JavaScript 框架，生态成熟、上手平滑' : 'A progressive JavaScript framework with a mature ecosystem' }}

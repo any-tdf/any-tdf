@@ -1,6 +1,6 @@
 # @any-tdf/vue-motion
 
-`@any-tdf/vue-motion` is an independent Vue 3 animation toolkit used by VTDF. It provides Vue bindings and framework-neutral functions modeled after Svelte easing, transition, animate, and motion APIs.
+`@any-tdf/vue-motion` is an independent Vue animation toolkit used by VTDF. It provides Vue bindings and framework-neutral functions modeled after Svelte easing, transition, animate, and motion APIs.
 
 ## Install
 
@@ -8,7 +8,7 @@
 bun add @any-tdf/vue-motion vue
 ```
 
-Vue 3.5 or newer is required for the Vue bindings. The easing and transition functions can be imported independently.
+Vue is required for the Vue bindings. The easing and transition functions can be imported independently.
 
 ## Usage
 
@@ -38,6 +38,8 @@ import { spring } from '@any-tdf/vue-motion/motion';
 - `@any-tdf/vue-motion/vue`: Vue components and composables.
 
 ## Development
+
+The bilingual documentation app lives beside the package source in `packages/vue-motion/docs`.
 
 ```sh
 bun run --filter @any-tdf/vue-motion check

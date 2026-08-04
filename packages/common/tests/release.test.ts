@@ -30,9 +30,11 @@ describe('@any-tdf/common release metadata', () => {
 		expect(existsSync(resolve(repositoryRoot, 'LICENSE'))).toBeTrue();
 		expect(existsSync(resolve(packageRoot, 'LICENSE'))).toBeFalse();
 		expect(packageJson.files).toContain('LICENSE');
-		for (const entry of ['./derived/*', './svg/*', './theme/runtime', './types']) {
+		for (const entry of ['./derived/*', './svg/*', './theme/runtime', './types', './source.css']) {
 			expect(Object.hasOwn(packageJson.exports ?? {}, entry)).toBeTrue();
 		}
+		expect(packageJson.files).toContain('source.css');
+		expect(readFileSync(resolve(packageRoot, 'source.css'), 'utf-8')).toContain("@source './dist';");
 	});
 
 	test('uses a standalone release gate', () => {

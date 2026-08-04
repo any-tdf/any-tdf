@@ -24,7 +24,7 @@ type ElementMetrics = Record<string, string | number>;
 
 const sites: Site[] = [
 	{ name: 'STDF', baseUrl: process.env.STDF_SITE_VERIFY_BASE_URL ?? 'http://127.0.0.1:4173' },
-	{ name: 'RTDF', baseUrl: process.env.RTDF_SITE_VERIFY_BASE_URL ?? 'http://127.0.0.1:5557' },
+	{ name: 'RTDF', baseUrl: process.env.RTDF_SITE_VERIFY_BASE_URL ?? 'http://127.0.0.1:4173' },
 	{ name: 'VTDF', baseUrl: process.env.VTDF_SITE_VERIFY_BASE_URL ?? 'http://127.0.0.1:5553' }
 ];
 

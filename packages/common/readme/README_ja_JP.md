@@ -10,7 +10,7 @@ Framework-agnostic shared foundation for the `any-tdf` component ecosystem.
 
 # 概要
 
-`@any-tdf/common` は `any-tdf` コンポーネントエコシステム向けの共有基盤パッケージです。派生状態、クラス計算、スタイルデータ、 SVG アイコンデータ、 Tailwind CSS v4 テーマツール、ランタイムテーマ切り替え、多言語パック、型定義、ユーティリティを提供します。
+`@any-tdf/common` は `any-tdf` コンポーネントエコシステム向けの共有基盤パッケージです。派生状態、クラス計算、スタイルデータ、 SVG アイコンデータ、 Tailwind CSS テーマツール、ランタイムテーマ切り替え、多言語パック、型定義、ユーティリティを提供します。
 
 このパッケージは現在 `alpha` チャンネルで公開されています。共有契約が安定するまで API は変更される可能性があります。
 
@@ -32,7 +32,7 @@ import { switchTheme } from '@any-tdf/common/theme/runtime';
 
 - `@any-tdf/common/derived`: derived component state and class helpers.
 - `@any-tdf/common/svg`: shared SVG data and built-in icon maps.
-- `@any-tdf/common/theme`: theme config, Tailwind CSS v4 plugin, and runtime helpers.
+- `@any-tdf/common/theme`: theme config, Tailwind CSS plugin, and runtime helpers.
 - `@any-tdf/common/lang`: language packs.
 - `@any-tdf/common/types`: shared TypeScript types.
 - `@any-tdf/common/utils`: platform and general utilities.

@@ -1,6 +1,7 @@
 <div align="center">
 
 [![CI](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/ci.yml)
+[![npm Publish](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 [![Release](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/release.yml)
 [![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
 
@@ -22,14 +23,14 @@ Any TDF は、Svelte、React、Vue 向けのモバイル Web コンポーネン�
 
 | ライブラリ | フレームワーク | npm                                          | ドキュメントと Demo          |
 | ---------- | -------------- | -------------------------------------------- | ---------------------------- |
-| STDF       | Svelte 5       | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
-| RTDF       | React 18 / 19  | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
-| VTDF       | Vue 3.5        | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
+| STDF       | Svelte         | [`stdf`](https://www.npmjs.com/package/stdf) | [stdf.dev](https://stdf.dev) |
+| RTDF       | React          | [`rtdf`](https://www.npmjs.com/package/rtdf) | [rtdf.dev](https://rtdf.dev) |
+| VTDF       | Vue            | [`vtdf`](https://www.npmjs.com/package/vtdf) | [vtdf.dev](https://vtdf.dev) |
 
 ## 特長
 
 - フレームワークネイティブ API を備えた 60 個の統一モバイルコンポーネント。
-- Tailwind CSS v4 テーマ、ダークモード、実行時テーマ切り替え、カスタムテーマ。
+- STDF、RTDF、VTDF はすべて Tailwind CSS を基盤とし、ダークモード、実行時テーマ切り替え、カスタムテーマに対応。
 - 60 以上の組み込みロケールと、中国語・英語のコンポーネントドキュメント。
 - TypeScript ファーストのエクスポート、SSR、オンデマンドインポート、共通アクセシビリティ動作。
 - 統一 CLI、オフライン AI Skill、コンポーネント API 用 VS Code 拡張。
@@ -55,7 +56,7 @@ bun add vtdf vue tailwindcss
 bun create any-tdf@latest
 ```
 
-`create-any-tdf` は、Tailwind CSS v4 または UnoCSS、アイコン、テーマを設定できる Vite と SvelteKit テンプレートを提供します。
+`create-any-tdf` は、Tailwind CSS または UnoCSS、アイコン、テーマを設定できる Vite と SvelteKit テンプレートを提供します。
 
 ## Demo と公式サイト
 
@@ -75,9 +76,10 @@ bun run build
 bun run verify
 ```
 
-各フレームワークのサイトと Demo を同時に起動します。
+Any TDF ポータル、または各フレームワークのサイトと Demo を起動します。
 
 ```sh
+bun run dev:any-tdf
 bun run dev:stdf
 bun run dev:rtdf
 bun run dev:vtdf
@@ -87,10 +89,10 @@ bun run dev:vtdf
 
 ## リポジトリ構成
 
-- `apps`：ドキュメントサイト、コンポーネント Demo、共通サイトコード、ランタイムドキュメント。
-- `packages`：共通コア、フレームワーク UI、Motion、Confetti、AI Skill。
+- `apps`：ドキュメントサイト、コンポーネント Demo、共通サイトコード。
+- `packages`：共通コア、フレームワーク UI、Motion、Confetti と各パッケージ内のドキュメント、AI Skill、`create-any-tdf`。
 - `content`：生成された STDF、RTDF、VTDF のコンポーネントとガイド。
-- `tooling`：`create-any-tdf` と Any TDF VS Code 拡張。
+- `extensions`：Any TDF VS Code 拡張。
 - `scripts`：リポジトリ全体の生成、検証、パッケージ、リリースツール。
 
 ## フィードバック

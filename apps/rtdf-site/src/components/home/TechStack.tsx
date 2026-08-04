@@ -1,16 +1,14 @@
+import RtdfLogo from '../RtdfLogo';
+
 type TechStackProps = {
 	lang?: 'zh_CN' | 'en_US';
 };
 
 const ReactIcon = () => (
-	<svg className="size-6" viewBox="0 0 841.9 595.3" aria-hidden="true">
-		<g fill="none" stroke="var(--brand-react)" strokeWidth="40">
-			<ellipse cx="420.9" cy="296.5" rx="165" ry="64" />
-			<ellipse cx="420.9" cy="296.5" rx="165" ry="64" transform="rotate(60 420.9 296.5)" />
-			<ellipse cx="420.9" cy="296.5" rx="165" ry="64" transform="rotate(120 420.9 296.5)" />
-		</g>
-		<circle cx="420.9" cy="296.5" r="45.7" fill="var(--brand-react)" />
-	</svg>
+	<span className="relative block size-6" aria-hidden="true">
+		<img className="block size-full object-contain dark:hidden" src="/frameworks/react-light.svg" alt="" />
+		<img className="hidden size-full object-contain dark:block" src="/frameworks/react-dark.svg" alt="" />
+	</span>
 );
 
 const TechStack = ({ lang = 'zh_CN' }: TechStackProps) => {
@@ -122,13 +120,7 @@ const TechStack = ({ lang = 'zh_CN' }: TechStackProps) => {
 				{/* RTDF 独特优势 */}
 				<div className="mb-12">
 					<div className="flex items-center gap-3 mb-6">
-						<svg className="size-6" viewBox="0 0 80 80" fill="none">
-							<path
-								d="M40 0C54.8054 0 67.7312 8.04427 74.6475 20H30V30H40C45.5228 30 50 34.4772 50 40C50 45.5228 45.5228 50 40 50H30V80H10V20H0V0H40ZM78.7393 30C79.5619 33.1962 80 36.547 80 40C80 62.0914 62.0914 80 40 80V60C51.0457 60 60 51.0457 60 40C60 36.3571 59.0259 32.9417 57.3242 30H78.7393Z"
-								className="fill-primary dark:fill-dark"
-							/>
-							<path d="M20 30H40L20 80V50H0L20 0V30Z" className="fill-dark dark:fill-primary" />
-						</svg>
+						<RtdfLogo className="size-6" />
 						<h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{isZh ? 'RTDF 独特优势' : 'What sets RTDF apart'}</h3>
 					</div>
 					<div className="grid grid-cols-1 border-l border-t border-(--site-divider) sm:grid-cols-2 md:grid-cols-5">

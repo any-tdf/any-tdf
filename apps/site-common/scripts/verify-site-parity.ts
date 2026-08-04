@@ -10,7 +10,7 @@ type SiteConfig = {
 	allowedStyleFile: string;
 };
 
-const workspaceRoot = resolve(process.cwd(), '../..');
+const workspaceRoot = resolve(import.meta.dir, '../../..');
 const siteConfigs: SiteConfig[] = [
 	{
 		name: 'STDF',

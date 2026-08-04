@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/vue-motion",
-	"version": "0.0.1",
+	"version": "0.0.0-alpha.0",
 	"description": "Vue motion utilities compatible with Svelte transition, animate, easing, and motion APIs.",
 	"keywords": [
 		"animation",
@@ -22,7 +22,8 @@
 	"files": [
 		"dist",
 		"README.md",
-		"LICENSE"
+		"LICENSE",
+		"CHANGELOG.md"
 	],
 	"type": "module",
 	"sideEffects": false,
@@ -62,12 +63,13 @@
 		}
 	},
 	"publishConfig": {
-		"access": "public"
+		"access": "public",
+		"tag": "alpha"
 	},
 	"scripts": {
 		"build": "tsc -p tsconfig.json",
 		"test": "bun test",
-		"package": "bun run build && publint && bun pm pack --dry-run",
+		"package": "bun run build && publint && bun pm pack --dry-run --quiet",
 		"release:check": "bun run check && bun run test && bun run package",
 		"prepack": "bun run ../../scripts/package-license.mjs stage",
 		"postpack": "bun run ../../scripts/package-license.mjs clean",

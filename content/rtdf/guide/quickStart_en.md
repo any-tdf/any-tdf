@@ -43,7 +43,7 @@ bun create any-tdf@latest rtdf-app -f react -t vrtt -l en_US -i iconify -m multi
 2.1 Install RTDF
 
 ```sh
-bun add rtdf@3.0.0-alpha.0
+bun add rtdf@0.0.0-alpha.0
 ```
 
 2.2 Install Tailwind CSS and Vite plugins.

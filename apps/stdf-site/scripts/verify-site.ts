@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
@@ -11,7 +12,7 @@ type CheckResult = {
 
 type MenuGroup = { childs: Array<{ nav: string }> };
 
-const workspaceRoot = resolve(process.cwd(), '../..');
+const workspaceRoot = resolve(import.meta.dir, '../../..');
 const siteRoot = join(workspaceRoot, 'apps/stdf-site');
 const componentDocsRoot = join(workspaceRoot, 'content/stdf/components');
 const guideDocsRoot = join(workspaceRoot, 'content/stdf/guide');
@@ -79,6 +80,19 @@ const componentPageMissing = [
 	'<iframe'
 ].filter((pattern) => !componentPageSource.includes(pattern));
 
+const techStackSource = readFileSync(join(siteRoot, 'src/lib/home/TechStack.svelte'), 'utf8');
+const svelteLogoPath = join(siteRoot, 'static/frameworks/svelte.svg');
+const svelteLogoIssues = [
+	...(techStackSource.includes('src="/frameworks/svelte.svg"') ? [] : ['official Svelte logo reference']),
+	...(techStackSource.includes('M10.354 21.125') ? ['remove custom Svelte logo geometry'] : []),
+	...(!existsSync(svelteLogoPath)
+		? ['missing svelte.svg']
+		: createHash('sha256').update(readFileSync(svelteLogoPath)).digest('hex') ===
+			  'e6a22ffd1efcfeb19eb63ea5f04c794f6b89349080f14158252cdf06db16c98a'
+		? []
+		: ['modified svelte.svg'])
+];
+
 const requiredSiteFiles = [
 	'src/routes/+page.svelte',
 	'src/routes/components/+page.svelte',
@@ -110,6 +124,7 @@ const results: CheckResult[] = [
 	check('component markdown docs', `checked ${expectedComponents.length} components`, componentDocMissing),
 	check('guide markdown docs', `checked ${requiredGuideDocs.length} guide docs`, guideDocMissing),
 	check('components page source', 'checked raw demo loader, docs tabs, and iframe', componentPageMissing),
+	check('Svelte brand asset', 'checked official svelte.dev logo asset', svelteLogoIssues),
 	check(
 		'site files',
 		`checked ${requiredSiteFiles.length} files`,

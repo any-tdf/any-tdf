@@ -1,0 +1,52 @@
+name: Version npm Packages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .changeset/**
+  workflow_dispatch:
+
+concurrency:
+  group: version-npm-packages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  version:
+    name: Open or Update Version PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Open or update version PR
+        uses: changesets/action@v1
+        with:
+          commit: 'chore: 发布软件包版本'
+          title: 'chore: 发布软件包版本'
+          version: bun run version-packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

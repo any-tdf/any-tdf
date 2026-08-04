@@ -1,6 +1,6 @@
-# RTDF v2 to v3 Upgrade Guide
+# RTDF Alpha Release Guide
 
-RTDF 3.0.0-alpha.0 is the alpha version of a breaking release. This version changes the package layout and public entry points: theme, locale, types, utilities, and UI component capabilities are exported from the `rtdf` package. Application code does not need to install or import `@any-tdf/common` directly.
+RTDF 0.0.0-alpha.0 is the first alpha prerelease. This release establishes the package layout and public entry points: theme, locale, types, utilities, and UI component capabilities are exported from the `rtdf` package. Application code does not need to install or import `@any-tdf/common` directly.
 
 ## Core Changes
 
@@ -12,10 +12,10 @@ RTDF 3.0.0-alpha.0 is the alpha version of a breaking release. This version chan
 - Tailwind CSS only needs to scan `rtdf/dist`.
 - Direct public usage of shared package paths is no longer supported.
 
-## 1. Upgrade Dependency
+## 1. Install Dependency
 
 ```sh
-bun add rtdf@3.0.0-alpha.0
+bun add rtdf@0.0.0-alpha.0
 ```
 
 If your `package.json` lists `@any-tdf/common` directly, remove it. `@any-tdf/common` may still be installed as an internal implementation dependency, but application projects should not depend on it explicitly.
@@ -29,13 +29,13 @@ Old syntax:
 @source "../node_modules/@any-tdf/common/dist";
 ```
 
-v3 syntax:
+Current syntax:
 
 ```css
 @source "../node_modules/rtdf/dist";
 ```
 
-The RTDF 3.0.0-alpha.0 package output includes the class sources needed by components and shared capabilities, so there is no extra shared package directory to scan.
+The RTDF 0.0.0-alpha.0 package output includes the class sources needed by components and shared capabilities, so there is no extra shared package directory to scan.
 
 ## 3. Update Theme Plugin Path
 
@@ -57,12 +57,12 @@ Change it to:
 
 ## 4. Update Code Imports
 
-| Old Import              | v3 Import    |
-| ----------------------- | ------------ |
-| `@any-tdf/common/theme` | `rtdf/theme` |
-| `@any-tdf/common/lang`  | `rtdf/lang`  |
-| `@any-tdf/common/types` | `rtdf/types` |
-| `@any-tdf/common/utils` | `rtdf/utils` |
+| Old Import              | Current Import |
+| ----------------------- | -------------- |
+| `@any-tdf/common/theme` | `rtdf/theme`   |
+| `@any-tdf/common/lang`  | `rtdf/lang`    |
+| `@any-tdf/common/types` | `rtdf/types`   |
+| `@any-tdf/common/utils` | `rtdf/utils`   |
 
 Example:
 
@@ -93,7 +93,7 @@ If you previously depended on shared package internals, migrate to the component
 
 ## Migration Checklist
 
-- [ ] Upgrade `rtdf` to `3.0.0-alpha.0`.
+- [ ] Install `rtdf@0.0.0-alpha.0`.
 - [ ] Remove direct `@any-tdf/common` declarations from project dependencies.
 - [ ] Remove `@source "../node_modules/@any-tdf/common/dist";` from CSS.
 - [ ] Change the theme plugin to `@plugin "rtdf/theme"`.

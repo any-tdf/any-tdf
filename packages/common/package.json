@@ -11,6 +11,7 @@
 	},
 	"files": [
 		"dist",
+		"source.css",
 		"readme",
 		"README.md",
 		"LICENSE",
@@ -68,6 +69,9 @@
 		"./types": {
 			"types": "./dist/types/index.d.ts",
 			"import": "./dist/types/index.js"
+		},
+		"./source.css": {
+			"default": "./source.css"
 		}
 	},
 	"publishConfig": {
@@ -77,7 +81,7 @@
 	"scripts": {
 		"build": "rm -rf dist && NODE_OPTIONS=--max-old-space-size=1024 tsc -p tsconfig.json",
 		"test": "bun test",
-		"package": "bun run build && publint && bun pm pack --dry-run",
+		"package": "bun run build && publint && bun pm pack --dry-run --quiet",
 		"release:check": "bun run test && bun run check && bun run package",
 		"prepack": "bun run ../../scripts/package-license.mjs stage",
 		"postpack": "bun run ../../scripts/package-license.mjs clean",

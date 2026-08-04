@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 
@@ -9,7 +10,7 @@ type CheckResult = {
 	extra?: string[];
 };
 
-const workspaceRoot = resolve(process.cwd(), '../..');
+const workspaceRoot = resolve(import.meta.dir, '../../..');
 const siteRoot = join(workspaceRoot, 'apps/rtdf-site');
 const stdfRoutesRoot = join(workspaceRoot, 'apps/stdf-demo/src/routes');
 const rtdfPagesRoot = join(workspaceRoot, 'apps/rtdf-demo/src/pages');
@@ -78,6 +79,18 @@ const rtdfGuideNavs = Array.from(guideMenuListSource.matchAll(/nav:\s*'([^']+)'/
 	.map((match) => match[1])
 	.sort();
 const guideLayoutSource = readFileSync(join(siteRoot, 'src/pages/guide/GuideLayout.tsx'), 'utf8');
+const logoSource = readFileSync(join(siteRoot, 'src/components/RtdfLogo.tsx'), 'utf8');
+const techStackSource = readFileSync(join(siteRoot, 'src/components/home/TechStack.tsx'), 'utf8');
+const officialReactAssets = {
+	'react-light.svg': 'f06f8906159321315b77af4e86846b95f679d74ec0d681ef92101aa7c1ec8656',
+	'react-dark.svg': 'ad13942c43f70b5c43a04edb6e5ad6b12ff6a7c38ad301d38aaa3ed916ec904a'
+};
+const officialReactAssetIssues = Object.entries(officialReactAssets).flatMap(([filename, expectedHash]) => {
+	const assetPath = join(siteRoot, 'static/frameworks', filename);
+	if (!existsSync(assetPath)) return [`missing ${filename}`];
+	const actualHash = createHash('sha256').update(readFileSync(assetPath)).digest('hex');
+	return actualHash === expectedHash ? [] : [`modified ${filename}`];
+});
 
 const guideDocMap: Record<string, string> = {
 	'quick-start': 'quickStart',
@@ -148,6 +161,23 @@ const results: CheckResult[] = [
 	check('app routes', `checked ${requiredAppRoutes.length} top-level routes`, missingAppRoutes),
 	check('components page loaders', 'checked source loaders and doc renderer', missingComponentsPageImports),
 	check('component doc loader', 'checked markdown glob and language selection', missingComponentDocPatterns),
+	check(
+		'RTDF brand mark',
+		'checked shared base mark and official React assets',
+		[
+			'RtdfLogoMark',
+			'data-logo-layer="react"',
+			'href="/frameworks/react-light.svg"',
+			'href="/frameworks/react-dark.svg"'
+		]
+			.filter((pattern) => !logoSource.includes(pattern))
+			.concat(
+				['/frameworks/react-light.svg', '/frameworks/react-dark.svg'].filter((pattern) => !techStackSource.includes(pattern))
+			)
+			.concat(officialReactAssetIssues)
+			.concat(logoSource.includes('<ellipse') || logoSource.includes('<circle') ? ['remove custom React geometry'] : [])
+			.concat(logoSource.includes('M20 30H40L20 80V50H0L20 0V30Z') ? ['remove legacy lightning overlay'] : [])
+	),
 	check(
 		'guide page renderer',
 		'checked custom page branch and markdown renderer',

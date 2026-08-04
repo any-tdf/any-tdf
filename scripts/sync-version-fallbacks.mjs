@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 const workspaceRoot = resolve(import.meta.dir, "..");
 const generatedFilePath = resolve(
   workspaceRoot,
-  "tooling/create-any-tdf/src/generatedVersions.js",
+  "packages/create-any-tdf/src/generatedVersions.js",
 );
 const commonManifest = await Bun.file(
   resolve(workspaceRoot, "packages/common/package.json"),

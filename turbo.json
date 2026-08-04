@@ -27,7 +27,7 @@
 		"deploy:check": {
 			"dependsOn": ["^build"],
 			"cache": false,
-			"outputs": ["build/**", ".svelte-kit/**"]
+			"outputs": ["dist/**", "build/**", ".svelte-kit/**"]
 		},
 		"dev": {
 			"dependsOn": ["^build"],

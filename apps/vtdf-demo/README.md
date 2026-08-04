@@ -1,13 +1,13 @@
 # VTDF
 
-基于 Vue 3.5 与 Tailwind CSS v4 的移动端组件库。
+基于 Vue 与 Tailwind CSS 的移动端组件库。
 
-Mobile component library based on Vue 3.5 and Tailwind CSS v4.
+Mobile component library based on Vue and Tailwind CSS.
 
 ## 安装
 
 ```sh
-bun add vtdf@3.0.0-alpha.0
+bun add vtdf@0.0.0-alpha.0
 ```
 
 ## 使用

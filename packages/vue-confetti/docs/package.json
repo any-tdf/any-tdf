@@ -1,0 +1,33 @@
+{
+	"name": "@any-tdf/vue-confetti-site",
+	"version": "0.0.1",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/any-tdf/any-tdf.git",
+		"directory": "packages/vue-confetti/docs"
+	},
+	"type": "module",
+	"scripts": {
+		"dev": "vp dev --host 0.0.0.0 --port 5563",
+		"build": "vue-tsc -b && vp build",
+		"preview": "vp preview --host 0.0.0.0 --port 5564",
+		"verify:browser": "bun run scripts/verify-browser.ts",
+		"check": "vue-tsc -b",
+		"typecheck:native": "vue-tsc -b"
+	},
+	"dependencies": {
+		"@any-tdf/vue-confetti": "workspace:*",
+		"lucide-vue-next": "^1.0.0",
+		"vue": "catalog:vue"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"@vitejs/plugin-vue": "catalog:vue",
+		"typescript": "catalog:vue-native",
+		"vite": "catalog:",
+		"vite-plus": "catalog:",
+		"vue-tsc": "catalog:vue"
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"svelte": {
+		"source": "https://github.com/sveltejs/svelte.dev/blob/main/apps/svelte.dev/static/svelte-logo.svg",
+		"sha256": "e6a22ffd1efcfeb19eb63ea5f04c794f6b89349080f14158252cdf06db16c98a"
+	}
+}
