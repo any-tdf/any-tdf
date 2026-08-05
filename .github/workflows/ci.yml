@@ -17,8 +17,36 @@ env:
   TURBO_TELEMETRY_DISABLED: '1'
 
 jobs:
+  changes:
+    name: Detect CI Scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      routes: ${{ steps.scopes.outputs.routes }}
+      browser: ${{ steps.scopes.outputs.browser }}
+      publish: ${{ steps.scopes.outputs.publish }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Detect changed CI scopes
+        id: scopes
+        env:
+          CI_COMPARISON_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          CI_COMPARISON_HEAD: ${{ github.sha }}
+          CI_FORCE_FULL: ${{ github.event_name == 'push' }}
+        run: bun run scripts/ci-changed-scopes.mjs
+
   affected-workspaces:
     name: Affected Workspaces
+    needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -65,17 +93,26 @@ jobs:
       - name: Verify generated files
         run: bun run generate:check
 
-      - name: Check repository formatting and lint
-        run: bun run quality:check
+      - name: Check repository formatting
+        run: bun run format:check
+
+      - name: Lint repository
+        run: bun run lint
+
+      - name: Test CI scope detection
+        run: bun test scripts/ci-changed-scopes.test.ts
 
       - name: Check affected Workspaces
         run: bunx turbo run check test verify:workspace build --affected
 
       - name: Verify packaged Demo routes
+        if: needs.changes.outputs.routes == 'true'
         run: bun run verify:routes
 
   browser:
     name: Browser Verification
+    needs: changes
+    if: needs.changes.outputs.browser == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -104,6 +141,8 @@ jobs:
 
   publish-pack-check:
     name: Publish Pack Check
+    needs: changes
+    if: needs.changes.outputs.publish == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
