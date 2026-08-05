@@ -1,0 +1,11 @@
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "rtdf-demo",
+	"compatibility_date": "2026-08-05",
+	"workers_dev": true,
+	"preview_urls": true,
+	"assets": {
+		"directory": "./demo-dist",
+		"not_found_handling": "single-page-application"
+	}
+}

@@ -121,7 +121,8 @@
 		"terser": "catalog:",
 		"turbo": "^2.10.7",
 		"typescript": "catalog:",
-		"vite-plus": "catalog:"
+		"vite-plus": "catalog:",
+		"wrangler": "4.118.0"
 	},
 	"engines": {
 		"bun": ">=1.3.14",
