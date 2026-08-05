@@ -1,3 +1,7 @@
+## 2026-08-04
+
+The project entered the v3 development cycle and evolved into the Any TDF Monorepo. STDF, RTDF, VTDF, the shared core, Demos, documentation sites, and build tooling now live in one workspace, supported by cross-framework parity checks and a unified release system for long-term coordinated development.
+
 ## 2026-01-22
 
 v2 version released, 18 new components, theme system upgraded to Tailwind CSS plugin with more configurable options.
