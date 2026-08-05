@@ -1,9 +1,11 @@
+import { themes } from '@any-tdf/common/theme/runtime';
+import { createThemeLabels } from '@any-tdf/site-common/data';
+import { siteHeaderIconPaths } from '@any-tdf/site-common/site';
 import {
 	Blocks,
 	CodeXml,
 	createIcons,
 	ExternalLink,
-	Languages,
 	Layers,
 	Menu,
 	Monitor,
@@ -26,7 +28,6 @@ createIcons({
 		Blocks,
 		CodeXml,
 		ExternalLink,
-		Languages,
 		Layers,
 		Menu,
 		Monitor,
@@ -44,6 +45,10 @@ createIcons({
 	}
 });
 
+for (const icon of document.querySelectorAll('[data-site-header-icon]')) {
+	icon.querySelector('path').setAttribute('d', siteHeaderIconPaths[icon.dataset.siteHeaderIcon]);
+}
+
 const translations = {
 	zh: {
 		brandLabel: 'Any TDF 首页',
@@ -51,10 +56,34 @@ const translations = {
 		mobileNavLabel: '移动端导航',
 		openMenu: '打开导航菜单',
 		closeMenu: '关闭导航菜单',
-		navProducts: '产品',
-		navArchitecture: '架构',
-		navPrinciples: '原则',
-		navResources: '资源',
+		theme: '主题',
+		interfaceTheme: '界面主题',
+		modeAndBuiltInColors: '模式与内置颜色',
+		modeGroupLabel: '显示模式',
+		lightMode: '亮模式',
+		darkMode: '暗模式',
+		systemMode: '跟随系统',
+		builtInThemesLabel: '内置主题',
+		backToMenu: '← 返回',
+		support: '支持',
+		supportStarLabel: '在 GitHub 上为 Any TDF 点亮 Star',
+		supportCloseLabel: '关闭支持窗口',
+		supportDescription:
+			'Any TDF 是一个免费、开源、持续演进的移动 Web 组件生态。我们在跨框架组件设计、配套工具和文档建设等方面投入了大量心力。如果 Any TDF 为你带来了帮助，欢迎点亮 Star 或通过赞助支持项目继续发展，感谢你的认可！',
+		supportPromise: '无论如何，Any TDF 都会怀着热爱继续前行！',
+		supportNonChina: '推荐非中国地区使用',
+		supportChina: '推荐中国地区使用',
+		supportWechat: '微信赞赏 ↗',
+		supportAlipay: '支付宝收款 ↗',
+		supportWechatScan: '微信扫一扫',
+		supportAlipayScan: '支付宝扫一扫',
+		supportWechatOpenLabel: '显示微信赞赏二维码',
+		supportWechatCloseLabel: '收起微信赞赏二维码',
+		supportAlipayOpenLabel: '显示支付宝收款二维码',
+		supportAlipayCloseLabel: '收起支付宝收款二维码',
+		supportWechatCodeAlt: '微信赞赏二维码',
+		supportAlipayCodeAlt: '支付宝收款二维码',
+		supportNote: '欢迎在赞助留言中附上你的 GitHub 或其他社交账号链接，Any TDF 将在项目仓库和官网中展示感谢！',
 		heroDescription: '一个共享产品语言、面向三种框架原生实现的移动 Web 组件系统。选择你熟悉的框架，获得一致的设计、主题与交互体验。',
 		chooseFramework: '选择框架',
 		exploreArchitecture: '了解架构',
@@ -129,10 +158,35 @@ const translations = {
 		mobileNavLabel: 'Mobile navigation',
 		openMenu: 'Open navigation menu',
 		closeMenu: 'Close navigation menu',
-		navProducts: 'Products',
-		navArchitecture: 'Architecture',
-		navPrinciples: 'Principles',
-		navResources: 'Resources',
+		theme: 'Theme',
+		interfaceTheme: 'Interface theme',
+		modeAndBuiltInColors: 'Mode and built-in colors',
+		modeGroupLabel: 'Display mode',
+		lightMode: 'Light',
+		darkMode: 'Dark',
+		systemMode: 'System',
+		builtInThemesLabel: 'Built-in themes',
+		backToMenu: '← Back',
+		support: 'Support',
+		supportStarLabel: 'Star Any TDF on GitHub',
+		supportCloseLabel: 'Close support dialog',
+		supportDescription:
+			'Any TDF is a free, open-source, continuously evolving mobile Web component ecosystem. We put substantial care into cross-framework component design, supporting tools, and documentation. If Any TDF has helped you, please consider starring or sponsoring the project. Thank you for your support!',
+		supportPromise: 'No matter what, Any TDF will keep moving forward with love!',
+		supportNonChina: 'Recommended for regions outside China',
+		supportChina: 'Recommended for China',
+		supportWechat: 'WeChat Reward ↗',
+		supportAlipay: 'Alipay Payment ↗',
+		supportWechatScan: 'Scan with WeChat',
+		supportAlipayScan: 'Scan with Alipay',
+		supportWechatOpenLabel: 'Show the WeChat reward QR code',
+		supportWechatCloseLabel: 'Hide the WeChat reward QR code',
+		supportAlipayOpenLabel: 'Show the Alipay payment QR code',
+		supportAlipayCloseLabel: 'Hide the Alipay payment QR code',
+		supportWechatCodeAlt: 'WeChat reward QR code',
+		supportAlipayCodeAlt: 'Alipay payment QR code',
+		supportNote:
+			'Feel free to include your GitHub or another social profile in your sponsorship message. Any TDF will gratefully acknowledge your support in the project repository and on the website!',
 		heroDescription:
 			'One shared product language, implemented natively for three frameworks. Choose the framework you know and keep the same design, theming, and interaction experience.',
 		chooseFramework: 'Products',
@@ -221,42 +275,153 @@ const translations = {
 const root = document.documentElement;
 const languageStorageKey = 'any-tdf-language';
 const modeStorageKey = 'any-tdf-mode';
-const themePreferences = ['auto', 'light', 'dark'];
+const colorThemeStorageKey = 'theme_color';
+const modePreferences = ['auto', 'light', 'dark'];
+const defaultColorTheme = 'ANYTDF';
+const colorThemeNames = new Set(themes.map((theme) => theme.name));
+const colorThemeLabels = createThemeLabels(defaultColorTheme, 'Any TDF');
+const portalThemeProperties = [
+	'color-primary',
+	'color-dark',
+	'color-bg-base',
+	'color-bg-surface',
+	'color-bg-overlay',
+	'color-bg-highlight',
+	'color-bg-base-dark',
+	'color-bg-surface-dark',
+	'color-bg-overlay-dark',
+	'color-bg-highlight-dark',
+	'color-text-primary',
+	'color-text-dark',
+	'color-text-on-primary',
+	'color-text-on-dark'
+];
 const systemMode = matchMedia('(prefers-color-scheme: dark)');
+const favicon = document.querySelector('[data-theme-favicon]');
+const faviconPaths = { light: '/favicon.svg', dark: '/favicon-dark.svg' };
 const preferredLanguage = navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
 const savedLanguage = localStorage.getItem(languageStorageKey);
-const savedTheme = localStorage.getItem(modeStorageKey);
+const savedModePreference = localStorage.getItem(modeStorageKey);
+const savedColorTheme = localStorage.getItem(colorThemeStorageKey);
 let currentLanguage = savedLanguage === 'zh' || savedLanguage === 'en' ? savedLanguage : preferredLanguage;
-let currentTheme = themePreferences.includes(savedTheme) ? savedTheme : 'auto';
+let currentModePreference = modePreferences.includes(savedModePreference) ? savedModePreference : 'auto';
+let currentColorTheme = colorThemeNames.has(savedColorTheme) ? savedColorTheme : defaultColorTheme;
 let currentMode = root.dataset.mode === 'dark' ? 'dark' : 'light';
 
-const updateThemeControls = () => {
-	const nextTheme = themePreferences[(themePreferences.indexOf(currentTheme) + 1) % themePreferences.length];
-	const themeNames =
-		currentLanguage === 'zh' ? { auto: '自动', light: '浅色', dark: '深色' } : { auto: 'Auto', light: 'Light', dark: 'Dark' };
-	const label = currentLanguage === 'zh' ? themeNames[currentTheme] : currentTheme.toUpperCase();
-	const accessibleLabel =
-		currentLanguage === 'zh'
-			? `当前为${themeNames[currentTheme]}模式，切换到${themeNames[nextTheme]}模式`
-			: `Theme: ${themeNames[currentTheme]}. Switch to ${themeNames[nextTheme].toLowerCase()} mode`;
+const updateBrowserThemeColor = () => {
+	const propertyName = currentMode === 'dark' ? '--color-bg-base-dark' : '--color-bg-base';
+	const color = getComputedStyle(root).getPropertyValue(propertyName).trim();
+	document.querySelector('meta[name="theme-color"]')?.setAttribute('content', color);
+};
 
-	for (const control of document.querySelectorAll('[data-theme-toggle]')) {
-		const labelElement = control.querySelector('[data-theme-label]');
-		if (labelElement) labelElement.textContent = label;
-		control.setAttribute('aria-label', accessibleLabel);
-		control.title = accessibleLabel;
+const updateModeControls = () => {
+	const labelKeys = { light: 'lightMode', dark: 'darkMode', auto: 'systemMode' };
+	for (const control of document.querySelectorAll('[data-mode-choice]')) {
+		const isActive = control.dataset.modeChoice === currentModePreference;
+		const label = translations[currentLanguage][labelKeys[control.dataset.modeChoice]];
+		control.classList.toggle('is-active', isActive);
+		control.setAttribute('aria-pressed', String(isActive));
+		control.setAttribute('aria-label', label);
+		control.title = label;
 	}
 };
 
-const applyTheme = (theme, persist = true) => {
-	currentTheme = theme;
-	currentMode = theme === 'auto' ? (systemMode.matches ? 'dark' : 'light') : theme;
-	root.dataset.theme = theme;
-	root.dataset.mode = currentMode;
-	document.querySelector('meta[name="theme-color"]')?.setAttribute('content', currentMode === 'dark' ? '#1b1b1f' : '#ffffff');
-	if (persist) localStorage.setItem(modeStorageKey, theme);
-	updateThemeControls();
+const updateColorThemeControls = () => {
+	for (const control of document.querySelectorAll('[data-color-theme-choice]')) {
+		const isActive = control.dataset.colorThemeChoice === currentColorTheme;
+		control.classList.toggle('is-active', isActive);
+		control.setAttribute('aria-pressed', String(isActive));
+	}
 };
+
+const updateColorThemeLabels = () => {
+	for (const labelElement of document.querySelectorAll('[data-color-theme-label]')) {
+		const themeName = labelElement.dataset.colorThemeLabel;
+		const label = currentLanguage === 'zh' ? (colorThemeLabels[themeName] ?? themeName) : themeName;
+		const control = labelElement.closest('[data-color-theme-choice]');
+		const isActive = themeName === currentColorTheme;
+		labelElement.textContent = label;
+		control.setAttribute(
+			'aria-label',
+			isActive
+				? currentLanguage === 'zh'
+					? `${label}，当前主题`
+					: `${label}, current theme`
+				: currentLanguage === 'zh'
+					? `切换到 ${label}`
+					: `Switch to ${label}`
+		);
+	}
+};
+
+const applyColorTheme = (themeName, persist = true) => {
+	const theme = themes.find((item) => item.name === themeName);
+	currentColorTheme = theme.name;
+	for (const propertyName of portalThemeProperties) {
+		root.style.setProperty(`--${propertyName}`, theme[propertyName]);
+	}
+	root.dataset.theme = theme.name;
+	if (persist) localStorage.setItem(colorThemeStorageKey, theme.name);
+	updateColorThemeControls();
+	updateColorThemeLabels();
+	updateBrowserThemeColor();
+};
+
+const applyModePreference = (modePreference, persist = true) => {
+	currentModePreference = modePreference;
+	currentMode = modePreference === 'auto' ? (systemMode.matches ? 'dark' : 'light') : modePreference;
+	root.dataset.mode = currentMode === 'dark' ? 'dark' : 'primary';
+	favicon?.setAttribute('href', faviconPaths[currentMode]);
+	if (persist) localStorage.setItem(modeStorageKey, modePreference);
+	updateModeControls();
+	updateBrowserThemeColor();
+};
+
+const createColorThemeOption = (theme) => {
+	const control = document.createElement('button');
+	control.className = 'portal-theme-option';
+	control.type = 'button';
+	control.dataset.colorThemeChoice = theme.name;
+	control.setAttribute('aria-pressed', 'false');
+
+	const swatch = document.createElement('span');
+	swatch.className = 'portal-theme-swatch';
+	swatch.setAttribute('aria-hidden', 'true');
+	const lightSwatch = document.createElement('span');
+	lightSwatch.className = 'portal-theme-swatch-light';
+	const primaryColor = document.createElement('i');
+	primaryColor.style.background = theme['color-primary'];
+	lightSwatch.append(primaryColor);
+	const darkSwatch = document.createElement('span');
+	darkSwatch.className = 'portal-theme-swatch-dark';
+	const darkColor = document.createElement('i');
+	darkColor.style.background = theme['color-dark'];
+	darkSwatch.append(darkColor);
+	swatch.append(lightSwatch, darkSwatch);
+
+	const label = document.createElement('span');
+	label.className = 'portal-theme-option-label';
+	label.dataset.colorThemeLabel = theme.name;
+	const selectedMark = document.createElement('span');
+	selectedMark.className = 'portal-theme-selected-mark';
+	selectedMark.textContent = '✓';
+	selectedMark.setAttribute('aria-hidden', 'true');
+	control.append(swatch, label, selectedMark);
+	control.addEventListener('click', () => applyColorTheme(theme.name));
+	return control;
+};
+
+for (const container of document.querySelectorAll('[data-theme-options]')) {
+	container.replaceChildren(...themes.map(createColorThemeOption));
+}
+
+for (const control of document.querySelectorAll('[data-mode-choice]')) {
+	control.addEventListener('click', () => {
+		control.classList.add('is-clicked');
+		setTimeout(() => control.classList.remove('is-clicked'), 150);
+		applyModePreference(control.dataset.modeChoice);
+	});
+}
 
 const applyLanguage = (language) => {
 	currentLanguage = language;
@@ -272,37 +437,72 @@ const applyLanguage = (language) => {
 		const value = dictionary[element.dataset.i18nAria];
 		if (value) element.setAttribute('aria-label', value);
 	}
+	for (const element of document.querySelectorAll('[data-i18n-alt]')) {
+		const value = dictionary[element.dataset.i18nAlt];
+		if (value) element.setAttribute('alt', value);
+	}
 	for (const control of document.querySelectorAll('[data-language-toggle]')) {
-		const labelElement = control.querySelector('[data-language-label]');
 		const accessibleLabel = language === 'zh' ? 'Switch to English' : '切换到简体中文';
-		if (labelElement) labelElement.textContent = language === 'zh' ? 'EN' : '中文';
 		control.setAttribute('aria-label', accessibleLabel);
 		control.title = accessibleLabel;
 	}
 	document.title = dictionary.pageTitle;
 	document.querySelector('meta[name="description"]')?.setAttribute('content', dictionary.pageDescription);
-	updateThemeControls();
+	updateSupportPaymentControls();
+	updateModeControls();
+	updateColorThemeControls();
+	updateColorThemeLabels();
 	updateMenuControl();
 };
 
-for (const control of document.querySelectorAll('[data-theme-toggle]')) {
-	control.addEventListener('click', () => {
-		const nextTheme = themePreferences[(themePreferences.indexOf(currentTheme) + 1) % themePreferences.length];
-		applyTheme(nextTheme);
-	});
-}
 for (const control of document.querySelectorAll('[data-language-toggle]')) {
 	control.addEventListener('click', () => applyLanguage(currentLanguage === 'zh' ? 'en' : 'zh'));
 }
 
 const menuButton = document.querySelector('[data-menu-toggle]');
 const mobileMenu = document.querySelector('#portal-mobile-menu');
+const mobileMenuMain = mobileMenu?.querySelector('[data-mobile-menu-main]');
+const mobileThemePanel = mobileMenu?.querySelector('[data-mobile-theme-panel]');
+const mobileThemeOpenButton = mobileMenu?.querySelector('[data-mobile-theme-open]');
+const mobileThemeBackButton = mobileMenu?.querySelector('[data-mobile-theme-back]');
+const themeControl = document.querySelector('[data-theme-control]');
+const themePanelToggle = themeControl?.querySelector('[data-theme-panel-toggle]');
+const themePanel = themeControl?.querySelector('[data-theme-panel]');
+let isMobileThemeOpen = false;
+
+const scrollCurrentThemeIntoView = (container) => {
+	requestAnimationFrame(() => {
+		container?.querySelector(`[data-color-theme-choice="${currentColorTheme}"]`)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+	});
+};
+const setThemePanelOpen = (open, restoreFocus = false) => {
+	themePanelToggle?.setAttribute('aria-expanded', String(open));
+	if (themePanel) themePanel.hidden = !open;
+	if (open) scrollCurrentThemeIntoView(themePanel);
+	if (!open && restoreFocus) themePanelToggle?.focus();
+};
+const setMobileThemeOpen = (open, restoreFocus = false) => {
+	isMobileThemeOpen = open;
+	if (mobileMenuMain) {
+		mobileMenuMain.hidden = open;
+		mobileMenuMain.setAttribute('aria-hidden', String(open));
+	}
+	if (mobileThemePanel) {
+		mobileThemePanel.hidden = !open;
+		mobileThemePanel.setAttribute('aria-hidden', String(!open));
+	}
+	mobileThemeOpenButton?.setAttribute('aria-expanded', String(open));
+	if (open) scrollCurrentThemeIntoView(mobileThemePanel);
+	if (!open && restoreFocus) mobileThemeOpenButton?.focus();
+};
 const updateMenuControl = () => {
 	if (!menuButton) return;
 	const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
 	menuButton.setAttribute('aria-label', translations[currentLanguage][isOpen ? 'closeMenu' : 'openMenu']);
 };
 const setMenuOpen = (open) => {
+	if (open) setThemePanelOpen(false);
+	if (!open) setMobileThemeOpen(false);
 	menuButton?.setAttribute('aria-expanded', String(open));
 	if (mobileMenu) {
 		mobileMenu.hidden = !open;
@@ -311,20 +511,131 @@ const setMenuOpen = (open) => {
 	updateMenuControl();
 };
 
+const supportDialog = document.querySelector('[data-support-dialog]');
+const supportCloseButton = supportDialog?.querySelector('[data-support-close]');
+const supportPaymentControls = supportDialog?.querySelectorAll('[data-support-payment]') ?? [];
+let activeSupportPayment = null;
+let lastSupportTrigger = null;
+
+const isSupportDialogOpen = () => Boolean(supportDialog && !supportDialog.hidden);
+const updateSupportPaymentControls = () => {
+	for (const control of supportPaymentControls) {
+		const payment = control.dataset.supportPayment;
+		const isActive = payment === activeSupportPayment;
+		const paymentName = payment === 'wechat' ? 'Wechat' : 'Alipay';
+		const labelKey = `support${paymentName}${isActive ? 'Close' : 'Open'}Label`;
+		control.classList.toggle('is-active', isActive);
+		control.setAttribute('aria-expanded', String(isActive));
+		control.dataset.i18nAria = labelKey;
+		control.setAttribute('aria-label', translations[currentLanguage][labelKey]);
+	}
+
+	if (supportDialog) supportDialog.dataset.activePayment = activeSupportPayment ?? '';
+};
+const setActiveSupportPayment = (payment) => {
+	activeSupportPayment = activeSupportPayment === payment ? null : payment;
+	updateSupportPaymentControls();
+};
+const openSupportDialog = (trigger) => {
+	if (!supportDialog || isSupportDialogOpen()) return;
+	setThemePanelOpen(false);
+	if (trigger instanceof HTMLElement) {
+		const isMobileTrigger = Boolean(mobileMenu?.contains(trigger));
+		lastSupportTrigger = isMobileTrigger ? menuButton : trigger;
+		if (isMobileTrigger) setMenuOpen(false);
+	}
+	activeSupportPayment = null;
+	updateSupportPaymentControls();
+	supportDialog.hidden = false;
+	supportDialog.setAttribute('aria-hidden', 'false');
+	root.classList.add('has-support-dialog');
+	requestAnimationFrame(() => supportCloseButton?.focus());
+};
+const closeSupportDialog = () => {
+	if (!supportDialog || !isSupportDialogOpen()) return;
+	supportDialog.hidden = true;
+	supportDialog.setAttribute('aria-hidden', 'true');
+	root.classList.remove('has-support-dialog');
+	activeSupportPayment = null;
+	updateSupportPaymentControls();
+	const focusTarget = lastSupportTrigger;
+	lastSupportTrigger = null;
+	requestAnimationFrame(() => focusTarget?.focus());
+};
+const getSupportFocusableElements = () =>
+	[...supportDialog.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')].filter(
+		(element) => element.getClientRects().length > 0
+	);
+
+for (const trigger of document.querySelectorAll('[data-support-trigger]')) {
+	trigger.addEventListener('click', () => openSupportDialog(trigger));
+}
+supportCloseButton?.addEventListener('click', closeSupportDialog);
+supportDialog?.addEventListener('click', (event) => {
+	if (event.target === supportDialog) closeSupportDialog();
+});
+for (const control of supportPaymentControls) {
+	control.addEventListener('click', () => setActiveSupportPayment(control.dataset.supportPayment));
+}
+
+themePanelToggle?.addEventListener('click', () => {
+	setThemePanelOpen(themePanelToggle.getAttribute('aria-expanded') !== 'true');
+});
+mobileThemeOpenButton?.addEventListener('click', () => setMobileThemeOpen(true));
+mobileThemeBackButton?.addEventListener('click', () => setMobileThemeOpen(false, true));
 menuButton?.addEventListener('click', () => setMenuOpen(menuButton.getAttribute('aria-expanded') !== 'true'));
 for (const link of mobileMenu?.querySelectorAll('a') ?? []) link.addEventListener('click', () => setMenuOpen(false));
 document.addEventListener('pointerdown', (event) => {
-	if (menuButton?.getAttribute('aria-expanded') !== 'true' || !(event.target instanceof Node)) return;
+	if (!(event.target instanceof Node)) return;
+	if (themePanelToggle?.getAttribute('aria-expanded') === 'true' && !themeControl?.contains(event.target)) {
+		setThemePanelOpen(false);
+	}
+	if (menuButton?.getAttribute('aria-expanded') !== 'true') return;
 	if (menuButton.contains(event.target) || mobileMenu?.contains(event.target)) return;
 	setMenuOpen(false);
 });
 document.addEventListener('keydown', (event) => {
-	if (event.key === 'Escape') setMenuOpen(false);
+	if (event.key === 'Escape') {
+		if (isSupportDialogOpen()) {
+			event.preventDefault();
+			closeSupportDialog();
+		} else if (themePanelToggle?.getAttribute('aria-expanded') === 'true') {
+			event.preventDefault();
+			setThemePanelOpen(false, true);
+		} else if (isMobileThemeOpen) {
+			event.preventDefault();
+			setMobileThemeOpen(false, true);
+		} else {
+			setMenuOpen(false);
+		}
+		return;
+	}
+
+	if (event.key !== 'Tab' || !isSupportDialogOpen()) return;
+	const focusableElements = getSupportFocusableElements();
+	if (focusableElements.length === 0) {
+		event.preventDefault();
+		supportDialog.focus();
+		return;
+	}
+	const firstElement = focusableElements[0];
+	const lastElement = focusableElements.at(-1);
+	if (event.shiftKey && document.activeElement === firstElement) {
+		event.preventDefault();
+		lastElement.focus();
+	} else if (!event.shiftKey && document.activeElement === lastElement) {
+		event.preventDefault();
+		firstElement.focus();
+	}
 });
 
 const desktopNavigation = matchMedia('(min-width: 64rem)');
 desktopNavigation.addEventListener('change', (event) => {
-	if (event.matches) setMenuOpen(false);
+	if (event.matches) {
+		setMenuOpen(false);
+	} else {
+		setThemePanelOpen(false);
+	}
 });
 
 const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
@@ -347,9 +658,17 @@ if (motionQuery.matches || !('IntersectionObserver' in window)) {
 }
 
 systemMode.addEventListener('change', () => {
-	if (currentTheme === 'auto') applyTheme('auto', false);
+	if (currentModePreference === 'auto') applyModePreference('auto', false);
 });
 
 document.querySelector('[data-current-year]').textContent = String(new Date().getFullYear());
-applyTheme(currentTheme, false);
+applyColorTheme(currentColorTheme, false);
+applyModePreference(currentModePreference, false);
 applyLanguage(currentLanguage);
+
+const currentUrl = new URL(window.location.href);
+if (currentUrl.searchParams.has('fund')) {
+	currentUrl.searchParams.delete('fund');
+	history.replaceState(history.state, '', `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`);
+	openSupportDialog();
+}

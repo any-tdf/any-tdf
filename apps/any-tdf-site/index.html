@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="auto" data-mode="light">
+<html lang="zh-CN" data-theme="ANYTDF" data-mode="light">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -9,13 +9,15 @@
 		/>
 		<meta name="theme-color" content="#ffffff" />
 		<title>Any TDF - 一个系统，三种原生框架体验</title>
-		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" data-theme-favicon />
 		<script>
 			const savedMode = localStorage.getItem('any-tdf-mode');
-			const initialTheme = ['auto', 'light', 'dark'].includes(savedMode) ? savedMode : 'auto';
-			const initialMode = initialTheme === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
-			document.documentElement.dataset.theme = initialTheme;
-			document.documentElement.dataset.mode = initialMode;
+			const initialModePreference = ['auto', 'light', 'dark'].includes(savedMode) ? savedMode : 'auto';
+			const initialMode =
+				initialModePreference === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialModePreference;
+			document.documentElement.dataset.theme = localStorage.getItem('theme_color') || 'ANYTDF';
+			document.documentElement.dataset.mode = initialMode === 'dark' ? 'dark' : 'primary';
+			document.querySelector('[data-theme-favicon]')?.setAttribute('href', initialMode === 'dark' ? '/favicon-dark.svg' : '/favicon.svg');
 		</script>
 	</head>
 	<body>
@@ -36,19 +38,67 @@
 					</div>
 
 					<nav class="site-header-nav" aria-label="主导航" data-i18n-aria="navLabel">
-						<button
-							class="site-header-action portal-icon-action portal-header-icon-only"
-							type="button"
-							aria-label="当前为自动模式，切换到浅色模式"
-							title="当前为自动模式，切换到浅色模式"
-							data-theme-toggle
-						>
-							<span class="portal-action-icon" aria-hidden="true">
-								<i class="portal-theme-icon portal-theme-icon-auto" data-lucide="monitor"></i>
-								<i class="portal-theme-icon portal-theme-icon-sun" data-lucide="sun"></i>
-								<i class="portal-theme-icon portal-theme-icon-moon" data-lucide="moon"></i>
-							</span>
-						</button>
+						<div class="portal-theme-control" data-theme-control>
+							<button
+								class="site-header-action"
+								type="button"
+								aria-expanded="false"
+								aria-controls="portal-theme-popover"
+								aria-haspopup="true"
+								data-theme-panel-toggle
+								data-i18n="theme"
+							>
+								主题
+							</button>
+							<div id="portal-theme-popover" class="portal-theme-popover" data-theme-panel hidden>
+								<div class="portal-theme-popover-header">
+									<div>
+										<strong data-i18n="interfaceTheme">界面主题</strong>
+										<small data-i18n="modeAndBuiltInColors">模式与内置颜色</small>
+									</div>
+									<div class="portal-mode-switch" role="group" aria-label="显示模式" data-i18n-aria="modeGroupLabel">
+										<button
+											class="portal-mode-option"
+											type="button"
+											aria-label="亮模式"
+											aria-pressed="false"
+											data-mode-choice="light"
+											data-i18n-aria="lightMode"
+										>
+											<i data-lucide="sun" aria-hidden="true"></i>
+										</button>
+										<button
+											class="portal-mode-option"
+											type="button"
+											aria-label="暗模式"
+											aria-pressed="false"
+											data-mode-choice="dark"
+											data-i18n-aria="darkMode"
+										>
+											<i data-lucide="moon" aria-hidden="true"></i>
+										</button>
+										<button
+											class="portal-mode-option"
+											type="button"
+											aria-label="跟随系统"
+											aria-pressed="false"
+											data-mode-choice="auto"
+											data-i18n-aria="systemMode"
+										>
+											<i data-lucide="monitor" aria-hidden="true"></i>
+										</button>
+									</div>
+								</div>
+								<div
+									class="portal-theme-options"
+									role="group"
+									aria-label="内置主题"
+									data-theme-options
+									data-i18n-aria="builtInThemesLabel"
+								></div>
+							</div>
+						</div>
+						<button class="site-header-action" type="button" data-support-trigger data-i18n="support">支持</button>
 						<button
 							class="site-header-action portal-icon-action portal-header-icon-only"
 							type="button"
@@ -57,7 +107,9 @@
 							data-language-toggle
 						>
 							<span class="portal-action-icon" aria-hidden="true">
-								<i data-lucide="languages"></i>
+								<svg class="portal-header-symbol portal-header-language-symbol" viewBox="0 0 24 24" data-site-header-icon="language">
+									<path />
+								</svg>
 							</span>
 						</button>
 						<a
@@ -68,11 +120,8 @@
 							aria-label="GitHub"
 							title="GitHub"
 						>
-							<svg class="portal-inline-icon" data-icon="github" viewBox="0 0 24 24" aria-hidden="true">
-								<path
-									d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.28-.36 6.72-1.61 6.72-7A5.4 5.4 0 0 0 19.28 4.7 5 5 0 0 0 19.14 1S18 .65 15 2.48a13.38 13.38 0 0 0-7 0C5 .65 3.86 1 3.86 1a5 5 0 0 0-.14 3.7 5.4 5.4 0 0 0-1.44 2.8c0 5.42 3.44 6.66 6.72 7A4.8 4.8 0 0 0 8 18v4"
-								/>
-								<path d="M9 18c-4.51 2-5-2-7-2" />
+							<svg class="portal-header-symbol" viewBox="0 0 24 24" aria-hidden="true" data-site-header-icon="github">
+								<path />
 							</svg>
 						</a>
 					</nav>
@@ -94,41 +143,92 @@
 			</header>
 
 			<div id="portal-mobile-menu" class="portal-mobile-menu" aria-hidden="true" hidden>
-				<nav class="site-mobile-menu-nav" aria-label="移动端导航" data-i18n-aria="mobileNavLabel">
-					<a class="site-header-link" href="#products" data-i18n="navProducts">产品</a>
-					<a class="site-header-link" href="#architecture" data-i18n="navArchitecture">架构</a>
-					<a class="site-header-link" href="#principles" data-i18n="navPrinciples">原则</a>
-					<a class="site-header-link" href="#resources" data-i18n="navResources">资源</a>
-					<a class="site-header-link portal-link-with-icon" href="https://github.com/any-tdf/any-tdf" target="_blank" rel="noreferrer">
-						GitHub
-						<svg class="portal-inline-icon" data-icon="github" viewBox="0 0 24 24" aria-hidden="true">
-							<path
-								d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.28-.36 6.72-1.61 6.72-7A5.4 5.4 0 0 0 19.28 4.7 5 5 0 0 0 19.14 1S18 .65 15 2.48a13.38 13.38 0 0 0-7 0C5 .65 3.86 1 3.86 1a5 5 0 0 0-.14 3.7 5.4 5.4 0 0 0-1.44 2.8c0 5.42 3.44 6.66 6.72 7A4.8 4.8 0 0 0 8 18v4"
-							/>
-							<path d="M9 18c-4.51 2-5-2-7-2" />
+				<nav class="site-mobile-menu-nav" aria-label="移动端导航" aria-hidden="false" data-mobile-menu-main data-i18n-aria="mobileNavLabel">
+					<button
+						class="site-header-action portal-theme-entry"
+						type="button"
+						aria-expanded="false"
+						aria-controls="portal-mobile-theme-panel"
+						data-mobile-theme-open
+					>
+						<span data-i18n="theme">主题</span>
+						<span aria-hidden="true">›</span>
+					</button>
+					<button class="site-header-action" type="button" data-support-trigger data-i18n="support">支持</button>
+					<a
+						class="site-header-link portal-icon-action"
+						href="https://github.com/any-tdf/any-tdf"
+						target="_blank"
+						rel="noreferrer"
+						aria-label="GitHub"
+						title="GitHub"
+					>
+						<svg class="portal-header-symbol" viewBox="0 0 24 24" aria-hidden="true" data-site-header-icon="github">
+							<path />
 						</svg>
 					</a>
 					<button
 						class="site-header-action portal-icon-action"
 						type="button"
-						aria-label="当前为自动模式，切换到浅色模式"
-						title="当前为自动模式，切换到浅色模式"
-						data-theme-toggle
+						aria-label="Switch to English"
+						title="Switch to English"
+						data-language-toggle
 					>
 						<span class="portal-action-icon" aria-hidden="true">
-							<i class="portal-theme-icon portal-theme-icon-auto" data-lucide="monitor"></i>
-							<i class="portal-theme-icon portal-theme-icon-sun" data-lucide="sun"></i>
-							<i class="portal-theme-icon portal-theme-icon-moon" data-lucide="moon"></i>
+							<svg class="portal-header-symbol portal-header-language-symbol" viewBox="0 0 24 24" data-site-header-icon="language">
+								<path />
+							</svg>
 						</span>
-						<span data-theme-label>自动</span>
-					</button>
-					<button class="site-header-action portal-icon-action" type="button" data-language-toggle>
-						<span class="portal-action-icon" aria-hidden="true">
-							<i data-lucide="languages"></i>
-						</span>
-						<span data-language-label>EN</span>
 					</button>
 				</nav>
+				<section id="portal-mobile-theme-panel" class="portal-mobile-theme-panel" aria-hidden="true" data-mobile-theme-panel hidden>
+					<div class="portal-mobile-theme-header">
+						<button class="site-header-action" type="button" data-mobile-theme-back data-i18n="backToMenu">← 返回</button>
+						<div class="portal-theme-copy">
+							<strong data-i18n="interfaceTheme">界面主题</strong>
+							<small data-i18n="modeAndBuiltInColors">模式与内置颜色</small>
+						</div>
+						<div class="portal-mode-switch" role="group" aria-label="显示模式" data-i18n-aria="modeGroupLabel">
+							<button
+								class="portal-mode-option"
+								type="button"
+								aria-label="亮模式"
+								aria-pressed="false"
+								data-mode-choice="light"
+								data-i18n-aria="lightMode"
+							>
+								<i data-lucide="sun" aria-hidden="true"></i>
+							</button>
+							<button
+								class="portal-mode-option"
+								type="button"
+								aria-label="暗模式"
+								aria-pressed="false"
+								data-mode-choice="dark"
+								data-i18n-aria="darkMode"
+							>
+								<i data-lucide="moon" aria-hidden="true"></i>
+							</button>
+							<button
+								class="portal-mode-option"
+								type="button"
+								aria-label="跟随系统"
+								aria-pressed="false"
+								data-mode-choice="auto"
+								data-i18n-aria="systemMode"
+							>
+								<i data-lucide="monitor" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+					<div
+						class="portal-theme-options portal-mobile-theme-options"
+						role="group"
+						aria-label="内置主题"
+						data-theme-options
+						data-i18n-aria="builtInThemesLabel"
+					></div>
+				</section>
 			</div>
 
 			<main id="top" class="site-home">
@@ -235,7 +335,7 @@
 											class="portal-product-logo-base"
 											d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
 										/>
-										<path class="portal-product-logo-detail" d="M20 30H40L20 80V50H0L20 0V30Z" />
+										<path class="portal-product-logo-detail portal-product-logo-lightning" d="M20 30H40L20 80V50H0L20 0V30Z" />
 									</svg>
 								</div>
 								<dl class="portal-acronym-list" aria-label="STDF">
@@ -300,6 +400,17 @@
 										/>
 										<defs>
 											<mask
+												id="portal-rtdf-react-core-cutout"
+												maskUnits="userSpaceOnUse"
+												maskContentUnits="userSpaceOnUse"
+												x="0"
+												y="0"
+												width="80"
+												height="80"
+											>
+												<path fill="#fff" fill-rule="evenodd" d="M0 0H80V80H0V0ZM40 32A8 8 0 1 0 40 48A8 8 0 1 0 40 32Z" />
+											</mask>
+											<mask
 												id="portal-rtdf-react-mask"
 												class="portal-product-logo-mask"
 												maskUnits="userSpaceOnUse"
@@ -308,10 +419,10 @@
 												width="80"
 												height="80"
 											>
-												<image href="/frameworks/react-light.svg" width="80" height="80" />
+												<image href="/frameworks/react-light.svg" width="80" height="80" mask="url(#portal-rtdf-react-core-cutout)" />
 											</mask>
 										</defs>
-										<g data-logo-layer="react">
+										<g class="portal-rtdf-orbit-motion" data-logo-layer="react">
 											<rect class="portal-product-logo-detail" width="80" height="80" mask="url(#portal-rtdf-react-mask)" />
 										</g>
 									</svg>
@@ -368,12 +479,18 @@
 								</div>
 								<div class="portal-product-identity">
 									<h3>VTDF</h3>
-									<svg class="portal-product-logo" data-product-logo="vtdf" viewBox="0 0 80 80" aria-hidden="true">
+									<svg class="portal-product-logo" data-product-logo="vtdf" viewBox="0 0 80 80" fill="none" aria-hidden="true">
 										<path
 											class="portal-product-logo-base"
 											d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
 										/>
-										<path class="portal-product-logo-detail" d="M20 30H40L20 80V50H0L20 0V30Z" />
+										<path
+											class="portal-product-logo-detail portal-vtdf-check-motion"
+											data-logo-layer="vtdf-mark"
+											data-logo-shape="check"
+											d="M11.6447 44.4975L32.858 65.7107L68.2133 30.3553"
+											pathLength="1"
+										/>
 									</svg>
 								</div>
 								<dl class="portal-acronym-list" aria-label="VTDF">
@@ -855,6 +972,119 @@
 					</footer>
 				</div>
 			</main>
+		</div>
+
+		<div class="portal-support-overlay" data-support-dialog aria-hidden="true" hidden>
+			<section class="portal-support-panel" role="dialog" aria-modal="true" aria-labelledby="portal-support-title" tabindex="-1">
+				<header class="portal-support-header">
+					<div>
+						<div class="site-section-kicker">OPEN SOURCE · SUPPORT</div>
+						<h2 id="portal-support-title" data-i18n="support">支持</h2>
+					</div>
+					<div class="portal-support-header-actions">
+						<a
+							class="portal-support-stars"
+							href="https://github.com/any-tdf/any-tdf"
+							target="_blank"
+							rel="noreferrer"
+							aria-label="在 GitHub 上为 Any TDF 点亮 Star"
+							data-i18n-aria="supportStarLabel"
+						>
+							<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&amp;label=stars&amp;color=000" alt="GitHub stars" />
+						</a>
+						<button
+							class="portal-support-close"
+							type="button"
+							aria-label="关闭支持窗口"
+							data-support-close
+							data-i18n-aria="supportCloseLabel"
+						>
+							<i data-lucide="x" aria-hidden="true"></i>
+						</button>
+					</div>
+				</header>
+
+				<div class="portal-support-intro">
+					<p data-i18n="supportDescription">
+						Any TDF 是一个免费、开源、持续演进的移动 Web 组件生态。我们在跨框架组件设计、配套工具和文档建设等方面投入了大量心力。如果 Any
+						TDF 为你带来了帮助，欢迎点亮 Star 或通过赞助支持项目继续发展，感谢你的认可！
+					</p>
+					<p data-i18n="supportPromise">无论如何，Any TDF 都会怀着热爱继续前行！</p>
+				</div>
+
+				<div class="portal-support-grid">
+					<a
+						class="portal-support-method portal-support-standard"
+						href="https://www.buymeacoffee.com/dufu1991"
+						target="_blank"
+						rel="noreferrer"
+					>
+						<span class="portal-support-method-icon portal-support-method-icon-coffee">
+							<img src="/assets/fund/coffee.svg" alt="" aria-hidden="true" />
+						</span>
+						<span class="portal-support-method-detail">
+							<strong>Buy Me a Coffee ↗</strong>
+							<small data-i18n="supportNonChina">推荐非中国地区使用</small>
+						</span>
+					</a>
+
+					<a class="portal-support-method portal-support-standard" href="https://paypal.me/dufu1991" target="_blank" rel="noreferrer">
+						<span class="portal-support-method-icon">
+							<img src="/assets/fund/paypal.svg" alt="" aria-hidden="true" />
+						</span>
+						<span class="portal-support-method-detail">
+							<strong>PayPal ↗</strong>
+							<small data-i18n="supportNonChina">推荐非中国地区使用</small>
+						</span>
+					</a>
+
+					<button
+						class="portal-support-method portal-support-payment"
+						type="button"
+						aria-expanded="false"
+						aria-label="显示微信赞赏二维码"
+						data-support-payment="wechat"
+						data-i18n-aria="supportWechatOpenLabel"
+					>
+						<span class="portal-support-method-icon portal-support-method-icon-wechat">
+							<img src="/assets/fund/wechat_pay.svg" alt="" aria-hidden="true" />
+						</span>
+						<span class="portal-support-method-detail">
+							<strong data-i18n="supportWechat">微信赞赏 ↗</strong>
+							<small data-i18n="supportChina">推荐中国地区使用</small>
+						</span>
+						<span class="portal-support-payment-code">
+							<img src="/assets/fund/wp_code.png" alt="微信赞赏二维码" data-i18n-alt="supportWechatCodeAlt" />
+							<small data-i18n="supportWechatScan">微信扫一扫</small>
+						</span>
+					</button>
+
+					<button
+						class="portal-support-method portal-support-payment"
+						type="button"
+						aria-expanded="false"
+						aria-label="显示支付宝收款二维码"
+						data-support-payment="alipay"
+						data-i18n-aria="supportAlipayOpenLabel"
+					>
+						<span class="portal-support-method-icon">
+							<img src="/assets/fund/alipay.svg" alt="" aria-hidden="true" />
+						</span>
+						<span class="portal-support-method-detail">
+							<strong data-i18n="supportAlipay">支付宝收款 ↗</strong>
+							<small data-i18n="supportChina">推荐中国地区使用</small>
+						</span>
+						<span class="portal-support-payment-code">
+							<img src="/assets/fund/ap_code.png" alt="支付宝收款二维码" data-i18n-alt="supportAlipayCodeAlt" />
+							<small data-i18n="supportAlipayScan">支付宝扫一扫</small>
+						</span>
+					</button>
+				</div>
+
+				<p class="portal-support-note" data-i18n="supportNote">
+					欢迎在赞助留言中附上你的 GitHub 或其他社交账号链接，Any TDF 将在项目仓库和官网中展示感谢！
+				</p>
+			</section>
 		</div>
 
 		<script type="module" src="/src/main.js"></script>

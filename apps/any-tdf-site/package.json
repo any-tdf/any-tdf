@@ -18,6 +18,7 @@
 		"deploy:check": "bun run check && bun run build"
 	},
 	"dependencies": {
+		"@any-tdf/common": "workspace:*",
 		"@any-tdf/site-common": "workspace:*",
 		"lucide": "catalog:"
 	},

@@ -16,6 +16,7 @@
       "name": "@any-tdf/any-tdf-site",
       "version": "0.0.0",
       "dependencies": {
+        "@any-tdf/common": "workspace:*",
         "@any-tdf/site-common": "workspace:*",
         "lucide": "catalog:",
       },
