@@ -142,13 +142,14 @@ yarn add stdf
 
 <!-- ::: -->
 
-2.4 In the project's entry CSS file, import Tailwind CSS, set the dark mode, add the initial color variables, and **use the `@source` directive to specify that Tailwind CSS automatically detects STDF component classes**.
+2.4 In the project's entry CSS file, import Tailwind CSS and `stdf/source.css`, set dark mode, and add the initial color variables. `stdf/source.css` automatically registers the Tailwind CSS source paths required by STDF components.
 
 The following are the default theme colors of STDF, please modify them according to your needs. For more information, refer to [STDF Guide - Color](/guide/color).
 
 ```css
 /* app.css */
 @import 'tailwindcss';
+@import 'stdf/source.css';
 
 @custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
 
@@ -228,7 +229,6 @@ The following are the default theme colors of STDF, please modify them according
 	--radius-form: 0.25rem;
 	--radius-small: calc(infinity * 1px);
 }
-@source "../node_modules/stdf/dist";
 ```
 
 2.5 Import and use components in Svelte files.

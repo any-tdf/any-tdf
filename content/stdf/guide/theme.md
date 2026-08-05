@@ -282,7 +282,7 @@ STDF 内置了 42 套精心设计的主题，可直接使用：
 
 | 主题名       | 中文名   | 主题名     | 中文名   |
 | ------------ | -------- | ---------- | -------- |
-| STDF         | STDF     | Nintendo   | 红蓝天堂 |
+| ANYTDF       | STDF     | Nintendo   | 红蓝天堂 |
 | Ocean        | 海蓝金沙 | Forest     | 翠林暖棕 |
 | Sunset       | 橙霞蓝天 | Cherry     | 粉樱翠影 |
 | Twilight     | 暮紫粉霞 | Amber      | 琥珀紫韵 |

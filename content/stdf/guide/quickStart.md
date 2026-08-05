@@ -142,13 +142,14 @@ yarn add stdf
 
 <!-- ::: -->
 
-2.4 在项目的入口 CSS 文件中引入 Tailwind CSS，设置暗黑模式，添加初始颜色变量，**使用 `@source` 指令指定 Tailwind 自动检测 STDF 组件类**。
+2.4 在项目的入口 CSS 文件中引入 Tailwind CSS 和 `stdf/source.css`，设置暗黑模式并添加初始颜色变量。`stdf/source.css` 会自动注册 STDF 组件所需的 Tailwind CSS 扫描路径。
 
 以下为 STDF 默认主题色，请根据自己的需要进行修改。可参考 [STDF 指南 - 色彩](/guide/color)。
 
 ```css
 /* app.css */
 @import 'tailwindcss';
+@import 'stdf/source.css';
 
 @custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
 
@@ -228,7 +229,6 @@ yarn add stdf
 	--radius-form: 0.25rem;
 	--radius-small: calc(infinity * 1px);
 }
-@source "../node_modules/stdf/dist";
 ```
 
 2.5 在 Svelte 文件中引入并使用。

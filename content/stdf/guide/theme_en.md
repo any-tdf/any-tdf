@@ -282,7 +282,7 @@ STDF comes with 42 carefully designed themes that can be used directly:
 
 | Theme        | Description             | Theme      | Description             |
 | ------------ | ----------------------- | ---------- | ----------------------- |
-| STDF         | Default STDF theme      | Nintendo   | Red & Blue Classic      |
+| ANYTDF       | Default STDF theme      | Nintendo   | Red & Blue Classic      |
 | Ocean        | Ocean Blue & Sand       | Forest     | Forest & Warm Brown     |
 | Sunset       | Orange Sky & Blue       | Cherry     | Cherry & Teal           |
 | Twilight     | Purple & Gold           | Amber      | Amber & Purple          |
