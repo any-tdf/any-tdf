@@ -70,6 +70,9 @@ lerna-debug.log*
 **/.agents/
 .codex/
 **/.codex/
+!.agents/
+!.agents/skills/
+!.agents/skills/**
 .idea/
 **/.idea/
 .vscode/

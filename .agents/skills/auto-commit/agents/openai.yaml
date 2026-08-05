@@ -1,0 +1,4 @@
+interface:
+  display_name: "Any TDF Auto Commit"
+  short_description: "Plan and commit changes with concise English messages."
+  default_prompt: "Use $auto-commit to inspect, split, and commit the current Any TDF workspace changes."
