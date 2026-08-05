@@ -1,5 +1,12 @@
-export { menuList, guideMenuList } from '@any-tdf/site-common/data';
+import { guideMenuList as sharedGuideMenuList } from '@any-tdf/site-common/data';
+
+export { menuList } from '@any-tdf/site-common/data';
 export type { MenuList, MenuListChild, GuideMenuChild, GuideMenuGroup } from '@any-tdf/site-common/data';
+
+export const guideMenuList = sharedGuideMenuList.map((group) => ({
+	...group,
+	childs: group.childs.filter((child) => child.nav !== 'upgrade')
+}));
 
 // 侧边栏菜单的最小结构约束，同时兼容组件菜单（menuList）与指南菜单（guideMenuList）
 export type SiteMenuChild = { title: string; title_en: string; nav: string };

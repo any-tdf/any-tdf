@@ -74,18 +74,26 @@ const stdfGuideRoutes = [
 	'quick-start',
 	...listDirs(stdfGuideRouteRoot).filter((dir) => existsSync(join(stdfGuideRouteRoot, dir, '+page.svelte')))
 ].sort();
-// 指南侧边栏数据来自 @any-tdf/site-common 的 guideMenuList（GuideLayout.vue 直接引用，不再本地硬编码）
+const excludedGuideNavs = new Set(['upgrade']);
+const expectedVtdfGuideRoutes = stdfGuideRoutes.filter((nav) => !excludedGuideNavs.has(nav));
+// 指南侧边栏以共享数据为基准，再排除 VTDF site 不提供的页面。
 const guideMenuListSource = readFileSync(join(workspaceRoot, 'apps/site-common/src/stdf-data/guideMenuList.ts'), 'utf8');
 const vtdfGuideNavs = Array.from(guideMenuListSource.matchAll(/nav:\s*'([^']+)'/g))
 	.map((match) => match[1])
+	.filter((nav) => !excludedGuideNavs.has(nav))
 	.sort();
 const guidePageSource = readFileSync(join(siteRoot, 'src/pages/guide/GuidePage.vue'), 'utf8');
+const siteMenuListSource = readFileSync(join(siteRoot, 'src/data/menuList.ts'), 'utf8');
 
 const guideDocMap: Record<string, string> = {
 	'quick-start': 'quickStart',
 	'icon-plugin': 'iconPlugin',
 	md: 'mdPlugin'
 };
+const missingExcludedGuideCleanup = [...excludedGuideNavs]
+	.flatMap((docKey) => [`guide/${docKey}.md`, `guide/${docKey}_en.md`])
+	.filter((file) => existsSync(join(vtdfDocsRoot, file)))
+	.map((file) => `absence of ${file}`);
 // color/logo/shortkey 为 pages/guide 下的自定义页面，generator 为 App 级独立路由页面
 const customGuidePages = ['color', 'logo', 'shortkey'];
 const missingGuideDocs = vtdfGuideNavs
@@ -161,9 +169,14 @@ const results: CheckResult[] = [
 	),
 	check(
 		'guide route menu',
-		`STDF ${stdfGuideRoutes.length}, VTDF ${vtdfGuideNavs.length}`,
-		difference(stdfGuideRoutes, vtdfGuideNavs),
-		difference(vtdfGuideNavs, stdfGuideRoutes)
+		`STDF applicable ${expectedVtdfGuideRoutes.length}, VTDF ${vtdfGuideNavs.length}`,
+		difference(expectedVtdfGuideRoutes, vtdfGuideNavs),
+		difference(vtdfGuideNavs, expectedVtdfGuideRoutes)
+	),
+	check(
+		'site-specific guide menu',
+		'checked migration guide exclusion and removed markdown files',
+		["child.nav !== 'upgrade'"].filter((pattern) => !siteMenuListSource.includes(pattern)).concat(missingExcludedGuideCleanup)
 	),
 	check('guide markdown docs', `checked ${vtdfGuideNavs.length - customGuidePages.length} markdown-backed guide routes`, missingGuideDocs),
 	check('custom guide pages', `checked ${customGuidePages.length} custom guide pages`, missingCustomGuidePages),

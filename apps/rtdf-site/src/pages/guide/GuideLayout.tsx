@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { buildSiteOutline, observeActiveSiteOutline, type SiteOutlineItem } from '@any-tdf/site-common/outline';
-import { guideMenuList, type GuideMenuChild } from '@any-tdf/site-common/data';
 import Menu from '../../components/Menu';
+import { guideMenuList, type GuideMenuChild } from '../../data/menuList';
 import { useAppContext } from '../../store/appStore';
 import ColorPage from './ColorPage';
 import IconPage from './IconPage';

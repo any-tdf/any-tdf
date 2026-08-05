@@ -74,11 +74,15 @@ const stdfGuideRoutes = [
 	'quick-start',
 	...listDirs(stdfGuideRouteRoot).filter((dir) => existsSync(join(stdfGuideRouteRoot, dir, '+page.svelte')))
 ].sort();
+const excludedGuideNavs = new Set(['upgrade']);
+const expectedRtdfGuideRoutes = stdfGuideRoutes.filter((nav) => !excludedGuideNavs.has(nav));
 const guideMenuListSource = readFileSync(join(workspaceRoot, 'apps/site-common/src/stdf-data/guideMenuList.ts'), 'utf8');
 const rtdfGuideNavs = Array.from(guideMenuListSource.matchAll(/nav:\s*'([^']+)'/g))
 	.map((match) => match[1])
+	.filter((nav) => !excludedGuideNavs.has(nav))
 	.sort();
 const guideLayoutSource = readFileSync(join(siteRoot, 'src/pages/guide/GuideLayout.tsx'), 'utf8');
+const siteMenuListSource = readFileSync(join(siteRoot, 'src/data/menuList.ts'), 'utf8');
 const logoSource = readFileSync(join(siteRoot, 'src/components/RtdfLogo.tsx'), 'utf8');
 const headerSource = readFileSync(join(siteRoot, 'src/components/Header.tsx'), 'utf8');
 const logoPageSource = readFileSync(join(siteRoot, 'src/pages/guide/LogoPage.tsx'), 'utf8');
@@ -100,6 +104,10 @@ const guideDocMap: Record<string, string> = {
 	'icon-plugin': 'iconPlugin',
 	md: 'mdPlugin'
 };
+const missingExcludedGuideCleanup = [...excludedGuideNavs]
+	.flatMap((docKey) => [`guide/${docKey}.md`, `guide/${docKey}_en.md`])
+	.filter((file) => existsSync(join(rtdfDocsRoot, file)))
+	.map((file) => `absence of ${file}`);
 const customGuidePages = ['color', 'logo', 'shortkey'];
 const missingGuideDocs = rtdfGuideNavs
 	.filter((nav) => !customGuidePages.includes(nav))
@@ -154,9 +162,14 @@ const results: CheckResult[] = [
 	),
 	check(
 		'guide route menu',
-		`STDF ${stdfGuideRoutes.length}, RTDF ${rtdfGuideNavs.length}`,
-		difference(stdfGuideRoutes, rtdfGuideNavs),
-		difference(rtdfGuideNavs, stdfGuideRoutes)
+		`STDF applicable ${expectedRtdfGuideRoutes.length}, RTDF ${rtdfGuideNavs.length}`,
+		difference(expectedRtdfGuideRoutes, rtdfGuideNavs),
+		difference(rtdfGuideNavs, expectedRtdfGuideRoutes)
+	),
+	check(
+		'site-specific guide menu',
+		'checked migration guide exclusion and removed markdown files',
+		["child.nav !== 'upgrade'"].filter((pattern) => !siteMenuListSource.includes(pattern)).concat(missingExcludedGuideCleanup)
 	),
 	check('guide markdown docs', `checked ${rtdfGuideNavs.length - customGuidePages.length} markdown-backed guide routes`, missingGuideDocs),
 	check('custom guide pages', `checked ${customGuidePages.length} custom guide pages`, missingCustomGuidePages),
