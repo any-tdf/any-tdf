@@ -81,6 +81,9 @@ const componentPageMissing = [
 ].filter((pattern) => !componentPageSource.includes(pattern));
 
 const techStackSource = readFileSync(join(siteRoot, 'src/lib/home/TechStack.svelte'), 'utf8');
+const headerSource = readFileSync(join(siteRoot, 'src/lib/header/Header.svelte'), 'utf8');
+const logoPageSource = readFileSync(join(siteRoot, 'src/routes/guide/logo/+page.svelte'), 'utf8');
+const sharedStylesSource = readFileSync(join(workspaceRoot, 'apps/site-common/assets/styles.css'), 'utf8');
 const svelteLogoPath = join(siteRoot, 'static/frameworks/svelte.svg');
 const svelteLogoIssues = [
 	...(techStackSource.includes('src="/frameworks/svelte.svg"') ? [] : ['official Svelte logo reference']),
@@ -125,6 +128,24 @@ const results: CheckResult[] = [
 	check('guide markdown docs', `checked ${requiredGuideDocs.length} guide docs`, guideDocMissing),
 	check('components page source', 'checked raw demo loader, docs tabs, and iframe', componentPageMissing),
 	check('Svelte brand asset', 'checked official svelte.dev logo asset', svelteLogoIssues),
+	check(
+		'STDF logo motion scope',
+		'checked animated header mark, static guide mark, and reduced-motion styles',
+		[
+			'class="site-brand-mark tdf-logo-animated"',
+			'data-logo-animated',
+			'tdf-stdf-logo-lightning',
+			'data-logo-layer="stdf-mark"'
+		]
+			.filter((pattern) => !headerSource.includes(pattern))
+			.concat(['data-logo-static', 'data-logo-layer="stdf-mark"'].filter((pattern) => !logoPageSource.includes(pattern)))
+			.concat(logoPageSource.includes('tdf-logo-animated') ? ['remove guide logo animation wrapper'] : [])
+			.concat(
+				['.tdf-logo-animated .tdf-stdf-logo-lightning', '@keyframes tdf-stdf-logo-lightning', '@media (prefers-reduced-motion: reduce)'].filter(
+					(pattern) => !sharedStylesSource.includes(pattern)
+				)
+			)
+	),
 	check(
 		'site files',
 		`checked ${requiredSiteFiles.length} files`,

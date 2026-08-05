@@ -7,10 +7,15 @@
 		<meta name="theme-color" content="#23262B" media="(prefers-color-scheme: dark)" />
 		<meta itemprop="name" content="VTDF" />
 		<meta name="description" itemprop="description" content="Mobile web component library based on Vue and Tailwind" />
-		<meta itemprop="image" content="./assets/images/logo.png" />
+		<meta itemprop="image" content="/assets/favicon_logo/android-chrome-512x512.png" />
 		<title>VTDF - 移动 web 组件库</title>
-		<link href="/favicon.ico" rel="icon" media="(prefers-color-scheme: light)" />
-		<link href="/favicon_black.ico" rel="icon" media="(prefers-color-scheme: dark)" />
+		<link href="/favicon.ico" rel="icon" type="image/x-icon" data-theme-favicon />
+		<script>
+			const savedMode = localStorage.getItem('theme');
+			const initialTheme = ['auto', 'light', 'dark'].includes(savedMode) ? savedMode : 'auto';
+			const initialMode = initialTheme === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
+			document.querySelector('[data-theme-favicon]')?.setAttribute('href', initialMode === 'dark' ? '/favicon_black.ico' : '/favicon.ico');
+		</script>
 	</head>
 	<body
 		class="bg-bg-base dark:bg-bg-base-dark text-text-primary dark:text-text-dark selection:bg-primary dark:selection:bg-dark selection:text-white dark:selection:text-black"

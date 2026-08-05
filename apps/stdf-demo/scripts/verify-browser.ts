@@ -181,6 +181,30 @@ const waitForFunction = async (body: string) => {
 	return false;
 };
 
+const checkThemeFavicon = async () => {
+	const lightReason = await navigate(`${baseUrl}/button/zh_CN?channel=iframe&theme=ANYTDF&darkMode=light&lang=zh_CN`);
+	if (lightReason) throw new Error(lightReason);
+	const lightReady = await waitForFunction(`
+		const favicon = document.querySelector('[data-theme-favicon]')?.getAttribute('href') || '';
+		return document.documentElement.getAttribute('data-mode') === 'primary' && favicon.endsWith('stdf.svg');
+	`);
+	if (!lightReady) throw new Error('Light favicon did not match light mode');
+
+	await runInPage(`document.documentElement.setAttribute('data-mode', 'dark');`);
+	const manualDarkReady = await waitForFunction(`
+		return (document.querySelector('[data-theme-favicon]')?.getAttribute('href') || '').endsWith('stdf_dark.svg');
+	`);
+	if (!manualDarkReady) throw new Error('Favicon did not follow the runtime dark mode change');
+
+	const darkReason = await navigate(`${baseUrl}/button/zh_CN?channel=iframe&theme=ANYTDF&darkMode=dark&lang=zh_CN`);
+	if (darkReason) throw new Error(darkReason);
+	const darkReady = await waitForFunction(`
+		const favicon = document.querySelector('[data-theme-favicon]')?.getAttribute('href') || '';
+		return document.documentElement.getAttribute('data-mode') === 'dark' && favicon.endsWith('stdf_dark.svg');
+	`);
+	if (!darkReady) throw new Error('Dark favicon did not match the darkMode parameter');
+};
+
 const clickText = async (text: string) => {
 	const clicked = await runInPage<boolean>(`
 		const wanted = ${JSON.stringify(text)};
@@ -215,6 +239,9 @@ if (scenarioFilter !== 'confetti') {
 		if (!state.hasText) failed.push({ route, reason: 'Route text not rendered' });
 		if (!state.layoutValid) failed.push({ route, reason: 'Document body has invalid layout' });
 	}
+	await checkThemeFavicon().catch((error: unknown) => {
+		failed.push({ route: 'theme favicon', reason: error instanceof Error ? error.message : String(error) });
+	});
 }
 
 const checkKeyboardConfetti = async (path: string, openText: string, keys: string[], expectedText: string) => {
@@ -242,7 +269,7 @@ cleanup();
 const result = {
 	baseUrl,
 	scenarioFilter,
-	checked: scenarioFilter === 'confetti' ? 2 : routes.length + 2,
+	checked: scenarioFilter === 'confetti' ? 2 : routes.length + 3,
 	failedCount: failed.length,
 	failed
 };

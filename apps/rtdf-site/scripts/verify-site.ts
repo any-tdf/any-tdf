@@ -80,7 +80,10 @@ const rtdfGuideNavs = Array.from(guideMenuListSource.matchAll(/nav:\s*'([^']+)'/
 	.sort();
 const guideLayoutSource = readFileSync(join(siteRoot, 'src/pages/guide/GuideLayout.tsx'), 'utf8');
 const logoSource = readFileSync(join(siteRoot, 'src/components/RtdfLogo.tsx'), 'utf8');
+const headerSource = readFileSync(join(siteRoot, 'src/components/Header.tsx'), 'utf8');
+const logoPageSource = readFileSync(join(siteRoot, 'src/pages/guide/LogoPage.tsx'), 'utf8');
 const techStackSource = readFileSync(join(siteRoot, 'src/components/home/TechStack.tsx'), 'utf8');
+const sharedStylesSource = readFileSync(join(workspaceRoot, 'apps/site-common/assets/styles.css'), 'utf8');
 const officialReactAssets = {
 	'react-light.svg': 'f06f8906159321315b77af4e86846b95f679d74ec0d681ef92101aa7c1ec8656',
 	'react-dark.svg': 'ad13942c43f70b5c43a04edb6e5ad6b12ff6a7c38ad301d38aaa3ed916ec904a'
@@ -163,12 +166,14 @@ const results: CheckResult[] = [
 	check('component doc loader', 'checked markdown glob and language selection', missingComponentDocPatterns),
 	check(
 		'RTDF brand mark',
-		'checked shared base mark and official React assets',
+		'checked shared base mark, masked React orbit, and official React assets',
 		[
 			'RtdfLogoMark',
 			'data-logo-layer="react"',
 			'href="/frameworks/react-light.svg"',
-			'href="/frameworks/react-dark.svg"'
+			'tdf-logo-mask',
+			'tdf-rtdf-logo-orbit',
+			'react-core-cutout'
 		]
 			.filter((pattern) => !logoSource.includes(pattern))
 			.concat(
@@ -177,6 +182,19 @@ const results: CheckResult[] = [
 			.concat(officialReactAssetIssues)
 			.concat(logoSource.includes('<ellipse') || logoSource.includes('<circle') ? ['remove custom React geometry'] : [])
 			.concat(logoSource.includes('M20 30H40L20 80V50H0L20 0V30Z') ? ['remove legacy lightning overlay'] : [])
+	),
+	check(
+		'RTDF logo motion scope',
+		'checked animated header orbit, static guide orbit, and reduced-motion styles',
+		['className="site-brand-mark tdf-logo-animated"', 'data-logo-animated']
+			.filter((pattern) => !headerSource.includes(pattern))
+			.concat(['data-logo-construction', 'data-logo-static'].filter((pattern) => !logoPageSource.includes(pattern)))
+			.concat(logoPageSource.includes('tdf-logo-animated') ? ['remove guide logo animation wrapper'] : [])
+			.concat(
+				['.tdf-logo-animated .tdf-rtdf-logo-orbit', '@keyframes tdf-rtdf-logo-spin', '@media (prefers-reduced-motion: reduce)'].filter(
+					(pattern) => !sharedStylesSource.includes(pattern)
+				)
+			)
 	),
 	check(
 		'guide page renderer',

@@ -291,9 +291,105 @@ await compareScenario('generator desktop geometry', '/generator', [
 for (const site of sites) {
 	await setViewport(1440, 1000);
 	await goto(site, '/');
-	await runInPage(`document.querySelector('.site-version-trigger')?.click(); return true;`);
-	await waitFor(() => runInPage<boolean>(`return Boolean(document.querySelector('#site-version-menu'));`), `${site.name} version menu`);
-	await runInPage(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); return true;`);
+	const hasVersionSwitcher = await runInPage<boolean>(
+		`return Boolean(document.querySelector('.site-version-trigger, #site-version-menu'));`
+	);
+	if (hasVersionSwitcher) throw new Error(`${site.name} header still renders the legacy version switcher.`);
+	const hasHeaderBrandName = await runInPage<boolean>(
+		`return Boolean(document.querySelector('.site-header .site-brand-name'));`
+	);
+	if (hasHeaderBrandName) throw new Error(`${site.name} header brand must remain logo-only.`);
+
+	const footerGroups = await runInPage<Array<{ title: string; links: Array<{ text: string; href: string }> }>>(`
+		return [...document.querySelectorAll('.site-footer-grid > div')].map((group) => ({
+			title: group.querySelector('h3')?.textContent?.trim() || '',
+			links: [...group.querySelectorAll('a')].map((link) => ({
+				text: link.textContent?.trim() || '',
+				href: link.href
+			}))
+		}));
+	`);
+	const footerTitles = footerGroups.map((group) => group.title);
+	if (JSON.stringify(footerTitles) !== JSON.stringify(['Any TDF', '相关', '工具', '内置图标'])) {
+		throw new Error(`${site.name} footer groups are incorrect: ${JSON.stringify(footerTitles)}`);
+	}
+	if (footerGroups.some((group) => group.links.some((link) => link.text.includes('@any-tdf/')))) {
+		throw new Error(`${site.name} footer still displays an @any-tdf/ prefix.`);
+	}
+	const hasFooterIntroduction = await runInPage<boolean>(
+		`return Boolean(document.querySelector('.site-footer-grid .site-brand, .site-footer-grid .site-button'));`
+	);
+	if (hasFooterIntroduction) throw new Error(`${site.name} footer still renders the removed brand introduction.`);
+
+	const anyTdfLinks = footerGroups[0]?.links ?? [];
+	const currentSiteHref = `https://${site.name.toLowerCase()}.dev/`;
+	const otherSiteHrefs = ['https://stdf.dev/', 'https://rtdf.dev/', 'https://vtdf.dev/'].filter((href) => href !== currentSiteHref);
+	const expectedAnyTdfHrefs = [
+		'https://any-tdf.dev/',
+		...otherSiteHrefs,
+		'https://react-confetti.any-tdf.dev/',
+		'https://vue-confetti.any-tdf.dev/'
+	];
+	const anyTdfHrefs = anyTdfLinks.map((link) => link.href);
+	if (JSON.stringify(anyTdfHrefs) !== JSON.stringify(expectedAnyTdfHrefs)) {
+		throw new Error(`${site.name} Any TDF links are incorrect: ${JSON.stringify(anyTdfHrefs)}`);
+	}
+	const otherSiteTitles = ['STDF', 'RTDF', 'VTDF'].filter((title) => title !== site.name);
+	const anyTdfTitles = anyTdfLinks.map((link) => link.text);
+	if (
+		JSON.stringify(anyTdfTitles) !==
+		JSON.stringify(['Any TDF', ...otherSiteTitles, 'react-confetti', 'vue-confetti'])
+	) {
+		throw new Error(`${site.name} Any TDF labels are incorrect: ${JSON.stringify(anyTdfTitles)}`);
+	}
+	const frameworkTitle = { STDF: 'Svelte', RTDF: 'React', VTDF: 'Vue' }[site.name];
+	const relatedTitles = footerGroups[1]?.links.map((link) => link.text) ?? [];
+	if (JSON.stringify(relatedTitles) !== JSON.stringify([frameworkTitle, 'Tailwind CSS', '关于', '常见问题', '开源许可'])) {
+		throw new Error(`${site.name} footer related links are inconsistent: ${JSON.stringify(relatedTitles)}`);
+	}
+
+	const builtInIconLinks = footerGroups[3]?.links ?? [];
+	const builtInIconTitles = builtInIconLinks.map((link) => link.text);
+	if (JSON.stringify(builtInIconTitles) !== JSON.stringify(['Remix', 'Lucide', 'Phosphor', 'Tabler', 'Iconoir', 'Reicon'])) {
+		throw new Error(`${site.name} footer icon labels are incorrect: ${JSON.stringify(builtInIconTitles)}`);
+	}
+	const builtInIconHrefs = builtInIconLinks.map((link) => link.href);
+	for (const href of [
+		'https://remixicon.com/',
+		'https://lucide.dev/',
+		'https://phosphoricons.com/',
+		'https://tabler.io/icons',
+		'https://iconoir.com/',
+		'https://reicon.dev/'
+	]) {
+		if (!builtInIconHrefs.includes(href)) throw new Error(`${site.name} footer is missing the official icon link ${href}.`);
+	}
+	const toolLinks = footerGroups[2]?.links ?? [];
+	if (toolLinks.some((link) => /(?:stdf|rtdf|vtdf)\/theme/i.test(`${link.text} ${link.href}`))) {
+		throw new Error(`${site.name} footer tools still include a theme entry.`);
+	}
+	const expectedToolTitles = [
+		'create-any-tdf',
+		'vite-plugin-svg-symbol',
+		'vite-plugin-md-ts',
+		'Any TDF for VS Code',
+		'react-motion',
+		'vue-motion'
+	];
+	const expectedToolHrefs = [
+		'https://www.npmjs.com/package/create-any-tdf',
+		'https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol',
+		'https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts',
+		'https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension',
+		'https://react-motion.any-tdf.dev/',
+		'https://vue-motion.any-tdf.dev/'
+	];
+	if (JSON.stringify(toolLinks.map((link) => link.text)) !== JSON.stringify(expectedToolTitles)) {
+		throw new Error(`${site.name} footer tool labels are inconsistent: ${JSON.stringify(toolLinks)}`);
+	}
+	if (JSON.stringify(toolLinks.map((link) => link.href)) !== JSON.stringify(expectedToolHrefs)) {
+		throw new Error(`${site.name} footer tool links are inconsistent: ${JSON.stringify(toolLinks)}`);
+	}
 
 	await runInPage(`document.querySelector('.site-search-trigger')?.click(); return true;`);
 	await waitFor(() => runInPage<boolean>(`return Boolean(document.querySelector('[style*="z-index: 10000"] input'));`), `${site.name} command palette`);

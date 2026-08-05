@@ -223,6 +223,46 @@ const assertSelector = async (selector: string, label: string) => {
 	if (!ok) throw new Error(`Expected visible selector: ${label}`);
 };
 
+const readLogoAnimation = async (selector: string) => {
+	return runInPage<{ found: boolean; animationNames: string[] }>(`
+		const element = document.querySelector(${JSON.stringify(selector)});
+		return {
+			found: Boolean(element),
+			animationNames: element
+				? getComputedStyle(element).animationName.split(',').map((name) => name.trim())
+				: []
+		};
+	`);
+};
+
+const setReducedMotion = (reduced: boolean) => {
+	return page.call('Emulation.setEmulatedMedia', {
+		features: [{ name: 'prefers-reduced-motion', value: reduced ? 'reduce' : 'no-preference' }]
+	});
+};
+
+const assertHeaderLogoMotion = async () => {
+	const selector = '[data-logo-animated] [data-logo-layer="vtdf-mark"]';
+	await setReducedMotion(false);
+	const running = await readLogoAnimation(selector);
+	await setReducedMotion(true);
+	const reduced = await readLogoAnimation(selector);
+	await setReducedMotion(false);
+	if (!running.found || !running.animationNames.includes('tdf-vtdf-logo-draw')) {
+		throw new Error(`Expected VTDF header logo animation: ${JSON.stringify(running)}`);
+	}
+	if (!reduced.found || reduced.animationNames.some((name) => name !== 'none')) {
+		throw new Error(`Expected reduced-motion VTDF header logo: ${JSON.stringify(reduced)}`);
+	}
+};
+
+const assertStaticGuideLogo = async () => {
+	const result = await readLogoAnimation('[data-logo-static] [data-logo-layer="vtdf-mark"]');
+	if (!result.found || result.animationNames.some((name) => name !== 'none')) {
+		throw new Error(`Expected static VTDF guide logo: ${JSON.stringify(result)}`);
+	}
+};
+
 const assertSourceCode = async (required: string[], forbidden: string[] = []) => {
 	const code = await runInPage<string>(`return document.querySelector('pre code')?.textContent || '';`);
 	const missing = required.filter((text) => !code.includes(text));
@@ -953,6 +993,7 @@ const scenarios: Scenario[] = [
 			() => assertBodyIncludes('VTDF'),
 			() => assertBodyIncludes('基于'),
 			() => assertSelector('a[aria-label="VTDF 首页"]', 'home brand link'),
+			() => assertHeaderLogoMotion(),
 			() => assertHomeDemoInteractions(),
 			() => assertHomeLoadingAnimationRunning()
 		]
@@ -1115,10 +1156,11 @@ const scenarios: Scenario[] = [
 					const compactText = (document.body.innerText || '').replace(/\\s+/g, '');
 					if (!compactText.includes('VTDF')) throw new Error('Expected visible VTDF wordmark');
 				`),
-			() => assertSelector('svg[viewBox="0 0 91 81"]', 'logo construction svg'),
+			() => assertSelector('svg[data-logo-construction][viewBox="0 0 81 81"]', 'logo construction svg'),
+			() => assertStaticGuideLogo(),
 			() =>
 				runInPage<void>(`
-					const svg = document.querySelector('svg[viewBox="0 0 91 81"]');
+					const svg = document.querySelector('svg[data-logo-construction][viewBox="0 0 81 81"]');
 					const lines = svg?.querySelectorAll('line').length || 0;
 					const circles = svg?.querySelectorAll('circle').length || 0;
 					if (lines !== 18 || circles !== 3) {

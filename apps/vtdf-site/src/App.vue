@@ -23,6 +23,12 @@ import { delParamsUrl } from './utils/index';
 
 const isZh = computed(() => appState.lang === 'zh_CN');
 
+const updateFavicon = (mode: 'light' | 'dark') => {
+	document
+		.querySelector<HTMLLinkElement>('[data-theme-favicon]')
+		?.setAttribute('href', mode === 'dark' ? '/favicon_black.ico' : '/favicon.ico');
+};
+
 // 是否显示左侧导航（路由改变时更新）
 const showLeftNav = computed(() => getSiteNavigationState(appState.pathname).showLeftNav);
 const currentPage = computed(() => getSitePage(appState.pathname));
@@ -92,6 +98,7 @@ watch(
 		const currentThemeMode = themeMode === 'auto' ? sysTheme : themeMode;
 		appState.currentThemeMode = currentThemeMode;
 		document.documentElement.setAttribute('data-mode', currentThemeMode);
+		updateFavicon(currentThemeMode);
 		localStorage.setItem('theme', themeMode);
 	},
 	{ immediate: true }

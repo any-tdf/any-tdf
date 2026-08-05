@@ -190,32 +190,9 @@ export const ugly = {
 };
 
 export const bottomInfo = createFooterInfo({
+	currentSite: 'stdf',
 	framework: { title: 'Svelte', title_en: 'Svelte', link: 'https://svelte.dev', _blank: true },
-	tailwindTitle: 'Tailwind',
-	tailwindTitleEn: 'Tailwind',
-	tools: [
-		{ title: 'create-any-tdf', title_en: 'create-any-tdf', link: 'https://www.npmjs.com/package/create-any-tdf', _blank: true },
-		{
-			title: 'rollup-plugin-stdf-icon',
-			title_en: 'rollup-plugin-stdf-icon',
-			link: 'https://www.npmjs.com/package/rollup-plugin-stdf-icon',
-			_blank: true
-		},
-		{
-			title: 'rollup-plugin-md-ts',
-			title_en: 'rollup-plugin-md-ts',
-			link: 'https://www.npmjs.com/package/rollup-plugin-md-ts',
-			_blank: true
-		},
-		{
-			title: 'STDF for VS Code',
-			title_en: 'STDF for VS Code',
-			link: 'https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension',
-			_blank: true
-		}
-	],
-	licenseLink: 'https://github.com/any-tdf/any-tdf/blob/main/LICENSE',
-	discussionsLink: 'https://github.com/any-tdf/any-tdf/discussions'
+	licenseLink: 'https://github.com/any-tdf/any-tdf/blob/main/LICENSE'
 });
 
 export const getRandomSwiperOption = (): SwiperProps => {

@@ -47,15 +47,63 @@ export type FooterInfo = {
 	list: FooterLink[];
 };
 
+type FooterSite = 'stdf' | 'rtdf' | 'vtdf';
+
 export type FooterInfoConfig = {
+	currentSite: FooterSite;
 	framework: FooterLink;
-	tools: FooterLink[];
 	licenseLink: string;
-	discussionsLink: string;
-	tailwindTitle?: string;
-	tailwindTitleEn?: string;
-	showChangelog?: boolean;
 };
+
+const anyTdfSiteLinks: Record<FooterSite, FooterLink> = {
+	stdf: { title: 'STDF', title_en: 'STDF', link: 'https://stdf.dev', _blank: true },
+	rtdf: { title: 'RTDF', title_en: 'RTDF', link: 'https://rtdf.dev', _blank: true },
+	vtdf: { title: 'VTDF', title_en: 'VTDF', link: 'https://vtdf.dev', _blank: true }
+};
+
+const footerSiteList: FooterSite[] = ['stdf', 'rtdf', 'vtdf'];
+
+const motionLinks: FooterLink[] = [
+	{ title: 'react-motion', title_en: 'react-motion', link: 'https://react-motion.any-tdf.dev', _blank: true },
+	{ title: 'vue-motion', title_en: 'vue-motion', link: 'https://vue-motion.any-tdf.dev', _blank: true }
+];
+
+const toolLinks: FooterLink[] = [
+	{ title: 'create-any-tdf', title_en: 'create-any-tdf', link: 'https://www.npmjs.com/package/create-any-tdf', _blank: true },
+	{
+		title: 'vite-plugin-svg-symbol',
+		title_en: 'vite-plugin-svg-symbol',
+		link: 'https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol',
+		_blank: true
+	},
+	{
+		title: 'vite-plugin-md-ts',
+		title_en: 'vite-plugin-md-ts',
+		link: 'https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts',
+		_blank: true
+	},
+	{
+		title: 'Any TDF for VS Code',
+		title_en: 'Any TDF for VS Code',
+		link: 'https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension',
+		_blank: true
+	},
+	...motionLinks
+];
+
+const confettiLinks: FooterLink[] = [
+	{ title: 'react-confetti', title_en: 'react-confetti', link: 'https://react-confetti.any-tdf.dev', _blank: true },
+	{ title: 'vue-confetti', title_en: 'vue-confetti', link: 'https://vue-confetti.any-tdf.dev', _blank: true }
+];
+
+const builtInIconLinks: FooterLink[] = [
+	{ title: 'Remix', title_en: 'Remix', link: 'https://remixicon.com', _blank: true },
+	{ title: 'Lucide', title_en: 'Lucide', link: 'https://lucide.dev', _blank: true },
+	{ title: 'Phosphor', title_en: 'Phosphor', link: 'https://phosphoricons.com', _blank: true },
+	{ title: 'Tabler', title_en: 'Tabler', link: 'https://tabler.io/icons', _blank: true },
+	{ title: 'Iconoir', title_en: 'Iconoir', link: 'https://iconoir.com', _blank: true },
+	{ title: 'Reicon', title_en: 'Reicon', link: 'https://reicon.dev', _blank: true }
+];
 
 const sharedThemeLabels: Record<string, string> = {
 	Nintendo: '红蓝天堂',
@@ -187,48 +235,39 @@ export const thinkGithub = [
 
 export const createFooterInfo = (config: FooterInfoConfig): FooterInfo[] => [
 	{
+		title: 'Any TDF',
+		title_en: 'Any TDF',
+		list: [
+			{ title: 'Any TDF', title_en: 'Any TDF', link: 'https://any-tdf.dev', _blank: true },
+			...footerSiteList.filter((site) => site !== config.currentSite).map((site) => anyTdfSiteLinks[site]),
+			...confettiLinks
+		]
+	},
+	{
 		title: '相关',
 		title_en: 'Related',
 		list: [
 			config.framework,
 			{
-				title: config.tailwindTitle ?? 'Tailwind CSS',
-				title_en: config.tailwindTitleEn ?? 'Tailwind CSS',
+				title: 'Tailwind CSS',
+				title_en: 'Tailwind CSS',
 				link: 'https://tailwindcss.com',
 				_blank: true
 			},
-			{ title: 'Remix Icon', title_en: 'Remix Icon', link: 'https://remixicon.com', _blank: true }
+			{ title: '关于', title_en: 'About', link: '/guide/about', _blank: false },
+			{ title: '常见问题', title_en: 'FAQ', link: '/guide/faq', _blank: false },
+			{ title: '开源许可', title_en: 'License', link: config.licenseLink, _blank: true }
 		]
 	},
 	{
 		title: '工具',
 		title_en: 'Tools',
-		list: config.tools
+		list: toolLinks
 	},
 	{
-		title: '帮助',
-		title_en: 'Help',
-		list: [
-			{ title: '关于', title_en: 'About', link: '/guide/about', _blank: false },
-			{ title: '常见问题', title_en: 'FAQ', link: '/guide/faq', _blank: false },
-			...(config.showChangelog === false ? [] : [{ title: '更新日志', title_en: 'Changelog', link: '/guide/changelog', _blank: false }]),
-			{ title: '开源许可', title_en: 'License', link: config.licenseLink, _blank: true }
-		]
-	},
-	{
-		title: '社区',
-		title_en: 'Community',
-		list: [
-			{
-				title: 'QQ 群',
-				title_en: 'QQ Group',
-				link: 'https://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=U8ZlXJ3KVpTI9oZzs1jBnyWc3gVA0h6Y&authKey=ScWu0nU9g8BqNsC7o2eYkESwgVDVz9vzGNZEb17MrEAay9%2F7bTkXDiLJRIzo2vrg&noverify=0&group_code=581073686',
-				_blank: true
-			},
-			{ title: 'Discord', title_en: 'Discord', link: 'https://discord.gg/DMkHu8GGre', _blank: true },
-			{ title: 'QQ 频道', title_en: 'QQ Discord', link: 'https://pd.qq.com/s/fdd8incyr', _blank: true },
-			{ title: 'Discussions', title_en: 'Discussions', link: config.discussionsLink, _blank: true }
-		]
+		title: '内置图标',
+		title_en: 'Built-in Icons',
+		list: builtInIconLinks
 	}
 ];
 

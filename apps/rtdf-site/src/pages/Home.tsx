@@ -255,19 +255,6 @@ const Home = () => {
 
 				<footer className="site-footer">
 					<div className="site-footer-grid">
-						<div>
-							<div className="site-brand mb-4">
-								<span className="site-brand-name">RTDF</span>
-							</div>
-							<p className="max-w-sm text-sm leading-7 text-(--site-text-soft)">
-								{isZh
-									? '为 React 项目提供可靠、轻量、可主题化的移动 Web 组件。'
-									: 'Reliable, lightweight, themeable mobile Web components for React.'}
-							</p>
-							<a className="site-button site-button-transparent mt-4" href="/guide">
-								{isZh ? '阅读快速开始' : 'Read quick start'} →
-							</a>
-						</div>
 						{bottomInfo.map((group) => (
 							<div key={group.title}>
 								<h3 className="mb-3 text-sm font-bold">{isZh ? group.title : group.title_en}</h3>

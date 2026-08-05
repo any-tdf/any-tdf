@@ -238,19 +238,6 @@ onBeforeUnmount(() => {
 
 			<footer class="site-footer">
 				<div class="site-footer-grid">
-					<div>
-						<div class="site-brand mb-4"><span class="site-brand-name">VTDF</span></div>
-						<p class="max-w-sm text-sm leading-7 text-(--site-text-soft)">
-							{{
-								isZh
-									? '为 Vue 项目提供可靠、轻量、可主题化的移动 Web 组件。'
-									: 'Reliable, lightweight, themeable mobile Web components for Vue.'
-							}}
-						</p>
-						<a class="site-button site-button-transparent mt-4" href="/guide" @click.prevent="go('/guide')"
-							>{{ isZh ? '阅读快速开始' : 'Read quick start' }} →</a
-						>
-					</div>
 					<div v-for="group in bottomInfo" :key="group.title">
 						<h3 class="mb-3 text-sm font-bold">{{ isZh ? group.title : group.title_en }}</h3>
 						<div class="flex flex-col gap-2 text-sm">

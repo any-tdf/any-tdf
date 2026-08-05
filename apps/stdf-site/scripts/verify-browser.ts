@@ -21,6 +21,9 @@ type Scenario = {
 	expectsWrappedComponentTitle?: boolean;
 	expectsNarrowLayout?: boolean;
 	expectsFullWidthWorkbench?: boolean;
+	expectsThemeFavicon?: boolean;
+	expectsHeaderLogoMotion?: boolean;
+	expectsStaticGuideLogo?: boolean;
 };
 
 const baseUrl = process.env.STDF_SITE_VERIFY_BASE_URL || 'http://127.0.0.1:4173';
@@ -209,6 +212,46 @@ const assertSelector = async (selector: string, label: string) => {
 	if (!ok) throw new Error(`Expected visible selector: ${label}`);
 };
 
+const readLogoAnimation = async (selector: string) => {
+	return runInPage<{ found: boolean; animationNames: string[] }>(`
+		const element = document.querySelector(${JSON.stringify(selector)});
+		return {
+			found: Boolean(element),
+			animationNames: element
+				? getComputedStyle(element).animationName.split(',').map((name) => name.trim())
+				: []
+		};
+	`);
+};
+
+const setReducedMotion = (reduced: boolean) => {
+	return page.call('Emulation.setEmulatedMedia', {
+		features: [{ name: 'prefers-reduced-motion', value: reduced ? 'reduce' : 'no-preference' }]
+	});
+};
+
+const assertHeaderLogoMotion = async () => {
+	const selector = '[data-logo-animated] [data-logo-layer="stdf-mark"]';
+	await setReducedMotion(false);
+	const running = await readLogoAnimation(selector);
+	await setReducedMotion(true);
+	const reduced = await readLogoAnimation(selector);
+	await setReducedMotion(false);
+	if (!running.found || !running.animationNames.includes('tdf-stdf-logo-lightning')) {
+		throw new Error(`Expected STDF header logo animation: ${JSON.stringify(running)}`);
+	}
+	if (!reduced.found || reduced.animationNames.some((name) => name !== 'none')) {
+		throw new Error(`Expected reduced-motion STDF header logo: ${JSON.stringify(reduced)}`);
+	}
+};
+
+const assertStaticGuideLogo = async () => {
+	const result = await readLogoAnimation('[data-logo-static] [data-logo-layer="stdf-mark"]');
+	if (!result.found || result.animationNames.some((name) => name !== 'none')) {
+		throw new Error(`Expected static STDF guide logo: ${JSON.stringify(result)}`);
+	}
+};
+
 const assertFlatSiteShell = async () => {
 	const violations = await runInPage<string[]>(`
 		return Array.from(document.querySelectorAll('.site-app *'))
@@ -309,6 +352,19 @@ const assertNoBrowserErrors = () => {
 	if (unexpectedErrors.length > 0) throw new Error(`Browser errors: ${unexpectedErrors.join('\n')}`);
 };
 
+const assertThemeFavicon = async () => {
+	await runInPage(`document.documentElement.setAttribute('data-mode', 'dark');`);
+	await waitFor(
+		() => runInPage<boolean>(`return document.querySelector('[data-theme-favicon]')?.getAttribute('href') === '/favicon_black.ico';`),
+		'dark favicon'
+	);
+	await runInPage(`document.documentElement.setAttribute('data-mode', 'primary');`);
+	await waitFor(
+		() => runInPage<boolean>(`return document.querySelector('[data-theme-favicon]')?.getAttribute('href') === '/favicon.ico';`),
+		'light favicon'
+	);
+};
+
 const scenarios: Scenario[] = [
 	{
 		name: 'home',
@@ -318,7 +374,9 @@ const scenarios: Scenario[] = [
 			{ selector: 'header', label: 'header' },
 			{ selector: 'main, body', label: 'page body' }
 		],
-		expectsComponentPreview: true
+		expectsComponentPreview: true,
+		expectsThemeFavicon: true,
+		expectsHeaderLogoMotion: true
 	},
 	{
 		name: 'guide',
@@ -365,6 +423,13 @@ const scenarios: Scenario[] = [
 		path: '/guide/color',
 		requiredText: ['STDF'],
 		requiredSelectors: [{ selector: 'main', label: 'color guide content' }]
+	},
+	{
+		name: 'logo guide',
+		path: '/guide/logo',
+		requiredText: [],
+		requiredSelectors: [{ selector: '[data-logo-static]', label: 'static logo construction' }],
+		expectsStaticGuideLogo: true
 	}
 ];
 
@@ -380,6 +445,9 @@ for (const scenario of scenarios) {
 		if (scenario.expectsWrappedComponentTitle) await assertComponentTitleLayout(false);
 		if (scenario.expectsNarrowLayout) await assertNarrowComponentLayout();
 		if (scenario.expectsFullWidthWorkbench) await assertFullWidthWorkbench();
+		if (scenario.expectsThemeFavicon) await assertThemeFavicon();
+		if (scenario.expectsHeaderLogoMotion) await assertHeaderLogoMotion();
+		if (scenario.expectsStaticGuideLogo) await assertStaticGuideLogo();
 		assertNoBrowserErrors();
 	} catch (error) {
 		failures.push({ scenario: scenario.name, reason: error instanceof Error ? error.message : String(error) });

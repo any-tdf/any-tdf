@@ -185,13 +185,6 @@
 
 		<footer class="site-footer">
 			<div class="site-footer-grid">
-				<div>
-					<div class="site-brand mb-4"><span class="site-brand-name">STDF</span></div>
-					<p class="max-w-sm text-sm leading-7 text-(--site-text-soft)">
-						{isZh ? '为 Svelte 项目提供可靠、轻量、可主题化的移动 Web 组件。' : 'Reliable, lightweight, themeable mobile Web components for Svelte.'}
-					</p>
-					<a class="site-button site-button-transparent mt-4" href="/guide">{isZh ? '阅读快速开始' : 'Read quick start'} →</a>
-				</div>
 				{#each bottomInfo as group (group.title)}
 					<div>
 						<h3 class="mb-3 text-sm font-bold">{isZh ? group.title : group.title_en}</h3>

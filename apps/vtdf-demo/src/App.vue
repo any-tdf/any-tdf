@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { menuList, type MenuListChild } from '@any-tdf/site-common/data';
 import { builtInIconLibraryList, defaultBuiltInIconLibrary, type BuiltInIconLibrary } from '@any-tdf/common/svg';
 import { ConfigProvider, Feedback, Icon, NavBar } from 'vtdf/components';
@@ -26,6 +26,10 @@ const isBuiltInIconLibrary = (library: string | null): library is BuiltInIconLib
 
 const normalizeStoredBuiltInIconLibrary = (library: string | null): BuiltInIconLibrary =>
 	isBuiltInIconLibrary(library) ? library : defaultBuiltInIconLibrary;
+
+const updateFavicon = (mode: 'primary' | 'dark') => {
+	document.querySelector<HTMLLinkElement>('[data-theme-favicon]')?.setAttribute('href', mode === 'dark' ? '/vtdf_dark.svg' : '/vtdf.svg');
+};
 
 const path = ref(window.location.pathname);
 const search = ref(window.location.search);
@@ -70,6 +74,8 @@ const title = computed(() => {
 	const label = item ? (isZh.value ? item.title_zh : item.title_en) : '';
 	return label ? `${label}${isZh.value ? '示例' : ' Demo'}` : '';
 });
+
+watch(theme, updateFavicon, { immediate: true });
 
 const syncPath = () => {
 	path.value = window.location.pathname;

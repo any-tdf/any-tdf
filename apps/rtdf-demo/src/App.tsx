@@ -25,6 +25,10 @@ const isBuiltInIconLibrary = (library: string | null): library is BuiltInIconLib
 const normalizeStoredBuiltInIconLibrary = (library: string | null): BuiltInIconLibrary =>
 	isBuiltInIconLibrary(library) ? library : defaultBuiltInIconLibrary;
 
+const updateFavicon = (mode: 'primary' | 'dark') => {
+	document.querySelector<HTMLLinkElement>('[data-theme-favicon]')?.setAttribute('href', mode === 'dark' ? '/rtdf_dark.svg' : '/rtdf.svg');
+};
+
 function App() {
 	const location = useLocation();
 
@@ -79,6 +83,7 @@ function App() {
 
 	useEffect(() => {
 		localStorage.setItem('theme', themeMode);
+		updateFavicon(themeMode);
 	}, [themeMode]);
 
 	useEffect(() => {

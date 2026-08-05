@@ -130,6 +130,10 @@ const missingComponentDocPatterns = ['../../../../../content/vtdf/components/*/a
 );
 
 const techStackSource = readFileSync(join(siteRoot, 'src/components/home/TechStack.vue'), 'utf8');
+const headerSource = readFileSync(join(siteRoot, 'src/components/Header.vue'), 'utf8');
+const vtdfLogoSource = readFileSync(join(siteRoot, 'src/components/VtdfLogo.vue'), 'utf8');
+const logoPageSource = readFileSync(join(siteRoot, 'src/pages/guide/LogoPage.vue'), 'utf8');
+const sharedStylesSource = readFileSync(join(workspaceRoot, 'apps/site-common/assets/styles.css'), 'utf8');
 const vueLogoPath = join(siteRoot, 'static/frameworks/vue.svg');
 const vueLogoIssues = [
 	...(techStackSource.includes('src="/frameworks/vue.svg"') ? [] : ['official Vue logo reference']),
@@ -168,6 +172,34 @@ const results: CheckResult[] = [
 	check('components page loaders', 'checked source loaders and doc renderer', missingComponentsPageImports),
 	check('component doc loader', 'checked markdown glob and language selection', missingComponentDocPatterns),
 	check('Vue brand asset', 'checked official vuejs.org logo asset', vueLogoIssues),
+	check(
+		'VTDF brand mark',
+		'checked shared base mark and check detail',
+		[
+			'data-logo-layer="vtdf-mark"',
+			'data-logo-shape="check"',
+			'tdf-vtdf-logo-check',
+			'M11.6447 44.4975L32.858 65.7107L68.2133 30.3553'
+		]
+			.filter((pattern) => !vtdfLogoSource.includes(pattern))
+			.concat(['<VtdfLogo class="size-full"'].filter((pattern) => !headerSource.includes(pattern)))
+			.concat(['<VtdfLogo class="size-6"'].filter((pattern) => !techStackSource.includes(pattern)))
+			.concat(['construction data-logo-construction'].filter((pattern) => !logoPageSource.includes(pattern)))
+			.concat(vtdfLogoSource.includes('M20 30H40L20 80V50H0L20 0V30Z') ? ['remove legacy lightning overlay'] : [])
+	),
+	check(
+		'VTDF logo motion scope',
+		'checked animated header check, static guide check, and reduced-motion styles',
+		['class="site-brand-mark tdf-logo-animated"', 'data-logo-animated']
+			.filter((pattern) => !headerSource.includes(pattern))
+			.concat(['data-logo-construction', 'data-logo-static'].filter((pattern) => !logoPageSource.includes(pattern)))
+			.concat(logoPageSource.includes('tdf-logo-animated') ? ['remove guide logo animation wrapper'] : [])
+			.concat(
+				['.tdf-logo-animated .tdf-vtdf-logo-check', '@keyframes tdf-vtdf-logo-draw', '@media (prefers-reduced-motion: reduce)'].filter(
+					(pattern) => !sharedStylesSource.includes(pattern)
+				)
+			)
+	),
 	check(
 		'guide page renderer',
 		'checked custom page branch and markdown renderer',

@@ -9,8 +9,6 @@
 	let mobileOpen = $state(false);
 	let mobileThemeOpen = $state(false);
 	let themePanel: HTMLDivElement | null = $state(null);
-	let versionPanel: HTMLDivElement | null = $state(null);
-	let versionOpen = $state(false);
 	const isZh = localStorage.getItem('lang') === 'zh_CN';
 	let currentRoute = $derived(page.url.pathname);
 	let navigationState = $derived(getSiteNavigationState(currentRoute));
@@ -28,14 +26,7 @@
 
 	const toggleTheme = (event: MouseEvent) => {
 		event.stopPropagation();
-		versionOpen = false;
 		showThemeSwitchStore.set(!$showThemeSwitchStore);
-	};
-
-	const toggleVersion = (event: MouseEvent) => {
-		event.stopPropagation();
-		showThemeSwitchStore.set(false);
-		versionOpen = !versionOpen;
 	};
 </script>
 
@@ -48,75 +39,29 @@
 <svelte:document
 	onclick={(event) => {
 		if (!themePanel?.contains(event.target as Node)) showThemeSwitchStore.set(false);
-		if (!versionPanel?.contains(event.target as Node)) versionOpen = false;
 	}}
 	onkeydown={(event) => {
-		if (event.key === 'Escape') {
-			showThemeSwitchStore.set(false);
-			versionOpen = false;
-		}
+		if (event.key === 'Escape') showThemeSwitchStore.set(false);
 	}}
 />
 
 <header class="site-header" data-has-sidebar={showLeftNav || undefined}>
 	<div class="site-header-inner">
-		<div class="flex min-w-0 items-center gap-3">
-			<a href="/" class="site-brand" aria-label={isZh ? 'STDF 首页' : 'STDF home'}>
-				<span class="site-brand-mark">
-					<svg viewBox="0 0 80 80" aria-hidden="true">
-						<path
-							class="fill-primary dark:fill-dark"
-							d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
-						/>
-						<path class="fill-dark dark:fill-primary" d="M20 30H40L20 80V50H0L20 0V30Z" />
-					</svg>
-				</span>
-				<span class="site-brand-name">STDF</span>
-			</a>
-			<div class="relative" bind:this={versionPanel}>
-				<button
-					class="site-status site-version-trigger"
-					type="button"
-					onclick={toggleVersion}
-					aria-haspopup="menu"
-					aria-expanded={versionOpen}
-					aria-controls="site-version-menu"
-				>
-					<span>3.0 · ALPHA</span>
-					<svg class="site-version-chevron" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-						<path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z" />
-					</svg>
-				</button>
-				{#if versionOpen}
-					<div id="site-version-menu" class="site-popover site-version-popover" role="menu">
-						<div class="site-version-current">
-							<div>
-								<div class="site-version-number">3.0.x</div>
-								<div class="site-version-meta">Alpha</div>
-							</div>
-							<span class="site-version-current-label">{isZh ? '当前版本' : 'Current'}</span>
-						</div>
-						<a class="site-version-link" href="/guide/changelog" role="menuitem">
-							<span>{isZh ? '更新日志' : 'Changelog'}</span>
-							<span aria-hidden="true">→</span>
-						</a>
-						<div class="site-version-section-label">{isZh ? '历史版本' : 'Previous versions'}</div>
-						<a class="site-version-link" href="https://2.stdf.dev" target="_blank" rel="noreferrer" role="menuitem">
-							<span>Version 2.x</span>
-							<span aria-hidden="true">↗</span>
-						</a>
-						<a class="site-version-link" href="https://1.stdf.dev" target="_blank" rel="noreferrer" role="menuitem">
-							<span>Version 1.x</span>
-							<span aria-hidden="true">↗</span>
-						</a>
-						<a class="site-version-link" href="https://0.stdf.dev" target="_blank" rel="noreferrer" role="menuitem">
-							<span>Version 0.x</span>
-							<span aria-hidden="true">↗</span>
-						</a>
-					</div>
-				{/if}
-			</div>
-		</div>
+		<a href="/" class="site-brand" aria-label={isZh ? 'STDF 首页' : 'STDF home'}>
+			<span class="site-brand-mark tdf-logo-animated" data-logo-animated>
+				<svg viewBox="0 0 80 80" aria-hidden="true">
+					<path
+						class="fill-primary dark:fill-dark"
+						d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
+					/>
+					<path
+						class="tdf-stdf-logo-lightning fill-dark text-dark dark:fill-primary dark:text-primary"
+						data-logo-layer="stdf-mark"
+						d="M20 30H40L20 80V50H0L20 0V30Z"
+					/>
+				</svg>
+			</span>
+		</a>
 
 		<nav class="site-header-nav" aria-label={isZh ? '主导航' : 'Main navigation'}>
 			<button

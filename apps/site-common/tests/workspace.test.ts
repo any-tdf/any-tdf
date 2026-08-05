@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { createFooterInfo } from '../src/data';
 import {
 	createSiteLanguageUrl,
 	getSiteNavigationState,
@@ -51,7 +52,50 @@ describe('@any-tdf/site-common workspace metadata', () => {
 		expect(styles).toContain('--site-bg-elevated: var(--color-bg-surface);');
 		expect(styles).toContain('--site-bg-elevated: var(--color-bg-surface-dark);');
 	});
+});
 
+describe('shared footer data', () => {
+	test('builds the footer columns with official ecosystem links and excludes the current site', () => {
+		const siteCases = [
+			['stdf', ['RTDF', 'VTDF']],
+			['rtdf', ['STDF', 'VTDF']],
+			['vtdf', ['STDF', 'RTDF']]
+		] as const;
+
+		for (const [currentSite, expectedSiteTitles] of siteCases) {
+			const footer = createFooterInfo({
+				currentSite,
+				framework: { title: 'Framework', title_en: 'Framework', link: 'https://example.com', _blank: true },
+				licenseLink: 'https://github.com/any-tdf/any-tdf/blob/main/LICENSE'
+			});
+
+			expect(footer.map((group) => group.title)).toEqual(['Any TDF', '相关', '工具', '内置图标']);
+				expect(footer[0]?.list.map((link) => link.title)).toEqual([
+					'Any TDF',
+				...expectedSiteTitles,
+				'react-confetti',
+				'vue-confetti'
+				]);
+			expect(footer[1]?.list.map((link) => link.title)).toEqual(['Framework', 'Tailwind CSS', '关于', '常见问题', '开源许可']);
+				expect(footer[3]?.list.map((link) => link.title)).toEqual([
+				'Remix',
+				'Lucide',
+				'Phosphor',
+				'Tabler',
+				'Iconoir',
+				'Reicon'
+			]);
+			expect(footer[2]?.list.map((link) => link.title)).toEqual([
+				'create-any-tdf',
+				'vite-plugin-svg-symbol',
+				'vite-plugin-md-ts',
+				'Any TDF for VS Code',
+				'react-motion',
+				'vue-motion'
+			]);
+			expect(footer.flatMap((group) => group.list).some((link) => link.title.includes('@any-tdf/'))).toBeFalse();
+		}
+	});
 });
 
 describe('shared Site state', () => {

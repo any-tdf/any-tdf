@@ -29,6 +29,12 @@ const getStoredThemeMode = (): ThemeMode => {
 	return normalizeSiteThemeMode(localStorage.getItem('theme'));
 };
 
+const updateFavicon = (mode: 'light' | 'dark') => {
+	document
+		.querySelector<HTMLLinkElement>('[data-theme-favicon]')
+		?.setAttribute('href', mode === 'dark' ? '/favicon_black.ico' : '/favicon.ico');
+};
+
 function App() {
 	const location = useLocation();
 	const [lang, setLang] = useState<LangType>(getStoredLang());
@@ -83,11 +89,9 @@ function App() {
 	}, [themeMode]);
 
 	useEffect(() => {
-		if (themeMode === 'auto') {
-			switchMode(sysTheme === 'dark' ? 'dark' : 'primary');
-		} else {
-			switchMode(themeMode === 'dark' ? 'dark' : 'primary');
-		}
+		const resolvedThemeMode = themeMode === 'auto' ? sysTheme : themeMode;
+		switchMode(resolvedThemeMode === 'dark' ? 'dark' : 'primary');
+		updateFavicon(resolvedThemeMode);
 		localStorage.setItem('theme', themeMode);
 	}, [sysTheme, themeMode]);
 

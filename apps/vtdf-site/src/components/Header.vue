@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { createSiteLanguageUrl, getSiteNavigationState, siteHeaderIconPaths, sitePaths } from '@any-tdf/site-common/site';
 import ModeSwitch from './ModeSwitch.vue';
 import ThemeSwitch from './ThemeSwitch.vue';
+import VtdfLogo from './VtdfLogo.vue';
 import { appState, navigateTo } from '../store/appStore';
 
 defineProps<{
@@ -12,8 +13,6 @@ defineProps<{
 const mobileOpen = ref(false);
 const mobileThemeOpen = ref(false);
 const themePanel = ref<HTMLDivElement | null>(null);
-const versionPanel = ref<HTMLDivElement | null>(null);
-const versionOpen = ref(false);
 const isZh = computed(() => appState.lang === 'zh_CN');
 const currentRoute = computed(() => appState.pathname);
 const navigationState = computed(() => getSiteNavigationState(currentRoute.value));
@@ -32,26 +31,15 @@ const switchLang = () => {
 
 const toggleTheme = (event: MouseEvent) => {
 	event.stopPropagation();
-	versionOpen.value = false;
 	appState.showThemeSwitch = !appState.showThemeSwitch;
-};
-
-const toggleVersion = (event: MouseEvent) => {
-	event.stopPropagation();
-	appState.showThemeSwitch = false;
-	versionOpen.value = !versionOpen.value;
 };
 
 const handleDocumentClick = (event: MouseEvent) => {
 	if (!themePanel.value?.contains(event.target as Node)) appState.showThemeSwitch = false;
-	if (!versionPanel.value?.contains(event.target as Node)) versionOpen.value = false;
 };
 
 const handleDocumentKeydown = (event: KeyboardEvent) => {
-	if (event.key === 'Escape') {
-		appState.showThemeSwitch = false;
-		versionOpen.value = false;
-	}
+	if (event.key === 'Escape') appState.showThemeSwitch = false;
 };
 
 onMounted(() => {
@@ -68,48 +56,11 @@ onBeforeUnmount(() => {
 <template>
 	<header class="site-header" :data-has-sidebar="showLeftNav || undefined">
 		<div class="site-header-inner">
-			<div class="flex min-w-0 items-center gap-3">
-				<a href="/" class="site-brand" :aria-label="isZh ? 'VTDF 首页' : 'VTDF home'" @click.prevent="go('/')">
-					<span class="site-brand-mark">
-						<svg viewBox="0 0 80 80" aria-hidden="true">
-							<path
-								class="fill-primary dark:fill-dark"
-								d="M40 0C54.8 0 67.7 8 74.6 20H30V30H40A10 10 0 0 1 40 50H30V80H10V20H0V0H40Zm38.7 30A40 40 0 0 1 40 80V60A20 20 0 0 0 57.3 30h21.4Z"
-							/>
-							<path class="fill-dark dark:fill-primary" d="M20 30H40L20 80V50H0L20 0V30Z" />
-						</svg>
-					</span>
-					<span class="site-brand-name">VTDF</span>
-				</a>
-				<div class="relative" ref="versionPanel">
-					<button
-						class="site-status site-version-trigger"
-						type="button"
-						aria-haspopup="menu"
-						:aria-expanded="versionOpen"
-						aria-controls="site-version-menu"
-						@click="toggleVersion"
-					>
-						<span>0.0 · ALPHA</span>
-						<svg class="site-version-chevron" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-							<path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z" />
-						</svg>
-					</button>
-					<div v-if="versionOpen" id="site-version-menu" class="site-popover site-version-popover" role="menu">
-						<div class="site-version-current">
-							<div>
-								<div class="site-version-number">0.0.x</div>
-								<div class="site-version-meta">Alpha</div>
-							</div>
-							<span class="site-version-current-label">{{ isZh ? '当前版本' : 'Current' }}</span>
-						</div>
-						<a class="site-version-link" href="/guide/changelog" role="menuitem" @click.prevent="go('/guide/changelog')">
-							<span>{{ isZh ? '更新日志' : 'Changelog' }}</span>
-							<span aria-hidden="true">→</span>
-						</a>
-					</div>
-				</div>
-			</div>
+			<a href="/" class="site-brand" :aria-label="isZh ? 'VTDF 首页' : 'VTDF home'" @click.prevent="go('/')">
+				<span class="site-brand-mark tdf-logo-animated" data-logo-animated>
+					<VtdfLogo class="size-full" />
+				</span>
+			</a>
 
 			<nav class="site-header-nav" :aria-label="isZh ? '主导航' : 'Main navigation'">
 				<button class="site-search-trigger" type="button" :aria-label="isZh ? '搜索文档' : 'Search docs'" @click="appState.isCmdK = true">

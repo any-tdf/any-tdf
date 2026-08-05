@@ -22,9 +22,7 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 	const { lang, setIsShowFund, showThemeSwitch, setShowThemeSwitch } = useAppContext();
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [mobileThemeOpen, setMobileThemeOpen] = useState(false);
-	const [versionOpen, setVersionOpen] = useState(false);
 	const themePanelRef = useRef<HTMLDivElement | null>(null);
-	const versionPanelRef = useRef<HTMLDivElement | null>(null);
 
 	const isZh = lang === 'zh_CN';
 	const currentRoute = location.pathname;
@@ -34,13 +32,9 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 	useEffect(() => {
 		const handleClick = (event: MouseEvent) => {
 			if (!themePanelRef.current?.contains(event.target as Node)) setShowThemeSwitch(false);
-			if (!versionPanelRef.current?.contains(event.target as Node)) setVersionOpen(false);
 		};
 		const handleKeydown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				setShowThemeSwitch(false);
-				setVersionOpen(false);
-			}
+			if (event.key === 'Escape') setShowThemeSwitch(false);
 		};
 		document.addEventListener('click', handleClick);
 		document.addEventListener('keydown', handleKeydown);
@@ -56,57 +50,17 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 
 	const toggleTheme = (event: React.MouseEvent) => {
 		event.stopPropagation();
-		setVersionOpen(false);
 		setShowThemeSwitch(!showThemeSwitch);
-	};
-
-	const toggleVersion = (event: React.MouseEvent) => {
-		event.stopPropagation();
-		setShowThemeSwitch(false);
-		setVersionOpen(!versionOpen);
 	};
 
 	return (
 		<header className="site-header" data-has-sidebar={showLeftNav || undefined}>
 			<div className="site-header-inner">
-				<div className="flex min-w-0 items-center gap-3">
-					<a href="/" className="site-brand" aria-label={isZh ? 'RTDF 首页' : 'RTDF home'}>
-						<span className="site-brand-mark">
-							<RtdfLogo className="size-full" />
-						</span>
-						<span className="site-brand-name">RTDF</span>
-					</a>
-					<div className="relative" ref={versionPanelRef}>
-						<button
-							className="site-status site-version-trigger"
-							type="button"
-							onClick={toggleVersion}
-							aria-haspopup="menu"
-							aria-expanded={versionOpen}
-							aria-controls="site-version-menu"
-						>
-							<span>0.0 · ALPHA</span>
-							<svg className="site-version-chevron" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-								<path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z" />
-							</svg>
-						</button>
-						{versionOpen ? (
-							<div id="site-version-menu" className="site-popover site-version-popover" role="menu">
-								<div className="site-version-current">
-									<div>
-										<div className="site-version-number">0.0.x</div>
-										<div className="site-version-meta">Alpha</div>
-									</div>
-									<span className="site-version-current-label">{isZh ? '当前版本' : 'Current'}</span>
-								</div>
-								<a className="site-version-link" href="/guide/changelog" role="menuitem">
-									<span>{isZh ? '更新日志' : 'Changelog'}</span>
-									<span aria-hidden="true">→</span>
-								</a>
-							</div>
-						) : null}
-					</div>
-				</div>
+				<a href="/" className="site-brand" aria-label={isZh ? 'RTDF 首页' : 'RTDF home'}>
+					<span className="site-brand-mark tdf-logo-animated" data-logo-animated>
+						<RtdfLogo className="size-full" />
+					</span>
+				</a>
 
 				<nav className="site-header-nav" aria-label={isZh ? '主导航' : 'Main navigation'}>
 					<button

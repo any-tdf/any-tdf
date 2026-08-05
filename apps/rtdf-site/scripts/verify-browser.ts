@@ -210,6 +210,46 @@ const assertBodyIncludes = async (text: string) => {
 	if (!ok) throw new Error(`Expected page body to include: ${text}`);
 };
 
+const readLogoAnimation = async (selector: string) => {
+	return runInPage<{ found: boolean; animationNames: string[] }>(`
+		const element = document.querySelector(${JSON.stringify(selector)});
+		return {
+			found: Boolean(element),
+			animationNames: element
+				? getComputedStyle(element).animationName.split(',').map((name) => name.trim())
+				: []
+		};
+	`);
+};
+
+const setReducedMotion = (reduced: boolean) => {
+	return page.call('Emulation.setEmulatedMedia', {
+		features: [{ name: 'prefers-reduced-motion', value: reduced ? 'reduce' : 'no-preference' }]
+	});
+};
+
+const assertHeaderLogoMotion = async () => {
+	const selector = '[data-logo-animated] [data-logo-layer="react"]';
+	await setReducedMotion(false);
+	const running = await readLogoAnimation(selector);
+	await setReducedMotion(true);
+	const reduced = await readLogoAnimation(selector);
+	await setReducedMotion(false);
+	if (!running.found || !running.animationNames.includes('tdf-rtdf-logo-spin')) {
+		throw new Error(`Expected RTDF header logo animation: ${JSON.stringify(running)}`);
+	}
+	if (!reduced.found || reduced.animationNames.some((name) => name !== 'none')) {
+		throw new Error(`Expected reduced-motion RTDF header logo: ${JSON.stringify(reduced)}`);
+	}
+};
+
+const assertStaticGuideLogo = async () => {
+	const result = await readLogoAnimation('[data-logo-static] [data-logo-layer="react"]');
+	if (!result.found || result.animationNames.some((name) => name !== 'none')) {
+		throw new Error(`Expected static RTDF guide logo: ${JSON.stringify(result)}`);
+	}
+};
+
 const scenarios: Array<{ name: string; run: () => Promise<void> }> = [
 	{
 		name: '首页渲染（hero/主题系统/组件网格/footer）',
@@ -222,6 +262,7 @@ const scenarios: Array<{ name: string; run: () => Promise<void> }> = [
 			await assertSelector('.theme-option-grid', 'theme option grid');
 			await assertSelector('.component-item-card', 'component item card');
 			await assertSelector('.site-footer', 'site footer');
+			await assertHeaderLogoMotion();
 			await assertNoErrorOverlay();
 		}
 	},
@@ -271,6 +312,14 @@ const scenarios: Array<{ name: string; run: () => Promise<void> }> = [
 		name: '指南页 icon（内置图标 gallery）',
 		run: async () => {
 			await goto('/guide/icon', '.not-prose table');
+			await assertNoErrorOverlay();
+		}
+	},
+	{
+		name: '指南页 logo（规范图静态展示）',
+		run: async () => {
+			await goto('/guide/logo', '[data-logo-static] [data-logo-layer="react"]');
+			await assertStaticGuideLogo();
 			await assertNoErrorOverlay();
 		}
 	},

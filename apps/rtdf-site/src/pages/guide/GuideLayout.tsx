@@ -8,7 +8,6 @@ import ColorPage from './ColorPage';
 import IconPage from './IconPage';
 import LogoPage from './LogoPage';
 import ShortkeyPage from './ShortkeyPage';
-import ChangelogPage from './ChangelogPage';
 import MdPage from './MdPage';
 
 const flatMenuList = guideMenuList.flatMap((group) => group.childs);
@@ -79,8 +78,6 @@ const GuideLayout = () => {
 				return <ShortkeyPage />;
 			case 'icon':
 				return <IconPage />;
-			case 'changelog':
-				return <ChangelogPage />;
 			case 'quick-start':
 				return <MdPage doc="quickStart" groupIcon="after" pb12 />;
 			case 'theme':

@@ -190,31 +190,9 @@ export const ugly = {
 };
 
 export const bottomInfo = createFooterInfo({
+	currentSite: 'rtdf',
 	framework: { title: 'React', title_en: 'React', link: 'https://react.dev', _blank: true },
-	tools: [
-		{ title: 'create-any-tdf', title_en: 'create-any-tdf', link: 'https://www.npmjs.com/package/create-any-tdf', _blank: true },
-		{
-			title: 'rtdf/theme',
-			title_en: 'rtdf/theme',
-			link: '/guide/theme',
-			_blank: false
-		},
-		{
-			title: '@any-tdf/vite-plugin-svg-symbol',
-			title_en: '@any-tdf/vite-plugin-svg-symbol',
-			link: 'https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol',
-			_blank: true
-		},
-		{
-			title: 'RTDF VS Code 插件',
-			title_en: 'RTDF for VS Code',
-			link: '/guide/vscode',
-			_blank: false
-		}
-	],
-	licenseLink: 'https://github.com/any-tdf/any-tdf/blob/main/LICENSE',
-	discussionsLink: 'https://github.com/any-tdf/any-tdf/discussions',
-	showChangelog: false
+	licenseLink: 'https://github.com/any-tdf/any-tdf/blob/main/LICENSE'
 });
 
 export const getRandomSwiperOption = (): SwiperProps => {

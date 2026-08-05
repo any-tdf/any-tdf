@@ -163,19 +163,134 @@ body *::selection {
 	color: var(--site-accent);
 }
 
-.site-status {
-	display: inline-flex;
-	align-items: center;
-	height: 1.5rem;
-	border: 1px solid color-mix(in oklch, var(--site-accent) 34%, var(--site-divider));
-	border-radius: var(--site-radius-small);
-	padding: 0 0.5rem;
-	background: color-mix(in oklch, var(--site-accent) 8%, transparent);
-	color: var(--site-accent);
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	font-size: 0.6875rem;
-	font-weight: 700;
-	letter-spacing: 0.04em;
+.tdf-logo-mask {
+	mask-type: alpha;
+}
+
+.tdf-logo-animated .tdf-stdf-logo-lightning {
+	stroke: currentColor;
+	stroke-width: 1;
+	stroke-dasharray: 400;
+	stroke-dashoffset: 400;
+	animation: tdf-stdf-logo-lightning 3s linear infinite;
+}
+
+.tdf-rtdf-logo-orbit {
+	transform-box: view-box;
+	transform-origin: center;
+}
+
+.tdf-logo-animated .tdf-rtdf-logo-orbit {
+	animation: tdf-rtdf-logo-spin 8s linear infinite;
+}
+
+.tdf-vtdf-logo-check {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 20;
+	stroke-linecap: round;
+	stroke-linejoin: miter;
+	stroke-miterlimit: 2;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 0;
+}
+
+.tdf-logo-animated .tdf-vtdf-logo-check {
+	stroke-dashoffset: 1;
+	animation: tdf-vtdf-logo-draw 5s linear infinite;
+}
+
+@keyframes tdf-stdf-logo-lightning {
+	0% {
+		fill: transparent;
+		stroke-dashoffset: 400;
+	}
+
+	31% {
+		fill: transparent;
+		stroke-dashoffset: 0;
+	}
+
+	32% {
+		fill: currentColor;
+		stroke-dashoffset: 0;
+		opacity: 1;
+	}
+
+	33% {
+		opacity: 0;
+	}
+
+	35% {
+		opacity: 1;
+	}
+
+	37% {
+		opacity: 0;
+	}
+
+	39% {
+		opacity: 1;
+	}
+
+	41% {
+		opacity: 0;
+	}
+
+	43% {
+		opacity: 1;
+	}
+
+	44%,
+	99% {
+		fill: currentColor;
+		stroke-dashoffset: 0;
+	}
+
+	100% {
+		fill: transparent;
+		stroke-dashoffset: 400;
+	}
+}
+
+@keyframes tdf-rtdf-logo-spin {
+	to {
+		transform: rotate(1turn);
+	}
+}
+
+@keyframes tdf-vtdf-logo-draw {
+	0%,
+	6% {
+		stroke-dashoffset: 1;
+		animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+	}
+
+	36%,
+	92% {
+		stroke-dashoffset: 0;
+	}
+
+	96%,
+	100% {
+		stroke-dashoffset: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.tdf-logo-animated .tdf-stdf-logo-lightning,
+	.tdf-logo-animated .tdf-rtdf-logo-orbit,
+	.tdf-logo-animated .tdf-vtdf-logo-check {
+		animation: none;
+	}
+
+	.tdf-logo-animated .tdf-stdf-logo-lightning {
+		stroke: none;
+	}
+
+	.tdf-logo-animated .tdf-vtdf-logo-check {
+		stroke-dashoffset: 0;
+	}
 }
 
 .site-header-nav {
@@ -541,7 +656,7 @@ body *::selection {
 
 .site-footer-grid {
 	display: grid;
-	grid-template-columns: 2fr repeat(4, minmax(0, 1fr));
+	grid-template-columns: repeat(4, minmax(0, 1fr));
 	gap: 2rem;
 }
 
@@ -927,8 +1042,7 @@ body *::selection {
 }
 
 @media (max-width: 47.999rem) {
-	.site-brand-name,
-	.site-status {
+	.site-brand-name {
 		display: none;
 	}
 
@@ -1790,80 +1904,6 @@ html {
 .site-theme-popover {
 	width: max-content;
 	max-width: calc(100vw - 2rem);
-}
-
-.site-version-trigger {
-	gap: 0.25rem;
-	cursor: pointer;
-}
-
-.site-version-chevron {
-	width: 0.75rem;
-	height: 0.75rem;
-	transition: transform 160ms ease;
-}
-
-.site-version-trigger[aria-expanded='true'] .site-version-chevron {
-	transform: rotate(180deg);
-}
-
-.site-version-popover {
-	right: auto;
-	left: 0;
-	width: 13rem;
-	padding: 0.5rem;
-}
-
-.site-version-current,
-.site-version-link {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 0.75rem;
-}
-
-.site-version-current {
-	border-bottom: 1px solid var(--site-divider);
-	padding: 0.5rem;
-}
-
-.site-version-number {
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	font-size: 0.75rem;
-	font-weight: 700;
-}
-
-.site-version-meta,
-.site-version-section-label {
-	color: var(--site-text-muted);
-	font-size: 0.6875rem;
-}
-
-.site-version-current-label {
-	color: var(--site-accent);
-	font-size: 0.6875rem;
-	font-weight: 700;
-}
-
-.site-version-section-label {
-	padding: 0.75rem 0.5rem 0.25rem;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
-}
-
-.site-version-link {
-	padding: 0.5rem;
-	color: var(--site-text-soft);
-	font-size: 0.75rem;
-	text-decoration: none;
-}
-
-.site-version-link:hover,
-.site-version-link:focus-visible {
-	background: color-mix(in oklch, var(--site-accent) 8%, transparent);
-	color: var(--site-accent);
-	outline: none;
 }
 
 /* Command palette */

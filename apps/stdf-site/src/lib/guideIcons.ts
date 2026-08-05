@@ -9,7 +9,6 @@ import {
 	FileText,
 	GitPullRequest,
 	Goal,
-	History,
 	Image as ImageIcon,
 	Info,
 	Keyboard,
@@ -35,7 +34,6 @@ export const guideCategoryIconMap = {
 
 export const guideItemIconMap = {
 	'quick-start': Rocket,
-	changelog: History,
 	theme: Palette,
 	icon: Shapes,
 	feedback: MessageCircleReply,

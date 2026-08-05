@@ -10,7 +10,7 @@ const LogoPage = () => {
 				<div className="text-primary dark:text-dark">F</div>
 			</div>
 			<div className="max-w-full md:max-w-md">
-				<svg className="w-full" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<svg className="w-full" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg" data-logo-construction data-logo-static>
 					<g transform="translate(0 1)">
 						<RtdfLogoMark />
 					</g>

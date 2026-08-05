@@ -20,7 +20,6 @@ export const guideMenuList: GuideMenuGroup[] = [
 		class_en: 'General',
 		childs: [
 			{ title: '快速上手', title_en: 'Quick start', nav: 'quick-start', doc: 'quickStart' },
-			{ title: '更新日志', title_en: 'Changelog', nav: 'changelog', doc: 'changelog' },
 			{ title: '主题配置', title_en: 'Theme', nav: 'theme', doc: 'theme' },
 			{ title: '图标', title_en: 'Icon', nav: 'icon', doc: 'icon' },
 			{ title: '函数式反馈', title_en: 'Functional Feedback', nav: 'feedback', doc: 'feedback' },

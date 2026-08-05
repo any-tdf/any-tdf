@@ -2,8 +2,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/rtdf_dark.svg" media="(prefers-color-scheme: dark)" />
-		<link rel="icon" type="image/svg+xml" href="/rtdf.svg" media="(prefers-color-scheme: light)" />
+		<link rel="icon" type="image/svg+xml" href="/rtdf.svg" data-theme-favicon />
+		<script>
+			const urlMode = new URLSearchParams(location.search).get('darkMode');
+			const savedMode = localStorage.getItem('theme');
+			const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'light';
+			document.querySelector('[data-theme-favicon]')?.setAttribute('href', initialMode === 'dark' ? '/rtdf_dark.svg' : '/rtdf.svg');
+		</script>
 		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 		<title>RTDF Demo</title>
 	</head>

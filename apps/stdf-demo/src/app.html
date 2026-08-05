@@ -2,8 +2,28 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/stdf_dark.svg" media="(prefers-color-scheme: dark)" />
-		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/stdf.svg" media="(prefers-color-scheme: light)" />
+		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/stdf.svg" data-theme-favicon />
+		<script>
+			(() => {
+				const favicon = document.querySelector('[data-theme-favicon]');
+				const setFavicon = (mode) => {
+					favicon?.setAttribute('href', mode === 'dark' ? '%sveltekit.assets%/stdf_dark.svg' : '%sveltekit.assets%/stdf.svg');
+				};
+				const syncFavicon = () => {
+					const mode = document.documentElement.getAttribute('data-mode');
+					if (mode === 'dark') setFavicon('dark');
+					if (mode === 'light' || mode === 'primary') setFavicon('light');
+				};
+				const urlMode = new URLSearchParams(location.search).get('darkMode');
+				const savedMode = localStorage.getItem('theme');
+				const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'light';
+				setFavicon(initialMode);
+				new MutationObserver(syncFavicon).observe(document.documentElement, {
+					attributes: true,
+					attributeFilter: ['data-mode']
+				});
+			})();
+		</script>
 		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 		<title>STDF Demo</title>
 		%sveltekit.head%

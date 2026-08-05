@@ -191,31 +191,9 @@ export const ugly = {
 };
 
 export const bottomInfo = createFooterInfo({
+	currentSite: 'vtdf',
 	framework: { title: 'Vue', title_en: 'Vue', link: 'https://vuejs.org', _blank: true },
-	tools: [
-		{ title: 'create-any-tdf', title_en: 'create-any-tdf', link: 'https://www.npmjs.com/package/create-any-tdf', _blank: true },
-		{
-			title: 'vtdf/theme',
-			title_en: 'vtdf/theme',
-			link: '/guide/theme',
-			_blank: false
-		},
-		{
-			title: '@any-tdf/vite-plugin-svg-symbol',
-			title_en: '@any-tdf/vite-plugin-svg-symbol',
-			link: 'https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol',
-			_blank: true
-		},
-		{
-			title: 'VTDF VS Code 插件',
-			title_en: 'VTDF for VS Code',
-			link: '/guide/vscode',
-			_blank: false
-		}
-	],
-	licenseLink: 'https://github.com/any-tdf/any-tdf/blob/main/LICENSE',
-	discussionsLink: 'https://github.com/any-tdf/any-tdf/discussions',
-	showChangelog: false
+	licenseLink: 'https://github.com/any-tdf/any-tdf/blob/main/LICENSE'
 });
 
 export const getRandomSwiperOption = (): SwiperProps => randomPick(swiperOptions);

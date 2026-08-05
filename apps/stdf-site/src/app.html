@@ -9,8 +9,29 @@
 		<meta name="description" itemprop="description" content="Mobile web component library based on Svelte and Tailwind" />
 		<meta itemprop="image" content="./assets/images/logo.png" />
 		<title>STDF - 移动 web 组件库</title>
-		<link href="/favicon.ico" rel="icon" media="(prefers-color-scheme: light)" />
-		<link href="/favicon_black.ico" rel="icon" media="(prefers-color-scheme: dark)" />
+		<link href="/favicon.ico" rel="icon" type="image/x-icon" data-theme-favicon />
+		<script>
+			(() => {
+				const favicon = document.querySelector('[data-theme-favicon]');
+				const setFavicon = (mode) => {
+					favicon?.setAttribute('href', mode === 'dark' ? '/favicon_black.ico' : '/favicon.ico');
+				};
+				const syncFavicon = () => {
+					const mode = document.documentElement.getAttribute('data-mode');
+					if (mode === 'dark') setFavicon('dark');
+					if (mode === 'light' || mode === 'primary') setFavicon('light');
+				};
+				const savedMode = localStorage.getItem('theme');
+				const initialTheme = ['auto', 'light', 'dark'].includes(savedMode) ? savedMode : 'auto';
+				const initialMode =
+					initialTheme === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
+				setFavicon(initialMode);
+				new MutationObserver(syncFavicon).observe(document.documentElement, {
+					attributes: true,
+					attributeFilter: ['data-mode']
+				});
+			})();
+		</script>
 		%sveltekit.head%
 	</head>
 	<body
