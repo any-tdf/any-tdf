@@ -91,6 +91,7 @@ assertSource('site-common styles', sharedStyles, [
 	'/* Shared header */',
 	'/* Command palette */',
 	'/* Package tabs */',
+	'.site-code-group-panel > pre',
 	'/* Home theme system */',
 	'/* Components documentation */',
 	'/* Guide layout */',

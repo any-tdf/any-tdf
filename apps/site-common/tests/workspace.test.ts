@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createFooterInfo } from '../src/data';
+import { groupIconMdPlugin } from '../src/markdown';
 import {
 	createSiteLanguageUrl,
 	getSiteNavigationState,
@@ -51,6 +52,27 @@ describe('@any-tdf/site-common workspace metadata', () => {
 		const styles = readFileSync(resolve(packageRoot, 'assets/styles.css'), 'utf-8');
 		expect(styles).toContain('--site-bg-elevated: var(--color-bg-surface);');
 		expect(styles).toContain('--site-bg-elevated: var(--color-bg-surface-dark);');
+	});
+});
+
+describe('shared Markdown rendering', () => {
+	test('removes code-group panel spacing through stable shared hooks', () => {
+		const html = groupIconMdPlugin(`
+<!-- :::code-groups -->
+<!-- bun -->
+<pre class="language-shell"><code>bun create app</code></pre>
+<!-- :: -->
+<!-- npm -->
+<pre class="language-shell"><code>npm create app</code></pre>
+<!-- ::: -->
+`);
+		const styles = readFileSync(resolve(packageRoot, 'assets/styles.css'), 'utf-8');
+
+		expect(html).toContain('site-code-group flex');
+		expect(html.match(/site-code-group-panel/g)).toHaveLength(2);
+		expect(html).not.toContain('style="margin: 0;"');
+		expect(styles).toContain(':is(.site-prose, .prose) .site-code-group-panel > pre');
+		expect(styles).toContain('margin-block: 0;');
 	});
 });
 

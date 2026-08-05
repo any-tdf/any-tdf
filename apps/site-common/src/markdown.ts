@@ -124,11 +124,11 @@ export const groupIconMdPlugin = (md: string, options: GroupIconMdPluginOptions 
 					${codeGroupSvgData.find((icon) => icon.name === subItem.tab)?.svg}${subItem.tab}
 				</label>
 			`;
-			const code = `<div class="hidden peer-checked/tab-${tabId}:block w-full">${subItem.code}</div>`;
+			const code = `<div class="site-code-group-panel hidden peer-checked/tab-${tabId}:block w-full">${subItem.code}</div>`;
 			arr.push({ label, code });
 		});
 		return `
-			<section class="flex flex-row flex-wrap bg-black/5 dark:bg-white/5 rounded-sm mb-4">
+			<section class="site-code-group flex flex-row flex-wrap bg-black/5 dark:bg-white/5 rounded-sm mb-4">
 				${arr.map((item) => item.label).join('')}
 				${arr.map((item) => item.code).join('')}
 			</section>
@@ -145,5 +145,5 @@ export const groupIconMdPlugin = (md: string, options: GroupIconMdPluginOptions 
 		});
 	};
 
-	return replaceCodeGroups(md, codeGroupHtmlList).replace(/w-full">\n\n<pre>/g, 'w-full">\n\n<pre style="margin: 0;">');
+	return replaceCodeGroups(md, codeGroupHtmlList);
 };

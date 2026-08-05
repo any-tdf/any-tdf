@@ -1392,6 +1392,10 @@ body *::selection {
 	font-weight: 700;
 }
 
+:is(.site-prose, .prose) .site-code-group-panel > pre {
+	margin-block: 0;
+}
+
 .animation-delay-2000 {
 	animation-delay: 2s;
 }

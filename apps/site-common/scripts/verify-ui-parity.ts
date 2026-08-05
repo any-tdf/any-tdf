@@ -391,6 +391,41 @@ for (const site of sites) {
 		throw new Error(`${site.name} footer tool links are inconsistent: ${JSON.stringify(toolLinks)}`);
 	}
 
+	await goto(site, '/guide', '.site-code-group');
+	const codeGroupSpacing = await runInPage<{
+		found: boolean;
+		marginTop: number;
+		marginBottom: number;
+		panelTopGap: number;
+		panelBottomGap: number;
+	}>(`
+		const panel = [...document.querySelectorAll('.site-code-group-panel')]
+			.find((element) => getComputedStyle(element).display !== 'none');
+		const pre = panel?.querySelector(':scope > pre');
+		if (!panel || !pre) {
+			return { found: false, marginTop: 0, marginBottom: 0, panelTopGap: 0, panelBottomGap: 0 };
+		}
+		const panelRect = panel.getBoundingClientRect();
+		const preRect = pre.getBoundingClientRect();
+		const style = getComputedStyle(pre);
+		return {
+			found: true,
+			marginTop: Number.parseFloat(style.marginTop) || 0,
+			marginBottom: Number.parseFloat(style.marginBottom) || 0,
+			panelTopGap: preRect.top - panelRect.top,
+			panelBottomGap: panelRect.bottom - preRect.bottom
+		};
+	`);
+	if (
+		!codeGroupSpacing.found ||
+		Math.abs(codeGroupSpacing.marginTop) > geometryTolerance ||
+		Math.abs(codeGroupSpacing.marginBottom) > geometryTolerance ||
+		Math.abs(codeGroupSpacing.panelTopGap) > geometryTolerance ||
+		Math.abs(codeGroupSpacing.panelBottomGap) > geometryTolerance
+	) {
+		throw new Error(`${site.name} code group has unexpected vertical spacing: ${JSON.stringify(codeGroupSpacing)}`);
+	}
+
 	await runInPage(`document.querySelector('.site-search-trigger')?.click(); return true;`);
 	await waitFor(() => runInPage<boolean>(`return Boolean(document.querySelector('[style*="z-index: 10000"] input'));`), `${site.name} command palette`);
 	await runInPage(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true })); return true;`);
