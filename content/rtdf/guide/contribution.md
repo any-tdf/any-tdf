@@ -1,62 +1,97 @@
 ## 介绍
 
-感谢你使用 RTDF。
+感谢你使用并关注 RTDF。
 
-以下是关于向 RTDF 提交反馈或代码的指南。在向 RTDF 提交 issue 或者 PR 之前，请先花几分钟时间阅读以下内容。
+RTDF 是 Any TDF monorepo 中面向 React 的组件库。仓库还包含共享核心、STDF、VTDF、三个框架的 Demo 与文档站、构建工具、项目生成器、VS Code 扩展和离线 AI Skills。我们欢迎组件、文档、测试、工具、示例及翻译方面的贡献。
 
-## Issue 规范
+## 反馈问题与参与讨论
 
-- 遇到问题时，请先确认这个问题是否已经在 issue 中有记录或者已被修复。
-- 提 issue 时，请用简短的语言描述遇到的问题，并添加出现问题时的环境和复现步骤。
+- 提交前请先搜索现有的 [GitHub Issues](https://github.com/any-tdf/any-tdf/issues) 和 [GitHub Discussions](https://github.com/any-tdf/any-tdf/discussions)，确认问题或提案没有被重复记录。
+- 可复现的 Bug 和明确的功能需求请提交到 GitHub Issues；使用问题、较大的设计提案和实现思路请优先在 GitHub Discussions 中讨论。
+- 报告 Bug 时，请注明受影响的包及版本、React 和浏览器版本、运行环境、最小复现、实际结果与预期结果。界面问题请尽量附上截图或录屏。
+
+## 了解仓库结构
+
+| 路径                                                | 职责                                                 |
+| --------------------------------------------------- | ---------------------------------------------------- |
+| `packages/common`                                   | 框架无关的状态推导、主题、语言、SVG 数据和公共类型。 |
+| `packages/rtdf`                                     | React 组件渲染、事件、组合、children 和 hooks。      |
+| `packages/stdf`、`packages/vtdf`                    | Svelte 和 Vue 的框架原生实现。                       |
+| `apps/rtdf-demo`                                    | RTDF 组件 Demo、交互、SSR 和框架一致性验证。         |
+| `apps/rtdf-site`                                    | RTDF 文档站实现。                                    |
+| `apps/site-common`                                  | 三个文档站的共享代码及组件文档源文件。               |
+| `content/rtdf/guide`                                | RTDF 指南内容，包括当前页面。                        |
+| `content/rtdf/components`                           | 由共享组件文档源生成的站点内容，请勿直接修改。       |
+| `packages/create-any-tdf`、`packages/vite-plugin-*` | 项目生成器和构建插件。                               |
+| `packages/*-motion`、`packages/*-confetti`          | React 和 Vue 的动效及彩带包。                        |
+| `packages/skills`、`extensions`、`scripts`          | 离线 AI Skills、VS Code 扩展及仓库级工具。           |
+
+框架无关的行为应优先放在 `packages/common`。React 专属的 DOM、生命周期、事件、children、hooks 和渲染逻辑应保留在 `packages/rtdf`。如果修改会影响共享组件行为，请同时检查 STDF、RTDF 和 VTDF 的实现、Demo、文档及一致性验证。
 
 ## 本地开发
 
-仓库使用 Bun Workspaces 和单一根锁文件。开始前请安装 Git、Bun 1.3.14 或更高版本，以及 Node.js 24 或更高版本。
+仓库使用 Bun Workspaces、Turborepo、Changesets 和单一根锁文件。开始前请安装 Git、Bun 1.3.14 或更高版本，以及 Node.js 24 或更高版本。
 
-所有安装和任务命令都在仓库根目录执行：
+所有安装和任务命令都应在仓库根目录执行：
 
 ```sh
-git clone git@github.com:any-tdf/any-tdf.git
+git clone https://github.com/any-tdf/any-tdf.git
 cd any-tdf
 bun install --frozen-lockfile
 bun run dev:rtdf
 ```
 
-启动成功后，可在浏览器中打开 `http://localhost:8887` 查看 Demo，请将浏览器开发者工具切换为移动端模式。
+`bun run dev:rtdf` 会同时启动 RTDF 文档站和 Demo：
 
-RTDF 组件源码位于 `packages/rtdf/src/lib/components`，对应的 Demo 位于 `apps/rtdf-demo`。修改源码后，开发服务器会实时更新。
+- 文档站：`http://localhost:5554`
+- Demo：`http://localhost:8887`
 
-提交 PR 前，请在仓库根目录执行：
+查看 Demo 时，建议将浏览器开发者工具切换为移动端模式。也可以使用 [在线 RTDF Demo](https://stackblitz.com/github/any-tdf/any-tdf?startScript=dev%3Artdf) 调试。
+
+## 修改代码和文档
+
+### 组件与 Demo
+
+- 先确认改动属于 `packages/common` 还是 `packages/rtdf`，并优先复用仓库中已有的实现模式。
+- 修改可观察的组件行为时，请同步更新 `apps/rtdf-demo` 中对应的 Demo 和验证脚本。
+- 涉及共享能力时，应保持三个框架的公共能力和行为一致，同时保留各框架原生的 API。
+
+### 文档与生成内容
+
+- 组件文档的源文件位于 `apps/site-common/docs/component-docs`。通用内容放在 `shared`，RTDF 专属内容放在 `targets/rtdf`。
+- `content/rtdf/components` 是生成结果，请勿直接编辑。修改组件文档后运行：
 
 ```sh
-bun run check
-bun run test
+bun run --filter @any-tdf/site-common docs:generate
+bun run docs:check
 ```
 
-如果不想本地开发，可以使用 [RTDF Demo](https://stackblitz.com/github/any-tdf/any-tdf?startScript=dev%3Artdf) 进行在线调试。
+- 指南内容位于 `content/rtdf/guide`，需要同时维护中文 `.md` 和英文 `_en.md` 文件。
+- 修改生成器或生成源时，请额外运行 `bun run generate:check`，并检查所有生成差异。
 
-## 提交 PR
+### Changeset
 
-如果你是第一次在 GitHub 上提 Pull Request，可以阅读下面这两篇文章来学习：
+如果改动影响公共 npm 包的行为、API、依赖或包内容，请在仓库根目录运行 `bun run changeset`。Changeset 摘要使用英文，并按实际归属选择包：共享行为选择 `@any-tdf/common`，React 专属实现选择 `rtdf`。仅修改站点、Demo、测试或仓库文档通常不需要 Changeset。
 
-- [第一次参与开源](https://github.com/firstcontributions/first-contributions/blob/main/translations/README.zh-cn.md)
-- [如何优雅地在 GitHub 上贡献代码](https://segmentfault.com/a/1190000000736629)
+## 验证修改
 
-### 流程
+优先运行与改动范围最接近的检查。RTDF 组件改动通常至少需要执行：
 
-- 请先 fork 一份 [Any TDF](https://github.com/any-tdf/any-tdf) 代码到自己的仓库，如果已经 fork 过，请同步主仓库的最新代码。
-- 克隆你的仓库至本地。
-- 修改组件源码并验证通过。
-- 「可选」补充此次修改的中英文档，文档位于 `content/rtdf/components` 目录下。根据具体修改内容可能需要修改 API、FAQ、Guide、Version 等文档。对 Version 的修改请增加 Tag，具体参考 [RTDF Version Tag](https://github.com/any-tdf/any-tdf/blob/main/content/rtdf/components/button/version.md?plain=1)。
-- 如果修改会影响发布包，请执行 `bun run changeset` 添加 Changeset。
-- 在仓库根目录使用 Bun 安装依赖，并通过 `bun run dev:rtdf` 验证 Demo。
-- 提交修改内容至你的仓库，然后提 Pull Request 到主仓库。
-- Pull Request 会在 Review 通过后被合并到主仓库，后续发布新版。
+```sh
+bun run --filter rtdf check
+bun run --filter rtdf test
+bun run --filter @any-tdf/rtdf-demo check
+bun run --filter @any-tdf/rtdf-demo verify:workspace
+bun run --filter @any-tdf/rtdf-site check
+bun run --filter @any-tdf/rtdf-site verify:site
+```
 
-### 注意事项
+修改 `packages/common` 时，还应运行该包的 `check` 和 `test`，并验证所有受影响的框架 Demo。涉及浏览器交互或布局时，请运行对应 workspace 的 `verify:browser`。跨多个区域的修改在提交前应视范围补充执行 `bun run check`、`bun run test` 和 `bun run verify`。
 
-在提交 Pull Request 时，请注意：
+## 提交 Pull Request
 
-- 保持你的 PR 足够小，一般一个 PR 只解决单个组件文件，解决单个问题或添加单个功能，以便于 Review。
-- 当新增组件或者修改原有组件时，记得在 Demo 中验证通过，保证代码的稳定。
-- 在 PR 中请添加合适的描述，如果有关联 Issue，请注明一下。
+1. Fork [Any TDF](https://github.com/any-tdf/any-tdf)，从最新的 `main` 分支创建功能分支。
+2. 保持 Pull Request 聚焦于一个问题或一组紧密相关的改动，不要混入无关格式化或生成差异。
+3. 同步更新需要的测试、Demo、中英文档和 Changeset，并完成与改动范围匹配的验证。
+4. 在 Pull Request 描述中说明改动原因、影响范围和实际运行的验证命令；界面改动请附上截图或录屏。
+5. 关联对应的 Issue 或 Discussion。通过 CI 和 Review 后，维护者会合并改动并按发布流程处理版本。

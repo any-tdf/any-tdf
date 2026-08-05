@@ -1,62 +1,97 @@
 ## Introduction
 
-Thank you for using VTDF.
+Thank you for using and supporting VTDF.
 
-Below are guidelines for submitting feedback or code to VTDF. Please take a few minutes to read through this content before submitting an issue or PR to VTDF.
+VTDF is the Vue 3 component library in the Any TDF monorepo. The repository also contains the shared foundation, STDF, RTDF, framework Demos and documentation sites, build tooling, the project generator, the VS Code extension, and offline AI Skills. Contributions to components, documentation, tests, tooling, examples, and translations are welcome.
 
-## Issue Guidelines
+## Report Issues and Join Discussions
 
-- When encountering a problem, please first confirm whether this issue has already been recorded or fixed in existing issues.
-- When submitting an issue, please use concise language to describe the problem encountered, and include the environment and steps to reproduce the issue.
+- Search existing [GitHub Issues](https://github.com/any-tdf/any-tdf/issues) and [GitHub Discussions](https://github.com/any-tdf/any-tdf/discussions) before opening a new report or proposal.
+- Use GitHub Issues for reproducible bugs and concrete feature requests. Use GitHub Discussions for usage questions, larger design proposals, and implementation ideas.
+- A bug report should identify the affected package and version, Vue and browser versions, runtime environment, minimal reproduction, actual result, and expected result. Include screenshots or a recording for visual issues when possible.
+
+## Understand the Repository
+
+| Path                                                | Responsibility                                                                   |
+| --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `packages/common`                                   | Framework-neutral state derivation, themes, locales, SVG data, and public types. |
+| `packages/vtdf`                                     | Vue rendering, lifecycle, events, slots, and composition logic.                  |
+| `packages/stdf`, `packages/rtdf`                    | Framework-native Svelte and React implementations.                               |
+| `apps/vtdf-demo`                                    | VTDF component Demos, interactions, SSR, and parity validation.                  |
+| `apps/vtdf-site`                                    | The VTDF documentation site.                                                     |
+| `apps/site-common`                                  | Shared code for all three sites and the component documentation sources.         |
+| `content/vtdf/guide`                                | VTDF guide content, including this page.                                         |
+| `content/vtdf/components`                           | Generated site content; do not edit it directly.                                 |
+| `packages/create-any-tdf`, `packages/vite-plugin-*` | The project generator and build plugins.                                         |
+| `packages/*-motion`, `packages/*-confetti`          | React and Vue motion and confetti packages.                                      |
+| `packages/skills`, `extensions`, `scripts`          | Offline AI Skills, the VS Code extension, and repository tooling.                |
+
+Framework-neutral behavior belongs in `packages/common`. Vue-specific DOM access, lifecycle, events, slots, composition logic, and rendering belong in `packages/vtdf`. When shared component behavior changes, inspect the STDF, RTDF, and VTDF implementations, Demos, documentation, and parity checks together.
 
 ## Local Development
 
-The repository uses Bun Workspaces with one root lockfile. Install Git, Bun 1.3.14 or later, and Node.js 24 or later before starting.
+The repository uses Bun Workspaces, Turborepo, Changesets, and one root lockfile. Install Git, Bun 1.3.14 or later, and Node.js 24 or later before starting.
 
-Run all installation and task commands from the repository root:
+Run installation and task commands from the repository root:
 
 ```sh
-git clone git@github.com:any-tdf/any-tdf.git
+git clone https://github.com/any-tdf/any-tdf.git
 cd any-tdf
 bun install --frozen-lockfile
 bun run dev:vtdf
 ```
 
-After the development server starts, open `http://localhost:8886` and switch the browser developer tools to mobile mode.
+`bun run dev:vtdf` starts the VTDF documentation site and Demo together:
 
-The VTDF component source is in `packages/vtdf/src/lib/components`, and its Demo is in `apps/vtdf-demo`. The development server updates as you modify the source.
+- Documentation site: `http://localhost:5553`
+- Demo: `http://localhost:8886`
 
-Before submitting a PR, run these commands from the repository root:
+Switch the browser developer tools to mobile mode when viewing the Demo. You can also use the [online VTDF Demo](https://stackblitz.com/github/any-tdf/any-tdf?startScript=dev%3Avtdf).
+
+## Change Code and Documentation
+
+### Components and Demos
+
+- Decide whether the change belongs in `packages/common` or `packages/vtdf`, and reuse an existing repository pattern when possible.
+- Update the corresponding Demo and validation scripts in `apps/vtdf-demo` when observable component behavior changes.
+- Shared capabilities should stay aligned across the three frameworks while each package preserves its framework-native API.
+
+### Documentation and Generated Content
+
+- Component documentation sources live in `apps/site-common/docs/component-docs`. Put common content in `shared` and VTDF-only content in `targets/vtdf`.
+- `content/vtdf/components` is generated output and must not be edited directly. After changing component documentation, run:
 
 ```sh
-bun run check
-bun run test
+bun run --filter @any-tdf/site-common docs:generate
+bun run docs:check
 ```
 
-Use [VTDF Demo](https://stackblitz.com/github/any-tdf/any-tdf?startScript=dev%3Avtdf) for online debugging if you do not want to set up the repository locally.
+- Guide content lives in `content/vtdf/guide`. Keep the Chinese `.md` and English `_en.md` files in sync.
+- Run `bun run generate:check` after changing a generator or its inputs, and inspect every generated diff.
 
-## Submit PR
+### Changesets
 
-If you are submitting your first Pull Request on GitHub, you can read the following two articles to learn:
+Run `bun run changeset` from the repository root when a change affects the behavior, API, dependencies, or package contents of a public npm package. Write the Changeset summary in English and select packages by actual ownership: choose `@any-tdf/common` for shared behavior and `vtdf` for Vue-specific implementation. Site-only, Demo-only, test-only, and repository documentation changes usually do not need a Changeset.
 
-- [First Contribution to Open Source](https://github.com/firstcontributions/first-contributions/blob/main/translations/README.zh-cn.md)
-- [如何优雅地在 GitHub 上贡献代码](https://segmentfault.com/a/1190000000736629)
+## Validate Changes
 
-### Process
+Start with the checks closest to the changed scope. A typical VTDF component change should run at least:
 
-- Please first fork the [Any TDF](https://github.com/any-tdf/any-tdf) repository, then sync the latest code from the main repository if you already have a fork.
-- Clone your repository to your local machine.
-- Modify the component source code and verify it.
-- (Optional) Update the Chinese and English documentation in `content/vtdf/components`. Depending on the change, you may need to update the API, FAQ, guide, or version documents. Add a tag for version changes; see the [VTDF version tags](https://github.com/any-tdf/any-tdf/blob/main/content/vtdf/components/button/version.md?plain=1).
-- If the change affects a published package, run `bun run changeset` to add a Changeset.
-- Install dependencies with Bun at the repository root and verify the Demo with `bun run dev:vtdf`.
-- Submit the modified content to your repository, then submit a Pull Request to the main repository.
-- Pull Request will be merged into the main repository after being reviewed, and a new version will be released.
+```sh
+bun run --filter vtdf check
+bun run --filter vtdf test
+bun run --filter @any-tdf/vtdf-demo check
+bun run --filter @any-tdf/vtdf-demo verify:workspace
+bun run --filter @any-tdf/vtdf-site check
+bun run --filter @any-tdf/vtdf-site verify:site
+```
 
-### Notes
+Changes to `packages/common` should also run that package's `check` and `test`, followed by every affected framework Demo. Run the relevant workspace's `verify:browser` for browser interactions or layout changes. For broader changes, add `bun run check`, `bun run test`, and `bun run verify` as appropriate before submitting.
 
-When submitting a Pull Request, please note the following:
+## Submit a Pull Request
 
-- Keep your PR small, generally one PR solves a single component file, solves a single problem, or adds a single function, so that it is easier to review.
-- When adding a new component or modifying an existing component, remember to verify it in the Demo to ensure the stability of the code.
-- Please add a suitable description in the PR, if there is an associated Issue, please note it.
+1. Fork [Any TDF](https://github.com/any-tdf/any-tdf) and create a feature branch from the latest `main` branch.
+2. Keep the Pull Request focused on one issue or one closely related change set. Do not include unrelated formatting or generated churn.
+3. Update the required tests, Demos, bilingual documentation, and Changeset, then run the checks that match the changed scope.
+4. Explain the reason, affected scope, and commands actually run in the Pull Request description. Include screenshots or a recording for visual changes.
+5. Link the relevant Issue or Discussion. Maintainers will merge the change after CI and review pass, then handle versions through the release workflow.
