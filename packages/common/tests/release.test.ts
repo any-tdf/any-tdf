@@ -17,21 +17,14 @@ const packageJson = JSON.parse(readFileSync(resolve(packageRoot, 'package.json')
 const releaseTag = packageJson.version.includes('-') ? packageJson.version.split('-')[1].split('.')[0] : 'latest';
 
 describe('@any-tdf/common release metadata', () => {
-	test('matches the changelog outside alpha releases', () => {
-		if (releaseTag === 'alpha') return;
-		const changelog = readFileSync(resolve(packageRoot, 'CHANGELOG.md'), 'utf-8');
-		expect(changelog).toContain(`## ${packageJson.version} -`);
-	});
-
 	test('uses the expected npm dist-tag', () => {
 		expect(packageJson.publishConfig?.tag ?? 'latest').toBe(releaseTag);
 	});
 
 	test('ships documentation, the root License, and public exports', () => {
-		for (const filename of ['README.md', 'CHANGELOG.md']) {
-			expect(existsSync(resolve(packageRoot, filename))).toBeTrue();
-			expect(packageJson.files).toContain(filename);
-		}
+		expect(existsSync(resolve(packageRoot, 'README.md'))).toBeTrue();
+		expect(packageJson.files).toContain('README.md');
+		expect(packageJson.files).not.toContain('CHANGELOG.md');
 		expect(existsSync(resolve(repositoryRoot, 'LICENSE'))).toBeTrue();
 		expect(existsSync(resolve(packageRoot, 'LICENSE'))).toBeFalse();
 		expect(packageJson.files).toContain('LICENSE');

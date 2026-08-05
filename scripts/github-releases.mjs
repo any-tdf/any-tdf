@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { collectWorkspaces } from './publish-packages.mjs';
@@ -138,28 +138,10 @@ export const parseReleasePackages = (value) => {
 	return [...versionsByName].map(([name, version]) => ({ name, version }));
 };
 
-export const extractChangelogEntry = (changelog, version) => {
-	const lines = changelog.replaceAll('\r\n', '\n').split('\n');
-	const headingPattern = new RegExp(`^##\\s+${version.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}(?:\\s|$)`);
-	const start = lines.findIndex((line) => headingPattern.test(line));
-	if (start === -1) return '';
-
-	let end = lines.length;
-	for (let index = start + 1; index < lines.length; index += 1) {
-		if (/^##\s+/.test(lines[index])) {
-			end = index;
-			break;
-		}
-	}
-
-	return lines.slice(start + 1, end).join('\n').trim();
-};
-
-export const createReleaseNotes = (workspace, version, changelogEntry) => {
+export const createReleaseNotes = (workspace, version) => {
 	const { name } = workspace.manifest;
 	const profile = releaseProfiles.get(name) ?? fallbackProfile(name);
 	const directory = workspace.manifest.repository?.directory ?? workspace.manifestPath.slice(0, -'/package.json'.length);
-	const changes = changelogEntry.trim() || `- This release only synchronizes the \`${name}\` package version. It has no package-specific change entry.`;
 
 	return `## Package
 
@@ -168,10 +150,6 @@ export const createReleaseNotes = (workspace, version, changelogEntry) => {
 - **Scope:** ${profile.scope}
 
 ${profile.description}
-
-## Changes for \`${name}\`
-
-${changes}
 
 ## Package links
 
@@ -202,13 +180,6 @@ export const createGitHubReleasePlan = (workspaces, packages) => {
 	});
 };
 
-const readChangelogEntry = async ({ workspace, version }) => {
-	const changelogPath = resolve(workspace.directory, 'CHANGELOG.md');
-	const changelogFile = Bun.file(changelogPath);
-	if (!(await changelogFile.exists())) return '';
-	return extractChangelogEntry(await readFile(changelogPath, 'utf-8'), version);
-};
-
 const githubReleaseExists = async (repository, tag) => {
 	const result = await runCommand(['gh', 'release', 'view', tag, '--repo', repository, '--json', 'tagName'], {
 		allowFailure: true
@@ -237,8 +208,7 @@ export const createGitHubReleases = async (workspaceRoot, packages, options = {}
 				continue;
 			}
 
-			const changelogEntry = await readChangelogEntry(release);
-			const notes = createReleaseNotes(release.workspace, release.version, changelogEntry);
+			const notes = createReleaseNotes(release.workspace, release.version);
 			const notesPath = resolve(temporaryDirectory, `${packageSlug(release.name)}-${release.version}.md`);
 			await writeFile(notesPath, notes, 'utf-8');
 			const command = [

@@ -22,8 +22,7 @@
 	"files": [
 		"skill",
 		"README.md",
-		"LICENSE",
-		"CHANGELOG.md"
+		"LICENSE"
 	],
 	"type": "module",
 	"scripts": {

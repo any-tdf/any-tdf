@@ -36,7 +36,6 @@
 		"snippet/**",
 		"README.md",
 		"LICENSE",
-		"CHANGELOG.md",
 		"!dist/**/*.map"
 	],
 	"type": "module",

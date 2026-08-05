@@ -356,6 +356,12 @@ describe('packed package validation', () => {
 		);
 	});
 
+	test('rejects changelog files from the archive', () => {
+		expect(() => validatePackedManifest(rtdf, rtdf.manifest, [...files, 'package/CHANGELOG.md'])).toThrow(
+			'Changelog files must not be published'
+		);
+	});
+
 	test('rejects demo-only Iconify dependencies from component packages', () => {
 		expect(() =>
 			validatePackedManifest(
@@ -391,13 +397,16 @@ describe('packed package validation', () => {
 });
 
 describe('npm publish scope', () => {
-	test('keeps every public npm package English-only and source-map-free', async () => {
+	test('keeps every public npm package English-only, changelog-free, and source-map-free', async () => {
 		const publicWorkspaces = (await collectWorkspaces(workspaceRoot)).filter(({ manifest }) => manifest.private !== true);
+		const changesetsConfig = await Bun.file(resolve(workspaceRoot, '.changeset/config.json')).json();
+		expect(changesetsConfig.changelog).toBeFalse();
 
 		for (const publicWorkspace of publicWorkspaces) {
 			const { manifest } = publicWorkspace;
 			expect(manifest.files).toContain('README.md');
 			expect(manifest.files).toContain('!dist/**/*.map');
+			expect(manifest.files).not.toContain('CHANGELOG.md');
 			expect(manifest.files).not.toContain('README_CN.md');
 			expect(manifest.files).not.toContain('readme');
 

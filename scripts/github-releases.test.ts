@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { resolve } from 'node:path';
-import { createGitHubReleasePlan, createReleaseNotes, extractChangelogEntry, parseReleasePackages } from './github-releases.mjs';
+import { createGitHubReleasePlan, createReleaseNotes, parseReleasePackages } from './github-releases.mjs';
 
 const repositoryRoot = resolve(import.meta.dir, '..');
 
@@ -102,57 +102,24 @@ describe('Workflow responsibilities', () => {
 });
 
 describe('GitHub Release notes', () => {
-	test('extracts only the requested changelog version', () => {
-		const changelog = `# Changelog
-
-## 2.0.0
-
-- Current change.
-
-## 1.0.0
-
-- Previous change.
-`;
-		expect(extractChangelogEntry(changelog, '2.0.0')).toBe('- Current change.');
-	});
-
 	test('labels common changes as shared component core changes', () => {
-		const notes = createReleaseNotes(
-			workspace('@any-tdf/common', '1.0.0', 'packages/common'),
-			'1.0.0',
-			'- Align component state derivation.'
-		);
+		const notes = createReleaseNotes(workspace('@any-tdf/common', '1.0.0', 'packages/common'), '1.0.0');
 		expect(notes).toContain('**npm package:** `@any-tdf/common`');
 		expect(notes).toContain('**Scope:** Shared component core');
-		expect(notes).toContain('## Changes for `@any-tdf/common`');
+		expect(notes).not.toContain('## Changes');
 		expect(notes).toContain('used by STDF, RTDF, and VTDF');
 	});
 
 	test('labels framework-specific changes separately', () => {
-		const notes = createReleaseNotes(
-			workspace('rtdf', '3.0.0', 'packages/rtdf'),
-			'3.0.0',
-			'- Improve the React event adapter.'
-		);
+		const notes = createReleaseNotes(workspace('rtdf', '3.0.0', 'packages/rtdf'), '3.0.0');
 		expect(notes).toContain('**npm package:** `rtdf`');
 		expect(notes).toContain('**Scope:** React component library');
-		expect(notes).toContain('## Changes for `rtdf`');
 		expect(notes).toContain('only covers React rendering');
 		expect(notes).toContain('@any-tdf/common');
 	});
 
-	test('states clearly when a fixed package only synchronizes its version', () => {
-		const notes = createReleaseNotes(workspace('vtdf', '3.0.0', 'packages/vtdf'), '3.0.0', '');
-		expect(notes).toContain('only synchronizes the `vtdf` package version');
-		expect(notes).toContain('no package-specific change entry');
-	});
-
 	test('uses English-only generated copy', () => {
-		const notes = createReleaseNotes(
-			workspace('stdf', '3.0.0', 'packages/stdf'),
-			'3.0.0',
-			'- Improve the Svelte event adapter.'
-		);
+		const notes = createReleaseNotes(workspace('stdf', '3.0.0', 'packages/stdf'), '3.0.0');
 		expect(notes).not.toMatch(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u);
 	});
 });

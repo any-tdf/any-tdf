@@ -1,8 +1,8 @@
 # Changeset scope guide
 
-Changesets are the source of package versions, package changelogs, and GitHub Release notes. Select packages by the actual scope of a change:
+Changesets are the source of package versions and dependency updates. Select packages by the actual scope of a change:
 
-Write every Changeset summary in English. The summary is copied into the selected package's changelog and its package-specific GitHub Release.
+Write every Changeset summary in English so the version pull request remains readable.
 
 - Use `@any-tdf/common` for component state derivation, shared behavior, themes, languages, SVG data, and public types used by STDF, RTDF, and VTDF.
 - Use `stdf` only for Svelte rendering, events, snippets, or Svelte-specific package output.

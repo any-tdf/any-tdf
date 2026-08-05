@@ -280,6 +280,8 @@ export const validatePackedManifest = (sourceWorkspace, manifest, files) => {
 	}
 	const sourceMapFiles = files.filter((file) => file.endsWith('.map'));
 	if (sourceMapFiles.length) errors.push(`Source maps must not be published: ${sourceMapFiles.join(', ')}.`);
+	const changelogFiles = files.filter((file) => /(?:^|\/)changelog(?:[_-][^/]*)?\.md$/i.test(file));
+	if (changelogFiles.length) errors.push(`Changelog files must not be published: ${changelogFiles.join(', ')}.`);
 	const localizedReadmeFiles = files.filter((file) => {
 		const packagePath = file.startsWith('package/') ? file.slice('package/'.length) : file;
 		return (

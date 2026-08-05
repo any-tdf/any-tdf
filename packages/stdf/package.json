@@ -25,7 +25,6 @@
 		"source.css",
 		"README.md",
 		"LICENSE",
-		"CHANGELOG.md",
 		"!dist/**/*.map",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"

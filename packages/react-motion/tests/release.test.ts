@@ -24,9 +24,10 @@ describe(`${packageJson.name} release metadata`, () => {
 
 	test('ships documentation and stages the root License', () => {
 		expect(existsSync(resolve(packageRoot, 'README.md'))).toBeTrue();
-		for (const filename of ['README.md', 'LICENSE', 'CHANGELOG.md']) {
+		for (const filename of ['README.md', 'LICENSE']) {
 			expect(packageJson.files).toContain(filename);
 		}
+		expect(packageJson.files).not.toContain('CHANGELOG.md');
 		expect(existsSync(resolve(repositoryRoot, 'LICENSE'))).toBeTrue();
 		expect(existsSync(resolve(packageRoot, 'LICENSE'))).toBeFalse();
 	});
