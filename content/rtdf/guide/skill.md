@@ -2,48 +2,90 @@
 
 ### 介绍
 
-RTDF 已提供面向 AI Agent 的 Skill 包，用于让支持 Skill 的编码代理更准确地理解 RTDF 项目。这个 Skill 会把 RTDF 的组件 API、组件指南、主题配置、色彩系统、图标、国际化和脚手架说明打包成离线资料，避免 AI 在只有 npm `rtdf` 包的项目里找不到仓库文档。
+RTDF 提供符合开放 Agent Skills 格式的 AI Skill，帮助编码代理使用准确的 RTDF 组件 API、React 用法、Tailwind CSS 4 主题、图标、国际化和脚手架约定。Skill 会按需加载离线资料，普通 RTDF 项目不需要同时克隆整个 Monorepo。
 
-### 包位置
+这个 Skill 是 Agent 知识包，不是应用运行时依赖。不要执行 `bun add rtdf-skill`。
 
-- 包名：`rtdf-skill`
+### 仓库信息
+
 - Skill 名称：`rtdf`
-- 触发命令：`$rtdf`
-- 目录：`packages/rtdf-skill`
+- 显式触发：`$rtdf`
+- GitHub 仓库：`https://github.com/any-tdf/any-tdf`
+- Skill 目录：`packages/skills/rtdf-skill/rtdf`
+- 格式：`SKILL.md`、`references/`、`scripts/`、`data/` 和可选的 `agents/openai.yaml`
 
-### 安装到 Codex
+目录名与 `SKILL.md` 中的 `name: rtdf` 保持一致，可被兼容 Agent Skills 的客户端直接识别。
 
-`rtdf-skill` 是给 Agent 使用的知识包，不是应用运行时依赖。普通项目不要执行 `bun add rtdf-skill`。
+### Codex 安装
 
-在仓库内可以把 Skill 目录复制到 Codex 的 Skills 目录：
+在 Codex 中调用内置安装器：
 
-```sh
-mkdir -p ~/.codex/skills
-cp -R packages/rtdf-skill/skill ~/.codex/skills/rtdf
+```text
+$skill-installer Install https://github.com/any-tdf/any-tdf/tree/main/packages/skills/rtdf-skill/rtdf
 ```
 
-### 包含内容
+安装器会从 GitHub 子目录下载完整 Skill。安装完成后，在下一轮任务中使用 `$rtdf`；如果客户端没有立即显示新 Skill，请重新加载或重启客户端。
 
-- `skill/SKILL.md`：Skill 入口和资料路由。
-- `skill/references/project.md`：项目搭建、入口 CSS 和依赖说明。
-- `skill/references/components.md`：组件索引。
-- `skill/references/components/`：组件离线文档，包含英文指南、API、FAQ 和版本信息。
-- `skill/references/theme.md`：亮暗模式、多主题和运行时切换。
-- `skill/references/color.md`：色彩系统和主题生成说明。
-- `skill/references/icons.md`：SVG Symbol 和 Iconify 图标方案。
-- `skill/references/i18n.md`：`ConfigProvider` 国际化说明。
-- `skill/references/scaffold.md`：`create-any-tdf` 脚手架说明。
-- `skill/scripts/generate-theme.mjs`：生成 `@plugin "rtdf/theme"` 和 `@theme` 配置。
-- `skill/data/themes.json`：42 套共享内置主题数据。
+### 通用 Agent 安装
 
-### 维护命令
-
-组件文档或主题数据更新后，可以重新生成 Skill 资料：
+支持标准项目级目录的客户端，可以把 Skill 放到项目的 `.agents/skills`：
 
 ```sh
-cd packages/rtdf-skill
-bun run generate:components
-bun run generate:themes
-bun run validate
-bun run test:theme
+git clone --depth 1 https://github.com/any-tdf/any-tdf.git
+mkdir -p your-project/.agents/skills
+cp -R any-tdf/packages/skills/rtdf-skill/rtdf your-project/.agents/skills/
+```
+
+用户级共享可以复制到 `~/.agents/skills/`。如果客户端使用其他搜索目录，也应复制完整的 `rtdf` 目录，不要只复制 `SKILL.md`，否则组件资料和主题脚本无法使用。
+
+### 与组件文档的关联
+
+组件资料由正式文档源生成，不是单独手写：
+
+```text
+apps/site-common/docs/component-docs
+  -> content/rtdf/components
+  -> packages/skills/rtdf-skill/rtdf/references/components
+```
+
+每个组件详情会合并对应的英文指南、API、FAQ 和版本文档。AI 先读取 `references/components.md` 索引，再只加载任务涉及的 `references/components/<nav>.md`，因此组件 API 有明确来源，同时避免一次加载全部文档。
+
+仓库的 `generate:skills:check` 会逐文件校验这条链路。组件文档更新但 Skill 未重新生成时，检查会失败。
+
+### 使用方式
+
+```text
+$rtdf 使用 RTDF 的 Button、Toast 和 Form 编写一个 React 登录页，并核对每个组件的 API。
+```
+
+```text
+$rtdf Generate a random RTDF theme and return both the @plugin and @theme blocks.
+```
+
+Skill 会先确认项目中的 RTDF 版本，再读取任务所需资料。涉及组件时必须读取对应详情文件，不应根据组件名称猜测 Props、回调、Children、Render Function 或公开方法。
+
+### 主题生成
+
+Skill 内置 `scripts/generate-theme.mjs`，支持内置主题、自定义 OKLCH 主色和随机主题。AI 会相对于 `SKILL.md` 定位脚本，不依赖用户项目中存在仓库路径。
+
+```text
+$rtdf 使用 ANYTDF 预设生成完整主题配置。
+```
+
+生成结果可包含 `@plugin "rtdf/theme/plugin"`、`@theme` 或 JSON。
+
+### 维护
+
+维护者从 Monorepo 根目录运行：
+
+```sh
+bun run --filter rtdf-skill generate
+bun run --filter rtdf-skill test
+```
+
+处理全部 3 个组件库时运行：
+
+```sh
+bun run generate:skills
+bun run generate:skills:check
 ```

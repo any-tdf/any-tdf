@@ -1,41 +1,82 @@
 # rtdf-skill
 
-`rtdf-skill` 是给 AI 代理使用的 RTDF 技能包。它把 RTDF 的组件、主题、色彩、国际化、脚手架和图标方案整理成可按需读取的 Skill 资料，并提供一个主题生成脚本。
+`rtdf-skill` 是面向 AI Agent 的 RTDF Skill 源码包。它遵循开放的 Agent Skills 目录格式，并额外提供 Codex 的 `agents/openai.yaml` 元数据。Skill 会按需加载 RTDF 的组件、主题、色彩、图标、国际化和脚手架资料，不是应用运行时依赖。
 
-## 内容
+## 目录结构
 
-- `skill/SKILL.md`：Skill 入口，触发名为 `$rtdf`。
-- `skill/references/`：RTDF 专题资料。
-- `skill/references/components/`：每个组件的离线详情，包含对应组件的指南、API、FAQ 和版本文档。
-- `skill/scripts/generate-theme.mjs`：生成 `@plugin "rtdf/theme/plugin"` 与 `@theme` 配置。
-- `skill/data/themes.json`：从共享主题插件抽取的 42 套内置主题。
+- `rtdf/SKILL.md`：Skill 入口，名称和目录名均为 `rtdf`，可使用 `$rtdf` 显式触发。
+- `rtdf/agents/openai.yaml`：Codex 展示信息和默认提示。
+- `rtdf/references/`：按主题拆分的离线资料。
+- `rtdf/references/components/`：每个组件独立的英文指南、API、FAQ 和版本文档。
+- `rtdf/scripts/generate-theme.mjs`：可移植的 RTDF 主题生成脚本。
+- `rtdf/data/themes.json`：从共享主题源码生成的 42 套内置主题。
 
-## 本地安装
+## 组件文档关联
 
-该 Skill 随源码仓库维护，不发布到 npm。克隆仓库后，可以把 `skill` 目录复制或链接到 AI 工具支持的 Skills 目录，并命名为 `rtdf`。
+组件资料不是手工维护的副本。生成链路如下：
 
-```sh
-mkdir -p ~/.codex/skills
-cp -R packages/skills/rtdf-skill/skill ~/.codex/skills/rtdf
+```text
+apps/site-common/docs/component-docs
+  -> content/rtdf/components
+  -> packages/skills/rtdf-skill/rtdf/references/components
 ```
 
-## 开发
+`apps/site-common/docs/component-docs` 是组件文档源。站点生成器先生成 RTDF 站点使用的 `content/rtdf/components`，Skill 生成器再把每个组件的 `guide_en.md`、`api_en.md`、`FAQ_en.md` 和 `version_en.md` 合并成单独的离线详情文件。AI 先读取组件索引，再只加载任务涉及的组件详情，避免把全部组件文档放入上下文。
 
-```sh
-bun run generate:components
-bun run generate:themes
-bun run validate
-bun run test:theme
+根级 `generate:skills:check` 和 Skill 测试会逐文件比较生成结果，组件文档更新后未同步 Skill 会直接失败。
+
+## 推荐安装
+
+### Codex
+
+在 Codex 中直接调用内置安装器：
+
+```text
+$skill-installer Install https://github.com/any-tdf/any-tdf/tree/main/packages/skills/rtdf-skill/rtdf
 ```
 
-`rtdf-skill` 的维护脚本需要 Node.js 18.18 或更高版本，不需要在目标项目中加载 React 运行时。
+安装器会从 GitHub 子目录安装并使用目录名 `rtdf`。安装后在下一轮任务中使用 `$rtdf`。
+
+### 通用 Agent Skills 客户端
+
+项目级安装适合团队随仓库共享：
+
+```sh
+mkdir -p .agents/skills
+cp -R /path/to/any-tdf/packages/skills/rtdf-skill/rtdf .agents/skills/
+```
+
+用户级安装适合在多个项目中复用：
+
+```sh
+mkdir -p ~/.agents/skills
+cp -R /path/to/any-tdf/packages/skills/rtdf-skill/rtdf ~/.agents/skills/
+```
+
+若客户端使用其他 Skill 搜索目录，把完整的 `rtdf` 目录复制到该目录即可，不要只复制 `SKILL.md`。
+
+## 维护与验证
+
+从 Monorepo 根目录运行：
+
+```sh
+bun run --filter rtdf-skill generate
+bun run --filter rtdf-skill test
+```
+
+也可以统一处理 3 个组件库：
+
+```sh
+bun run generate:skills
+bun run generate:skills:check
+```
+
+维护脚本需要 Node.js 18.18 或更高版本。安装后的 Skill 不需要加载 React 运行时即可读取资料或运行主题脚本。
 
 ## 相关链接
 
 - [RTDF 官网](https://rtdf.dev)
 - [源码](https://github.com/any-tdf/any-tdf/tree/main/packages/skills/rtdf-skill)
 - [问题反馈](https://github.com/any-tdf/any-tdf/issues)
-
-## 开源协议
 
 `rtdf-skill` 遵循根目录的 [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)。

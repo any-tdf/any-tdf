@@ -1,0 +1,4 @@
+interface:
+  display_name: 'STDF'
+  short_description: 'Build and review STDF Svelte 5 mobile UI projects.'
+  default_prompt: 'Use $stdf to build an STDF feature with exact component APIs and the matching project conventions.'

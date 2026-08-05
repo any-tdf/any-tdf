@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(scriptDir, '..');
-const generatorPath = path.join(packageRoot, 'skill/scripts/generate-theme.mjs');
+const generatorPath = path.join(packageRoot, 'rtdf/scripts/generate-theme.mjs');
 const failures = [];
 
 const runGenerator = (...args) =>

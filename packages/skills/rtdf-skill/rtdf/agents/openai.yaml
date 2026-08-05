@@ -1,0 +1,4 @@
+interface:
+  display_name: 'RTDF'
+  short_description: 'Build and review RTDF React mobile UI projects.'
+  default_prompt: 'Use $rtdf to build an RTDF feature with exact component APIs and the matching project conventions.'

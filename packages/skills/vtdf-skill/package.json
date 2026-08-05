@@ -20,17 +20,19 @@
 		"directory": "packages/skills/vtdf-skill"
 	},
 	"files": [
-		"skill",
+		"vtdf",
 		"README.md",
 		"LICENSE"
 	],
 	"type": "module",
 	"scripts": {
-		"generate:components": "bun scripts/generate-components-reference.mjs",
-		"generate:themes": "bun scripts/generate-theme-data.mjs",
-		"validate": "bun scripts/validate.mjs",
+		"generate": "bun run generate:components && bun run generate:themes",
+		"generate:check": "bun ../../../scripts/generate-skill-component-references.mjs --target vtdf --check && bun ../../../scripts/generate-skill-theme-data.mjs --target vtdf --check",
+		"generate:components": "bun ../../../scripts/generate-skill-component-references.mjs --target vtdf",
+		"generate:themes": "bun ../../../scripts/generate-skill-theme-data.mjs --target vtdf",
+		"validate": "bun ../../../scripts/validate-ai-skill.mjs --target vtdf",
 		"test:theme": "bun scripts/test-theme.mjs",
-		"test": "bun run validate && bun run test:theme"
+		"test": "bun run generate:check && bun run validate && bun run test:theme"
 	},
 	"devDependencies": {
 		"@types/node": "catalog:"

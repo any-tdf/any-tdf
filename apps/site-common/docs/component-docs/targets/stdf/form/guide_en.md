@@ -24,7 +24,7 @@ The Form component supports the following 13 form item types:
 
 - **radius**: Border radius size
 - **shadow**: Shadow effect
-- **mx**、**px**: Margins
+- **mx**, **px**: Margins
 - **space**: Spacing between form items
 
 ## Button Configuration
