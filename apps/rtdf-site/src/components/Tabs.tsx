@@ -74,15 +74,6 @@ const Tabs = ({ currentTab = 0, onChange }: TabsProps) => {
 				/>
 			</div>
 			<div className="tab-tools">
-				<a href={demoUrl} target="_blank" rel="noreferrer">
-					Demo ↗
-				</a>
-				<a href={sourceUrl} target="_blank" rel="noreferrer">
-					Source ↗
-				</a>
-				<a href={stackblitzUrl} target="_blank" rel="noreferrer">
-					StackBlitz ↗
-				</a>
 				<div
 					className="tab-preview-action"
 					onMouseEnter={openPreviewQr}
@@ -91,7 +82,7 @@ const Tabs = ({ currentTab = 0, onChange }: TabsProps) => {
 					onBlur={() => setPreviewQrOpen(false)}
 				>
 					<a href={demoUrl} target="_blank" rel="noreferrer">
-						{isZh ? '移动端预览' : 'Mobile preview'} ↗
+						Demo ↗
 					</a>
 					{previewQrOpen ? (
 						<div className="tab-preview-qr">
@@ -100,6 +91,12 @@ const Tabs = ({ currentTab = 0, onChange }: TabsProps) => {
 						</div>
 					) : null}
 				</div>
+				<a href={sourceUrl} target="_blank" rel="noreferrer">
+					Source ↗
+				</a>
+				<a href={stackblitzUrl} target="_blank" rel="noreferrer">
+					StackBlitz ↗
+				</a>
 			</div>
 		</div>
 	);

@@ -67,9 +67,6 @@
 		/>
 	</div>
 	<div class="tab-tools">
-		<a href={demoUrl} target="_blank" rel="noreferrer">Demo ↗</a>
-		<a href={sourceUrl} target="_blank" rel="noreferrer">Source ↗</a>
-		<a href={stackblitzUrl} target="_blank" rel="noreferrer">StackBlitz ↗</a>
 		<div
 			class="tab-preview-action"
 			onmouseenter={openPreviewQr}
@@ -77,7 +74,7 @@
 			onfocusin={openPreviewQr}
 			onfocusout={() => (previewQrOpen = false)}
 		>
-			<a href={demoUrl} target="_blank" rel="noreferrer">{isZh ? '移动端预览' : 'Mobile preview'} ↗</a>
+			<a href={demoUrl} target="_blank" rel="noreferrer">Demo ↗</a>
 			{#if previewQrOpen}
 				<div class="tab-preview-qr" transition:fade={{ duration: 160 }}>
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -86,5 +83,7 @@
 				</div>
 			{/if}
 		</div>
+		<a href={sourceUrl} target="_blank" rel="noreferrer">Source ↗</a>
+		<a href={stackblitzUrl} target="_blank" rel="noreferrer">StackBlitz ↗</a>
 	</div>
 </div>

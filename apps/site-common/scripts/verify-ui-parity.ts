@@ -447,6 +447,28 @@ for (const site of sites) {
 	}
 
 	await goto(site, '/components?nav=button&tab=0', '.component-doc-tabs');
+	const componentToolState = await runInPage<{ labels: string[]; demoHrefs: string[] }>(`
+		const links = [...document.querySelectorAll('.tab-tools a')];
+		return {
+			labels: links.map((link) => link.textContent?.trim() || ''),
+			demoHrefs: links.filter((link) => link.textContent?.trim() === 'Demo ↗').map((link) => link.href)
+		};
+	`);
+	if (
+		JSON.stringify(componentToolState.labels) !==
+		JSON.stringify(['Demo ↗', 'Source ↗', 'StackBlitz ↗']) ||
+		componentToolState.demoHrefs.length !== 1
+	) {
+		throw new Error(`${site.name} component tools are inconsistent: ${JSON.stringify(componentToolState)}`);
+	}
+	await runInPage(`
+		document.querySelector('.tab-preview-action')?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+		return true;
+	`);
+	await waitFor(
+		() => runInPage<boolean>(`return Boolean(document.querySelector('.tab-preview-qr svg'));`),
+		`${site.name} Demo preview QR`
+	);
 	await runInPage(`window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', code: 'ArrowRight', bubbles: true })); return true;`);
 	await waitFor(
 		() => runInPage<boolean>(`return new URLSearchParams(window.location.search).get('tab') === '1';`),

@@ -75,9 +75,6 @@ const selectTab = (index: number) => {
 			/>
 		</div>
 		<div class="tab-tools">
-			<a :href="demoUrl" target="_blank" rel="noreferrer">Demo ↗</a>
-			<a :href="sourceUrl" target="_blank" rel="noreferrer">Source ↗</a>
-			<a :href="stackblitzUrl" target="_blank" rel="noreferrer">StackBlitz ↗</a>
 			<div
 				class="tab-preview-action"
 				@mouseenter="openPreviewQr"
@@ -85,12 +82,14 @@ const selectTab = (index: number) => {
 				@focusin="openPreviewQr"
 				@focusout="previewQrOpen = false"
 			>
-				<a :href="demoUrl" target="_blank" rel="noreferrer">{{ isZh ? '移动端预览' : 'Mobile preview' }} ↗</a>
+				<a :href="demoUrl" target="_blank" rel="noreferrer">Demo ↗</a>
 				<div v-if="previewQrOpen" class="tab-preview-qr">
 					<div class="tab-preview-qr-code" v-html="previewQrSvg"></div>
 					<div>{{ isZh ? '扫码打开移动端预览' : 'Scan to open mobile preview' }}</div>
 				</div>
 			</div>
+			<a :href="sourceUrl" target="_blank" rel="noreferrer">Source ↗</a>
+			<a :href="stackblitzUrl" target="_blank" rel="noreferrer">StackBlitz ↗</a>
 		</div>
 	</div>
 </template>
