@@ -19,7 +19,7 @@
 		"url": "git+https://github.com/any-tdf/any-tdf.git",
 		"directory": "packages/stdf"
 	},
-	"funding": "https://stdf.dev?fund",
+	"funding": "https://any-tdf.dev/?fund",
 	"files": [
 		"dist",
 		"source.css",

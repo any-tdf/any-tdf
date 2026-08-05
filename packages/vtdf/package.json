@@ -20,7 +20,7 @@
 		"url": "git+https://github.com/any-tdf/any-tdf.git",
 		"directory": "packages/vtdf"
 	},
-	"funding": "https://vtdf.dev?fund",
+	"funding": "https://any-tdf.dev/?fund",
 	"style": "./dist/style.css",
 	"files": [
 		"dist",

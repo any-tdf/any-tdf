@@ -23,7 +23,7 @@
 		"url": "git+https://github.com/any-tdf/any-tdf.git",
 		"directory": "packages/vite-plugin-md-ts"
 	},
-	"funding": "https://stdf.dev?fund",
+	"funding": "https://any-tdf.dev/?fund",
 	"files": [
 		"dist",
 		"README.md",
