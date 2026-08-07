@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { buildSiteOutline, observeActiveSiteOutline, type SiteOutlineItem } from '@any-tdf/site-common/outline';
-import hljs from 'highlight.js';
+import { hljs } from '../../utils/index';
 import Menu from '../../components/Menu.vue';
 import Tab from '../../components/Tabs.vue';
 import { menuList, type MenuList, type MenuListChild, type SiteMenuChild } from '../../data/menuList';

@@ -4,11 +4,10 @@ import ColorCard from '../../components/ColorCard.vue';
 import ModeSwitch from '../../components/ModeSwitch.vue';
 import ThemeSwitch from '../../components/ThemeSwitch.vue';
 import { appState, navigateTo } from '../../store/appStore';
-import { colorObjToArr, getOklchOpacity } from '../../utils';
+import { colorObjToArr, getOklchOpacity, hljs } from '../../utils';
 import { normalizeThemeName } from '../../utils/theme';
 import { generateColorScale, themes } from 'vtdf/theme';
 import { getContrastRatio, parseOklch } from 'vtdf/utils';
-import hljs from 'highlight.js';
 
 const isZh = computed(() => appState.lang === 'zh_CN');
 

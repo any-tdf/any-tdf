@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import ClipboardJS from 'clipboard';
-import hljs from 'highlight.js';
 import { themes as rtdfThemes, generateColorScale, darkMode } from 'rtdf/theme';
 import { parseOklch, oklchStrToHex, getContrastRatio } from '@any-tdf/common/utils';
 import {
@@ -13,6 +12,7 @@ import ColorPickerButton from '../../components/ColorPickerButton';
 import GeneratorPreview from './GeneratorPreview';
 import { useAppContext } from '../../store/appStore';
 import { generateThemeBlack, generateThemeWhite, oklchToHex, oklchToRgb, generateRandomOklchColor } from '../../utils';
+import hljs from '../../utils/hljs';
 import { defaultThemeName, normalizeThemeName } from '../../utils/theme';
 import { themeLabels } from '../../data/homeData';
 

@@ -8,13 +8,13 @@ import {
 	generateRandomOklchColor,
 	generateThemeBlack,
 	generateThemeWhite,
+	hljs,
 	normalizeThemeName,
 	oklchToHex,
 	oklchToRgb,
 	type WCAGLevel
 } from '../../utils';
 import GeneratorPreview from './GeneratorPreview.vue';
-import hljs from 'highlight.js';
 import { getContrastRatio, oklchStrToHex, parseOklch } from 'vtdf/utils';
 import { generateColorScale, themes as vtdfThemes } from 'vtdf/theme';
 import {

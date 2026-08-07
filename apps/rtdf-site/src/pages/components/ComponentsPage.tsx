@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { buildSiteOutline, observeActiveSiteOutline, type SiteOutlineItem } from '@any-tdf/site-common/outline';
-import hljs from 'highlight.js';
 import Menu from '../../components/Menu';
 import Tabs from '../../components/Tabs';
+import hljs from '../../utils/hljs';
 import { useAppContext } from '../../store/appStore';
 import { menuList, type MenuList, type MenuListChild } from '../../data/menuList';
 import Api from './Api';

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import hljs from 'highlight.js';
+import { Link } from 'react-router-dom';
 import { themes, generateColorScale } from 'rtdf/theme';
 import { parseOklch, getContrastRatio } from '@any-tdf/common/utils';
 import ColorCard from '../../components/ColorCard';
@@ -7,6 +7,7 @@ import ModeSwitch from '../../components/ModeSwitch';
 import ThemeSwitch from '../../components/ThemeSwitch';
 import { useAppContext } from '../../store/appStore';
 import { colorObjToArr, getOklchOpacity } from '../../utils';
+import hljs from '../../utils/hljs';
 import { normalizeThemeName } from '../../utils/theme';
 
 // 从 RTDF 导入的主题，转换为 name -> config 映射
@@ -180,25 +181,25 @@ const ColorPage = () => {
 				{isZh ? (
 					<>
 						切换亮暗模式，选择下列内置主题可查看配色。到
-						<a href="/generator" target="_blank">
+						<Link to="/generator" target="_blank">
 							主题生成器
-						</a>
+						</Link>
 						可快速配置颜色系统并生成配置文件。具体使用方法请参考
-						<a href="/guide/theme" target="_blank">
+						<Link to="/guide/theme" target="_blank">
 							主题配置
-						</a>
+						</Link>
 						。
 					</>
 				) : (
 					<>
 						Switch the light and dark mode, select the built-in theme to view the color. To{' '}
-						<a href="/generator" target="_blank">
+						<Link to="/generator" target="_blank">
 							Theme Generator
-						</a>
+						</Link>
 						quickly configure the color system and generate the configuration file. For specific usage methods, please refer to
-						<a href="/guide/theme" target="_blank">
+						<Link to="/guide/theme" target="_blank">
 							Theme Configuration
-						</a>
+						</Link>
 						.
 					</>
 				)}
@@ -245,9 +246,9 @@ const ColorPage = () => {
 					一般情况，会使用区别于主色的另一种颜色适配暗模式，一种做法是不改变色相，只是将主色变浅提亮使其突出显现在暗背景下；另一种做法是完全取另一种色相，RTDF
 					推荐使用后者，以便暗模式下的主色更加明显。所以 RTDF
 					内置的主题色分为亮暗模式。当然，如果你需要将亮暗模式都设置为相同色相也是可以的，RTDF 提供的
-					<a href="/generator" target="_blank">
+					<Link to="/generator" target="_blank">
 						主题生成器
-					</a>
+					</Link>
 					支持随意配置。
 				</p>
 			) : (
@@ -256,9 +257,9 @@ const ColorPage = () => {
 					the main color lighter to stand out in the dark background; the other approach is to completely take another hue, RTDF recommends
 					the latter, so that the main color in the dark mode is more obvious. Therefore, RTDF provides two sets of theme colors: one for
 					the light mode and one for the dark mode. Of course, if you need to set both the light and dark modes to the same hue, the{' '}
-					<a href="/generator" target="_blank">
+					<Link to="/generator" target="_blank">
 						Theme Generator
-					</a>{' '}
+					</Link>{' '}
 					supports arbitrary configuration.
 				</p>
 			)}
@@ -596,9 +597,9 @@ const ColorPage = () => {
 					<p>
 						写扩展色类名时使用 extend0、extend1...
 						这种方式不方便记忆，推荐使用颜色的别名。别名的命名规则不限，如颜色名称、品牌、情绪、场景、编号、关联事物......皆可。RTDF 提供的
-						<a href="/generator" target="_blank">
+						<Link to="/generator" target="_blank">
 							主题生成器
-						</a>
+						</Link>
 						也支持配置别名。
 					</p>
 				</>
@@ -615,9 +616,9 @@ const ColorPage = () => {
 						When writing the class name of the extended color, use extend0, extend1..., this method is not convenient to remember, it is
 						recommended to use the alias of the color. The naming rules of the alias are unlimited, such as the color name, brand, emotion,
 						scene, number, related things... RTDF's
-						<a href="/generator" target="_blank">
+						<Link to="/generator" target="_blank">
 							Theme Generator
-						</a>{' '}
+						</Link>{' '}
 						also supports configuration aliases.
 					</p>
 				</>

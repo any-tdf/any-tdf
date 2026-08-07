@@ -1,6 +1,6 @@
 import { createMdTextToHljs, groupIconMdPlugin as baseGroupIconMdPlugin } from '@any-tdf/site-common/markdown';
 import codeGroupSvgData from './code-group-svg-data';
-import hljs from 'highlight.js';
+import hljs from './hljs';
 
 export { throttle } from '@any-tdf/site-common/site';
 
