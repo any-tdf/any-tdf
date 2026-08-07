@@ -39,13 +39,16 @@
 	"publisher": "STDF",
 	"main": "./src/extension.js",
 	"scripts": {
+		"docs:clean": "bun scripts/files.js --clean-docs",
+		"docs:prepare": "bun scripts/files.js --docs-only",
 		"files": "bun scripts/files.js",
 		"files:check": "bun scripts/files.js --check",
+		"menu": "bun scripts/files.js --menu-only",
 		"marketplace:check": "bun scripts/marketplace-version.js",
 		"test": "bun test",
-		"package": "bun run ../../scripts/run-with-root-license.mjs bun run vsce package --no-dependencies && bun run verify:package",
+		"package": "bun run docs:prepare && bun run ../../scripts/run-with-root-license.mjs bun run vsce package --no-dependencies && bun run verify:package && bun run docs:clean",
 		"verify:package": "bun scripts/verify-package.js",
-		"publish": "bun run ../../scripts/run-with-root-license.mjs bun run vsce publish --no-dependencies --skip-duplicate"
+		"publish": "bun run docs:prepare && bun run ../../scripts/run-with-root-license.mjs bun run vsce publish --no-dependencies --skip-duplicate && bun run docs:clean"
 	},
 	"devDependencies": {
 		"@types/bun": "catalog:",

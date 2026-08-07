@@ -19,6 +19,7 @@ const {
 const menuList = require('../src/menuList');
 
 const createTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'stdf-vscode-extension-'));
+const workspaceDocsRoot = path.resolve(__dirname, '../../..', 'content');
 
 const writeJson = (filePath, value) => {
 	fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -272,7 +273,7 @@ describe('generated component API data', () => {
 
 			for (const isZh of [true, false]) {
 				for (const component of components) {
-					const apiContent = await getApiContent({ targetKey, component, isZh });
+					const apiContent = await getApiContent({ targetKey, component, isZh, docsRoot: workspaceDocsRoot });
 					const apiItems = parseApiMarkdown(apiContent, { componentName: component.apiName || component.name });
 					const entries = createCompletionEntries({ targetKey, apiItems, isZh });
 					if (component.name === 'Feedback') {

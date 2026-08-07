@@ -43,6 +43,9 @@ site-backup/
 apps/rtdf-demo/public/fonts/symbol.svg
 apps/stdf-site/static/fonts/symbol.svg
 
+# VS Code package staging
+extensions/vscode-extension/src/docs/
+
 # Environment and local overrides
 .env
 .env.*

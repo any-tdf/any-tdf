@@ -44,12 +44,14 @@ Use this map to find the owning source before editing related copies.
   bun run sync:versions
   ```
 
-- Generate VS Code API docs and menu data after building site-common with:
+- Generate VS Code menu data after building site-common with:
 
   ```sh
   bun run --filter @any-tdf/site-common build
-  bun run --filter stdf-vscode-extension files
+  bun run --filter stdf-vscode-extension menu
   ```
+
+- VS Code API docs use `content/{stdf,rtdf,vtdf}/components` as their source and are staged under the extension only during packaging. Do not commit or maintain `extensions/vscode-extension/src/docs`.
 
 - Generate a framework skill bundle with its workspace scripts:
 

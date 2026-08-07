@@ -46,23 +46,38 @@ if (!embeddedRepository.includes('any-tdf/any-tdf') || !embeddedRepository.inclu
 	errors.push(`Embedded repository does not point to extensions/vscode-extension: ${embeddedRepository}.`);
 }
 
-const countSourceApiDocuments = () => {
-	let count = 0;
+const getSourceApiDocuments = () => {
+	const documents = new Map();
 	for (const target of ['stdf', 'rtdf', 'vtdf']) {
 		const componentsDir = path.join(workspaceRoot, 'content', target, 'components');
 		for (const entry of fs.readdirSync(componentsDir, { withFileTypes: true })) {
 			if (!entry.isDirectory()) continue;
 			for (const fileName of ['api.md', 'api_en.md']) {
-				if (fs.existsSync(path.join(componentsDir, entry.name, fileName))) count += 1;
+				const sourcePath = path.join(componentsDir, entry.name, fileName);
+				if (!fs.existsSync(sourcePath)) continue;
+
+				const archivePath = `extension/src/docs/${target}/components/${entry.name}/${fileName}`;
+				documents.set(archivePath, sourcePath);
 			}
 		}
 	}
-	return count;
+	return documents;
 };
 
-const expectedApiDocuments = countSourceApiDocuments();
-if (apiDocuments.length !== expectedApiDocuments) {
-	errors.push(`Expected ${expectedApiDocuments} embedded API documents, received ${apiDocuments.length}.`);
+const sourceApiDocuments = getSourceApiDocuments();
+if (apiDocuments.length !== sourceApiDocuments.size) {
+	errors.push(`Expected ${sourceApiDocuments.size} embedded API documents, received ${apiDocuments.length}.`);
+}
+
+for (const [archivePath, sourcePath] of sourceApiDocuments) {
+	if (!archiveFiles.includes(archivePath)) {
+		errors.push(`Missing API document in package: ${archivePath}.`);
+		continue;
+	}
+
+	const packagedContent = readArchiveFile(archivePath);
+	const sourceContent = fs.readFileSync(sourcePath, 'utf-8');
+	if (packagedContent !== sourceContent) errors.push(`Packaged API document is stale: ${archivePath}.`);
 }
 
 for (const requiredFile of ['extension/src/core.js', 'extension/src/extension.js', 'extension/src/menuList.js']) {

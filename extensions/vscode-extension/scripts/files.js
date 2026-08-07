@@ -8,6 +8,9 @@ const extensionRoot = path.resolve(__dirname, '..');
 const workspaceRoot = path.resolve(extensionRoot, '../..');
 const targets = ['stdf', 'rtdf', 'vtdf'];
 const checkOnly = process.argv.includes('--check');
+const cleanDocs = process.argv.includes('--clean-docs');
+const docsOnly = process.argv.includes('--docs-only');
+const menuOnly = process.argv.includes('--menu-only');
 const errors = [];
 let apiDocumentCount = 0;
 
@@ -22,19 +25,6 @@ const checkFile = (targetFile, expectedContent, label) => {
 	if (!actualContent || !actualContent.equals(expectedContent)) {
 		errors.push(`${label} is not synchronized: ${path.relative(workspaceRoot, targetFile)}`);
 	}
-};
-
-const collectFiles = (directory, baseDirectory = directory) => {
-	if (!fs.existsSync(directory)) return [];
-
-	return fs
-		.readdirSync(directory, { withFileTypes: true })
-		.flatMap((entry) => {
-			const absolutePath = path.join(directory, entry.name);
-			if (entry.isDirectory()) return collectFiles(absolutePath, baseDirectory);
-			return [path.relative(baseDirectory, absolutePath)];
-		})
-		.sort();
 };
 
 const getApiDocuments = (target) => {
@@ -72,15 +62,6 @@ const synchronizeApiDocs = (target) => {
 			}
 		}
 
-		const expectedFiles = [...documents.keys()].sort();
-		const actualFiles = collectFiles(targetDir);
-		if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) {
-			errors.push(`${target.toUpperCase()} API document file list is not synchronized.`);
-		}
-
-		for (const [relativePath, sourceFile] of documents) {
-			checkFile(path.join(targetDir, relativePath), fs.readFileSync(sourceFile), `${target.toUpperCase()} API document`);
-		}
 		return;
 	}
 
@@ -93,6 +74,11 @@ const synchronizeApiDocs = (target) => {
 	}
 
 	console.log(`Copied ${target} API docs for ${components.length} components.`);
+};
+
+const cleanApiDocs = () => {
+	fs.rmSync(path.join(extensionRoot, 'src/docs'), { recursive: true, force: true });
+	console.log('Removed staged API docs.');
 };
 
 const formatMenuList = (menuList) => {
@@ -131,15 +117,24 @@ const synchronizeMenuList = async () => {
 };
 
 const main = async () => {
-	for (const target of targets) synchronizeApiDocs(target);
-	await synchronizeMenuList();
+	const selectedModes = [cleanDocs, docsOnly, menuOnly].filter(Boolean).length;
+	if (selectedModes > 1) throw new Error('Select only one files mode.');
+	if (cleanDocs) {
+		cleanApiDocs();
+		return;
+	}
+
+	if (!menuOnly) {
+		for (const target of targets) synchronizeApiDocs(target);
+	}
+	if (!docsOnly) await synchronizeMenuList();
 
 	if (errors.length) {
 		console.error(errors.map((error) => `FAIL ${error}`).join('\n'));
 		process.exit(1);
 	}
 
-	if (checkOnly) console.log(`PASS VS Code generated files (${apiDocumentCount} API documents)`);
+	if (checkOnly) console.log(`PASS VS Code source files (${apiDocumentCount} API documents)`);
 };
 
 main();
