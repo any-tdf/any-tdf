@@ -14,17 +14,36 @@
 					if (mode === 'dark') setFavicon('dark');
 					if (mode === 'light' || mode === 'primary') setFavicon('light');
 				};
-				const urlMode = new URLSearchParams(location.search).get('darkMode');
-				const savedMode = localStorage.getItem('theme');
-				const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'light';
+				// 读取存储需要容错，存储被禁用（如 sandbox 的 iframe）时返回 null
+				// Reading storage needs fault tolerance, return null when storage is disabled (e.g. sandboxed iframe)
+				const safeGet = (key, session) => {
+					try {
+						return (session ? sessionStorage : localStorage).getItem(key);
+					} catch {
+						return null;
+					}
+				};
+				const urlParams = new URLSearchParams(location.search);
+				const urlMode = urlParams.get('darkMode');
+				const savedMode = safeGet('theme');
+				// 与 hydration 后 switchMode 写入的值保持一致：'dark' | 'primary'
+				// Keep consistent with the value written by switchMode after hydration: 'dark' | 'primary'
+				const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'primary';
+				// 提前写入 data-mode，避免暗色模式下的界面闪烁（FOUC）
+				// Set data-mode in advance to avoid style flash (FOUC) in dark mode
+				document.documentElement.setAttribute('data-mode', initialMode);
 				setFavicon(initialMode);
+				// 按当前语言设置 html 的 lang 属性，优先级与 +layout.svelte 一致
+				// Set the lang attribute of html according to the current language, priority consistent with +layout.svelte
+				const storedLang = urlParams.get('lang') || safeGet('lang', true) || 'zh_CN';
+				document.documentElement.lang = storedLang === 'zh_CN' ? 'zh-CN' : 'en';
 				new MutationObserver(syncFavicon).observe(document.documentElement, {
 					attributes: true,
 					attributeFilter: ['data-mode']
 				});
 			})();
 		</script>
-		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 		<title>STDF Demo</title>
 		%sveltekit.head%
 	</head>

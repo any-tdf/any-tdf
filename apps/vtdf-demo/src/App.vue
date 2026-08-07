@@ -13,9 +13,25 @@ import ThemeSwitch from './pages/components/ThemeSwitch.vue';
 const legacyDefaultThemeNames = new Set(['STDF', 'RTDF', 'VTDF']);
 const builtInIconLibraryStorageKey = 'built_in_icon_library';
 
+// storage 读写统一容错：iframe 沙箱（无 allow-same-origin）等场景下访问会抛 SecurityError
+const safeGetStorage = (storage: Storage, key: string) => {
+	try {
+		return storage.getItem(key);
+	} catch {
+		return null;
+	}
+};
+
+const safeSetStorage = (storage: Storage, key: string, value: string) => {
+	try {
+		storage.setItem(key, value);
+	} catch {
+		// 写入失败静默忽略
+	}
+};
+
 const normalizeStoredTheme = (themeName: string | null) => {
 	if (!themeName || legacyDefaultThemeNames.has(themeName)) {
-		localStorage.setItem('theme_color', 'ANYTDF');
 		return 'ANYTDF';
 	}
 	return themeName;
@@ -36,10 +52,12 @@ const search = ref(window.location.search);
 const mode = import.meta.env.MODE;
 const englishMode = mode.slice(-3) === '_en' || mode === 'english';
 const isComponentMode = mode !== 'production' && mode !== 'development' && mode !== 'english';
-const storedTheme = normalizeStoredTheme(localStorage.getItem('theme_color'));
+const storedTheme = normalizeStoredTheme(safeGetStorage(localStorage, 'theme_color'));
 const currentColor = ref(storedTheme);
-const theme = ref<'primary' | 'dark'>(localStorage.getItem('theme') === 'dark' ? 'dark' : 'primary');
-const builtInIconLibrary = ref<BuiltInIconLibrary>(normalizeStoredBuiltInIconLibrary(localStorage.getItem(builtInIconLibraryStorageKey)));
+const theme = ref<'primary' | 'dark'>(safeGetStorage(localStorage, 'theme') === 'dark' ? 'dark' : 'primary');
+const builtInIconLibrary = ref<BuiltInIconLibrary>(
+	normalizeStoredBuiltInIconLibrary(safeGetStorage(localStorage, builtInIconLibraryStorageKey))
+);
 const showTheme = ref(false);
 
 const menuListArr = computed(() =>
@@ -59,7 +77,7 @@ const lang = computed<'zh_CN' | 'en_US'>(() => {
 	const pathParts = path.value.split('/').filter(Boolean);
 	const pathLang = pathParts[pathParts.length - 1];
 	if (pathLang === 'zh_CN' || pathLang === 'en_US') return pathLang;
-	const sessionLang = sessionStorage.getItem('lang');
+	const sessionLang = safeGetStorage(sessionStorage, 'lang');
 	if (sessionLang === 'zh_CN' || sessionLang === 'en_US') return sessionLang;
 	return 'zh_CN';
 });
@@ -83,17 +101,23 @@ const syncPath = () => {
 };
 
 const goBack = () => {
-	window.history.back();
+	// 深链打开且无站内来源时兜底回首页，避免直接退出站点
+	const hasSiteHistory = window.history.length > 1 && document.referrer.startsWith(window.location.origin);
+	if (hasSiteHistory) {
+		window.history.back();
+	} else {
+		window.location.href = '/';
+	}
 };
 
 const toggleThemeMode = () => {
 	if (theme.value === 'dark') {
 		theme.value = 'primary';
-		localStorage.setItem('theme', 'primary');
+		safeSetStorage(localStorage, 'theme', 'primary');
 		switchMode('primary');
 	} else {
 		theme.value = 'dark';
-		localStorage.setItem('theme', 'dark');
+		safeSetStorage(localStorage, 'theme', 'dark');
 		switchMode('dark');
 	}
 };
@@ -108,24 +132,26 @@ const handleThemeChange = (themeName: string) => {
 
 const selectBuiltInIconLibrary = (library: BuiltInIconLibrary) => {
 	builtInIconLibrary.value = library;
-	localStorage.setItem(builtInIconLibraryStorageKey, library);
+	safeSetStorage(localStorage, builtInIconLibraryStorageKey, library);
 };
 
 onMounted(() => {
+	// 归一化后的主题写回存储（原 setup 阶段的写副作用挪到挂载后）
+	safeSetStorage(localStorage, 'theme_color', storedTheme);
 	if (isIframe.value === '1') {
 		const urlTheme = urlParams.value.get('theme');
 		const themeToUse = normalizeStoredTheme(urlTheme || storedTheme);
 		const urlMode = urlParams.value.get('darkMode');
 		currentColor.value = themeToUse;
 		switchTheme(themeToUse);
-		if (urlTheme) localStorage.setItem('theme_color', themeToUse);
+		if (urlTheme) safeSetStorage(localStorage, 'theme_color', themeToUse);
 		if (urlMode === 'dark') {
 			theme.value = 'dark';
-			localStorage.setItem('theme', 'dark');
+			safeSetStorage(localStorage, 'theme', 'dark');
 			switchMode('dark');
 		} else if (urlMode === 'light') {
 			theme.value = 'primary';
-			localStorage.setItem('theme', 'primary');
+			safeSetStorage(localStorage, 'theme', 'primary');
 			switchMode('primary');
 		}
 	} else {
@@ -136,7 +162,7 @@ onMounted(() => {
 	} else {
 		switchMode('primary');
 	}
-	sessionStorage.setItem('lang', lang.value);
+	safeSetStorage(sessionStorage, 'lang', lang.value);
 	const queryLang = urlParams.value.get('lang');
 	if (queryLang === 'zh_CN' || queryLang === 'en_US') {
 		const url = new URL(window.location.href);
@@ -151,7 +177,6 @@ onMounted(() => {
 			window.location.replace(targetPath);
 		}
 	}
-	window.addEventListener('popstate', syncPath);
 });
 </script>
 
@@ -168,12 +193,22 @@ onMounted(() => {
 					<div class="flex text-center">
 						<template v-if="isIframe === '0'">
 							<div class="h-12 w-10">
-								<a href="https://github.com/any-tdf/any-tdf" target="_blank" rel="noreferrer">
+								<a
+									href="https://github.com/any-tdf/any-tdf"
+									target="_blank"
+									rel="noreferrer"
+									:aria-label="isZh ? 'GitHub 仓库' : 'GitHub repository'"
+								>
 									<Icon name="ri-github-fill" />
 								</a>
 							</div>
 							<div class="h-12 w-10">
-								<a :href="`https://vtdf.dev${isHome ? '' : `/components?nav=${nav}&tab=0`}`" target="_blank" rel="noreferrer">
+								<a
+									:href="`https://vtdf.dev${isHome ? '' : `/components?nav=${nav}&tab=0`}`"
+									target="_blank"
+									rel="noreferrer"
+									:aria-label="isZh ? '查看组件文档' : 'View component documentation'"
+								>
 									<Icon name="ri-compass-line" />
 								</a>
 							</div>
@@ -194,8 +229,12 @@ onMounted(() => {
 			</NavBar>
 		</div>
 
-		<HomePage v-if="isHome" />
+		<HomePage v-if="isHome" :lang="lang" />
 		<DemoRenderer v-else-if="currentRoute" :nav="currentRoute.nav" :lang="lang" />
+		<div v-else class="flex flex-col items-center py-20">
+			<div class="text-lg font-bold">{{ isZh ? '页面不存在' : 'Page not found' }}</div>
+			<a href="/" class="text-primary dark:text-dark mt-4 text-sm underline">{{ isZh ? '返回首页' : 'Back to home' }}</a>
+		</div>
 
 		<div class="z-1000 pointer-events-none fixed inset-x-0 top-14 overflow-hidden pb-4 pl-2">
 			<div
@@ -205,6 +244,7 @@ onMounted(() => {
 				<ThemeSwitch
 					:current-color="currentColor"
 					:built-in-icon-library="builtInIconLibrary"
+					:lang="lang"
 					@change="handleThemeChange"
 					@icon-library-change="selectBuiltInIconLibrary"
 				/>

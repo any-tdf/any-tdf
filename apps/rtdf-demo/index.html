@@ -1,15 +1,28 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/svg+xml" href="/rtdf.svg" data-theme-favicon />
 		<script>
+			// 同步写入 data-mode 避免暗色模式 FOUC，取值与 ConfigProvider 的 switchMode 一致（'primary' | 'dark'）
 			const urlMode = new URLSearchParams(location.search).get('darkMode');
-			const savedMode = localStorage.getItem('theme');
-			const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'light';
+			let savedMode = null;
+			let savedLang = null;
+			try {
+				savedMode = localStorage.getItem('theme');
+				savedLang = sessionStorage.getItem('lang');
+			} catch {
+				// 存储被禁用时忽略，按默认亮色、中文处理
+			}
+			const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'primary';
+			document.documentElement.setAttribute('data-mode', initialMode);
+			// 同步 html lang，回退链与 App 一致：?lang= → 路径后缀 → 会话存储 → 默认中文
+			const urlLang = new URLSearchParams(location.search).get('lang');
+			document.documentElement.lang =
+				urlLang === 'en_US' || (urlLang !== 'zh_CN' && (location.pathname.includes('en_US') || savedLang === 'en_US')) ? 'en' : 'zh-CN';
 			document.querySelector('[data-theme-favicon]')?.setAttribute('href', initialMode === 'dark' ? '/rtdf_dark.svg' : '/rtdf.svg');
 		</script>
-		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
 		<title>RTDF Demo</title>
 	</head>
 	<body class="bg-primaryWhite dark:bg-darkBlack relative min-h-screen w-screen text-justify text-black antialiased dark:text-white">

@@ -95,6 +95,7 @@
 @font-face {
 	font-family: Trueno;
 	src: url('/fonts/Trueno.otf') format('opentype');
+	font-display: swap;
 }
 
 .animate-code-input-blink {
@@ -289,7 +290,7 @@ body {
 * {
 	-webkit-overflow-scrolling: touch;
 }
-button:focus {
+button:focus:not(:focus-visible) {
 	outline: none;
 }
 

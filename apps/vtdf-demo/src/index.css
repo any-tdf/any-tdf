@@ -99,6 +99,7 @@
 @font-face {
 	font-family: Trueno;
 	src: url('/fonts/Trueno.otf') format('opentype');
+	font-display: swap;
 }
 
 *::-webkit-scrollbar {
@@ -124,6 +125,8 @@ body {
 	position: relative;
 	min-height: 100vh;
 	width: 100vw;
+	/* 配合 viewport-fit=cover，给页面底部留出刘海屏 home 指示条的安全区 */
+	padding-bottom: env(safe-area-inset-bottom);
 	background-color: var(--color-bg-base);
 	color: var(--color-text-primary);
 	text-align: justify;
@@ -151,7 +154,7 @@ body {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
 }
-button:focus {
+button:focus:not(:focus-visible) {
 	outline: none;
 }
 

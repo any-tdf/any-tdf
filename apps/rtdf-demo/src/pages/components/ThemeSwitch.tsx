@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import { builtInIconLibraryLabelMap, builtInIconLibraryList, type BuiltInIconLibrary } from '@any-tdf/common/svg';
 import { switchTheme, themes } from 'rtdf/theme';
+import { safeSetStorage } from '../../utils/storage';
 
 type ThemeSwitchProps = {
 	currentColor: string;
 	builtInIconLibrary: BuiltInIconLibrary;
+	lang: 'zh_CN' | 'en_US';
 	onChange?: (themeName: string) => void;
 	onIconLibraryChange?: (library: BuiltInIconLibrary) => void;
 };
@@ -64,8 +66,8 @@ const parseOklch = (color: string) => {
 	};
 };
 
-const ThemeSwitch: React.FC<ThemeSwitchProps> = ({ currentColor, builtInIconLibrary, onChange, onIconLibraryChange }) => {
-	const isZh = sessionStorage.getItem('lang') === 'zh_CN';
+const ThemeSwitch: React.FC<ThemeSwitchProps> = ({ currentColor, builtInIconLibrary, lang, onChange, onIconLibraryChange }) => {
+	const isZh = lang === 'zh_CN';
 
 	const themeOptions = useMemo(() => {
 		return themes.map((item) => {
@@ -84,7 +86,7 @@ const ThemeSwitch: React.FC<ThemeSwitchProps> = ({ currentColor, builtInIconLibr
 
 	const selectColorFunc = (event: React.MouseEvent, themeName: string) => {
 		event.stopPropagation();
-		localStorage.setItem('theme_color', themeName);
+		safeSetStorage(localStorage, 'theme_color', themeName);
 		switchTheme(themeName);
 		onChange?.(themeName);
 	};

@@ -2,6 +2,7 @@
 <script lang="ts">
 	import { Toast, Cell, Button, Loading, Tab, Slider } from 'stdf';
 	import type { TabLabelProps, SvelteEasingProps } from 'stdf/types';
+	import { onDestroy } from 'svelte';
 
 	let visible1 = $state(false);
 	let visible2 = $state(false);
@@ -39,6 +40,11 @@
 			}
 		}, 1000);
 	};
+
+	// Clear the timer when the component is destroyed to avoid leaks
+	onDestroy(() => {
+		clearInterval(timer);
+	});
 
 	// Transition type control
 	const transitionTypes = ['scale', 'fly', 'fade', 'blur'] as const;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { page } from '$app/state';
-	import { replaceState } from '$app/navigation';
+	import { goto, replaceState } from '$app/navigation';
 	import { NavBar, Icon, Feedback } from 'stdf';
 	import { zh_CN, en_US } from 'stdf/lang';
 	import '../app.css';
@@ -13,10 +13,29 @@
 
 	let { children } = $props();
 	const normalizeThemeName = (themeName: string | null) => (themeName === 'STDF' ? 'ANYTDF' : themeName || 'ANYTDF');
+	// 安全读取存储，存储被禁用（如 sandbox 的 iframe）时返回 null
+	// Safely read storage, return null when storage is disabled (e.g. sandboxed iframe)
+	const safeGet = (key: string, session = false): string | null => {
+		try {
+			return (session ? sessionStorage : localStorage).getItem(key);
+		} catch {
+			return null;
+		}
+	};
+	// 安全写入存储，存储被禁用（如 sandbox 的 iframe）时静默忽略
+	// Safely write storage, silently ignore when storage is disabled (e.g. sandboxed iframe)
+	const safeSet = (key: string, value: string, session = false): void => {
+		try {
+			(session ? sessionStorage : localStorage).setItem(key, value);
+		} catch {
+			// 写入失败时静默忽略
+			// Silently ignore write failures
+		}
+	};
 	const normalizeStoredTheme = (themeName: string | null) => {
 		const normalizedTheme = normalizeThemeName(themeName);
 		if (themeName !== normalizedTheme) {
-			localStorage.setItem('theme_color', 'ANYTDF');
+			safeSet('theme_color', 'ANYTDF');
 		}
 		return normalizedTheme;
 	};
@@ -30,9 +49,7 @@
 		isBuiltInIconLibrary(library) ? library : defaultBuiltInIconLibrary;
 
 	let currentColor = $state('ANYTDF');
-	let builtInIconLibrary = $state<BuiltInIconLibrary>(
-		normalizeStoredBuiltInIconLibrary(localStorage.getItem(builtInIconLibraryStorageKey))
-	);
+	let builtInIconLibrary = $state<BuiltInIconLibrary>(normalizeStoredBuiltInIconLibrary(safeGet(builtInIconLibraryStorageKey)));
 
 	// 循环 menuList，将所有元素的 childs 组成一个数组
 	// Cycle menuList, and combine the childs of all elements into an array
@@ -54,7 +71,7 @@
 	// setting iframe
 	setContext('iframe', isIframe);
 	setContext(builtInIconLibraryContextKey, () => builtInIconLibrary);
-	const storedTheme = normalizeStoredTheme(localStorage.getItem('theme_color'));
+	const storedTheme = normalizeStoredTheme(safeGet('theme_color'));
 
 	let lang = 'zh_CN';
 
@@ -67,14 +84,14 @@
 		currentColor = themeToUse;
 		switchTheme(themeToUse);
 		if (urlTheme) {
-			localStorage.setItem('theme_color', themeToUse);
+			safeSet('theme_color', themeToUse);
 		}
 		if (urlMode === 'dark') {
 			switchMode('dark');
-			localStorage.setItem('theme', 'dark');
+			safeSet('theme', 'dark');
 		} else if (urlMode === 'light') {
 			switchMode('primary');
-			localStorage.setItem('theme', 'primary');
+			safeSet('theme', 'primary');
 		}
 		const urlLang = urlParams.get('lang');
 		if (urlLang) {
@@ -95,11 +112,11 @@
 
 	let showLeft = $derived(!(isIframe === '1' || page.url.pathname === '/' || isComponentMode));
 
-	let theme = $state(localStorage.getItem('theme') === 'dark' ? 'dark' : 'primary');
+	let theme = $state(safeGet('theme') === 'dark' ? 'dark' : 'primary');
 
 	// 设置亮暗模式
 	// Set primary and dark mode
-	if (localStorage.getItem('theme') === 'dark') {
+	if (safeGet('theme') === 'dark') {
 		switchMode('dark');
 	} else {
 		switchMode('primary');
@@ -111,14 +128,25 @@
 			// 切换到 primary
 			// switch to primary
 			theme = 'primary';
-			localStorage.setItem('theme', 'primary');
+			safeSet('theme', 'primary');
 			switchMode('primary');
 		} else {
 			// 切换到 dark
 			// switch to dark
 			theme = 'dark';
-			localStorage.setItem('theme', 'dark');
+			safeSet('theme', 'dark');
 			switchMode('dark');
+		}
+	};
+
+	// 返回上一页，没有可回退的历史（如直接打开深链）时回到首页
+	// Go back to the previous page, or go home when there is no history to go back (e.g. opened via deep link)
+	const goBack = () => {
+		const historyIndex = window.history.state?.['sveltekit:history'];
+		if (typeof historyIndex === 'number' && historyIndex > 0) {
+			window.history.back();
+		} else {
+			goto('/');
 		}
 	};
 
@@ -138,13 +166,13 @@
 		const urlParamsLang = urlParams.get('lang');
 		if (urlParamsLang) {
 			lang = urlParamsLang;
-			// 将 url 的 ?lang=en_US 或 ?lang=zh_CN 去掉
-			// Remove ?lang=en_US or ?lang=zh_CN from url
-			setTimeout(() => {
+			// 将 url 的 ?lang=en_US 或 ?lang=zh_CN 去掉，挂载完成后立即执行，避免固定延时的竞态
+			// Remove ?lang=en_US or ?lang=zh_CN from url, run immediately after mounted to avoid the race of fixed delay
+			$effect(() => {
 				const url = new URL(location.href);
 				url.searchParams.delete('lang');
 				replaceState(url, {});
-			}, 100);
+			});
 		} else {
 			// 如果 URL 中包含 /en_US/ 或 /zh_CN/，则设置为英文或中文
 			// If the URL contains /en_US/ or /zh_CN/, set it to English or Chinese
@@ -153,7 +181,7 @@
 			} else {
 				// 如果 sessionStorage 中有 lang，则设置为 sessionStorage 中的 lang
 				// If there is lang in sessionStorage, set it to lang in sessionStorage
-				const sessionStorageLang = sessionStorage.getItem('lang');
+				const sessionStorageLang = safeGet('lang', true);
 				if (sessionStorageLang) {
 					lang = sessionStorageLang;
 				} else {
@@ -164,7 +192,7 @@
 			}
 		}
 	}
-	sessionStorage.setItem('lang', lang);
+	safeSet('lang', lang, true);
 	const isZh = lang === 'zh_CN';
 	setContext('STDF_lang', isZh ? zh_CN : en_US);
 
@@ -187,7 +215,7 @@
 
 	const selectBuiltInIconLibrary = (library: BuiltInIconLibrary) => {
 		builtInIconLibrary = library;
-		localStorage.setItem(builtInIconLibraryStorageKey, library);
+		safeSet(builtInIconLibraryStorageKey, library);
 	};
 </script>
 
@@ -197,10 +225,11 @@
 			? isZh
 				? 'STDF 示例'
 				: 'STDF Demo'
-			: menuListArr.filter((item) => item.nav === currentNavName)[0][isZh ? 'title_zh' : 'title_en'] + (isZh ? '示例' : ' Demo')}
+			: (menuListArr.filter((item) => item.nav === currentNavName)[0]?.[isZh ? 'title_zh' : 'title_en'] ?? 'STDF') +
+				(isZh ? '示例' : ' Demo')}
 		left={showLeft ? 'back' : null}
 		injClass="bg-white/60 dark:bg-black/60 backdrop-blur-sm"
-		onclickLeft={() => window.history.back()}
+		onclickLeft={goBack}
 	>
 		{#snippet rightChild()}
 			<div class="flex text-center">

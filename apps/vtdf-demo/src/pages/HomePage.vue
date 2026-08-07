@@ -3,6 +3,10 @@ import { computed } from 'vue';
 import { menuList, type MenuListChild } from '@any-tdf/site-common/data';
 import { Cell, CellGroup } from 'vtdf/components';
 
+const props = defineProps<{
+	lang: 'zh_CN' | 'en_US';
+}>();
+
 const menuListArr = computed(() =>
 	menuList.reduce((acc: MenuListChild[], cur) => {
 		if (cur.childs) acc.push(...cur.childs);
@@ -10,10 +14,16 @@ const menuListArr = computed(() =>
 	}, [])
 );
 
-const isZh = computed(() => sessionStorage.getItem('lang') === 'zh_CN');
+// 语言统一由 App 通过 props 下发，避免首访时与 NavBar 语言不一致
+const isZh = computed(() => props.lang === 'zh_CN');
 
 const changeLang = () => {
-	sessionStorage.setItem('lang', isZh.value ? 'en_US' : 'zh_CN');
+	// storage 写入容错：iframe 沙箱（无 allow-same-origin）等场景下会抛 SecurityError
+	try {
+		sessionStorage.setItem('lang', isZh.value ? 'en_US' : 'zh_CN');
+	} catch {
+		// 写入失败静默忽略
+	}
 	window.location.reload();
 };
 </script>

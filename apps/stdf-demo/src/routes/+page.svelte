@@ -8,9 +8,21 @@
 		}
 		return acc;
 	}, [] as MenuListChild[]);
-	const isZh = sessionStorage.getItem('lang') === 'zh_CN';
+	// 读取存储的语言，存储被禁用时返回 null，避免初始化报错白屏
+	const getStoredLang = () => {
+		try {
+			return sessionStorage.getItem('lang');
+		} catch {
+			return null;
+		}
+	};
+	const isZh = getStoredLang() === 'zh_CN';
 	const changeLangFunc = () => {
-		sessionStorage.setItem('lang', isZh ? 'en_US' : 'zh_CN');
+		try {
+			sessionStorage.setItem('lang', isZh ? 'en_US' : 'zh_CN');
+		} catch {
+			// 存储不可用时忽略写入失败
+		}
 		window.location.reload();
 	};
 </script>
@@ -49,6 +61,6 @@
 	</div>
 	<div class="p-4">{isZh ? '当前组件总数：' : 'Current number of components: '}{menuListArr.length}</div>
 	<div class="text-primary dark:text-dark flex justify-around p-4 text-xs underline">
-		<button on:click={changeLangFunc} class="text-primary dark:text-dark">{isZh ? 'English' : '简体中文'}</button>
+		<button onclick={changeLangFunc} class="text-primary dark:text-dark">{isZh ? 'English' : '简体中文'}</button>
 	</div>
 </div>

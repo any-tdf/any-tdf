@@ -124,6 +124,8 @@ body {
 	position: relative;
 	min-height: 100vh;
 	width: 100vw;
+	/* Reserve the bottom safe area for the home indicator (viewport-fit=cover in index.html) */
+	padding-bottom: env(safe-area-inset-bottom);
 	background-color: var(--color-bg-base);
 	color: var(--color-text-primary);
 	text-align: justify;
@@ -258,6 +260,8 @@ button:focus {
 }
 .rtdf-site-nav {
 	z-index: 100;
+	/* Keep the sticky NavBar content below the notch area */
+	padding-top: env(safe-area-inset-top);
 }
 .rtdf-theme-panel-wrap {
 	z-index: 1000;

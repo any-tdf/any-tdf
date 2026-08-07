@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import { builtInIconGalleryList, builtInIconLibraryLabelMap, builtInIconLibraryList, resolveBuiltInSvg } from '@any-tdf/common/svg';
-import { Icon, Tab } from 'rtdf/components';
+import { Icon } from 'rtdf/components';
 import type { IconProps } from 'rtdf/types';
-import { SvgIcon } from 'rtdf/components';
 
 const icons = ['ri-spy-fill', 'ri-chrome-fill', 'ri-riding-line', 'ri-switch-fill'];
 const msIcons: IconProps[] = [
@@ -24,14 +21,8 @@ const fcIcons: IconProps[] = [
 	{ name: 'fluent-color--chart-multiple-24', opacity: 0.5 },
 	{ name: 'fluent-color--bot-sparkle-24', size: 36 }
 ];
-const builtInIconLibraryLabels = builtInIconLibraryList.map((library) => ({
-	text: builtInIconLibraryLabelMap[library]
-}));
 
 export default function IconDemo() {
-	const [builtInIconLibraryIndex, setBuiltInIconLibraryIndex] = useState(0);
-	const activeBuiltInIconLibrary = builtInIconLibraryList[builtInIconLibraryIndex] || builtInIconLibraryList[0];
-
 	return (
 		<div className="flex flex-col space-y-12 px-4 py-8">
 			<div>
@@ -163,26 +154,6 @@ export default function IconDemo() {
 						<div key={`${icon}-offset-${-4 + i * 2}`} className="flex-1 py-2 text-center">
 							<Icon name={icons[1]} y={-4 + i * 2} />
 							y:{-4 + i * 2}
-						</div>
-					))}
-				</div>
-			</div>
-			<div>
-				<div className="mb-2 font-bold text-xl">内置 SVG</div>
-				<Tab labels={builtInIconLibraryLabels} active={builtInIconLibraryIndex} onClickTab={setBuiltInIconLibraryIndex} />
-				<div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
-					{builtInIconGalleryList.map((item) => (
-						<div
-							key={`${activeBuiltInIconLibrary}-${item.key}`}
-							className="rounded-lg border border-black/10 p-3 text-center dark:border-white/10"
-						>
-							<SvgIcon
-								svg={resolveBuiltInSvg(item.key, activeBuiltInIconLibrary)}
-								width={28}
-								height={28}
-								className="mx-auto block text-primary dark:text-dark"
-							/>
-							<div className="mt-2 break-all text-xs text-black/60 dark:text-white/60">{item.label}</div>
 						</div>
 					))}
 				</div>

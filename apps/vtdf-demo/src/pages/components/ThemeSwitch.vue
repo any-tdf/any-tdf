@@ -6,6 +6,7 @@ import { switchTheme, themes } from 'vtdf/theme';
 const props = defineProps<{
 	currentColor: string;
 	builtInIconLibrary: BuiltInIconLibrary;
+	lang: 'zh_CN' | 'en_US';
 }>();
 
 const emit = defineEmits<{
@@ -68,7 +69,8 @@ const parseOklch = (color: string) => {
 	};
 };
 
-const isZh = computed(() => sessionStorage.getItem('lang') === 'zh_CN');
+// 语言统一由 App 通过 props 下发，避免首访时与 NavBar 语言不一致
+const isZh = computed(() => props.lang === 'zh_CN');
 const getThemeLabel = (name: string) => {
 	return isZh.value ? themeLabels[name] || name : name;
 };
@@ -89,7 +91,12 @@ const themeOptions = computed(() =>
 
 const selectColor = (event: MouseEvent, themeName: string) => {
 	event.stopPropagation();
-	localStorage.setItem('theme_color', themeName);
+	// storage 写入容错：iframe 沙箱（无 allow-same-origin）等场景下会抛 SecurityError
+	try {
+		localStorage.setItem('theme_color', themeName);
+	} catch {
+		// 写入失败静默忽略
+	}
 	switchTheme(themeName);
 	emit('change', themeName);
 };

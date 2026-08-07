@@ -2,7 +2,15 @@
 	import { builtInIconLibraryLabelMap, builtInIconLibraryList, defaultBuiltInIconLibrary, type BuiltInIconLibrary } from '@any-tdf/common/svg';
 	import { switchTheme, themes as stdfThemes } from 'stdf/theme';
 
-	const isZh = sessionStorage.getItem('lang') === 'zh_CN';
+	// 读取存储的语言，存储被禁用时返回 null
+	const getStoredLang = () => {
+		try {
+			return sessionStorage.getItem('lang');
+		} catch {
+			return null;
+		}
+	};
+	const isZh = getStoredLang() === 'zh_CN';
 
 	// 主题中文名称映射
 	const themeLabels: Record<string, string> = {
@@ -86,7 +94,11 @@
 		// Prevent bubbling
 		e.stopPropagation();
 		currentColor = themeName;
-		localStorage.setItem('theme_color', themeName);
+		try {
+			localStorage.setItem('theme_color', themeName);
+		} catch {
+			// 存储不可用时忽略写入失败
+		}
 		switchTheme(themeName);
 	};
 

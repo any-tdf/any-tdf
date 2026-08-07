@@ -82,7 +82,9 @@
 		maxRange={80}
 		startValue={valueRange[0]}
 		endValue={valueRange[1]}
-		onchange={(_, valueRange) => (valueRange = valueRange)}
+		onchange={(_, range) => {
+			if (range) valueRange = range;
+		}}
 	/>
 	当前区间：{valueRange[0]} - {valueRange[1]}
 </div>

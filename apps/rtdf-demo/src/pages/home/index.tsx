@@ -2,7 +2,12 @@ import { menuList, type MenuListChild } from '@any-tdf/site-common/data';
 import { Link } from 'react-router-dom';
 import { Cell, CellGroup } from 'rtdf/components';
 
-function Home() {
+type HomeProps = {
+	lang: 'zh_CN' | 'en_US';
+	onChangeLang: (lang: 'zh_CN' | 'en_US') => void;
+};
+
+function Home({ lang, onChangeLang }: HomeProps) {
 	const menuListArr: MenuListChild[] = menuList.reduce((acc, cur) => {
 		if (cur.childs) {
 			acc.push(...cur.childs);
@@ -10,12 +15,10 @@ function Home() {
 		return acc;
 	}, [] as MenuListChild[]);
 
-	const urlLang = new URLSearchParams(window.location.search).get('lang');
-	const currentLang = urlLang === 'zh_CN' || urlLang === 'en_US' ? urlLang : sessionStorage.getItem('lang');
-	const isZh = currentLang === 'zh_CN';
+	// 语言由 App 统一管理，切换时通过 onChangeLang 写 storage 并更新状态，不再整页刷新
+	const isZh = lang === 'zh_CN';
 	const changeLangFunc = () => {
-		sessionStorage.setItem('lang', isZh ? 'en_US' : 'zh_CN');
-		window.location.reload();
+		onChangeLang(isZh ? 'en_US' : 'zh_CN');
 	};
 
 	return (

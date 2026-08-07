@@ -2,9 +2,6 @@
 <script lang="ts">
 	import { Icon } from 'stdf';
 	import type { IconProps } from 'stdf/types';
-	import { builtInIconGalleryList, builtInIconLibraryLabelMap, builtInIconLibraryList, resolveBuiltInSvg } from '@any-tdf/common/svg';
-	import { Tab } from 'stdf';
-	import { SvgIcon } from 'stdf/utils';
 
 	const icons = ['ri-spy-fill', 'ri-chrome-fill', 'ri-riding-line', 'ri-switch-fill'];
 	const msIcons: IconProps[] = [
@@ -26,11 +23,6 @@
 		{ name: 'fluent-color--chart-multiple-24', opacity: 0.5 },
 		{ name: 'fluent-color--bot-sparkle-24', size: 36 }
 	];
-	const builtInIconLibraryLabels = builtInIconLibraryList.map((library) => ({
-		text: builtInIconLibraryLabelMap[library]
-	}));
-	let builtInIconLibraryIndex = $state(0);
-	let activeBuiltInIconLibrary = $derived(builtInIconLibraryList[builtInIconLibraryIndex] || builtInIconLibraryList[0]);
 </script>
 
 <div class="flex flex-col space-y-12 px-4 py-8">
@@ -158,18 +150,6 @@
 				<div class="flex-1 py-2 text-center">
 					<Icon name={icons[1]} y={-4 + i * 2} />
 					y:{-4 + i * 2}
-				</div>
-			{/each}
-		</div>
-	</div>
-	<div>
-		<div class="mb-2 font-bold text-xl">内置 SVG</div>
-		<Tab bind:active={builtInIconLibraryIndex} labels={builtInIconLibraryLabels} />
-		<div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
-			{#each builtInIconGalleryList as item (item.key)}
-				<div class="rounded-lg border border-black/10 p-3 text-center dark:border-white/10">
-					<SvgIcon svg={resolveBuiltInSvg(item.key, activeBuiltInIconLibrary)} width="28" height="28" class="mx-auto block text-primary dark:text-dark" />
-					<div class="mt-2 break-all text-xs text-black/60 dark:text-white/60">{item.label}</div>
 				</div>
 			{/each}
 		</div>

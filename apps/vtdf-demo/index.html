@@ -1,15 +1,30 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/svg+xml" href="/vtdf.svg" data-theme-favicon />
 		<script>
+			// 同步写入 data-mode 避免暗色模式 FOUC，取值与 App.vue 的 switchMode 一致（'primary' | 'dark'）
 			const urlMode = new URLSearchParams(location.search).get('darkMode');
-			const savedMode = localStorage.getItem('theme');
-			const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'light';
+			let savedMode = null;
+			try {
+				savedMode = localStorage.getItem('theme');
+			} catch {
+				// 存储被禁用时忽略，按默认亮色处理
+			}
+			let sessionLang = null;
+			try {
+				sessionLang = sessionStorage.getItem('lang');
+			} catch {
+				// 存储被禁用时忽略，按默认中文处理
+			}
+			const initialMode = urlMode === 'dark' || (urlMode !== 'light' && savedMode === 'dark') ? 'dark' : 'primary';
+			document.documentElement.setAttribute('data-mode', initialMode);
+			// 简化版语言解析（完整回退链见 App.vue）：path 含 en_US 或 session 存 en_US 时用英文
+			document.documentElement.lang = location.pathname.includes('en_US') || sessionLang === 'en_US' ? 'en' : 'zh-CN';
 			document.querySelector('[data-theme-favicon]')?.setAttribute('href', initialMode === 'dark' ? '/vtdf_dark.svg' : '/vtdf.svg');
 		</script>
-		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
 		<title>VTDF Demo</title>
 	</head>
 	<body>

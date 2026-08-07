@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { builtInIconGalleryList, builtInIconLibraryLabelMap, builtInIconLibraryList, resolveBuiltInSvg } from '@any-tdf/common/svg';
-import { Icon, Tab } from 'vtdf';
+import { Icon } from 'vtdf';
 import type { IconProps } from 'vtdf/types';
-import { SvgIcon } from 'vtdf/components';
 
 const icons = ['ri-spy-fill', 'ri-chrome-fill', 'ri-riding-line', 'ri-switch-fill'];
 const msIcons: IconProps[] = [
@@ -25,11 +22,6 @@ const fcIcons: IconProps[] = [
 	{ name: 'fluent-color--chart-multiple-24', opacity: 0.5 },
 	{ name: 'fluent-color--bot-sparkle-24', size: 36 }
 ];
-const builtInIconLibraryIndex = ref(0);
-const builtInIconLibraryLabels = builtInIconLibraryList.map((library) => ({
-	text: builtInIconLibraryLabelMap[library]
-}));
-const activeBuiltInIconLibrary = computed(() => builtInIconLibraryList[builtInIconLibraryIndex.value] || builtInIconLibraryList[0]);
 </script>
 
 <template>
@@ -143,26 +135,6 @@ const activeBuiltInIconLibrary = computed(() => builtInIconLibraryList[builtInIc
 				<div v-for="(icon, index) in icons" :key="icon" class="flex-1 py-2 text-center">
 					<Icon :name="icon" :y="-4 + index * 2" />
 					y:{{ -4 + index * 2 }}
-				</div>
-			</div>
-		</div>
-
-		<div>
-			<div class="mb-2 text-xl font-bold">Built-in SVG</div>
-			<Tab v-model:active="builtInIconLibraryIndex" :labels="builtInIconLibraryLabels" />
-			<div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
-				<div
-					v-for="item in builtInIconGalleryList"
-					:key="`${activeBuiltInIconLibrary}-${item.key}`"
-					class="rounded-lg border border-black/10 p-3 text-center dark:border-white/10"
-				>
-					<SvgIcon
-						:svg="resolveBuiltInSvg(item.key, activeBuiltInIconLibrary)"
-						:width="28"
-						:height="28"
-						class-name="mx-auto block text-primary dark:text-dark"
-					/>
-					<div class="mt-2 break-all text-xs text-black/60 dark:text-white/60">{{ item.label }}</div>
 				</div>
 			</div>
 		</div>
