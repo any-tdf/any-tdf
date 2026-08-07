@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.1
+
+- Updated the extension icon and Marketplace metadata to use the Any TDF brand.
+- Linked the Any TDF homepage, Monorepo, issue tracker, and discussions.
+
 ## 1.0.0
 
 - Rebranded STDF for VS Code as Any TDF for VS Code while preserving the existing Marketplace identifier and automatic update path.

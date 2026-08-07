@@ -1,9 +1,9 @@
 {
 	"name": "stdf-vscode-extension",
 	"displayName": "Any TDF for VS Code",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"private": true,
-	"description": "Hover documentation and code completion for STDF, RTDF, and VTDF components.",
+	"description": "Hover documentation and code completion for the Any TDF component libraries: STDF, RTDF, and VTDF.",
 	"categories": [
 		"Extension Packs",
 		"Programming Languages"
@@ -11,15 +11,18 @@
 	"keywords": [
 		"any-tdf",
 		"api",
+		"autocomplete",
 		"component",
+		"intellisense",
 		"react",
 		"rtdf",
 		"stdf",
 		"svelte",
+		"tailwind-css",
 		"vtdf",
 		"vue"
 	],
-	"homepage": "https://github.com/any-tdf/any-tdf/tree/main/extensions/vscode-extension#readme",
+	"homepage": "https://any-tdf.dev/",
 	"bugs": {
 		"url": "https://github.com/any-tdf/any-tdf/issues"
 	},
@@ -30,8 +33,9 @@
 		"directory": "extensions/vscode-extension"
 	},
 	"sponsor": {
-		"url": "https://any-tdf.dev?fund"
+		"url": "https://any-tdf.dev/?fund"
 	},
+	"qna": "https://github.com/any-tdf/any-tdf/discussions",
 	"publisher": "STDF",
 	"main": "./src/extension.js",
 	"scripts": {

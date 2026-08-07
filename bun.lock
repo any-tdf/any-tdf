@@ -226,7 +226,7 @@
     },
     "extensions/vscode-extension": {
       "name": "stdf-vscode-extension",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
