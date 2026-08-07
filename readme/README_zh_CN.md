@@ -144,7 +144,7 @@ bun add vtdf@alpha vue tailwindcss
 扩展源码与其打包和发布检查均在本 Monorepo 中维护。构建本地 VSIX：
 
 ```sh
-bun run --filter any-tdf-vscode-extension package
+bun run --filter stdf-vscode-extension package
 ```
 
 ## 离线 AI Skills

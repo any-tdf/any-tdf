@@ -2,13 +2,13 @@
 
 ### 介绍
 
-STDF 使用统一的 VS Code 插件 [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension)，用于在使用 [STDF](https://stdf.dev) 开发时提供组件 API 提示与属性补全。
+STDF 使用统一的 VS Code 插件 [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension)，用于在使用 [STDF](https://stdf.dev) 开发时提供组件 API 提示与属性补全。
 
 此插件同时支持 STDF、RTDF、VTDF。打开文件时，插件会从当前文件所在目录向上查找 `package.json`，检测包内是否依赖 `stdf`、`rtdf` 或 `vtdf`，并根据当前文件类型自动启用对应组件库能力。
 
 ### 安装
 
-在 VS Code 插件中搜索 `Any TDF for VS Code` 点击安装，或到 VS Code 插件市场安装 [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension)。
+在 VS Code 插件中搜索 `Any TDF for VS Code` 点击安装，或到 VS Code 插件市场安装 [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension)。
 
 如果工作区打开的是仓库子目录也可以正常使用。只要当前 `.svelte` 文件向上能找到包含 `stdf` 的 `package.json`，插件就会启用 STDF 提示。
 

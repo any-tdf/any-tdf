@@ -144,7 +144,7 @@ Cette séparation apporte :
 Le code source de l’extension ainsi que ses vérifications d’empaquetage et de publication sont maintenus dans ce Monorepo. Pour créer un VSIX local :
 
 ```sh
-bun run --filter any-tdf-vscode-extension package
+bun run --filter stdf-vscode-extension package
 ```
 
 ## AI Skills hors ligne

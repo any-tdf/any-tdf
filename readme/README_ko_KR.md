@@ -144,7 +144,7 @@ bun add vtdf@alpha vue tailwindcss
 확장 소스와 패키징 및 배포 검사는 이 Monorepo에서 관리됩니다. 로컬 VSIX를 빌드하려면 다음을 실행하세요.
 
 ```sh
-bun run --filter any-tdf-vscode-extension package
+bun run --filter stdf-vscode-extension package
 ```
 
 ## 오프라인 AI Skills

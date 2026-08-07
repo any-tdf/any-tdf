@@ -16,7 +16,7 @@ Choose the smallest command set that proves the changed behavior. Run commands f
 | `apps/any-tdf-site` | `bun run --filter @any-tdf/any-tdf-site check` and `build` | Use browser inspection for responsive or interactive behavior |
 | Component docs source | `bun run --filter @any-tdf/site-common docs:check` | Run matching site and skill generation checks |
 | `packages/create-any-tdf` | `bun run --filter create-any-tdf verify:templates` and `test` | Run packaging checks for published output changes |
-| VS Code extension | `bun run --filter any-tdf-vscode-extension test` and `files:check` | Run `verify:package` when packaging changes |
+| VS Code extension | `bun run --filter stdf-vscode-extension test` and `files:check` | Run `verify:package` when packaging changes |
 | Framework AI skill | `bun run --filter <framework>-skill test` | Regenerate references or theme data before retesting |
 | Root scripts or release metadata | Run the nearest `bun test <test-file>` plus `bun run verify:structure` or `verify:references` | Run `bun run publish:npm:check` only for release or package-output risk |
 

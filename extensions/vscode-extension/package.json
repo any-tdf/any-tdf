@@ -1,9 +1,9 @@
 {
-	"name": "any-tdf-vscode-extension",
+	"name": "stdf-vscode-extension",
 	"displayName": "Any TDF for VS Code",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"private": true,
-	"description": "A VS Code extension to facilitate STDF, RTDF, and VTDF development.",
+	"description": "Hover documentation and code completion for STDF, RTDF, and VTDF components.",
 	"categories": [
 		"Extension Packs",
 		"Programming Languages"
@@ -32,7 +32,7 @@
 	"sponsor": {
 		"url": "https://any-tdf.dev?fund"
 	},
-	"publisher": "any-tdf",
+	"publisher": "STDF",
 	"main": "./src/extension.js",
 	"scripts": {
 		"files": "bun scripts/files.js",
@@ -57,7 +57,13 @@
 				"AnyTDF.English": {
 					"type": "boolean",
 					"default": false,
-					"description": "Whether to enable English API docs in any-tdf-vscode-extension."
+					"description": "Show bundled component API documentation in English instead of Simplified Chinese."
+				},
+				"STDF.English": {
+					"type": "boolean",
+					"default": false,
+					"description": "Legacy language setting retained for existing STDF for VS Code users.",
+					"deprecationMessage": "Use AnyTDF.English instead."
 				}
 			}
 		}
@@ -72,8 +78,25 @@
 		"Vue.volar",
 		"svelte.svelte-vscode"
 	],
+	"extensionKind": [
+		"workspace"
+	],
 	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#111827",
+		"theme": "dark"
+	},
 	"engines": {
 		"vscode": "^1.80.0"
-	}
+	},
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
+		},
+		"virtualWorkspaces": {
+			"supported": false,
+			"description": "Any TDF for VS Code reads the nearest package.json from the local or remote workspace file system."
+		}
+	},
+	"pricing": "Free"
 }

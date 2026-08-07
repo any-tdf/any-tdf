@@ -76,7 +76,7 @@ const requiredEcosystemResources = [
   },
   {
     name: "Any TDF for VS Code",
-    link: "https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension",
+    link: "https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension",
   },
 ];
 const forbiddenFrameworkDependencies = ["react", "react-dom", "svelte", "vue"];

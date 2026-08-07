@@ -2,13 +2,13 @@
 
 ### Introduction
 
-STDF uses the unified VS Code extension [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension), which provides component API hovers and attribute completions when developing with [STDF](https://stdf.dev).
+STDF uses the unified VS Code extension [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension), which provides component API hovers and attribute completions when developing with [STDF](https://stdf.dev).
 
 The extension supports STDF, RTDF, and VTDF in one package. When a file is opened, it searches upward from the current file directory for `package.json`, detects whether the package uses `stdf`, `rtdf`, or `vtdf`, and enables the matching component library based on the current file type.
 
 ### Installation
 
-Search for `Any TDF for VS Code` in the VS Code extension marketplace and click install, or install [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension) from the marketplace.
+Search for `Any TDF for VS Code` in the VS Code extension marketplace and click install, or install [Any TDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension) from the marketplace.
 
 It also works when the opened workspace is not the package root. As long as the current `.svelte` file can find a parent `package.json` containing `stdf`, STDF support is enabled.
 

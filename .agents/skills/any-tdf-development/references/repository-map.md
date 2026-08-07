@@ -48,7 +48,7 @@ Use this map to find the owning source before editing related copies.
 
   ```sh
   bun run --filter @any-tdf/site-common build
-  bun run --filter any-tdf-vscode-extension files
+  bun run --filter stdf-vscode-extension files
   ```
 
 - Generate a framework skill bundle with its workspace scripts:

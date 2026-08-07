@@ -144,7 +144,7 @@ bun add vtdf@alpha vue tailwindcss
 Исходный код расширения хранится в этом Monorepo, а проверки сборки пакета и публикации выполняются в CI. Чтобы собрать локальный VSIX:
 
 ```sh
-bun run --filter any-tdf-vscode-extension package
+bun run --filter stdf-vscode-extension package
 ```
 
 ## Автономные AI Skills

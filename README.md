@@ -144,7 +144,7 @@ This separation gives consumers:
 The extension source is maintained in this Monorepo and its package and publish checks run in CI. To build a local VSIX:
 
 ```sh
-bun run --filter any-tdf-vscode-extension package
+bun run --filter stdf-vscode-extension package
 ```
 
 ## Offline AI Skills

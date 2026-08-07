@@ -1,5 +1,7 @@
 # Any TDF for VS Code
 
+[简体中文](https://github.com/any-tdf/any-tdf/blob/main/extensions/vscode-extension/README_CN.md)
+
 Hover and completion support for STDF, RTDF, and VTDF components.
 
 ## Features
@@ -22,6 +24,20 @@ RTDF uses the JavaScript and TypeScript language support built into VS Code.
 ## Activation
 
 The extension is active only when the current Svelte, JSX, TSX, or Vue file belongs to a package that depends on the corresponding TDF library. Monorepos and nested packages are supported by searching upward for the nearest matching `package.json`.
+
+## Configuration
+
+Set `AnyTDF.English` to `true` to show the bundled API documentation in English. Simplified Chinese is used by default.
+
+The legacy `STDF.English` setting remains readable for users upgrading from STDF for VS Code. `AnyTDF.English` takes precedence when both settings are explicitly configured.
+
+## Upgrade from STDF for VS Code
+
+Any TDF for VS Code continues to use the Marketplace identifier [`STDF.stdf-vscode-extension`](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension). Existing users receive the unified STDF, RTDF, and VTDF support as a normal extension update.
+
+## Privacy
+
+The extension does not collect telemetry. It reads the nearest workspace `package.json` to detect the active TDF package and requests the public npm Registry metadata endpoint to display the latest package version.
 
 ## License
 
