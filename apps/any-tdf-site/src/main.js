@@ -148,7 +148,10 @@ const translations = {
 		vscodeExtensionResourceDescription: '为 STDF、RTDF 与 VTDF 提供组件 API 悬停文档、版本信息和框架原生代码补全。',
 		ctaTitle: '从你熟悉的框架开始',
 		ctaDescription: '访问对应官网，查看指南、组件、主题生成器和在线 Demo。',
-		footerDescription: '一个共享设计系统，三套原生移动 Web 组件库。',
+		footerRelated: '相关',
+		footerTools: '工具',
+		footerBuiltInIcons: '内置图标',
+		footerLicense: '开源许可',
 		pageTitle: 'Any TDF - 一个系统，三种原生框架体验',
 		pageDescription: 'Any TDF 是面向 Svelte、React 与 Vue 的移动 Web 组件系统，提供一致的设计语言、主题能力和原生框架体验。'
 	},
@@ -265,7 +268,10 @@ const translations = {
 			'Component API hover documentation, version information, and framework-native completions for STDF, RTDF, and VTDF.',
 		ctaTitle: 'Start with the framework you know',
 		ctaDescription: 'Visit its website for guides, components, the theme generator, and interactive Demos.',
-		footerDescription: 'One shared design system, three native mobile Web component libraries.',
+		footerRelated: 'Related',
+		footerTools: 'Tools',
+		footerBuiltInIcons: 'Built-in Icons',
+		footerLicense: 'License',
 		pageTitle: 'Any TDF - One system, three native framework experiences',
 		pageDescription:
 			'Any TDF is a mobile Web component system for Svelte, React, and Vue with a consistent design language, theming model, and native framework experience.'

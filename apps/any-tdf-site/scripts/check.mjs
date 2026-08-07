@@ -79,6 +79,37 @@ const requiredEcosystemResources = [
     link: "https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension",
   },
 ];
+const requiredFooterLinks = [
+  "https://stdf.dev",
+  "https://rtdf.dev",
+  "https://vtdf.dev",
+  "https://react-confetti.any-tdf.dev",
+  "https://vue-confetti.any-tdf.dev",
+  "https://svelte.dev",
+  "https://react.dev",
+  "https://vuejs.org",
+  "https://tailwindcss.com",
+  "https://github.com/any-tdf/any-tdf",
+  "https://github.com/any-tdf/any-tdf/blob/main/LICENSE",
+  "https://www.npmjs.com/package/create-any-tdf",
+  "https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol",
+  "https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts",
+  "https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension",
+  "https://react-motion.any-tdf.dev",
+  "https://vue-motion.any-tdf.dev",
+  "https://remixicon.com",
+  "https://lucide.dev",
+  "https://phosphoricons.com",
+  "https://tabler.io/icons",
+  "https://iconoir.com",
+  "https://reicon.dev",
+];
+const requiredFooterTranslationKeys = [
+  "footerRelated",
+  "footerTools",
+  "footerBuiltInIcons",
+  "footerLicense",
+];
 const forbiddenFrameworkDependencies = ["react", "react-dom", "svelte", "vue"];
 const requiredAcronymWords = [
   "Simple",
@@ -260,6 +291,29 @@ for (const resource of requiredEcosystemResources) {
   if (!html.includes(resource.link))
     throw new Error(`The ecosystem directory is missing ${resource.link}.`);
 }
+
+const portalFooterMarkup = html.match(
+  /<footer class="site-footer portal-footer">[\s\S]*?<\/footer>/,
+)?.[0];
+if (!portalFooterMarkup) throw new Error("The portal footer is missing.");
+if ([...portalFooterMarkup.matchAll(/class="portal-footer-group"/g)].length !== 4)
+  throw new Error("The portal footer must render four ecosystem link groups.");
+for (const link of requiredFooterLinks) {
+  if (!portalFooterMarkup.includes(link))
+    throw new Error(`The portal footer is missing ${link}.`);
+}
+for (const key of requiredFooterTranslationKeys) {
+  if (!portalFooterMarkup.includes(`data-i18n="${key}"`))
+    throw new Error(`The portal footer is missing the ${key} translation hook.`);
+  if ([...script.matchAll(new RegExp(`\\b${key}:`, "g"))].length !== 2)
+    throw new Error(`The portal footer must translate ${key} in both languages.`);
+}
+if (
+  portalFooterMarkup.includes("site-brand") ||
+  portalFooterMarkup.includes("footerDescription") ||
+  script.includes("footerDescription:")
+)
+  throw new Error("The portal footer must not render the removed brand introduction.");
 
 for (const dependency of forbiddenFrameworkDependencies) {
   if (
