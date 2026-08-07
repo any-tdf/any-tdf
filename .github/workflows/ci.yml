@@ -90,6 +90,9 @@ jobs:
       - name: Verify monorepo references and versions
         run: bun run verify:references
 
+      - name: Verify Changeset release policy
+        run: bun run verify:changesets
+
       - name: Verify generated files
         run: bun run generate:check
 

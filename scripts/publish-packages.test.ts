@@ -477,6 +477,7 @@ describe('Changesets dependency policy', () => {
 
 		expect(config.updateInternalDependencies).toBe('patch');
 		expect(config.bumpVersionsWithWorkspaceProtocolOnly).toBeTrue();
+		expect(config.privatePackages).toBeFalse();
 		expect(config.fixed).toContainEqual(['@any-tdf/react-confetti', '@any-tdf/vue-confetti']);
 		expect(config.fixed).toContainEqual(['@any-tdf/react-motion', '@any-tdf/vue-motion']);
 		expect(config.fixed).toContainEqual(['rtdf', 'vtdf']);

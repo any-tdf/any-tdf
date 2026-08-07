@@ -73,8 +73,10 @@ describe('Workflow responsibilities', () => {
 		expect(packageWorkflow).toContain('NPM_TOKEN:');
 		expect(packageWorkflow).toContain('required: false');
 		expect(packageWorkflow).toContain('run: bun run publish:npm -- --package="${{ inputs.package-name }}"');
-		expect(versionWorkflow).toContain('uses: changesets/action@v1');
-		expect(versionWorkflow).toContain('version: bun run version-packages');
+		expect(versionWorkflow).not.toContain('changesets/action');
+		expect(versionWorkflow).toContain('run: bun run version-packages');
+		expect(versionWorkflow).toContain('git push --force origin "HEAD:$VERSION_BRANCH"');
+		expect(versionWorkflow).toContain('gh pr create --base main --head "$VERSION_BRANCH"');
 		expect(versionWorkflow).not.toContain('publish: bun run publish:npm');
 		expect(releaseWorkflow).toContain('run: bun run release');
 		expect(releaseWorkflow).toContain('group: github-releases-${{ github.run_id }}-${{ inputs.release-key }}');
@@ -89,6 +91,7 @@ describe('Workflow responsibilities', () => {
 		expect(ciWorkflow).toContain('BASE_SHA: ${{ github.event.before }}');
 		expect(ciWorkflow).toContain('uses: actions/upload-artifact@v4');
 		expect(ciWorkflow).toContain('name: npm-publish-metadata');
+		expect(ciWorkflow).toContain('run: bun run verify:changesets');
 		expect(publishWorkflow).toContain('workflow_run:');
 		expect(publishWorkflow).toContain('- CI');
 		expect(publishWorkflow).toContain("github.event.workflow_run.conclusion == 'success'");

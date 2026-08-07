@@ -1,6 +1,8 @@
 # Changeset scope guide
 
-Changesets are the source of package versions and dependency updates. Select packages by the actual scope of a change:
+Changesets are the source of stable package versions and dependency updates. Select packages by the actual scope of a change.
+
+Packages whose current version contains `-alpha` use direct prerelease increments and must not be listed in a Changeset. Increment only the alpha counter, run `bun run sync:versions` when `@any-tdf/common` changes, and refresh `bun.lock` with Bun. This repository intentionally avoids global Changesets prerelease mode because stable packages share the same Workspace.
 
 Write every Changeset summary in English so the version pull request remains readable.
 

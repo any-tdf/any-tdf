@@ -46,9 +46,10 @@ Apply repository-specific ownership, generation, and validation rules without re
 
 ## Handle Public Package Changes
 
-- Add a Changeset for a publishable package behavior, API, dependency, or package-content change unless the user explicitly excludes release metadata.
+- Add a Changeset for a stable publishable package behavior, API, dependency, or package-content change unless the user explicitly excludes release metadata.
+- For packages currently released under the `alpha` tag, increment only the prerelease counter directly and do not add them to Changesets. Run `bun run sync:versions` after changing `@any-tdf/common` and refresh the lockfile through Bun.
 - Write Changeset summaries in English and select packages by actual ownership. Use `@any-tdf/common` for shared behavior and a framework package only for framework-specific rendering or APIs.
-- Keep fixed version groups aligned. Do not edit versions or `bun.lock` manually.
+- Keep fixed version groups aligned. Do not edit `bun.lock` manually.
 - Do not publish, release, deploy, or push unless the user explicitly requests that external action.
 
 ## Report Clearly

@@ -12,5 +12,6 @@
 	"baseBranch": "main",
 	"updateInternalDependencies": "patch",
 	"bumpVersionsWithWorkspaceProtocolOnly": true,
+	"privatePackages": false,
 	"ignore": []
 }

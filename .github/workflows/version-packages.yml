@@ -42,11 +42,39 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Open or update version PR
-        uses: changesets/action@v1
-        with:
-          commit: 'chore: 发布软件包版本'
-          title: 'chore: 发布软件包版本'
-          version: bun run version-packages
+      - name: Prepare version branch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION_BRANCH: changeset-release/main
+        run: git switch --force-create "$VERSION_BRANCH"
+
+      - name: Version packages
+        run: bun run version-packages
+
+      - name: Push version branch and open or update pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION_BRANCH: changeset-release/main
+          VERSION_COMMIT: 'chore: 发布软件包版本'
+          VERSION_TITLE: 'chore: 发布软件包版本'
+          VERSION_BODY: |-
+            This pull request applies the pending Changesets and updates stable package versions.
+
+            Changelog generation is intentionally disabled for this repository.
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No package version updates were generated."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit --message "$VERSION_COMMIT"
+          git push --force origin "HEAD:$VERSION_BRANCH"
+
+          pr_number="$(gh pr list --base main --head "$VERSION_BRANCH" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$pr_number" ]; then
+            gh pr edit "$pr_number" --title "$VERSION_TITLE" --body "$VERSION_BODY"
+          else
+            gh pr create --base main --head "$VERSION_BRANCH" --title "$VERSION_TITLE" --body "$VERSION_BODY"
+          fi

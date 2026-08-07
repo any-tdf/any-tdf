@@ -133,7 +133,7 @@ const inspectTree = async (directory, isRoot = false) => {
         continue;
       }
 
-      if (localToolDirectories.has(entry.name)) {
+      if (localToolDirectories.has(entry.name) && !(isRoot && entry.name === ".agents")) {
         errors.push(`Local AI or editor configuration found: ${relativePath}`);
         continue;
       }

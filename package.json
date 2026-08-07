@@ -83,6 +83,7 @@
 		"verify": "bun run verify:structure && bun run verify:references && bun run verify:static && bun run verify:routes",
 		"verify:structure": "bun run scripts/verify-workspaces.mjs",
 		"verify:references": "bun run scripts/verify-references.mjs",
+		"verify:changesets": "bun run scripts/verify-changesets.mjs",
 		"verify:static": "turbo run verify:workspace",
 		"verify:routes": "turbo run build --filter=@any-tdf/stdf-demo --filter=@any-tdf/rtdf-demo --filter=@any-tdf/vtdf-demo && bun run scripts/verify-demo-previews.mjs",
 		"verify:browser": "bun run verify:browser:demos && bun run verify:browser:sites",
@@ -116,7 +117,7 @@
 		"sync:versions": "bun run scripts/sync-version-fallbacks.mjs",
 		"sync:versions:check": "bun run scripts/sync-version-fallbacks.mjs --check",
 		"changeset": "changeset",
-		"version-packages": "changeset version && bun run sync:versions && bun install --lockfile-only --ignore-scripts && bun run format:versions",
+		"version-packages": "bun run verify:changesets && changeset version && bun run sync:versions && bun install --lockfile-only --ignore-scripts && bun run format:versions",
 		"publish:npm": "bun run scripts/publish-packages.mjs",
 		"release": "bun run scripts/github-releases.mjs"
 	},
