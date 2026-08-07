@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { page } from '$app/state';
 	import { goto, replaceState } from '$app/navigation';
 	import { NavBar, Icon, Feedback } from 'stdf';
@@ -166,12 +166,15 @@
 		const urlParamsLang = urlParams.get('lang');
 		if (urlParamsLang) {
 			lang = urlParamsLang;
-			// 将 url 的 ?lang=en_US 或 ?lang=zh_CN 去掉，挂载完成后立即执行，避免固定延时的竞态
-			// Remove ?lang=en_US or ?lang=zh_CN from url, run immediately after mounted to avoid the race of fixed delay
-			$effect(() => {
-				const url = new URL(location.href);
-				url.searchParams.delete('lang');
-				replaceState(url, {});
+			// 将 URL 的 ?lang=en_US 或 ?lang=zh_CN 去掉，并等待 SvelteKit 完成根组件初始化。
+			// Remove ?lang=en_US or ?lang=zh_CN after SvelteKit finishes initializing the root component.
+			onMount(() => {
+				const frame = requestAnimationFrame(() => {
+					const url = new URL(location.href);
+					url.searchParams.delete('lang');
+					replaceState(url, page.state);
+				});
+				return () => cancelAnimationFrame(frame);
 			});
 		} else {
 			// 如果 URL 中包含 /en_US/ 或 /zh_CN/，则设置为英文或中文

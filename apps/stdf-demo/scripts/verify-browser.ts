@@ -4,6 +4,8 @@ import { join, resolve } from 'node:path';
 
 type CDPResponse = {
 	id?: number;
+	method?: string;
+	params?: unknown;
 	result?: unknown;
 	error?: { message: string };
 };
@@ -90,13 +92,17 @@ const waitForJson = async <T>(url: string) => {
 class CDPClient {
 	private id = 0;
 	private pending = new Map<number, { resolve: (value: unknown) => void; reject: (error: Error) => void }>();
+	private events: CDPResponse[] = [];
 	private socket: WebSocket;
 
 	private constructor(socket: WebSocket) {
 		this.socket = socket;
 		this.socket.onmessage = (event) => {
 			const message = JSON.parse(String(event.data)) as CDPResponse;
-			if (!message.id) return;
+			if (!message.id) {
+				this.events.push(message);
+				return;
+			}
 			const pending = this.pending.get(message.id);
 			if (!pending) return;
 			this.pending.delete(message.id);
@@ -135,6 +141,12 @@ class CDPClient {
 		return result.result.value;
 	};
 
+	drainEvents = () => {
+		const events = this.events;
+		this.events = [];
+		return events;
+	};
+
 	close = () => this.socket.close();
 }
 
@@ -145,6 +157,7 @@ const target = (await targetResponse.json()) as { webSocketDebuggerUrl: string }
 const page = await CDPClient.create(target.webSocketDebuggerUrl);
 await page.call('Runtime.enable');
 await page.call('Page.enable');
+await page.call('Log.enable');
 await page.call('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 3, mobile: true });
 await page.call('Emulation.setTouchEmulationEnabled', { enabled: true });
 
@@ -167,9 +180,14 @@ const waitForReady = async () => {
 const navigate = async (url: string) => {
 	const response = await fetch(url).catch(() => undefined);
 	if (!response?.ok) return `HTTP ${response?.status ?? 'unknown'}`;
+	page.drainEvents();
 	await page.call('Page.navigate', { url });
 	const ready = await waitForReady();
-	return ready ? '' : 'Page did not finish rendering';
+	if (ready) return '';
+	const browserErrors = page
+		.drainEvents()
+		.filter(({ method }) => method === 'Runtime.exceptionThrown' || method === 'Log.entryAdded');
+	return `Page did not finish rendering: ${JSON.stringify({ browserErrors })}`;
 };
 
 const waitForFunction = async (body: string) => {
@@ -205,22 +223,58 @@ const checkThemeFavicon = async () => {
 	if (!darkReady) throw new Error('Dark favicon did not match the darkMode parameter');
 };
 
-const clickText = async (text: string) => {
+const clickText = async (text: string, rootSelector = '') => {
 	const clicked = await runInPage<boolean>(`
 		const wanted = ${JSON.stringify(text)};
+		const rootSelector = ${JSON.stringify(rootSelector)};
 		const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim().toLowerCase();
 		const isVisible = (element) => {
 			const rect = element.getBoundingClientRect();
 			const style = getComputedStyle(element);
 			return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
 		};
-		const candidates = [...document.querySelectorAll('button, [role="button"], a, [onclick]')].filter(isVisible);
+		const roots = rootSelector
+			? [...document.querySelectorAll(rootSelector)].filter(isVisible)
+			: [document];
+		const root = roots.filter((element) => element.querySelector('button, [role="button"], a, [onclick]')).at(-1);
+		if (!root) return false;
+		const candidates = [...root.querySelectorAll('button, [role="button"], a, [onclick]')].filter(isVisible);
 		const target = candidates.find((element) => normalize(element.textContent) === normalize(wanted));
 		if (!target) return false;
-		target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+		target.click();
 		return true;
 	`);
 	if (!clicked) throw new Error(`Unable to click text: ${text}`);
+};
+
+const openKeyboardPopup = async (openText: string) => {
+	for (let attempt = 0; attempt < 50; attempt += 1) {
+		const popupReady = await runInPage<boolean>(`
+			const isVisible = (element) => {
+				const rect = element.getBoundingClientRect();
+				const style = getComputedStyle(element);
+				return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+			};
+			return [...document.querySelectorAll('.fixed.inset-0')].some(
+				(element) => isVisible(element) && [...element.querySelectorAll('button')].some(isVisible)
+			);
+		`);
+		if (popupReady) return;
+		await clickText(openText);
+		await sleep(100);
+	}
+	const debugState = await runInPage(`
+		const wanted = ${JSON.stringify(openText)};
+		const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim().toLowerCase();
+		const matches = [...document.querySelectorAll('button, [role="button"], a, [onclick]')]
+			.filter((element) => normalize(element.textContent) === normalize(wanted))
+			.map((element) => ({ tag: element.tagName, className: element.className, html: element.outerHTML.slice(0, 300) }));
+		return { matches, bodyHasText: (document.body.innerText || '').includes(wanted) };
+	`);
+	const browserErrors = page
+		.drainEvents()
+		.filter(({ method }) => method === 'Runtime.exceptionThrown' || method === 'Log.entryAdded');
+	throw new Error(`Keyboard popup did not open: ${openText} ${JSON.stringify({ debugState, browserErrors })}`);
 };
 
 if (scenarioFilter !== 'confetti') {
@@ -250,8 +304,8 @@ const checkKeyboardConfetti = async (path: string, openText: string, keys: strin
 		failed.push({ route: path, reason });
 		return;
 	}
-	await clickText(openText);
-	for (const key of keys) await clickText(key);
+	await openKeyboardPopup(openText);
+	for (const key of keys) await clickText(key, '.fixed.inset-0');
 	const ok = await waitForFunction(`
 		const bodyText = document.body.innerText || '';
 		const confettiNodes = [...document.querySelectorAll('*')].filter((element) => /confetti/i.test(element.getAttribute('class') || ''));

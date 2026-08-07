@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { mdTextToHljs, groupIconMdPlugin } from '../../utils';
 import BuiltInIconGallery from './BuiltInIconGallery';
 import { useAppContext } from '../../store/appStore';
@@ -27,17 +27,20 @@ const IconPage = () => {
 	}, [isZh]);
 
 	const showBuiltInIconGallery = htmlParts.length > 1;
+	// 固定 { __html } 对象引用，避免重渲染时 innerHTML 被重写导致滚动位置丢失
+	const headHtml = useMemo(() => ({ __html: htmlParts[0] ?? '' }), [htmlParts]);
+	const restHtml = useMemo(() => ({ __html: htmlParts.slice(1).join(builtInIconGalleryMarker) }), [htmlParts]);
 
 	return (
 		<article className="prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark mx-auto max-w-full pb-8">
 			{showBuiltInIconGallery ? (
 				<>
-					<div dangerouslySetInnerHTML={{ __html: htmlParts[0] }} />
+					<div dangerouslySetInnerHTML={headHtml} />
 					<BuiltInIconGallery />
-					<div dangerouslySetInnerHTML={{ __html: htmlParts.slice(1).join(builtInIconGalleryMarker) }} />
+					<div dangerouslySetInnerHTML={restHtml} />
 				</>
 			) : (
-				<div dangerouslySetInnerHTML={{ __html: htmlParts[0] ?? '' }} />
+				<div dangerouslySetInnerHTML={headHtml} />
 			)}
 		</article>
 	);

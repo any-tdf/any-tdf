@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { mdTextToHljs, groupIconMdPlugin } from '../../utils';
 import { useAppContext } from '../../store/appStore';
 
@@ -39,11 +39,14 @@ const MdPage = ({ doc, groupIcon, pb12 = false }: MdPageProps) => {
 		void load();
 	}, [doc, groupIcon, isZh]);
 
+	// 固定 { __html } 对象引用，避免重渲染时 innerHTML 被重写导致滚动位置丢失
+	const innerHtml = useMemo(() => ({ __html: text }), [text]);
+
 	return (
 		<article
 			className={`prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark prose-table:break-all prose-td:whitespace-nowrap md:prose-td:whitespace-normal mx-auto max-w-full overflow-x-auto ${pb12 ? 'pb-12' : 'pb-8'}`}
 		>
-			<div dangerouslySetInnerHTML={{ __html: text }} />
+			<div dangerouslySetInnerHTML={innerHtml} />
 		</article>
 	);
 };
