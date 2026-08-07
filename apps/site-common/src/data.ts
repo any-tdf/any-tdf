@@ -85,7 +85,7 @@ const toolLinks: FooterLink[] = [
 	{
 		title: 'Any TDF for VS Code',
 		title_en: 'Any TDF for VS Code',
-		link: 'https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension',
+		link: 'https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension',
 		_blank: true
 	},
 	...motionLinks

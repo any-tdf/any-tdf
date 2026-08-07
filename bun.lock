@@ -225,8 +225,8 @@
       },
     },
     "extensions/vscode-extension": {
-      "name": "any-tdf-vscode-extension",
-      "version": "0.0.1",
+      "name": "stdf-vscode-extension",
+      "version": "1.0.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -1390,8 +1390,6 @@
 
     "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
 
-    "any-tdf-vscode-extension": ["any-tdf-vscode-extension@workspace:extensions/vscode-extension"],
-
     "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
 
     "aria-query": ["aria-query@5.3.1", "", {}, "sha512-Z/ZeOgVl7bcSYZ/u/rh0fOpvEpq//LZmdbkXyc7syVzjPAhfOa9ebsdTSjEBDU4vs5nC98Kfduj1uFo0qyET3g=="],
@@ -2047,6 +2045,8 @@
     "stdf": ["stdf@workspace:packages/stdf"],
 
     "stdf-skill": ["stdf-skill@workspace:packages/skills/stdf-skill"],
+
+    "stdf-vscode-extension": ["stdf-vscode-extension@workspace:extensions/vscode-extension"],
 
     "string-width": ["string-width@4.2.3", "", { "dependencies": { "emoji-regex": "^8.0.0", "is-fullwidth-code-point": "^3.0.0", "strip-ansi": "^6.0.1" } }, "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g=="],
 

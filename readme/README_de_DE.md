@@ -144,7 +144,7 @@ Diese Trennung bietet:
 Quellcode, Paketierungs- und Veröffentlichungsprüfungen der Erweiterung werden in diesem Monorepo gepflegt. So erstellst du eine lokale VSIX:
 
 ```sh
-bun run --filter any-tdf-vscode-extension package
+bun run --filter stdf-vscode-extension package
 ```
 
 ## Offline-AI-Skills

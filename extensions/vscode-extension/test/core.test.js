@@ -18,7 +18,7 @@ const {
 } = require('../src/core');
 const menuList = require('../src/menuList');
 
-const createTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'any-tdf-vscode-extension-'));
+const createTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'stdf-vscode-extension-'));
 
 const writeJson = (filePath, value) => {
 	fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -290,6 +290,16 @@ describe('generated component API data', () => {
 });
 
 describe('extension manifest', () => {
+	test('preserves the existing Marketplace identity for automatic upgrades', () => {
+		const manifest = require('../package.json');
+		expect(`${manifest.publisher}.${manifest.name}`).toBe('STDF.stdf-vscode-extension');
+		expect(manifest.displayName).toBe('Any TDF for VS Code');
+		expect(Number(manifest.version.split('.')[0])).toBeGreaterThanOrEqual(1);
+		expect(manifest.contributes.configuration.properties['STDF.English'].deprecationMessage).toContain(
+			'AnyTDF.English'
+		);
+	});
+
 	test('declares external Svelte and Vue language extensions', () => {
 		const manifest = require('../package.json');
 		expect(manifest.extensionPack).toEqual(['Vue.volar', 'svelte.svelte-vscode']);

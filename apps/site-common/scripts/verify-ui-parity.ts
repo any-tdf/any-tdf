@@ -380,7 +380,7 @@ for (const site of sites) {
 		'https://www.npmjs.com/package/create-any-tdf',
 		'https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol',
 		'https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts',
-		'https://marketplace.visualstudio.com/items?itemName=any-tdf.any-tdf-vscode-extension',
+		'https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension',
 		'https://react-motion.any-tdf.dev/',
 		'https://vue-motion.any-tdf.dev/'
 	];
