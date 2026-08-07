@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { builtInIconLibraryLabelMap } from '@any-tdf/common/svg';
 import { Gem, Palette, SlidersHorizontal, SunMoon, WandSparkles, Zap } from 'lucide-react';
 import {
@@ -213,6 +214,8 @@ const ThemeSystem = () => {
 	useEffect(() => {
 		const handleKeydown = (e: KeyboardEvent) => {
 			if (!isVisible) return;
+			// 事件目标在输入框等表单元素内时跳过，避免与组件内部的键盘操作冲突
+			if ((e.target as HTMLElement).closest('input, textarea, select, [contenteditable="true"]')) return;
 			if (e.key === 'ArrowLeft') {
 				e.preventDefault();
 				navigateTheme('prev');
@@ -792,8 +795,8 @@ const ThemeSystem = () => {
 						</div>
 
 						{/* 自定义主题链接 */}
-						<a
-							href="/generator"
+						<Link
+							to="/generator"
 							className="hover:border-primary hover:bg-primary/5 dark:hover:border-dark dark:hover:bg-dark/5 group flex items-center justify-center gap-3 border border-dashed border-gray-200 bg-gray-50/50 p-3 transition-colors dark:border-gray-700 dark:bg-gray-800/50"
 						>
 							<div className="bg-primary dark:bg-dark flex size-8 items-center justify-center text-white dark:text-black">
@@ -810,7 +813,7 @@ const ThemeSystem = () => {
 							<svg className="size-4 text-gray-400 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
 							</svg>
-						</a>
+						</Link>
 					</div>
 
 					{/* 预览区域 - 亮暗对比（使用独立的内联样式，不受全局主题影响） */}
@@ -821,6 +824,7 @@ const ThemeSystem = () => {
 						className="relative w-full max-w-130 overflow-hidden border border-gray-200/30 dark:border-white/10"
 						onPointerMove={onDrag}
 						onPointerUp={endDrag}
+						onPointerCancel={endDrag}
 						onPointerLeave={endDrag}
 					>
 						{/* 亮色层 */}
@@ -845,8 +849,8 @@ const ThemeSystem = () => {
 						<div
 							className={
 								splitAxis === 'y'
-									? 'absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize'
-									: 'absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize'
+									? 'absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize touch-none'
+									: 'absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize touch-none'
 							}
 							style={splitAxis === 'y' ? { top: `${sliderPos}%` } : { left: `${sliderPos}%` }}
 							onPointerDown={startDrag}

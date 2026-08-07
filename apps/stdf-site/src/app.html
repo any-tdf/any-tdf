@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 		<meta name="theme-color" content="#23262B" media="(prefers-color-scheme: dark)" />
 		<meta itemprop="name" content="STDF" />
@@ -30,10 +30,24 @@
 					if (mode === 'dark') setFavicon('dark');
 					if (mode === 'light' || mode === 'primary') setFavicon('light');
 				};
-				const savedMode = localStorage.getItem('theme');
+				// localStorage 可能被禁用（如隐私模式），读取需兜底
+				// localStorage may be disabled (e.g. private mode), guard reads
+				let savedMode = null;
+				let savedLang = null;
+				try {
+					savedMode = localStorage.getItem('theme');
+					savedLang = localStorage.getItem('lang');
+				} catch {
+					// 读取失败时按默认值处理 / fall back to defaults when reads fail
+				}
 				const initialTheme = ['auto', 'light', 'dark'].includes(savedMode) ? savedMode : 'auto';
 				const initialMode =
 					initialTheme === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialTheme;
+				// 首屏同步 data-mode 与 lang，避免暗色模式白闪及语言属性不更新
+				// Sync data-mode and lang before first paint to avoid dark-mode FOUC and stale lang attribute
+				document.documentElement.setAttribute('data-mode', initialMode);
+				const initialLang = savedLang ?? (navigator.language.startsWith('en') ? 'en_US' : 'zh_CN');
+				document.documentElement.lang = initialLang === 'zh_CN' ? 'zh-CN' : 'en';
 				setFavicon(initialMode);
 				new MutationObserver(syncFavicon).observe(document.documentElement, {
 					attributes: true,

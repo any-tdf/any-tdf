@@ -73,7 +73,7 @@ onBeforeUnmount(() => {
 						>
 							{{ isZh ? '浏览组件' : 'Explore components' }}
 						</a>
-						<a class="site-button site-button-transparent" href="https://demo.vtdf.dev" target="_blank">Demo ↗</a>
+						<a class="site-button site-button-transparent" href="https://demo.vtdf.dev" target="_blank" rel="noreferrer">Demo ↗</a>
 					</div>
 				</div>
 
@@ -217,18 +217,36 @@ onBeforeUnmount(() => {
 				<div class="site-split" v-reveal="{ selector: ':scope > *', stagger: 90 }">
 					<div class="site-panel p-6">
 						<div class="mb-4 font-mono text-xs text-(--site-text-muted)">CONTRIBUTORS</div>
-						<a href="https://github.com/any-tdf/any-tdf/graphs/contributors" target="_blank">
-							<img src="https://contrib.nn.ci/api?repo=any-tdf/any-tdf&cols=7" :alt="isZh ? 'VTDF 贡献者' : 'VTDF contributors'" />
+						<a href="https://github.com/any-tdf/any-tdf/graphs/contributors" target="_blank" rel="noreferrer">
+							<img
+								src="https://contrib.nn.ci/api?repo=any-tdf/any-tdf&cols=7"
+								:alt="isZh ? 'VTDF 贡献者' : 'VTDF contributors'"
+								width="488"
+								height="74"
+								loading="lazy"
+								decoding="async"
+							/>
 						</a>
 					</div>
 					<div class="site-panel p-6">
 						<div class="mb-4 font-mono text-xs text-(--site-text-muted)">SPONSORS / GITHUB</div>
 						<div class="flex flex-wrap gap-3">
-							<a v-for="item in thinkGithub" :key="item.name" :href="`https://github.com/${item.name}`" target="_blank" :title="item.name">
+							<a
+								v-for="item in thinkGithub"
+								:key="item.name"
+								:href="`https://github.com/${item.name}`"
+								target="_blank"
+								rel="noreferrer"
+								:title="item.name"
+							>
 								<img
 									class="size-12 rounded-full border border-(--site-divider)"
 									:src="`https://avatars.githubusercontent.com/${item.name}`"
 									:alt="item.name"
+									width="48"
+									height="48"
+									loading="lazy"
+									decoding="async"
 								/>
 							</a>
 						</div>

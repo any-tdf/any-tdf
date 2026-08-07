@@ -1,3 +1,14 @@
+@media (max-width: 63.999rem) {
+	.portal-mode-option {
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+
+	.portal-theme-option {
+		min-height: 2.5rem;
+	}
+}
+
 @media (max-width: 47.999rem) {
 	html {
 		scroll-padding-top: calc(var(--site-header-height) + 1rem);

@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import {
 	getSiteNavigationState,
+	getSitePage,
 	legacyGeneratorPath,
 	normalizeSiteLanguage,
 	normalizeSiteThemeMode,
@@ -9,24 +10,43 @@ import {
 	resolveSiteThemeName,
 	sitePaths
 } from '@any-tdf/site-common/site';
+import { delParamsUrl } from '@any-tdf/site-common/url';
 import { switchMode, switchTheme } from 'rtdf/theme';
 import Header from './components/Header';
 import CmdK from './components/CmdK';
 import Fund from './components/Fund';
 import HomePage from './pages/Home';
-import GuideLayout from './pages/guide/GuideLayout';
-import ComponentsPage from './pages/components/ComponentsPage';
-import GeneratorPage from './pages/generator/GeneratorPage';
-import NotFound from './pages/NotFound';
 import { AppContextProvider, type LangType, type ThemeMode } from './store/appStore';
-import { delParamsUrl } from './utils';
+
+// 页面组件按需加载，减小首屏 bundle
+const GuideLayout = lazy(() => import('./pages/guide/GuideLayout'));
+const ComponentsPage = lazy(() => import('./pages/components/ComponentsPage'));
+const GeneratorPage = lazy(() => import('./pages/generator/GeneratorPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+// localStorage 可能被禁用（如隐私模式），读写失败时回退默认值，避免初始化整站崩溃
+const getStorageItem = (key: string) => {
+	try {
+		return localStorage.getItem(key);
+	} catch {
+		return null;
+	}
+};
+
+const setStorageItem = (key: string, value: string) => {
+	try {
+		localStorage.setItem(key, value);
+	} catch {
+		// 忽略写入失败
+	}
+};
 
 const getStoredLang = (): LangType => {
-	return resolveSiteLanguage(null, localStorage.getItem('lang'), navigator.language);
+	return resolveSiteLanguage(null, getStorageItem('lang'), navigator.language);
 };
 
 const getStoredThemeMode = (): ThemeMode => {
-	return normalizeSiteThemeMode(localStorage.getItem('theme'));
+	return normalizeSiteThemeMode(getStorageItem('theme'));
 };
 
 const updateFavicon = (mode: 'light' | 'dark') => {
@@ -42,36 +62,57 @@ function App() {
 	const [isCmdK, setIsCmdK] = useState(false);
 	const [isShowFund, setIsShowFund] = useState(false);
 	const [showThemeSwitch, setShowThemeSwitch] = useState(false);
-	const [currentColor, setCurrentColor] = useState(resolveSiteThemeName(null, localStorage.getItem('theme_color'), false));
+	const [currentColor, setCurrentColor] = useState(resolveSiteThemeName(null, getStorageItem('theme_color'), false));
 	const [themeMode, setThemeMode] = useState<ThemeMode>(getStoredThemeMode());
 	const [sysTheme, setSysTheme] = useState<'light' | 'dark'>(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-	const [isWideScreen, setIsWideScreen] = useState(localStorage.getItem('isFull') === 'full');
+	const [isWideScreen, setIsWideScreen] = useState(getStorageItem('isFull') === 'full');
 
 	const showLeftNav = useMemo(() => {
 		return getSiteNavigationState(location.pathname).showLeftNav;
 	}, [location.pathname]);
 
-	// 路由改变时，更新页面标题（首页由 Home 页自行设置）
+	// 路由改变时，按路由更新页面标题与描述（首页与主题生成器页由各自页面自行设置）
 	useEffect(() => {
-		if (location.pathname === '/') return;
+		const page = getSitePage(location.pathname);
+		if (page === 'home' || page === 'generator') return;
 		const isZh = lang === 'zh_CN';
-		document.title = `RTDF - ${isZh ? '移动 web 组件库' : 'Mobile web component library'}`;
+		const pageMeta = {
+			guide: {
+				title: isZh ? '指南' : 'Guide',
+				description: isZh
+					? 'RTDF 使用指南：快速开始、主题配置、国际化与插件文档。'
+					: 'RTDF guide: quick start, theming, internationalization and plugin documentation.'
+			},
+			components: {
+				title: isZh ? '组件' : 'Components',
+				description: isZh
+					? 'RTDF 移动 Web 组件的示例、API 与常见问题文档。'
+					: 'Examples, API and FAQ documentation for RTDF mobile web components.'
+			},
+			'not-found': {
+				title: isZh ? '页面未找到' : 'Page not found',
+				description: isZh ? '抱歉，页面未找到。' : 'Sorry, page not found.'
+			}
+		};
+		const meta = pageMeta[page];
+		document.title = `${meta.title} - RTDF`;
+		document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description);
 	}, [lang, location.pathname]);
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const themeParam = urlParams.get('theme');
 		const isIframe = window.self !== window.top;
-		const nextTheme = resolveSiteThemeName(themeParam, localStorage.getItem('theme_color'), isIframe);
+		const nextTheme = resolveSiteThemeName(themeParam, getStorageItem('theme_color'), isIframe);
 		if (isIframe && themeParam) {
-			localStorage.setItem('theme_color', nextTheme);
+			setStorageItem('theme_color', nextTheme);
 		}
 		setCurrentColor(nextTheme);
 	}, [location.search]);
 
 	useEffect(() => {
 		switchTheme(currentColor);
-		localStorage.setItem('theme_color', currentColor);
+		setStorageItem('theme_color', currentColor);
 	}, [currentColor]);
 
 	useEffect(() => {
@@ -92,7 +133,7 @@ function App() {
 		const resolvedThemeMode = themeMode === 'auto' ? sysTheme : themeMode;
 		switchMode(resolvedThemeMode === 'dark' ? 'dark' : 'primary');
 		updateFavicon(resolvedThemeMode);
-		localStorage.setItem('theme', themeMode);
+		setStorageItem('theme', themeMode);
 	}, [sysTheme, themeMode]);
 
 	useEffect(() => {
@@ -100,7 +141,7 @@ function App() {
 		const langParam = urlParams.get('lang');
 		const urlLanguage = normalizeSiteLanguage(langParam);
 		if (urlLanguage) {
-			localStorage.setItem('lang', urlLanguage);
+			setStorageItem('lang', urlLanguage);
 			setLang(urlLanguage);
 			const nextUrl = new URL(window.location.href);
 			nextUrl.searchParams.delete('lang');
@@ -109,8 +150,8 @@ function App() {
 			}, 10);
 			return;
 		}
-		const nextLanguage = resolveSiteLanguage(null, localStorage.getItem('lang'), navigator.language);
-		localStorage.setItem('lang', nextLanguage);
+		const nextLanguage = resolveSiteLanguage(null, getStorageItem('lang'), navigator.language);
+		setStorageItem('lang', nextLanguage);
 		setLang(nextLanguage);
 	}, [location.search]);
 
@@ -153,14 +194,18 @@ function App() {
 		<AppContextProvider value={contextValue}>
 			<main className="site-app relative min-h-screen text-left antialiased">
 				<Header showLeftNav={showLeftNav} onclickCmdK={() => setIsCmdK(true)} />
-				<Routes>
-					<Route path="/" element={<HomePage />} />
-					<Route path={legacyGeneratorPath} element={<Navigate to={sitePaths.generator} replace />} />
-					<Route path="/guide/*" element={<GuideLayout />} />
-					<Route path={sitePaths.generator} element={<GeneratorPage />} />
-					<Route path="/components" element={<ComponentsPage />} />
-					<Route path="*" element={<NotFound />} />
-				</Routes>
+				<Suspense
+					fallback={<div className="p-6 text-sm text-(--site-text-muted)">{lang === 'zh_CN' ? '页面加载中……' : 'Loading page...'}</div>}
+				>
+					<Routes>
+						<Route path="/" element={<HomePage />} />
+						<Route path={legacyGeneratorPath} element={<Navigate to={sitePaths.generator} replace />} />
+						<Route path="/guide/*" element={<GuideLayout />} />
+						<Route path={sitePaths.generator} element={<GeneratorPage />} />
+						<Route path="/components" element={<ComponentsPage />} />
+						<Route path="*" element={<NotFound />} />
+					</Routes>
+				</Suspense>
 				<CmdK />
 				{/* 赞赏 */}
 				{isShowFund ? <Fund /> : null}

@@ -134,8 +134,17 @@ watch([docRoot, currentTab, menuChange], () => {
 	outlineObserver.observe(root, { childList: true, subtree: true });
 });
 
+// 快捷键仅在焦点位于侧边菜单或未聚焦具体元素（body）时生效，且一律不拦截表单元素，
+// 避免与输入、页面滚动及 Tabs 的键盘导航冲突
+const isEditableTarget = (target: EventTarget | null) =>
+	target instanceof HTMLElement && !!target.closest('input, textarea, select, [contenteditable]');
+const isMenuKeyScope = () => {
+	const active = document.activeElement;
+	return !active || active === document.body || !!active.closest('.site-sidebar');
+};
+
 const handleKeydown = (event: KeyboardEvent) => {
-	if (appState.isCmdK) return;
+	if (appState.isCmdK || isEditableTarget(event.target) || !isMenuKeyScope()) return;
 	if (event.code === 'ArrowLeft' && currentTab.value > 0) selectTab(currentTab.value - 1);
 	if (event.code === 'ArrowRight' && currentTab.value < 4) selectTab(currentTab.value + 1);
 	if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {

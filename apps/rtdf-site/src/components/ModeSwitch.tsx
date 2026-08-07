@@ -105,6 +105,7 @@ const ModeSwitch = () => {
 					themeMode === 'light' ? ' bg-primary/10 text-primary' : ' text-black/35 hover:bg-black/5 dark:text-white/35 dark:hover:bg-white/5'
 				}${clickedMode === 'light' ? ' scale-75' : ''}`}
 				aria-label={isZh ? '亮模式' : 'Light'}
+				aria-pressed={themeMode === 'light'}
 				type="button"
 			>
 				<svg width="20" height="20" viewBox="0 0 20 24" fill="none" style={{ display: 'inline' }} xmlns="http://www.w3.org/2000/svg">
@@ -152,6 +153,7 @@ const ModeSwitch = () => {
 					themeMode === 'dark' ? ' bg-dark/10 text-dark' : ' text-black/35 hover:bg-black/5 dark:text-white/35 dark:hover:bg-white/5'
 				}${clickedMode === 'dark' ? ' scale-75' : ''}`}
 				aria-label={isZh ? '暗模式' : 'Dark'}
+				aria-pressed={themeMode === 'dark'}
 				type="button"
 			>
 				<svg
@@ -175,6 +177,7 @@ const ModeSwitch = () => {
 						: ' text-black/35 hover:bg-black/5 dark:text-white/35 dark:hover:bg-white/5'
 				}${clickedMode === 'auto' ? ' scale-75' : ''}`}
 				aria-label={isZh ? '跟随系统' : 'System'}
+				aria-pressed={themeMode === 'auto'}
 				type="button"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline' }} viewBox="0 0 24 28" width="20" height="20">

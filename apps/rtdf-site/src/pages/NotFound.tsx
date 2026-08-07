@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../store/appStore';
 
 const NotFound = () => {
@@ -32,9 +33,9 @@ const NotFound = () => {
 					<div className="text-primary dark:text-dark mb-4 text-9xl font-bold">4</div>
 				</div>
 				<p className="mb-8 text-black/60 dark:text-white/60">{isZh ? '抱歉，页面未找到' : 'Sorry, page not found'}</p>
-				<a href="/" className="bg-primary dark:bg-dark rounded px-6 py-2 text-white hover:opacity-90 dark:text-black">
+				<Link to="/" className="bg-primary dark:bg-dark rounded px-6 py-2 text-white hover:opacity-90 dark:text-black">
 					{isZh ? '返回首页' : 'Back to home'}
-				</a>
+				</Link>
 			</div>
 		</div>
 	);

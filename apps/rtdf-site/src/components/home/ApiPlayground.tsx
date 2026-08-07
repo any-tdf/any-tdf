@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from 'rtdf/components';
 import type { ButtonProps } from 'rtdf/types';
 import { useAppContext } from '../../store/appStore';
@@ -298,9 +299,9 @@ const ApiPlayground = () => {
 									<span className="text-gray-400 dark:text-gray-500">
 										heightOut, heightIn, customSize, customWidth, customHeight, disabledLoading, injClass, type, onClick...
 									</span>
-									<a href="/components" className="ml-2 whitespace-nowrap text-primary hover:underline dark:text-dark">
+									<Link to="/components" className="ml-2 whitespace-nowrap text-primary hover:underline dark:text-dark">
 										{isZh ? '查看更多示例' : 'View more examples'}
-									</a>
+									</Link>
 								</div>
 							</div>
 						</div>

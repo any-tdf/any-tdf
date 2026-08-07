@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { createSiteLanguageUrl, getSiteNavigationState, siteHeaderIconPaths, sitePaths } from '@any-tdf/site-common/site';
 import ModeSwitch from './ModeSwitch';
 import RtdfLogo from './RtdfLogo';
@@ -56,11 +56,11 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 	return (
 		<header className="site-header" data-has-sidebar={showLeftNav || undefined}>
 			<div className="site-header-inner">
-				<a href="/" className="site-brand" aria-label={isZh ? 'RTDF 首页' : 'RTDF home'}>
+				<Link to="/" className="site-brand" aria-label={isZh ? 'RTDF 首页' : 'RTDF home'}>
 					<span className="site-brand-mark tdf-logo-animated" data-logo-animated>
 						<RtdfLogo className="size-full" />
 					</span>
-				</a>
+				</Link>
 
 				<nav className="site-header-nav" aria-label={isZh ? '主导航' : 'Main navigation'}>
 					<button
@@ -74,16 +74,16 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 							⌘ K
 						</span>
 					</button>
-					<a className={`site-header-link${isGuide ? ' is-active' : ''}`} aria-current={isGuide ? 'page' : undefined} href="/guide">
+					<Link className={`site-header-link${isGuide ? ' is-active' : ''}`} aria-current={isGuide ? 'page' : undefined} to="/guide">
 						{isZh ? '指南' : 'Guide'}
-					</a>
-					<a
+					</Link>
+					<Link
 						className={`site-header-link${isComponents ? ' is-active' : ''}`}
 						aria-current={isComponents ? 'page' : undefined}
-						href={sitePaths.components}
+						to={sitePaths.components}
 					>
 						{isZh ? '组件' : 'Components'}
-					</a>
+					</Link>
 					<div className="relative" ref={themePanelRef}>
 						<button
 							className="site-header-action"
@@ -104,9 +104,13 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 									<ModeSwitch />
 								</div>
 								<ThemeSwitch vertical />
-								<a
-									href={sitePaths.generator}
+								<Link
+									to={sitePaths.generator}
 									className="group mt-3 flex items-center gap-2 border-t border-(--site-divider) pt-3 text-(--site-text) no-underline"
+									onClick={() => {
+										setShowThemeSwitch(false);
+										setMobileOpen(false);
+									}}
 								>
 									<span className="flex size-7 shrink-0 items-center justify-center border border-(--site-divider) text-(--site-accent)">
 										<svg className="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -120,7 +124,7 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 									<span className="text-(--site-accent) transition-transform group-hover:translate-x-1" aria-hidden="true">
 										→
 									</span>
-								</a>
+								</Link>
 							</div>
 						) : null}
 					</div>
@@ -174,9 +178,13 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 									<ModeSwitch />
 								</div>
 								<ThemeSwitch vertical />
-								<a
-									href={sitePaths.generator}
+								<Link
+									to={sitePaths.generator}
 									className="group mt-3 flex items-center gap-2 border-t border-(--site-divider) pt-3 text-(--site-text) no-underline"
+									onClick={() => {
+										setShowThemeSwitch(false);
+										setMobileOpen(false);
+									}}
 								>
 									<span className="flex size-7 shrink-0 items-center justify-center border border-(--site-divider) text-(--site-accent)">
 										<svg className="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -190,23 +198,23 @@ const Header = ({ showLeftNav = false, onclickCmdK }: HeaderProps) => {
 									<span className="text-(--site-accent) transition-transform group-hover:translate-x-1" aria-hidden="true">
 										→
 									</span>
-								</a>
+								</Link>
 							</>
 						) : (
 							<>
 								<div className="site-mobile-menu-nav mb-3">
-									<a className="site-header-link" href="/guide">
+									<Link className="site-header-link" to="/guide" onClick={() => setMobileOpen(false)}>
 										{isZh ? '指南' : 'Guide'}
-									</a>
-									<a className="site-header-link" href={sitePaths.components}>
+									</Link>
+									<Link className="site-header-link" to={sitePaths.components} onClick={() => setMobileOpen(false)}>
 										{isZh ? '组件' : 'Components'}
-									</a>
+									</Link>
 									<button className="site-header-action" onClick={() => setMobileThemeOpen(true)} type="button">
 										{isZh ? '主题' : 'Theme'} ›
 									</button>
-									<a className="site-header-link" href={sitePaths.generator}>
+									<Link className="site-header-link" to={sitePaths.generator} onClick={() => setMobileOpen(false)}>
 										{isZh ? '主题生成器' : 'Theme generator'}
-									</a>
+									</Link>
 									<button className="site-header-action" onClick={() => onclickCmdK?.()} type="button">
 										{isZh ? '搜索' : 'Search'}
 									</button>

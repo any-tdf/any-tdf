@@ -88,12 +88,14 @@ html[data-mode='dark'] .portal-framework-logo-dark {
 	stroke-dasharray: 400;
 	stroke-dashoffset: 400;
 	animation: portal-stdf-lightning 3s linear infinite;
+	animation-play-state: paused;
 }
 
 .portal-rtdf-orbit-motion {
 	transform-box: view-box;
 	transform-origin: center;
 	animation: portal-rtdf-orbit-spin 8s linear infinite;
+	animation-play-state: paused;
 }
 
 .portal-vtdf-check-motion {
@@ -106,6 +108,13 @@ html[data-mode='dark'] .portal-framework-logo-dark {
 	stroke-dasharray: 1;
 	stroke-dashoffset: 1;
 	animation: portal-vtdf-check-draw 5s linear infinite;
+	animation-play-state: paused;
+}
+
+.portal-product-card.is-in-view .portal-product-logo-lightning,
+.portal-product-card.is-in-view .portal-rtdf-orbit-motion,
+.portal-product-card.is-in-view .portal-vtdf-check-motion {
+	animation-play-state: running;
 }
 
 .portal-product-logo-mask {

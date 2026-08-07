@@ -35,6 +35,7 @@ const setMode = (event: MouseEvent, mode: ThemeMode) => {
 			]"
 			type="button"
 			:aria-label="isZh ? '亮模式' : 'Light'"
+			:aria-pressed="appState.themeMode === 'light'"
 			@click="setMode($event, 'light')"
 		>
 			<svg width="20" height="20" viewBox="0 0 20 24" fill="none" style="display: inline" xmlns="http://www.w3.org/2000/svg">
@@ -84,6 +85,7 @@ const setMode = (event: MouseEvent, mode: ThemeMode) => {
 			]"
 			type="button"
 			:aria-label="isZh ? '暗模式' : 'Dark'"
+			:aria-pressed="appState.themeMode === 'dark'"
 			@click="setMode($event, 'dark')"
 		>
 			<svg
@@ -109,6 +111,7 @@ const setMode = (event: MouseEvent, mode: ThemeMode) => {
 			]"
 			type="button"
 			:aria-label="isZh ? '跟随系统' : 'System'"
+			:aria-pressed="appState.themeMode === 'auto'"
 			@click="setMode($event, 'auto')"
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" style="display: inline" viewBox="0 0 24 28" width="20" height="20">

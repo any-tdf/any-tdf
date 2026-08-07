@@ -184,6 +184,15 @@
 	opacity: 0.96;
 }
 
+@media (hover: none) {
+	.portal-support-method-detail {
+		position: static;
+		padding: 0;
+		background: transparent;
+		opacity: 1;
+	}
+}
+
 .portal-support-method-detail strong {
 	font-size: 0.875rem;
 	line-height: 1.35;

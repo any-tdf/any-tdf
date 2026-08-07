@@ -67,6 +67,7 @@ const translations = {
 		backToMenu: '← 返回',
 		support: '支持',
 		supportStarLabel: '在 GitHub 上为 Any TDF 点亮 Star',
+		supportStarsAlt: 'GitHub Star 数',
 		supportCloseLabel: '关闭支持窗口',
 		supportDescription:
 			'Any TDF 是一个免费、开源、持续演进的移动 Web 组件生态。我们在跨框架组件设计、配套工具和文档建设等方面投入了大量心力。如果 Any TDF 为你带来了帮助，欢迎点亮 Star 或通过赞助支持项目继续发展，感谢你的认可！',
@@ -172,6 +173,7 @@ const translations = {
 		backToMenu: '← Back',
 		support: 'Support',
 		supportStarLabel: 'Star Any TDF on GitHub',
+		supportStarsAlt: 'GitHub stars',
 		supportCloseLabel: 'Close support dialog',
 		supportDescription:
 			'Any TDF is a free, open-source, continuously evolving mobile Web component ecosystem. We put substantial care into cross-framework component design, supporting tools, and documentation. If Any TDF has helped you, please consider starring or sponsoring the project. Thank you for your support!',
@@ -282,6 +284,7 @@ const root = document.documentElement;
 const languageStorageKey = 'any-tdf-language';
 const modeStorageKey = 'any-tdf-mode';
 const colorThemeStorageKey = 'theme_color';
+const colorThemeVarsStorageKey = 'any-tdf-color-theme-vars';
 const modePreferences = ['auto', 'light', 'dark'];
 const defaultColorTheme = 'ANYTDF';
 const colorThemeNames = new Set(themes.map((theme) => theme.name));
@@ -302,22 +305,42 @@ const portalThemeProperties = [
 	'color-text-on-primary',
 	'color-text-on-dark'
 ];
+const safeGet = (key) => {
+	try {
+		return localStorage.getItem(key);
+	} catch {
+		return null;
+	}
+};
+const safeSet = (key, value) => {
+	try {
+		localStorage.setItem(key, value);
+	} catch {}
+};
 const systemMode = matchMedia('(prefers-color-scheme: dark)');
 const favicon = document.querySelector('[data-theme-favicon]');
 const faviconPaths = { light: '/favicon.svg', dark: '/favicon-dark.svg' };
 const preferredLanguage = navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
-const savedLanguage = localStorage.getItem(languageStorageKey);
-const savedModePreference = localStorage.getItem(modeStorageKey);
-const savedColorTheme = localStorage.getItem(colorThemeStorageKey);
+const savedLanguage = safeGet(languageStorageKey);
+const savedModePreference = safeGet(modeStorageKey);
+const savedColorTheme = safeGet(colorThemeStorageKey);
 let currentLanguage = savedLanguage === 'zh' || savedLanguage === 'en' ? savedLanguage : preferredLanguage;
 let currentModePreference = modePreferences.includes(savedModePreference) ? savedModePreference : 'auto';
 let currentColorTheme = colorThemeNames.has(savedColorTheme) ? savedColorTheme : defaultColorTheme;
 let currentMode = root.dataset.mode === 'dark' ? 'dark' : 'light';
 
+const themeColorContext = document.createElement('canvas').getContext('2d');
+const toHexColor = (color) => {
+	if (!themeColorContext) return color;
+	themeColorContext.fillStyle = '#010203';
+	themeColorContext.fillStyle = color;
+	const normalized = themeColorContext.fillStyle;
+	return normalized === '#010203' ? color : normalized;
+};
 const updateBrowserThemeColor = () => {
 	const propertyName = currentMode === 'dark' ? '--color-bg-base-dark' : '--color-bg-base';
 	const color = getComputedStyle(root).getPropertyValue(propertyName).trim();
-	document.querySelector('meta[name="theme-color"]')?.setAttribute('content', color);
+	document.querySelector('meta[name="theme-color"]')?.setAttribute('content', toHexColor(color));
 };
 
 const updateModeControls = () => {
@@ -363,11 +386,16 @@ const updateColorThemeLabels = () => {
 const applyColorTheme = (themeName, persist = true) => {
 	const theme = themes.find((item) => item.name === themeName);
 	currentColorTheme = theme.name;
+	const themeVars = {};
 	for (const propertyName of portalThemeProperties) {
 		root.style.setProperty(`--${propertyName}`, theme[propertyName]);
+		themeVars[`--${propertyName}`] = theme[propertyName];
 	}
 	root.dataset.theme = theme.name;
-	if (persist) localStorage.setItem(colorThemeStorageKey, theme.name);
+	if (persist) {
+		safeSet(colorThemeStorageKey, theme.name);
+		safeSet(colorThemeVarsStorageKey, JSON.stringify(themeVars));
+	}
 	updateColorThemeControls();
 	updateColorThemeLabels();
 	updateBrowserThemeColor();
@@ -378,7 +406,7 @@ const applyModePreference = (modePreference, persist = true) => {
 	currentMode = modePreference === 'auto' ? (systemMode.matches ? 'dark' : 'light') : modePreference;
 	root.dataset.mode = currentMode === 'dark' ? 'dark' : 'primary';
 	favicon?.setAttribute('href', faviconPaths[currentMode]);
-	if (persist) localStorage.setItem(modeStorageKey, modePreference);
+	if (persist) safeSet(modeStorageKey, modePreference);
 	updateModeControls();
 	updateBrowserThemeColor();
 };
@@ -433,7 +461,7 @@ const applyLanguage = (language) => {
 	currentLanguage = language;
 	const dictionary = translations[language];
 	root.lang = language === 'zh' ? 'zh-CN' : 'en';
-	localStorage.setItem(languageStorageKey, language);
+	safeSet(languageStorageKey, language);
 
 	for (const element of document.querySelectorAll('[data-i18n]')) {
 		const value = dictionary[element.dataset.i18n];
@@ -498,7 +526,10 @@ const setMobileThemeOpen = (open, restoreFocus = false) => {
 		mobileThemePanel.setAttribute('aria-hidden', String(!open));
 	}
 	mobileThemeOpenButton?.setAttribute('aria-expanded', String(open));
-	if (open) scrollCurrentThemeIntoView(mobileThemePanel);
+	if (open) {
+		scrollCurrentThemeIntoView(mobileThemePanel);
+		mobileThemeBackButton?.focus();
+	}
 	if (!open && restoreFocus) mobileThemeOpenButton?.focus();
 };
 const updateMenuControl = () => {
@@ -514,12 +545,14 @@ const setMenuOpen = (open) => {
 		mobileMenu.hidden = !open;
 		mobileMenu.setAttribute('aria-hidden', String(!open));
 	}
+	root.classList.toggle('has-mobile-menu', open);
 	updateMenuControl();
 };
 
 const supportDialog = document.querySelector('[data-support-dialog]');
 const supportCloseButton = supportDialog?.querySelector('[data-support-close]');
 const supportPaymentControls = supportDialog?.querySelectorAll('[data-support-payment]') ?? [];
+const siteApp = document.querySelector('.site-app');
 let activeSupportPayment = null;
 let lastSupportTrigger = null;
 
@@ -555,6 +588,7 @@ const openSupportDialog = (trigger) => {
 	supportDialog.hidden = false;
 	supportDialog.setAttribute('aria-hidden', 'false');
 	root.classList.add('has-support-dialog');
+	siteApp?.setAttribute('inert', '');
 	requestAnimationFrame(() => supportCloseButton?.focus());
 };
 const closeSupportDialog = () => {
@@ -562,6 +596,7 @@ const closeSupportDialog = () => {
 	supportDialog.hidden = true;
 	supportDialog.setAttribute('aria-hidden', 'true');
 	root.classList.remove('has-support-dialog');
+	siteApp?.removeAttribute('inert');
 	activeSupportPayment = null;
 	updateSupportPaymentControls();
 	const focusTarget = lastSupportTrigger;
@@ -663,12 +698,24 @@ if (motionQuery.matches || !('IntersectionObserver' in window)) {
 	for (const element of revealElements) observer.observe(element);
 }
 
+const productCards = document.querySelectorAll('.portal-product-card');
+if ('IntersectionObserver' in window) {
+	const productCardObserver = new IntersectionObserver((entries) => {
+		for (const entry of entries) {
+			entry.target.classList.toggle('is-in-view', entry.isIntersecting);
+		}
+	});
+	for (const card of productCards) productCardObserver.observe(card);
+} else {
+	for (const card of productCards) card.classList.add('is-in-view');
+}
+
 systemMode.addEventListener('change', () => {
 	if (currentModePreference === 'auto') applyModePreference('auto', false);
 });
 
 document.querySelector('[data-current-year]').textContent = String(new Date().getFullYear());
-applyColorTheme(currentColorTheme, false);
+applyColorTheme(currentColorTheme);
 applyModePreference(currentModePreference, false);
 applyLanguage(currentLanguage);
 

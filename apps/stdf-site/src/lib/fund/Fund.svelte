@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import { isShowFundStore } from '../../store';
 
@@ -12,29 +13,93 @@
 		return window.innerWidth >= 768;
 	};
 	const isDeskDevice = isDeskDeviceFunc();
+
+	let overlayEl: HTMLDivElement;
+	let panelEl: HTMLDivElement;
+	let closeBtnEl: HTMLButtonElement;
+
+	// 关闭弹窗
+	const closeFundFunc = () => {
+		isShowFundStore.set(false);
+	};
+
+	// 获取弹窗面板内所有可见的可聚焦元素
+	const getFocusableFunc = () => {
+		if (!panelEl) return [];
+		return Array.from(panelEl.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter((el) => el.offsetParent !== null);
+	};
+
+	// 键盘事件：Escape 关闭弹窗，Tab/Shift+Tab 将焦点圈禁在弹窗内
+	const keydownFunc = (e: KeyboardEvent) => {
+		if (e.key === 'Escape') {
+			e.preventDefault();
+			closeFundFunc();
+			return;
+		}
+		if (e.key !== 'Tab') return;
+		const focusableEls = getFocusableFunc();
+		if (focusableEls.length === 0) return;
+		const firstEl = focusableEls[0];
+		const lastEl = focusableEls[focusableEls.length - 1];
+		const activeInPanel = panelEl?.contains(document.activeElement);
+		if (e.shiftKey && (!activeInPanel || document.activeElement === firstEl)) {
+			e.preventDefault();
+			lastEl.focus();
+		} else if (!e.shiftKey && (!activeInPanel || document.activeElement === lastEl)) {
+			e.preventDefault();
+			firstEl.focus();
+		}
+	};
+
+	// 点击遮罩（弹窗面板以外区域）关闭弹窗
+	const clickFunc = (e: MouseEvent) => {
+		if (e.target === overlayEl) closeFundFunc();
+	};
+
+	onMount(() => {
+		// 记录打开弹窗前的焦点元素，打开后将焦点移入弹窗内的关闭按钮
+		const prevActiveEl = document.activeElement as HTMLElement | null;
+		closeBtnEl?.focus();
+		return () => {
+			// 关闭后将焦点还给触发元素
+			prevActiveEl?.focus();
+		};
+	});
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
+<svelte:window onkeydown={keydownFunc} onclick={clickFunc} />
+
 <div
+	bind:this={overlayEl}
 	transition:fade
 	class="fixed left-0 top-0 flex h-screen w-screen flex-col justify-center bg-black/20 backdrop-blur"
 	style="z-index: 1000"
-	onclick={() => {
-		isShowFundStore.set(false);
-	}}
 >
 	<div
+		bind:this={panelEl}
 		in:fly={{ y: -400 }}
+		role="dialog"
+		aria-modal="true"
+		aria-label={isZh ? '支持' : 'Support'}
 		class="site-fund-panel mx-auto overflow-y-auto rounded-xl bg-white p-4 shadow-lg md:w-200 md:p-8 dark:bg-gray-950"
-		onclick={(e: Event) => e.stopPropagation()}
 	>
 		<div class="flex justify-between">
 			<div class="text-xl font-bold">{isZh ? '支持' : 'Support'}</div>
-			<div class="h-8">
-				<a href="https://github.com/any-tdf/any-tdf" target="_blank">
-					<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&color=000" alt="GitHub" />
-				</a>
+			<div class="flex items-center gap-2">
+				<div class="h-8">
+					<a href="https://github.com/any-tdf/any-tdf" target="_blank">
+						<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&color=000" alt="GitHub" />
+					</a>
+				</div>
+				<button
+					bind:this={closeBtnEl}
+					class="site-header-action"
+					type="button"
+					aria-label={isZh ? '关闭' : 'Close'}
+					onclick={closeFundFunc}
+				>
+					×
+				</button>
 			</div>
 		</div>
 		{#if isDeskDevice || (!showWeChatPay && !showAlipayPay)}
@@ -65,7 +130,7 @@
 						</div>
 					</a>
 					<a
-						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						href="https://www.buymeacoffee.com/dufu1991"
 						target="_blank"
 					>
@@ -91,7 +156,7 @@
 						</div>
 					</a>
 					<a
-						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						href="https://paypal.me/dufu1991"
 						target="_blank"
 					>
@@ -136,7 +201,7 @@
 						onclick={() => {
 							showWeChatPay = !showWeChatPay;
 						}}
-						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						class:opacity-95={showWeChatPay}
 					>
 						{#if showWeChatPay}
@@ -191,7 +256,7 @@
 						onclick={() => {
 							showAlipayPay = !showAlipayPay;
 						}}
-						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						class:opacity-95={showAlipayPay}
 					>
 						{#if showAlipayPay}

@@ -14,6 +14,22 @@ const ArrChildFun = (arr: MenuList[]) => {
 
 const menuChildList: MenuListChild[] = ArrChildFun(menuList); //展开的菜单列表，全部
 
+//从 localStorage 读取最近使用的列表，读取或解析失败时回退为空数组并移除损坏的值
+const getLatelyListFun = (): MenuListChild[] => {
+	try {
+		const latelyListStr = localStorage.getItem('latelyList');
+		const list = latelyListStr ? JSON.parse(latelyListStr) : [];
+		return Array.isArray(list) ? list : [];
+	} catch {
+		try {
+			localStorage.removeItem('latelyList');
+		} catch {
+			//localStorage 不可用时忽略
+		}
+		return [];
+	}
+};
+
 const CmdK = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -25,9 +41,8 @@ const CmdK = () => {
 	const [currentTab, setCurrentTab] = useState(0); //当前选中的 tab
 	const [cmdFocus, setCmdFocus] = useState(false); //cmd+k 搜索框是否获取焦点
 	const cmdKInputRef = useRef<HTMLInputElement | null>(null); //cmd+k 搜索框的 dom
-	const [latelyList, setLatelyList] = useState<MenuListChild[]>(
-		localStorage.getItem('latelyList') ? JSON.parse(localStorage.getItem('latelyList') || '') : []
-	); //最近使用的列表
+	const cmdKPanelRef = useRef<HTMLDivElement | null>(null); //cmd+k 面板的 dom
+	const [latelyList, setLatelyList] = useState<MenuListChild[]>(getLatelyListFun); //最近使用的列表
 	const [isDemoShake, setIsDemoShake] = useState(false); //是否显示 demo 抖动动画
 	const [isGuideShake, setIsGuideShake] = useState(false); //是否显示 guide 抖动动画
 
@@ -106,8 +121,7 @@ const CmdK = () => {
 
 			//按下 cmd+k 触发事件
 			if (e.key === 'k' && ((isMac && e.metaKey) || (isWindows && e.ctrlKey))) {
-				const latelyListStr = localStorage.getItem('latelyList');
-				setLatelyList(latelyListStr ? JSON.parse(latelyListStr) : []);
+				setLatelyList(getLatelyListFun());
 				if (isCmdK) {
 					setIsCmdK(false);
 					setCmdFocus(false);
@@ -182,6 +196,25 @@ const CmdK = () => {
 				pushLatelyList(currentMenu);
 				gotoMenu(currentMenu.nav, currentTab);
 			}
+			//显示 cmd+k 搜索框时，按下 Tab 键将焦点圈禁在面板内
+			if (isCmdK && e.key === 'Tab') {
+				const focusableEls = cmdKPanelRef.current?.querySelectorAll<HTMLElement>('input, button');
+				if (focusableEls && focusableEls.length > 0) {
+					const firstEl = focusableEls[0];
+					const lastEl = focusableEls[focusableEls.length - 1];
+					if (!cmdKPanelRef.current?.contains(document.activeElement)) {
+						//焦点不在面板内时，聚焦到第一个可聚焦元素
+						e.preventDefault();
+						firstEl.focus();
+					} else if (e.shiftKey && document.activeElement === firstEl) {
+						e.preventDefault();
+						lastEl.focus();
+					} else if (!e.shiftKey && document.activeElement === lastEl) {
+						e.preventDefault();
+						firstEl.focus();
+					}
+				}
+			}
 		};
 		window.addEventListener('keydown', cmdKFun);
 		return () => window.removeEventListener('keydown', cmdKFun);
@@ -197,6 +230,10 @@ const CmdK = () => {
 			onClick={closeCmdKFun}
 		>
 			<div
+				ref={cmdKPanelRef}
+				role="dialog"
+				aria-modal="true"
+				aria-label={isZh ? '组件搜索' : 'Component search'}
 				className="site-modal-viewport-width animate-cmdk-scale mx-auto max-w-lg rounded-xl bg-white shadow-lg dark:bg-black"
 				onClick={(e) => e.stopPropagation()}
 			>
@@ -212,6 +249,10 @@ const CmdK = () => {
 							ref={cmdKInputRef}
 							value={cmdKValue}
 							onChange={(e) => setCmdKValue(e.target.value)}
+							role="combobox"
+							aria-expanded="true"
+							aria-controls="cmdk-listbox"
+							aria-activedescendant={cmdKList.length > 0 ? `cmdk-option-${currentIndex}-${currentTab}` : undefined}
 							className="caret-primary dark:caret-dark focus:outline-hidden w-full placeholder:text-black/20 dark:bg-black dark:placeholder:text-white/30"
 							type="text"
 							placeholder={isZh ? '请输入组件关键字' : 'Please enter the component keyword'}
@@ -219,7 +260,7 @@ const CmdK = () => {
 					</div>
 					<div className="rounded-sm border border-black/10 px-2 py-1 text-xs font-bold dark:border-white/10">ESC</div>
 				</div>
-				<div className="overflow-y-auto px-6 pb-6" style={{ maxHeight: `${(document.documentElement.clientHeight * 3) / 4}px` }}>
+				<div id="cmdk-listbox" role="listbox" className="overflow-y-auto px-6 pb-6" style={{ maxHeight: `${(document.documentElement.clientHeight * 3) / 4}px` }}>
 					{cmdKValue === '' ? (
 						<div className="mt-2 text-xs text-black/50 dark:text-white/30">
 							{latelyList.length === 0
@@ -253,6 +294,9 @@ const CmdK = () => {
 										className={`cmdk-nav-button my-1 flex w-full cursor-pointer justify-between rounded-sm border border-transparent py-1 pl-2${
 											index === currentIndex && currentTab === 0 ? ' cmdk-nav-active' : ''
 										}${isDemoShake && index === 0 ? ' animate-shake' : ''}`}
+										id={`cmdk-option-${index}-0`}
+										role="option"
+										aria-selected={index === currentIndex && currentTab === 0}
 										onClick={() => clickCmdKFun(item, 0)}
 										type="button"
 									>
@@ -274,6 +318,9 @@ const CmdK = () => {
 										className={`cmdk-nav-button my-1 flex w-full cursor-pointer justify-between rounded-sm border border-transparent py-1 pl-2${
 											index === currentIndex && currentTab === 1 ? ' cmdk-nav-active' : ''
 										}`}
+										id={`cmdk-option-${index}-1`}
+										role="option"
+										aria-selected={index === currentIndex && currentTab === 1}
 										onClick={() => clickCmdKFun(item, 1)}
 										type="button"
 									>
@@ -295,6 +342,9 @@ const CmdK = () => {
 										className={`cmdk-nav-button my-1 flex w-full cursor-pointer justify-between rounded-sm border border-transparent py-1 pl-2${
 											index === currentIndex && currentTab === 2 ? ' cmdk-nav-active' : ''
 										}${isGuideShake && index === cmdKList.length - 1 ? ' animate-shake' : ''}`}
+										id={`cmdk-option-${index}-2`}
+										role="option"
+										aria-selected={index === currentIndex && currentTab === 2}
 										onClick={() => clickCmdKFun(item, 2)}
 										type="button"
 									>

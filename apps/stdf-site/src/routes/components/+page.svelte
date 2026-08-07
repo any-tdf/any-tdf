@@ -23,6 +23,7 @@
 	let isShowIframe = $state(true);
 	let menuChange = $state(true);
 	let docRoot: HTMLDivElement | null = $state(null);
+	let menuRoot: HTMLElement | null = $state(null);
 	let outline = $state<SiteOutlineItem[]>([]);
 	let activeId = $state('');
 	let mobileOutlineOpen = $state(false);
@@ -93,12 +94,27 @@
 
 	const handleKeydown = (event: KeyboardEvent) => {
 		if ($isCmdKStore) return;
-		if (event.code === 'ArrowLeft' && currentTab > 0) selectTab(currentTab - 1);
-		if (event.code === 'ArrowRight' && currentTab < 4) selectTab(currentTab + 1);
+		// 表单元素内一律不拦截，保留原生输入行为
+		const target = event.target as HTMLElement | null;
+		if (target && (target.closest('input, textarea, select') || target.isContentEditable)) return;
+		// 仅在焦点位于侧边菜单内或未聚焦任何控件（body）时响应方向键，避免劫持页面滚动和组件自身的键盘导航
+		const active = document.activeElement as HTMLElement | null;
+		if (active && active !== document.body && !menuRoot?.contains(active)) return;
+		if (event.code === 'ArrowLeft' && currentTab > 0) {
+			event.preventDefault();
+			selectTab(currentTab - 1);
+		}
+		if (event.code === 'ArrowRight' && currentTab < 4) {
+			event.preventDefault();
+			selectTab(currentTab + 1);
+		}
 		if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
 			const currentIndex = menuChildList.findIndex((item) => item.nav === currentNav.nav);
 			const nextIndex = event.code === 'ArrowUp' ? currentIndex - 1 : currentIndex + 1;
-			if (nextIndex >= 0 && nextIndex < menuChildList.length) selectMenu(menuChildList[nextIndex]);
+			if (nextIndex >= 0 && nextIndex < menuChildList.length) {
+				event.preventDefault();
+				selectMenu(menuChildList[nextIndex]);
+			}
 		}
 	};
 
@@ -133,7 +149,7 @@
 </div>
 
 <div class="site-component-layout">
-	<aside class="site-sidebar" class:is-open={$isShowNavStore}>
+	<aside class="site-sidebar" class:is-open={$isShowNavStore} bind:this={menuRoot}>
 		<Menu {menuList} currentNav={currentNav.nav} onclickMenu={selectMenu} showIcons />
 	</aside>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { appState } from '../store/appStore';
 
 const isZh = computed(() => appState.lang === 'zh_CN');
@@ -9,21 +9,81 @@ const showAlipayPay = ref(false);
 
 // 判断是否是桌面设备
 const isDeskDevice = window.innerWidth >= 768;
+
+const panelEl = ref<HTMLDivElement | null>(null);
+const closeBtnEl = ref<HTMLButtonElement | null>(null);
+
+// 关闭弹窗
+const closeFundFunc = () => {
+	appState.isShowFund = false;
+};
+
+// 记录打开弹窗前的焦点元素
+let prevActiveEl: HTMLElement | null = null;
+
+// 键盘事件：Escape 关闭弹窗，Tab/Shift+Tab 将焦点圈禁在弹窗内
+const keydownFunc = (e: KeyboardEvent) => {
+	if (e.key === 'Escape') {
+		e.preventDefault();
+		closeFundFunc();
+		return;
+	}
+	if (e.key !== 'Tab') return;
+	const panel = panelEl.value;
+	if (!panel) return;
+	const focusableEls = Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter((el) => el.offsetParent !== null);
+	if (focusableEls.length === 0) return;
+	const firstEl = focusableEls[0];
+	const lastEl = focusableEls[focusableEls.length - 1];
+	const activeInPanel = panel.contains(document.activeElement);
+	if (e.shiftKey && (!activeInPanel || document.activeElement === firstEl)) {
+		e.preventDefault();
+		lastEl.focus();
+	} else if (!e.shiftKey && (!activeInPanel || document.activeElement === lastEl)) {
+		e.preventDefault();
+		firstEl.focus();
+	}
+};
+
+onMounted(() => {
+	prevActiveEl = document.activeElement as HTMLElement | null;
+	// 打开弹窗后将焦点移入弹窗内的关闭按钮
+	closeBtnEl.value?.focus();
+	window.addEventListener('keydown', keydownFunc);
+});
+
+onBeforeUnmount(() => {
+	window.removeEventListener('keydown', keydownFunc);
+	// 关闭后将焦点还给触发元素
+	prevActiveEl?.focus();
+});
 </script>
 
 <template>
 	<div
 		class="animate-cmdk-fade fixed left-0 top-0 flex h-screen w-screen flex-col justify-center bg-black/20 backdrop-blur"
 		style="z-index: 1000"
-		@click="appState.isShowFund = false"
+		@click="closeFundFunc"
 	>
-		<div class="mx-4 rounded-xl bg-white p-4 shadow-lg md:mx-auto md:w-200 md:p-8 dark:bg-gray-950" @click.stop>
+		<div
+			ref="panelEl"
+			role="dialog"
+			aria-modal="true"
+			:aria-label="isZh ? '支持' : 'Support'"
+			class="mx-4 rounded-xl bg-white p-4 shadow-lg md:mx-auto md:w-200 md:p-8 dark:bg-gray-950"
+			@click.stop
+		>
 			<div class="flex justify-between">
 				<div class="text-xl font-bold">{{ isZh ? '支持' : 'Support' }}</div>
-				<div class="h-8">
-					<a href="https://github.com/any-tdf/any-tdf" target="_blank">
-						<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&color=000" alt="GitHub" />
-					</a>
+				<div class="flex items-center gap-2">
+					<div class="h-8">
+						<a href="https://github.com/any-tdf/any-tdf" target="_blank">
+							<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&color=000" alt="GitHub" />
+						</a>
+					</div>
+					<button ref="closeBtnEl" class="site-header-action" type="button" :aria-label="isZh ? '关闭' : 'Close'" @click="closeFundFunc">
+						×
+					</button>
 				</div>
 			</div>
 			<div v-if="isDeskDevice || (!showWeChatPay && !showAlipayPay)" class="mt-2 text-xs text-gray-500 md:mt-8">
@@ -57,7 +117,7 @@ const isDeskDevice = window.innerWidth >= 768;
 						</div>
 					</a>
 					<a
-						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						href="https://www.buymeacoffee.com/dufu1991"
 						target="_blank"
 					>
@@ -82,7 +142,7 @@ const isDeskDevice = window.innerWidth >= 768;
 						</div>
 					</a>
 					<a
-						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						href="https://paypal.me/dufu1991"
 						target="_blank"
 					>
@@ -119,7 +179,7 @@ const isDeskDevice = window.innerWidth >= 768;
 						</template>
 					</div>
 					<button
-						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						:class="{ 'opacity-95!': showWeChatPay }"
 						type="button"
 						@click="showWeChatPay = !showWeChatPay"
@@ -169,7 +229,7 @@ const isDeskDevice = window.innerWidth >= 768;
 						</template>
 					</div>
 					<button
-						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+						class="absolute inset-1 hidden h-[95%] w-[95%] cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 						:class="{ 'opacity-95!': showAlipayPay }"
 						type="button"
 						@click="showAlipayPay = !showAlipayPay"

@@ -26,13 +26,22 @@ export type AppState = {
 	search: string;
 };
 
+// 安全读取 localStorage，存储被禁用（如 Safari 阻止所有 Cookie）时回退为 null
+const safeGetStorage = (key: string): string | null => {
+	try {
+		return localStorage.getItem(key);
+	} catch {
+		return null;
+	}
+};
+
 export const getStoredLang = (): LangType => {
 	const urlLang = new URLSearchParams(window.location.search).get('lang');
-	return resolveSiteLanguage(urlLang, localStorage.getItem('lang'), navigator.language);
+	return resolveSiteLanguage(urlLang, safeGetStorage('lang'), navigator.language);
 };
 
 export const getStoredThemeMode = (): ThemeMode => {
-	return normalizeSiteThemeMode(localStorage.getItem('theme'));
+	return normalizeSiteThemeMode(safeGetStorage('theme'));
 };
 
 const themeMode = getStoredThemeMode();
@@ -43,11 +52,11 @@ export const appState = reactive<AppState>({
 	isCmdK: false,
 	isShowFund: false,
 	showThemeSwitch: false,
-	currentColor: normalizeThemeName(localStorage.getItem('theme_color')),
+	currentColor: normalizeThemeName(safeGetStorage('theme_color')),
 	themeMode,
 	currentThemeMode: resolveSiteThemeMode(themeMode, window.matchMedia('(prefers-color-scheme: dark)').matches),
 	sysTheme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
-	isWideScreen: localStorage.getItem('isFull') === 'full',
+	isWideScreen: safeGetStorage('isFull') === 'full',
 	pathname: window.location.pathname,
 	search: window.location.search
 });
@@ -58,6 +67,9 @@ export const syncRouteState = () => {
 };
 
 export const navigateTo = (url: string) => {
+	const isSamePath = new URL(url, window.location.origin).pathname === window.location.pathname;
 	window.history.pushState({}, '', url);
 	syncRouteState();
+	// 跨路径跳转后回到页面顶部，同路径跳转保持原滚动位置
+	if (!isSamePath) window.scrollTo(0, 0);
 };

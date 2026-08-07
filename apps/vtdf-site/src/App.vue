@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, watch } from 'vue';
 import {
 	getSiteNavigationState,
 	getSitePage,
@@ -7,19 +7,22 @@ import {
 	normalizeSiteLanguage,
 	resolveSiteLanguage,
 	resolveSiteThemeName,
-	sitePaths
+	sitePaths,
+	type SitePage
 } from '@any-tdf/site-common/site';
 import { switchTheme } from 'vtdf/theme';
 import Header from './components/Header.vue';
 import CmdK from './components/CmdK.vue';
 import Fund from './components/Fund.vue';
-import HomePage from './pages/Home.vue';
-import ComponentsPage from './pages/components/ComponentsPage.vue';
-import GuideLayout from './pages/guide/GuideLayout.vue';
-import GeneratorPage from './pages/generator/GeneratorPage.vue';
-import NotFound from './pages/NotFound.vue';
 import { appState, syncRouteState } from './store/appStore';
 import { delParamsUrl } from './utils/index';
+
+// 页面组件按路由异步加载
+const HomePage = defineAsyncComponent(() => import('./pages/Home.vue'));
+const ComponentsPage = defineAsyncComponent(() => import('./pages/components/ComponentsPage.vue'));
+const GuideLayout = defineAsyncComponent(() => import('./pages/guide/GuideLayout.vue'));
+const GeneratorPage = defineAsyncComponent(() => import('./pages/generator/GeneratorPage.vue'));
+const NotFound = defineAsyncComponent(() => import('./pages/NotFound.vue'));
 
 const isZh = computed(() => appState.lang === 'zh_CN');
 
@@ -104,10 +107,47 @@ watch(
 	{ immediate: true }
 );
 
+// 各路由页面的标题与描述
+const pageMetaList: Record<SitePage, { title: string; title_en: string; description: string; description_en: string }> = {
+	home: {
+		title: 'VTDF - 移动 web 组件库',
+		title_en: 'VTDF - Mobile web component library',
+		description: 'VTDF 是基于 Vue 与 Tailwind CSS 的移动 Web 组件库。',
+		description_en: 'VTDF is a mobile web component library based on Vue and Tailwind CSS.'
+	},
+	guide: {
+		title: '指南 - VTDF',
+		title_en: 'Guide - VTDF',
+		description: 'VTDF 使用指南：快速开始、主题定制与国际化等文档。',
+		description_en: 'VTDF guides: quick start, theming, i18n and more.'
+	},
+	components: {
+		title: '组件 - VTDF',
+		title_en: 'Components - VTDF',
+		description: '浏览 VTDF 移动 Web 组件的示例、API、指南与版本记录。',
+		description_en: 'Browse VTDF mobile web components with demos, API, guides and releases.'
+	},
+	generator: {
+		title: '主题生成器 - VTDF',
+		title_en: 'Theme generator - VTDF',
+		description: '使用 VTDF 主题生成器创建并预览完整的组件主题。',
+		description_en: 'Create and preview complete component themes with the VTDF theme generator.'
+	},
+	'not-found': {
+		title: '404 - VTDF',
+		title_en: '404 - VTDF',
+		description: '页面不存在。',
+		description_en: 'Page not found.'
+	}
+};
+
+// 按路由与语言更新页面标题和描述
 watch(
-	isZh,
-	(zh) => {
-		document.title = zh ? 'VTDF - 移动 web 组件库' : 'VTDF - Mobile web component library';
+	[isZh, currentPage],
+	([zh, page]) => {
+		const meta = pageMetaList[page];
+		document.title = zh ? meta.title : meta.title_en;
+		document.querySelector('meta[name="description"]')?.setAttribute('content', zh ? meta.description : meta.description_en);
 	},
 	{ immediate: true }
 );

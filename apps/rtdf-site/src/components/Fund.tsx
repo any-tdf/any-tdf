@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppContext } from '../store/appStore';
 
 const Fund = () => {
@@ -10,6 +10,51 @@ const Fund = () => {
 	// 判断是否是桌面设备
 	const isDeskDevice = window.innerWidth >= 768;
 
+	const panelRef = useRef<HTMLDivElement>(null);
+	const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+	// 关闭弹窗
+	const closeFundFun = () => {
+		setIsShowFund(false);
+	};
+
+	useEffect(() => {
+		// 记录打开弹窗前的焦点元素，打开后将焦点移入弹窗内的关闭按钮
+		const prevActiveEl = document.activeElement as HTMLElement | null;
+		closeBtnRef.current?.focus();
+		// 键盘事件：Escape 关闭弹窗，Tab/Shift+Tab 将焦点圈禁在弹窗内
+		const keydownFun = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				e.preventDefault();
+				setIsShowFund(false);
+				return;
+			}
+			if (e.key !== 'Tab') return;
+			const panelEl = panelRef.current;
+			if (!panelEl) return;
+			const focusableEls = Array.from(panelEl.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter(
+				(el) => el.offsetParent !== null
+			);
+			if (focusableEls.length === 0) return;
+			const firstEl = focusableEls[0];
+			const lastEl = focusableEls[focusableEls.length - 1];
+			const activeInPanel = panelEl.contains(document.activeElement);
+			if (e.shiftKey && (!activeInPanel || document.activeElement === firstEl)) {
+				e.preventDefault();
+				lastEl.focus();
+			} else if (!e.shiftKey && (!activeInPanel || document.activeElement === lastEl)) {
+				e.preventDefault();
+				firstEl.focus();
+			}
+		};
+		window.addEventListener('keydown', keydownFun);
+		return () => {
+			window.removeEventListener('keydown', keydownFun);
+			// 关闭后将焦点还给触发元素
+			prevActiveEl?.focus();
+		};
+	}, [setIsShowFund]);
+
 	return (
 		<div
 			className="animate-cmdk-fade fixed left-0 top-0 flex h-screen w-screen flex-col justify-center bg-black/20 backdrop-blur"
@@ -19,15 +64,24 @@ const Fund = () => {
 			}}
 		>
 			<div
+				ref={panelRef}
+				role="dialog"
+				aria-modal="true"
+				aria-label={isZh ? '支持' : 'Support'}
 				className="site-modal-viewport-width mx-auto max-w-md rounded-xl bg-white p-4 shadow-lg md:w-200 md:max-w-none md:p-8 dark:bg-gray-950"
 				onClick={(e) => e.stopPropagation()}
 			>
 				<div className="flex justify-between">
 					<div className="text-xl font-bold">{isZh ? '支持' : 'Support'}</div>
-					<div className="h-8">
-						<a href="https://github.com/any-tdf/any-tdf" target="_blank" rel="noreferrer">
-							<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&color=000" alt="GitHub" />
-						</a>
+					<div className="flex items-center gap-2">
+						<div className="h-8">
+							<a href="https://github.com/any-tdf/any-tdf" target="_blank" rel="noreferrer">
+								<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&color=000" alt="GitHub" />
+							</a>
+						</div>
+						<button ref={closeBtnRef} className="site-header-action" type="button" aria-label={isZh ? '关闭' : 'Close'} onClick={closeFundFun}>
+							×
+						</button>
 					</div>
 				</div>
 				{isDeskDevice || (!showWeChatPay && !showAlipayPay) ? (
@@ -56,7 +110,7 @@ const Fund = () => {
 								<div className="mt-1 text-xs text-gray-500">{isZh ? '推荐非中国地区使用' : 'Recommended for Non-China Regions'}</div>
 							</a>
 							<a
-								className="fund-hover-panel absolute inset-1 hidden bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+								className="fund-hover-panel absolute inset-1 hidden bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 								href="https://www.buymeacoffee.com/dufu1991"
 								target="_blank"
 								rel="noreferrer"
@@ -77,7 +131,7 @@ const Fund = () => {
 								<div className="mt-1 text-xs text-gray-500">{isZh ? '推荐非中国地区使用' : 'Recommended for Non-China Regions'}</div>
 							</a>
 							<a
-								className="fund-hover-panel absolute inset-1 hidden bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950"
+								className="fund-hover-panel absolute inset-1 hidden bg-white px-1 py-12 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950"
 								href="https://paypal.me/dufu1991"
 								target="_blank"
 								rel="noreferrer"
@@ -117,7 +171,7 @@ const Fund = () => {
 								onClick={() => {
 									setShowWeChatPay(!showWeChatPay);
 								}}
-								className={`fund-hover-panel absolute inset-1 hidden cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950${
+								className={`fund-hover-panel absolute inset-1 hidden cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950${
 									showWeChatPay ? ' opacity-95' : ''
 								}`}
 								type="button"
@@ -168,7 +222,7 @@ const Fund = () => {
 								onClick={() => {
 									setShowAlipayPay(!showAlipayPay);
 								}}
-								className={`fund-hover-panel absolute inset-1 hidden cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 md:block dark:bg-gray-950${
+								className={`fund-hover-panel absolute inset-1 hidden cursor-pointer bg-white px-1 opacity-0 transition-all duration-500 group-hover:opacity-95 group-focus-within:opacity-95 md:block dark:bg-gray-950${
 									showAlipayPay ? ' opacity-95' : ''
 								}`}
 								type="button"

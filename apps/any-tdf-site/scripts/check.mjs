@@ -214,7 +214,8 @@ if (script.includes("switchTheme(") || script.includes("/theme/plugin"))
   throw new Error("The portal must apply its own CSS variables without the Tailwind theme plugin.");
 if (
   !script.includes("root.style.setProperty(`--${propertyName}`, theme[propertyName])") ||
-  !script.includes("localStorage.setItem(colorThemeStorageKey, theme.name)")
+  !script.includes("safeSet(colorThemeStorageKey, theme.name)") ||
+  !script.includes("safeSet(colorThemeVarsStorageKey, JSON.stringify(themeVars))")
 )
   throw new Error("The portal must apply and persist common theme values through local CSS variables.");
 if (!script.includes("createIcons") || !script.includes("from 'lucide'"))
@@ -631,8 +632,10 @@ if (!script.includes("desktopNavigation.addEventListener"))
 if (!html.includes('data-theme="ANYTDF"'))
   throw new Error("The portal must default to the internal ANYTDF color theme.");
 if (
-  !html.includes("localStorage.getItem('theme_color') || 'ANYTDF'") ||
+  !html.includes("safeGet('theme_color') || 'ANYTDF'") ||
+  !html.includes("safeGet('any-tdf-color-theme-vars')") ||
   !script.includes("const colorThemeStorageKey = 'theme_color'") ||
+  !script.includes("const colorThemeVarsStorageKey = 'any-tdf-color-theme-vars'") ||
   !script.includes("const defaultColorTheme = 'ANYTDF'")
 )
   throw new Error("The selected built-in color theme must persist across page loads.");

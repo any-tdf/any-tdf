@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Boxes } from 'lucide-react';
 import { componentCategoryIconMap, componentIconMap, fallbackComponentIcon } from '@any-tdf/site-common/data';
 import { menuList } from '../../data/menuList';
@@ -60,8 +61,8 @@ const ComponentsGrid = () => {
 					{filteredComponents.map((component) => {
 						const ComponentIcon = getLucideIcon(componentIconMap[component.nav as keyof typeof componentIconMap] || fallbackComponentIcon);
 						return (
-							<a
-								href={`/components?nav=${component.nav}&tab=0`}
+							<Link
+								to={`/components?nav=${component.nav}&tab=0`}
 								className="component-item-card group relative overflow-hidden border border-(--site-divider) bg-transparent p-4 transition-colors hover:bg-primary/5 dark:hover:bg-dark/5"
 								key={component.nav}
 							>
@@ -86,19 +87,19 @@ const ComponentsGrid = () => {
 								<div className="absolute bottom-2 right-2 translate-x-2 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
 									<ArrowRight className="text-primary dark:text-dark" size={16} strokeWidth={1.75} absoluteStrokeWidth />
 								</div>
-							</a>
+							</Link>
 						);
 					})}
 				</div>
 
 				<div className="mt-10 text-center">
-					<a
-						href="/components"
+					<Link
+						to="/components"
 						className="inline-flex items-center gap-2 border border-(--site-divider) bg-transparent px-6 py-3 text-sm font-medium text-(--site-text) transition-colors hover:border-(--site-text-muted) hover:bg-black/5 focus-visible:border-(--site-text-muted) focus-visible:outline-none dark:hover:bg-white/5"
 					>
 						{isZh ? '查看全部组件文档' : 'View All Component Docs'}
 						<ArrowRight size={16} strokeWidth={1.75} absoluteStrokeWidth />
-					</a>
+					</Link>
 				</div>
 			</div>
 		</section>

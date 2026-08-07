@@ -321,6 +321,11 @@
 	justify-content: flex-start;
 }
 
+.has-mobile-menu,
+.has-mobile-menu body {
+	overflow: hidden;
+}
+
 .portal-mobile-menu {
 	position: fixed;
 	top: var(--site-header-height);

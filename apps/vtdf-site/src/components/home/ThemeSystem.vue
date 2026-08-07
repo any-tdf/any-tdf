@@ -27,7 +27,7 @@ import {
 import { generateColorScale, themes as vtdfThemes } from 'vtdf/theme';
 import { themeLabels } from '../../data/homeData';
 import { normalizeThemeName } from '../../utils/theme';
-import { appState } from '../../store/appStore';
+import { appState, navigateTo } from '../../store/appStore';
 
 const isZh = computed(() => appState.lang === 'zh_CN');
 const themeFeatureTags = computed(() => [
@@ -216,6 +216,8 @@ const navigateTheme = (direction: 'prev' | 'next') => {
 
 const handleKeydown = (e: KeyboardEvent) => {
 	if (!isVisible.value) return;
+	// 事件目标在输入框等表单元素内时跳过，避免与组件内部的键盘操作冲突
+	if ((e.target as HTMLElement).closest('input, textarea, select, [contenteditable="true"]')) return;
 	if (e.key === 'ArrowLeft') {
 		e.preventDefault();
 		navigateTheme('prev');
@@ -602,6 +604,7 @@ const endDrag = () => {
 					<a
 						href="/generator"
 						class="hover:border-primary hover:bg-primary/5 dark:hover:border-dark dark:hover:bg-dark/5 group flex items-center justify-center gap-3 border border-dashed border-gray-200 bg-gray-50/50 p-3 transition-colors dark:border-gray-700 dark:bg-gray-800/50"
+						@click.prevent="navigateTo('/generator')"
 					>
 						<div class="bg-primary dark:bg-dark flex size-8 items-center justify-center text-white dark:text-black">
 							<svg class="size-4" viewBox="0 0 24 24" fill="currentColor">
@@ -630,6 +633,7 @@ const endDrag = () => {
 					class="relative w-full max-w-130 overflow-hidden border border-gray-200/30 dark:border-white/10"
 					@pointermove="onDrag"
 					@pointerup="endDrag"
+					@pointercancel="endDrag"
 					@pointerleave="endDrag"
 				>
 					<!-- 亮色层 -->
@@ -862,31 +866,18 @@ const endDrag = () => {
 						</div>
 					</div>
 
-					<!-- 分割线手柄 -->
+					<!-- 分割线手柄（单元素动态 class，避免拖拽途中跨断点卸载元素导致指针捕获丢失） -->
 					<div
-						v-if="splitAxis === 'x'"
-						class="absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize"
-						:style="{ left: `${sliderPos}%` }"
+						:class="splitAxis === 'y'
+							? 'absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize touch-none'
+							: 'absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize touch-none'"
+						:style="splitAxis === 'y' ? { top: `${sliderPos}%` } : { left: `${sliderPos}%` }"
 						@pointerdown="startDrag"
 					>
 						<div
 							class="from-primary to-primary-700 absolute left-1/2 top-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-white bg-linear-to-br shadow-xl transition-transform duration-300 active:scale-110"
 						>
-							<svg class="size-4 text-white" viewBox="0 0 24 24" fill="currentColor">
-								<path d="M8 5L3 12L8 19V5ZM16 5V19L21 12L16 5Z" />
-							</svg>
-						</div>
-					</div>
-					<div
-						v-else
-						class="absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize"
-						:style="{ top: `${sliderPos}%` }"
-						@pointerdown="startDrag"
-					>
-						<div
-							class="from-primary to-primary-700 absolute left-1/2 top-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-white bg-linear-to-br shadow-xl transition-transform duration-300 active:scale-110"
-						>
-							<svg class="size-4 rotate-90 text-white" viewBox="0 0 24 24" fill="currentColor">
+							<svg :class="`size-4 text-white ${splitAxis === 'y' ? 'rotate-90' : ''}`" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M8 5L3 12L8 19V5ZM16 5V19L21 12L16 5Z" />
 							</svg>
 						</div>

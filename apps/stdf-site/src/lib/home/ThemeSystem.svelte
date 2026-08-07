@@ -207,6 +207,8 @@
 
 	const handleKeydown = (e: KeyboardEvent) => {
 		if (!isVisible) return;
+		// 事件目标在输入框等表单元素内时跳过，避免与组件内部的键盘操作冲突
+		if ((e.target as HTMLElement).closest('input, textarea, select, [contenteditable="true"]')) return;
 		if (e.key === 'ArrowLeft') {
 			e.preventDefault();
 			navigateTheme('prev');
@@ -621,6 +623,7 @@
 				class="relative w-full max-w-130 overflow-hidden border border-gray-200/30 dark:border-white/10"
 				onpointermove={onDrag}
 				onpointerup={endDrag}
+				onpointercancel={endDrag}
 				onpointerleave={endDrag}
 			>
 				<!-- 亮色层 -->
@@ -874,8 +877,8 @@
 				<!-- 分割线手柄 -->
 				<div
 					class={splitAxis === 'y'
-						? 'absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize'
-						: 'absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize'}
+						? 'absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize touch-none'
+						: 'absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize touch-none'}
 					style={splitAxis === 'y' ? `top: ${sliderPos}%` : `left: ${sliderPos}%`}
 					onpointerdown={startDrag}
 				>

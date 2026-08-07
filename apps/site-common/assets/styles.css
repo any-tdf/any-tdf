@@ -990,6 +990,9 @@ body *::selection {
 		transform: translateX(-105%);
 		box-shadow: none;
 		transition: transform 220ms ease;
+		/* 适配刘海屏左侧与底部安全区 / adapt to notch safe areas on the left and bottom */
+		padding-bottom: calc(3rem + env(safe-area-inset-bottom));
+		padding-left: calc(1.25rem + env(safe-area-inset-left));
 	}
 
 	.site-sidebar.is-open {
@@ -3050,8 +3053,9 @@ nav.has-icons .site-sidebar-link.is-active {
 .mobile-component-outline {
 	position: fixed;
 	top: calc(var(--site-header-height) + var(--site-mobile-toolbar-height) + 0.5rem);
-	right: 1rem;
-	left: 1rem;
+	/* 左右预留刘海屏安全区 / keep clear of notch safe areas on both sides */
+	right: calc(1rem + env(safe-area-inset-right));
+	left: calc(1rem + env(safe-area-inset-left));
 	z-index: 95;
 	max-height: calc(100dvh - var(--site-header-height) - var(--site-mobile-toolbar-height) - 2rem);
 	overflow: auto;
@@ -3117,8 +3121,9 @@ nav.has-icons .site-sidebar-link.is-active {
 .mobile-outline-panel {
 	position: fixed;
 	top: calc(var(--site-header-height) + var(--site-mobile-toolbar-height) + 0.5rem);
-	right: 1rem;
-	left: 1rem;
+	/* 左右预留刘海屏安全区 / keep clear of notch safe areas on both sides */
+	right: calc(1rem + env(safe-area-inset-right));
+	left: calc(1rem + env(safe-area-inset-left));
 	z-index: 95;
 	max-height: calc(100dvh - var(--site-header-height) - var(--site-mobile-toolbar-height) - 2rem);
 	overflow: auto;

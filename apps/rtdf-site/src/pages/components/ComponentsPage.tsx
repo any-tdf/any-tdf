@@ -39,6 +39,7 @@ const ComponentsPage = () => {
 	const [outline, setOutline] = useState<SiteOutlineItem[]>([]);
 	const [activeId, setActiveId] = useState('');
 	const [mobileOutlineOpen, setMobileOutlineOpen] = useState(false);
+	const sidebarRef = useRef<HTMLElement | null>(null);
 
 	const loadSource = useCallback(
 		async (nav: string) => {
@@ -129,13 +130,20 @@ const ComponentsPage = () => {
 	useEffect(() => {
 		const handleKeydown = (event: KeyboardEvent) => {
 			if (isCmdK) return;
+			const activeElement = document.activeElement as HTMLElement | null;
+			// 表单元素内一律不拦截
+			if (activeElement?.closest('input, textarea, select, [contenteditable]')) return;
+			// 仅在焦点位于组件侧边菜单或未聚焦任何元素时响应，避免劫持页面滚动与 Tabs 导航
+			if (activeElement !== document.body && !sidebarRef.current?.contains(activeElement)) return;
 			if (event.code === 'ArrowLeft' && currentTab > 0) selectTab(currentTab - 1);
 			if (event.code === 'ArrowRight' && currentTab < 4) selectTab(currentTab + 1);
 			if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
-				event.preventDefault();
 				const currentIndex = menuChildList.findIndex((item) => item.nav === currentNav.nav);
 				const nextIndex = event.code === 'ArrowUp' ? currentIndex - 1 : currentIndex + 1;
-				if (nextIndex >= 0 && nextIndex < menuChildList.length) void selectMenu(menuChildList[nextIndex]);
+				if (nextIndex >= 0 && nextIndex < menuChildList.length) {
+					event.preventDefault();
+					void selectMenu(menuChildList[nextIndex]);
+				}
 			}
 		};
 		window.addEventListener('keydown', handleKeydown);
@@ -172,7 +180,7 @@ const ComponentsPage = () => {
 			</div>
 
 			<div className="site-component-layout">
-				<aside className={`site-sidebar${isShowNav ? ' is-open' : ''}`}>
+				<aside className={`site-sidebar${isShowNav ? ' is-open' : ''}`} ref={sidebarRef}>
 					<Menu menuList={menuList} currentNav={currentNav.nav} onMenuClick={(item) => void selectMenu(item)} showIcons />
 				</aside>
 

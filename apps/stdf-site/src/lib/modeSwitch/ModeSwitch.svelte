@@ -73,19 +73,23 @@
 	};
 
 	// auto 时，监听系统主题
-	const mql: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-	mql.addEventListener('change', (e: MediaQueryListEvent) => {
-		if ($themeStore === 'auto') {
-			if (e.matches) {
-				darkMode(true);
-				sysThemeStore.set('dark');
-				currentThemeStore.set('dark');
-			} else {
-				darkMode(false);
-				sysThemeStore.set('light');
-				currentThemeStore.set('light');
+	$effect(() => {
+		const mql: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+		const handler = (e: MediaQueryListEvent) => {
+			if ($themeStore === 'auto') {
+				if (e.matches) {
+					darkMode(true);
+					sysThemeStore.set('dark');
+					currentThemeStore.set('dark');
+				} else {
+					darkMode(false);
+					sysThemeStore.set('light');
+					currentThemeStore.set('light');
+				}
 			}
-		}
+		};
+		mql.addEventListener('change', handler);
+		return () => mql.removeEventListener('change', handler);
 	});
 	const isZh = localStorage.getItem('lang') === 'zh_CN';
 </script>
@@ -103,6 +107,7 @@
 			? 'bg-primary/10 text-primary'
 			: 'text-black/35 hover:bg-black/5 dark:text-white/35 dark:hover:bg-white/5'}"
 		aria-label={isZh ? '亮模式' : 'Light'}
+		aria-pressed={$themeStore === 'light'}
 	>
 		<svg width="20" height="20" viewBox="0 0 20 24" fill="none" style="display: inline;" xmlns="http://www.w3.org/2000/svg">
 			<path
@@ -150,6 +155,7 @@
 			? 'bg-dark/10 text-dark'
 			: 'text-black/35 hover:bg-black/5 dark:text-white/35 dark:hover:bg-white/5'}"
 		aria-label={isZh ? '暗模式' : 'Dark'}
+		aria-pressed={$themeStore === 'dark'}
 	>
 		<svg width="20" height="20" style="display: inline;position:relative;top:-1px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 			<path
@@ -165,6 +171,7 @@
 			? 'bg-primary/10 text-primary dark:bg-dark/10 dark:text-dark'
 			: 'text-black/35 hover:bg-black/5 dark:text-white/35 dark:hover:bg-white/5'}"
 		aria-label={isZh ? '跟随系统' : 'System'}
+		aria-pressed={$themeStore === 'auto'}
 	>
 		<svg xmlns="http://www.w3.org/2000/svg" style="display: inline;" viewBox="0 0 24 28" width="20" height="20">
 			<path

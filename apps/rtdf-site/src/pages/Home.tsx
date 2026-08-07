@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ApiPlayground from '../components/home/ApiPlayground';
 import ApiRichness from '../components/home/ApiRichness';
 import ComponentsGrid from '../components/home/ComponentsGrid';
@@ -72,12 +73,12 @@ const Home = () => {
 							)}
 						</p>
 						<div className="site-button-row">
-							<a className="site-button site-button-primary" href="/guide">
+							<Link className="site-button site-button-primary" to="/guide">
 								{isZh ? '开始使用' : 'Get started'} →
-							</a>
-							<a className="site-button site-button-transparent" href="/components?nav=button&tab=0">
+							</Link>
+							<Link className="site-button site-button-transparent" to="/components?nav=button&tab=0">
 								{isZh ? '浏览组件' : 'Explore components'}
-							</a>
+							</Link>
 							<a className="site-button site-button-transparent" href="https://demo.rtdf.dev" target="_blank" rel="noreferrer">
 								Demo ↗
 							</a>
@@ -233,7 +234,14 @@ const Home = () => {
 						<div className="site-panel p-6">
 							<div className="mb-4 font-mono text-xs text-(--site-text-muted)">CONTRIBUTORS</div>
 							<a href="https://github.com/any-tdf/any-tdf/graphs/contributors" target="_blank" rel="noreferrer">
-								<img src="https://contrib.nn.ci/api?repo=any-tdf/any-tdf&cols=7" alt={isZh ? 'RTDF 贡献者' : 'RTDF contributors'} />
+								<img
+									src="https://contrib.nn.ci/api?repo=any-tdf/any-tdf&cols=7"
+									alt={isZh ? 'RTDF 贡献者' : 'RTDF contributors'}
+									width="488"
+									height="74"
+									loading="lazy"
+									decoding="async"
+								/>
 							</a>
 						</div>
 						<div className="site-panel p-6">
@@ -245,6 +253,10 @@ const Home = () => {
 											className="size-12 rounded-full border border-(--site-divider)"
 											src={`https://avatars.githubusercontent.com/${item.name}`}
 											alt={item.name}
+											width="48"
+											height="48"
+											loading="lazy"
+											decoding="async"
 										/>
 									</a>
 								))}
@@ -259,16 +271,22 @@ const Home = () => {
 							<div key={group.title}>
 								<h3 className="mb-3 text-sm font-bold">{isZh ? group.title : group.title_en}</h3>
 								<div className="flex flex-col gap-2 text-sm">
-									{group.list.map((link) => (
-										<a
-											href={link.link}
-											target={link._blank ? '_blank' : '_self'}
-											key={link.title}
-											rel={link._blank ? 'noreferrer' : undefined}
-										>
-											{isZh ? link.title : link.title_en}
-										</a>
-									))}
+									{group.list.map((link) =>
+										link.link.startsWith('/') ? (
+											<Link to={link.link} key={link.title}>
+												{isZh ? link.title : link.title_en}
+											</Link>
+										) : (
+											<a
+												href={link.link}
+												target={link._blank ? '_blank' : '_self'}
+												key={link.title}
+												rel={link._blank ? 'noreferrer' : undefined}
+											>
+												{isZh ? link.title : link.title_en}
+											</a>
+										)
+									)}
 								</div>
 							</div>
 						))}

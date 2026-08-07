@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Switch, Avatar, Progress, Tab, Badge } from 'rtdf/components';
 import { themes as rtdfThemes } from 'rtdf/theme';
 import { themeLabels } from '../../data/homeData';
@@ -185,8 +186,8 @@ const ThemeShowcase = () => {
 						</div>
 
 						{/* 自定义主题链接 */}
-						<a
-							href="/generator"
+						<Link
+							to="/generator"
 							className="group flex items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50/50 p-4 transition-all hover:border-primary hover:bg-primary/5 dark:border-gray-700 dark:bg-gray-800/50 dark:hover:border-dark dark:hover:bg-dark/5"
 						>
 							<div className="flex size-10 items-center justify-center rounded-xl bg-linear-to-br from-primary to-primary-700 text-white shadow-lg dark:from-dark dark:to-dark-700">
@@ -201,7 +202,7 @@ const ThemeShowcase = () => {
 							<svg className="size-5 text-gray-400 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
 							</svg>
-						</a>
+						</Link>
 
 						{/* 特性标签 */}
 						<div className="flex flex-wrap gap-2">

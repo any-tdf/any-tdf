@@ -1137,7 +1137,7 @@ onMounted(() => {
 				<!-- 背景色 -->
 				<div class="mt-2 flex items-center justify-center gap-1">
 					<span class="text-center text-xs text-black/50 dark:text-white/50">{{ isZh ? '背景色' : 'Background' }}</span>
-					<div class="group/bg relative">
+					<div class="group/bg relative" tabindex="0">
 						<svg
 							class="h-3 w-3 cursor-help text-black/30 dark:text-white/30"
 							xmlns="http://www.w3.org/2000/svg"
@@ -1149,7 +1149,7 @@ onMounted(() => {
 							/>
 						</svg>
 						<div
-							class="pointer-events-none absolute left-1/2 top-full z-10 mt-1 w-36 -translate-x-1/2 rounded bg-black px-2 py-1.5 text-xs leading-relaxed text-white opacity-0 transition-opacity group-hover/bg:opacity-100 dark:bg-white dark:text-black"
+							class="pointer-events-none absolute left-1/2 top-full z-10 mt-1 w-36 -translate-x-1/2 rounded bg-black px-2 py-1.5 text-xs leading-relaxed text-white opacity-0 transition-opacity group-hover/bg:opacity-100 group-focus-within/bg:opacity-100 dark:bg-white dark:text-black"
 						>
 							<div v-if="isZh" class="space-y-0.5">
 								<div><b>base</b> 页面基础背景</div>
@@ -1256,7 +1256,7 @@ onMounted(() => {
 				<!-- 文字色 -->
 				<div class="mt-2 flex items-center justify-center gap-1">
 					<span class="text-center text-xs text-black/50 dark:text-white/50">{{ isZh ? '文字色' : 'Text' }}</span>
-					<div class="group/text relative">
+					<div class="group/text relative" tabindex="0">
 						<svg
 							class="h-3 w-3 cursor-help text-black/30 dark:text-white/30"
 							xmlns="http://www.w3.org/2000/svg"
@@ -1268,7 +1268,7 @@ onMounted(() => {
 							/>
 						</svg>
 						<div
-							class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 w-36 -translate-x-1/2 rounded bg-black px-2 py-1.5 text-xs leading-relaxed text-white opacity-0 transition-opacity group-hover/text:opacity-100 dark:bg-white dark:text-black"
+							class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 w-36 -translate-x-1/2 rounded bg-black px-2 py-1.5 text-xs leading-relaxed text-white opacity-0 transition-opacity group-hover/text:opacity-100 group-focus-within/text:opacity-100 dark:bg-white dark:text-black"
 						>
 							<div v-if="isZh" class="space-y-0.5">
 								<div><b>primary</b> 亮色模式全局文字（深色）</div>
@@ -1407,7 +1407,7 @@ onMounted(() => {
 					</svg>
 					<span class="shrink-0 text-xs text-black/50 dark:text-white/50">{{ isZh ? '圆角' : 'Radius' }}</span>
 					<!-- tip -->
-					<div class="group/radiusTip relative">
+					<div class="group/radiusTip relative" tabindex="0">
 						<svg class="h-3.5 w-3.5 shrink-0 cursor-help" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 							<path
 								class="fill-black/30 dark:fill-white/30"
@@ -1415,7 +1415,7 @@ onMounted(() => {
 							></path>
 						</svg>
 						<div
-							class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-36 -translate-x-1/2 rounded bg-black px-2 py-1.5 text-xs leading-tight text-white opacity-0 transition-opacity group-hover/radiusTip:opacity-100 dark:bg-white dark:text-black"
+							class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-36 -translate-x-1/2 rounded bg-black px-2 py-1.5 text-xs leading-tight text-white opacity-0 transition-opacity group-hover/radiusTip:opacity-100 group-focus-within/radiusTip:opacity-100 dark:bg-white dark:text-black"
 						>
 							{{ isZh ? '全局配置后，组件仍可通过 API 单独自定义。' : 'After global config, components can still customize via API.' }}
 							<div class="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-black dark:border-t-white"></div>
@@ -1684,7 +1684,7 @@ onMounted(() => {
 							</div>
 							<!-- 删除按钮 -->
 							<button
-								class="bg-error absolute -right-1.5 -top-1.5 hidden h-4 w-4 cursor-pointer items-center justify-center rounded-full text-white group-hover:flex"
+								class="bg-error absolute -right-1.5 -top-1.5 hidden h-4 w-4 cursor-pointer items-center justify-center rounded-full text-white group-hover:flex group-focus-within:flex"
 								type="button"
 								aria-label="删除主题"
 								@click.stop="deleteCachedTheme(theme.name)"

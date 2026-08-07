@@ -28,13 +28,41 @@
 		<title>Any TDF - 一个系统，三种原生框架体验</title>
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" data-theme-favicon />
 		<script>
-			const savedMode = localStorage.getItem('any-tdf-mode');
+			const safeGet = (key) => {
+				try {
+					return localStorage.getItem(key);
+				} catch {
+					return null;
+				}
+			};
+			const savedMode = safeGet('any-tdf-mode');
 			const initialModePreference = ['auto', 'light', 'dark'].includes(savedMode) ? savedMode : 'auto';
 			const initialMode =
 				initialModePreference === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : initialModePreference;
-			document.documentElement.dataset.theme = localStorage.getItem('theme_color') || 'ANYTDF';
+			document.documentElement.dataset.theme = safeGet('theme_color') || 'ANYTDF';
 			document.documentElement.dataset.mode = initialMode === 'dark' ? 'dark' : 'primary';
 			document.querySelector('[data-theme-favicon]')?.setAttribute('href', initialMode === 'dark' ? '/favicon-dark.svg' : '/favicon.svg');
+			try {
+				const savedThemeVars = JSON.parse(safeGet('any-tdf-color-theme-vars') || 'null');
+				if (savedThemeVars && typeof savedThemeVars === 'object') {
+					for (const [propertyName, value] of Object.entries(savedThemeVars)) {
+						if (typeof value === 'string') document.documentElement.style.setProperty(propertyName, value);
+					}
+				}
+			} catch {}
+			const savedLanguage = safeGet('any-tdf-language');
+			const initialLanguage =
+				savedLanguage === 'zh' || savedLanguage === 'en' ? savedLanguage : navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+			if (initialLanguage === 'en') {
+				document.documentElement.lang = 'en';
+				document.title = 'Any TDF - One system, three native framework experiences';
+				document
+					.querySelector('meta[name="description"]')
+					?.setAttribute(
+						'content',
+						'Any TDF is a mobile Web component system for Svelte, React, and Vue with a consistent design language, theming model, and native framework experience.'
+					);
+			}
 		</script>
 	</head>
 	<body>
@@ -287,7 +315,7 @@
 							</div>
 						</div>
 
-						<div class="site-hero-visual portal-hero-visual" aria-label="Any TDF 架构概览" data-i18n-aria="architecturePreviewLabel">
+						<div class="site-hero-visual portal-hero-visual" role="img" aria-label="Any TDF 架构概览" data-i18n-aria="architecturePreviewLabel">
 							<div class="portal-system-map" data-reveal>
 								<div class="portal-map-header">
 									<span>SYSTEM / ANY TDF</span>
@@ -1047,7 +1075,13 @@
 							aria-label="在 GitHub 上为 Any TDF 点亮 Star"
 							data-i18n-aria="supportStarLabel"
 						>
-							<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&amp;label=stars&amp;color=000" alt="GitHub stars" />
+							<img
+								src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&amp;label=stars&amp;color=000"
+								alt="GitHub Star 数"
+								loading="lazy"
+								decoding="async"
+								data-i18n-alt="supportStarsAlt"
+							/>
 						</a>
 						<button
 							class="portal-support-close"
@@ -1111,7 +1145,7 @@
 							<small data-i18n="supportChina">推荐中国地区使用</small>
 						</span>
 						<span class="portal-support-payment-code">
-							<img src="/assets/fund/wp_code.png" alt="微信赞赏二维码" data-i18n-alt="supportWechatCodeAlt" />
+							<img src="/assets/fund/wp_code.png" alt="微信赞赏二维码" loading="lazy" decoding="async" data-i18n-alt="supportWechatCodeAlt" />
 							<small data-i18n="supportWechatScan">微信扫一扫</small>
 						</span>
 					</button>
@@ -1132,7 +1166,7 @@
 							<small data-i18n="supportChina">推荐中国地区使用</small>
 						</span>
 						<span class="portal-support-payment-code">
-							<img src="/assets/fund/ap_code.png" alt="支付宝收款二维码" data-i18n-alt="supportAlipayCodeAlt" />
+							<img src="/assets/fund/ap_code.png" alt="支付宝收款二维码" loading="lazy" decoding="async" data-i18n-alt="supportAlipayCodeAlt" />
 							<small data-i18n="supportAlipayScan">支付宝扫一扫</small>
 						</span>
 					</button>
