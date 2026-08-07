@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/vite-plugin-md-ts",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "A Vite and Rollup plugin that transforms Markdown files into JavaScript modules.",
 	"keywords": [
 		"markdown",
