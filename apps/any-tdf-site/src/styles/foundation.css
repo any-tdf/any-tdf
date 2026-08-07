@@ -1,0 +1,61 @@
+:root {
+	--color-primary: oklch(0.467 0.296 264.886);
+	--color-dark: oklch(0.845 0.153 80.597);
+	--color-bg-base: oklch(0.967 0.015 264.9);
+	--color-bg-surface: oklch(0.985 0.005 80.6);
+	--color-bg-overlay: oklch(0.955 0.005 80.6);
+	--color-bg-highlight: oklch(0.98 0.009 264.9);
+	--color-bg-base-dark: oklch(0.15 0.012 80.6);
+	--color-bg-surface-dark: oklch(0.22 0.009 95.6);
+	--color-bg-overlay-dark: oklch(0.19 0.008 80.6);
+	--color-bg-highlight-dark: oklch(0.08 0.006 80.6);
+	--color-text-primary: oklch(0.144 0.015 264.9);
+	--color-text-dark: oklch(0.917 0.038 80.6);
+	--color-text-on-primary: oklch(0.883 0.043 80.6);
+	--color-text-on-dark: oklch(0.189 0.05 264.9);
+	--anytdf-logo-primary: var(--color-primary);
+	--anytdf-logo-dark: var(--color-dark);
+	--portal-product-logo-base: var(--anytdf-logo-primary);
+	--portal-product-logo-layer: var(--anytdf-logo-dark);
+}
+
+:root,
+[data-mode='light'],
+[data-mode='primary'] {
+	--site-bg-alt: var(--color-bg-highlight);
+	--site-bg-soft: var(--color-bg-overlay);
+	--site-bg-elevated: var(--color-bg-surface);
+	--site-text: var(--color-text-primary);
+	--site-text-soft: color-mix(in oklch, var(--color-text-primary) 72%, var(--color-bg-base));
+	--site-text-muted: color-mix(in oklch, var(--color-text-primary) 52%, var(--color-bg-base));
+	--site-on-accent: var(--color-text-on-primary);
+	--site-code-bg: var(--color-bg-highlight);
+	--site-code-text: var(--color-text-primary);
+}
+
+[data-mode='dark'] {
+	--site-bg-alt: var(--color-bg-highlight-dark);
+	--site-bg-soft: var(--color-bg-overlay-dark);
+	--site-bg-elevated: var(--color-bg-surface-dark);
+	--site-text: var(--color-text-dark);
+	--site-text-soft: color-mix(in oklch, var(--color-text-dark) 72%, var(--color-bg-base-dark));
+	--site-text-muted: color-mix(in oklch, var(--color-text-dark) 52%, var(--color-bg-base-dark));
+	--site-on-accent: var(--color-text-on-dark);
+	--site-code-bg: var(--color-bg-highlight-dark);
+	--site-code-text: var(--color-text-dark);
+	--portal-product-logo-base: var(--anytdf-logo-dark);
+	--portal-product-logo-layer: var(--anytdf-logo-primary);
+}
+
+body {
+	overflow-x: hidden;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+:where(a, button) {
+	touch-action: manipulation;
+}

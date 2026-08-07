@@ -1,0 +1,233 @@
+.portal-architecture-panel {
+	overflow: hidden;
+}
+
+.portal-architecture-stack {
+	padding: 2rem;
+}
+
+.portal-architecture-row {
+	display: grid;
+	grid-template-columns: 11rem minmax(0, 1fr);
+	border: 1px solid var(--site-divider);
+	background: var(--site-bg);
+}
+
+.portal-architecture-label {
+	display: flex;
+	min-height: 8rem;
+	flex-direction: column;
+	justify-content: space-between;
+	border-right: 1px solid var(--site-divider);
+	padding: 1.25rem;
+}
+
+.portal-architecture-label span {
+	color: var(--site-text-muted);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.75rem;
+}
+
+.portal-architecture-label strong {
+	font-size: 0.875rem;
+	letter-spacing: 0.05em;
+}
+
+.portal-layer-icon {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--site-accent);
+}
+
+.portal-architecture-content {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.75rem;
+	padding: 1.5rem;
+}
+
+.portal-architecture-content b {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 1.25rem;
+}
+
+.portal-architecture-content span {
+	color: var(--site-text-soft);
+	font-size: 0.875rem;
+}
+
+.portal-flow-line {
+	display: grid;
+	height: 3rem;
+	place-items: center;
+	color: var(--site-text-muted);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.portal-flow-line span {
+	display: grid;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 1px solid var(--site-divider);
+	background: var(--site-bg);
+	place-items: center;
+}
+
+.portal-adapter-grid,
+.portal-experience-grid {
+	display: grid;
+	min-width: 0;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.portal-adapter-grid > div {
+	display: flex;
+	min-width: 0;
+	min-height: 8rem;
+	flex-direction: column;
+	justify-content: space-between;
+	border-right: 1px solid var(--site-divider);
+	padding: 1.25rem;
+}
+
+.portal-adapter-grid > div:last-child {
+	border-right: 0;
+}
+
+.portal-adapter-grid b {
+	color: var(--site-accent);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 1.125rem;
+}
+
+.portal-adapter-grid span {
+	color: var(--site-text-soft);
+	font-size: 0.75rem;
+	line-height: 1.6;
+}
+
+.portal-experience-grid {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.portal-experience-grid span {
+	display: grid;
+	min-height: 8rem;
+	place-items: center;
+	border-right: 1px solid var(--site-divider);
+	padding: 1rem;
+	color: var(--site-text-soft);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.75rem;
+	text-align: center;
+}
+
+.portal-experience-grid span:last-child {
+	border-right: 0;
+}
+
+.portal-motion-bridge {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	border-top: 1px solid var(--site-divider);
+	background: var(--site-bg-alt);
+}
+
+.portal-motion-copy {
+	padding: 2rem;
+}
+
+.portal-motion-kicker {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	color: var(--site-accent);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.portal-motion-kicker .portal-layer-icon {
+	width: 1rem;
+	height: 1rem;
+}
+
+.portal-motion-copy h3 {
+	margin: 1.5rem 0 0;
+	font-size: clamp(1.5rem, 3vw, 2.25rem);
+	letter-spacing: -0.04em;
+	line-height: 1.1;
+}
+
+.portal-motion-copy p {
+	max-width: 38rem;
+	margin: 1rem 0 0;
+	color: var(--site-text-soft);
+	font-size: 0.875rem;
+	line-height: 1.75;
+}
+
+.portal-motion-packages {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	border-left: 1px solid var(--site-divider);
+}
+
+.portal-motion-packages > a {
+	display: flex;
+	min-width: 0;
+	min-height: 13rem;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 1.5rem;
+	color: var(--site-text);
+	text-decoration: none;
+	transition:
+		background-color var(--site-transition),
+		color var(--site-transition);
+}
+
+.portal-motion-packages > a + a {
+	border-left: 1px solid var(--site-divider);
+}
+
+.portal-motion-packages > a:hover {
+	background: color-mix(in oklch, var(--site-accent) 6%, transparent);
+	color: var(--site-accent);
+}
+
+.portal-motion-packages > a:focus-visible {
+	outline: 2px solid var(--site-accent);
+	outline-offset: -2px;
+}
+
+.portal-motion-packages span {
+	color: var(--site-accent);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+}
+
+.portal-motion-package-label {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.portal-motion-packages strong {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.9375rem;
+	overflow-wrap: anywhere;
+}
+
+.portal-motion-packages small {
+	color: var(--site-text-soft);
+	font-size: 0.75rem;
+	line-height: 1.6;
+}

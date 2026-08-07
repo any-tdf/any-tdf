@@ -1,11 +1,24 @@
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { themes as commonThemes } from "@any-tdf/common/theme/runtime";
 
 const appRoot = resolve(import.meta.dir, "..");
+const readStyleGraph = async (stylesheetPath) => {
+  const source = await Bun.file(stylesheetPath).text();
+  const localImports = [
+    ...source.matchAll(/@import\s+["'](\.\/[^"']+\.css)["']\s*;/g),
+  ];
+  const importedStyles = await Promise.all(
+    localImports.map(([, importPath]) =>
+      readStyleGraph(resolve(dirname(stylesheetPath), importPath)),
+    ),
+  );
+  return [source, ...importedStyles].join("\n");
+};
+
 const manifest = await Bun.file(resolve(appRoot, "package.json")).json();
 const html = await Bun.file(resolve(appRoot, "index.html")).text();
 const script = await Bun.file(resolve(appRoot, "src/main.js")).text();
-const styles = await Bun.file(resolve(appRoot, "src/styles.css")).text();
+const styles = await readStyleGraph(resolve(appRoot, "src/styles.css"));
 const lightFavicon = await Bun.file(resolve(appRoot, "public/favicon.svg")).text();
 const darkFavicon = await Bun.file(
   resolve(appRoot, "public/favicon-dark.svg"),

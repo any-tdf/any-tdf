@@ -1,0 +1,176 @@
+.has-motion [data-reveal] {
+	opacity: 0;
+	transform: translateY(1.25rem);
+	transition:
+		opacity 520ms ease,
+		transform 620ms cubic-bezier(0.3, 0.76, 0.27, 1);
+}
+
+.has-motion [data-reveal].is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+[data-reveal-group] > :nth-child(2) {
+	transition-delay: 70ms;
+}
+
+[data-reveal-group] > :nth-child(3) {
+	transition-delay: 140ms;
+}
+
+[data-reveal-group] > :nth-child(4) {
+	transition-delay: 210ms;
+}
+
+@keyframes portal-stdf-lightning {
+	0% {
+		fill: transparent;
+		stroke-dashoffset: 400;
+	}
+
+	31% {
+		fill: transparent;
+		stroke-dashoffset: 0;
+	}
+
+	32% {
+		fill: currentColor;
+		stroke-dashoffset: 0;
+		opacity: 1;
+	}
+
+	33% {
+		opacity: 0;
+	}
+
+	35% {
+		opacity: 1;
+	}
+
+	37% {
+		opacity: 0;
+	}
+
+	39% {
+		opacity: 1;
+	}
+
+	41% {
+		opacity: 0;
+	}
+
+	43% {
+		opacity: 1;
+	}
+
+	44%,
+	99% {
+		fill: currentColor;
+		stroke-dashoffset: 0;
+	}
+
+	100% {
+		fill: transparent;
+		stroke-dashoffset: 400;
+	}
+}
+
+@keyframes portal-rtdf-orbit-spin {
+	to {
+		transform: rotate(1turn);
+	}
+}
+
+@keyframes portal-vtdf-check-draw {
+	0% {
+		stroke-dashoffset: 1;
+	}
+
+	6% {
+		stroke-dashoffset: 1;
+		animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+	}
+
+	36%,
+	92% {
+		stroke-dashoffset: 0;
+	}
+
+	96%,
+	100% {
+		stroke-dashoffset: 1;
+	}
+}
+
+@keyframes portal-map-flow {
+	0%,
+	8% {
+		stroke-dashoffset: 1;
+		opacity: 0;
+	}
+
+	12% {
+		opacity: var(--portal-flow-opacity);
+	}
+
+	42% {
+		stroke-dashoffset: 0;
+		opacity: var(--portal-flow-opacity);
+	}
+
+	48%,
+	100% {
+		stroke-dashoffset: 0;
+		opacity: 0;
+	}
+}
+
+@keyframes portal-map-node-signal {
+	0%,
+	22%,
+	100% {
+		opacity: 0;
+		transform: scale(0.55);
+	}
+
+	25% {
+		opacity: var(--portal-flow-opacity);
+		transform: scale(1);
+	}
+
+	29% {
+		opacity: 0;
+		transform: scale(1.7);
+	}
+}
+
+@keyframes portal-map-output-signal {
+	0%,
+	22%,
+	100% {
+		color: var(--site-text);
+		transform: translateY(0);
+	}
+
+	25% {
+		color: var(--site-accent);
+		transform: translateY(-0.125rem);
+	}
+
+	29% {
+		color: var(--site-text);
+		transform: translateY(0);
+	}
+}
+
+@keyframes portal-pulse {
+	0%,
+	100% {
+		opacity: 0.35;
+	}
+
+	50% {
+		opacity: 1;
+	}
+}

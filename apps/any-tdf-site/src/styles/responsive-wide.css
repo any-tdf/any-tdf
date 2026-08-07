@@ -1,0 +1,73 @@
+@media (min-width: 64rem) {
+	.portal-hero {
+		grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+	}
+}
+
+@media (max-width: 79.999rem) {
+	.portal-product-grid,
+	.portal-principle-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.portal-resource-grid:not(.portal-resource-grid-single) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.portal-cta {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 63.999rem) {
+	:root {
+		--site-header-height: calc(4rem + env(safe-area-inset-top));
+	}
+
+	.site-header-inner {
+		padding-top: env(safe-area-inset-top);
+		padding-right: max(1rem, env(safe-area-inset-right));
+		padding-left: max(1rem, env(safe-area-inset-left));
+	}
+
+	.portal-mobile-menu:not([hidden]) {
+		display: block;
+	}
+
+	.portal-mobile-menu {
+		padding-right: max(1rem, env(safe-area-inset-right));
+		padding-bottom: max(1rem, env(safe-area-inset-bottom));
+		padding-left: max(1rem, env(safe-area-inset-left));
+	}
+
+	.site-mobile-menu-nav .site-header-link,
+	.site-mobile-menu-nav .site-header-action {
+		min-height: 3rem;
+		justify-content: flex-start;
+	}
+
+	.portal-hero-visual {
+		min-height: 40rem;
+		border-top: 1px solid var(--site-divider);
+	}
+
+	.portal-architecture-row {
+		grid-template-columns: 8rem minmax(0, 1fr);
+	}
+
+	.portal-experience-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.portal-experience-grid span:nth-child(2) {
+		border-right: 0;
+	}
+
+	.portal-experience-grid span:nth-child(-n + 2) {
+		border-bottom: 1px solid var(--site-divider);
+	}
+
+	.portal-footer-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}

@@ -1,0 +1,188 @@
+.portal-principle-grid {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.portal-card-code {
+	color: var(--site-accent);
+}
+
+.portal-card-heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.portal-card-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	color: var(--site-accent);
+	transition:
+		color var(--site-transition),
+		transform var(--site-transition);
+}
+
+.site-feature-card:hover .portal-card-icon {
+	color: var(--site-text);
+	transform: translateY(-0.125rem);
+}
+
+.portal-resource-directory {
+	border: 1px solid var(--site-divider);
+	background: var(--site-divider);
+}
+
+.portal-resource-group {
+	background: var(--site-bg-elevated);
+}
+
+.portal-resource-group + .portal-resource-group {
+	border-top: 1px solid var(--site-divider);
+}
+
+.portal-resource-group-header {
+	display: grid;
+	min-height: 5rem;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 1rem;
+	border-bottom: 1px solid var(--site-divider);
+	padding: 0.875rem 1.25rem;
+	background: var(--site-bg-alt);
+}
+
+.portal-resource-group-icon {
+	display: grid;
+	width: 2.5rem;
+	height: 2.5rem;
+	place-items: center;
+	border: 1px solid var(--site-divider-strong);
+	color: var(--site-accent);
+}
+
+.portal-resource-group-icon .portal-layer-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+}
+
+.portal-resource-group-header > div > span,
+.portal-resource-group-header > strong {
+	color: var(--site-text-muted);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.09em;
+}
+
+.portal-resource-group-header h3 {
+	margin: 0.25rem 0 0;
+	font-size: 1rem;
+	letter-spacing: 0.02em;
+}
+
+.portal-resource-group-header > strong {
+	font-size: 1rem;
+	letter-spacing: 0.04em;
+}
+
+.portal-resource-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1px;
+	background: var(--site-divider);
+}
+
+.portal-resource-grid-single {
+	grid-template-columns: 1fr;
+}
+
+.portal-resource-card {
+	display: flex;
+	min-width: 0;
+	min-height: 14rem;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 2rem;
+	padding: 1.5rem;
+	background: var(--site-bg-elevated);
+	color: var(--site-text);
+	text-decoration: none;
+	transition:
+		background-color var(--site-transition),
+		color var(--site-transition);
+}
+
+.portal-resource-card-wide {
+	min-height: 12rem;
+}
+
+.portal-resource-card:hover {
+	background: color-mix(in oklch, var(--site-accent) 5%, var(--site-bg-elevated));
+}
+
+.portal-resource-card:focus-visible {
+	position: relative;
+	z-index: 1;
+	outline: 2px solid var(--site-accent);
+	outline-offset: -2px;
+}
+
+.portal-resource-card-topline,
+.portal-resource-target {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.portal-resource-card-topline {
+	color: var(--site-accent);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.09em;
+}
+
+.portal-resource-card-copy h4 {
+	margin: 0;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 1rem;
+	letter-spacing: -0.02em;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+	transition: color var(--site-transition);
+}
+
+.portal-resource-card:hover .portal-resource-card-copy h4 {
+	color: var(--site-accent);
+}
+
+.portal-resource-card-copy p {
+	margin: 0.75rem 0 0;
+	color: var(--site-text-soft);
+	font-size: 0.8125rem;
+	line-height: 1.7;
+}
+
+.portal-resource-target {
+	border-top: 1px solid var(--site-divider);
+	padding-top: 0.875rem;
+	color: var(--site-text-muted);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.6875rem;
+}
+
+.portal-resource-target span {
+	flex: none;
+	color: var(--site-accent);
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.portal-resource-target code {
+	max-width: 70%;
+	font: inherit;
+	overflow-wrap: anywhere;
+	text-align: right;
+}

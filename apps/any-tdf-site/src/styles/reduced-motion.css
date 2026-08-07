@@ -1,0 +1,48 @@
+@media (prefers-reduced-motion: reduce) {
+	.portal-mode-option {
+		transition: none;
+	}
+
+	.portal-mode-option.is-clicked {
+		transform: none;
+	}
+
+	.portal-support-overlay,
+	.portal-support-panel {
+		animation: none;
+	}
+
+	.portal-live-dot i {
+		animation: none;
+	}
+
+	.portal-product-logo-lightning {
+		animation: none;
+		stroke: none;
+	}
+
+	.portal-rtdf-orbit-motion {
+		animation: none;
+	}
+
+	.portal-vtdf-check-motion {
+		animation: none;
+		stroke-dashoffset: 0;
+	}
+
+	.portal-map-flow-path,
+	.portal-renderer::after {
+		display: none;
+	}
+
+	.portal-map-output b {
+		animation: none;
+		transform: none;
+	}
+
+	.has-motion [data-reveal] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
