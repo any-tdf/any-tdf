@@ -1,9 +1,12 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
-import type { InfiniteScrollProps, InfiniteScrollRef } from '../../types';
+import type { ReactNode } from 'react';
+import type { InfiniteScrollProps, InfiniteScrollRef, InfiniteScrollSlotDetail } from '../../types';
 import {
 	infiniteScrollDefaultTexts,
 	resolveInfiniteScrollDerived,
+	resolveInfiniteScrollDetail,
 	resolveInfiniteScrollDistance,
+	resolveInfiniteScrollRootMargin,
 	resolveInfiniteScrollShouldLoad
 } from '@any-tdf/common/derived/infiniteScroll';
 import { useConfig } from '../config-provider';
@@ -17,6 +20,9 @@ const defaultLoadingIcon: NonNullable<InfiniteScrollProps['loadingIcon']> = {
 	width: '4',
 	theme: true
 };
+
+const renderSlotContent = (slot: InfiniteScrollProps['loadingChild'], detail: InfiniteScrollSlotDetail): ReactNode =>
+	typeof slot === 'function' ? slot(detail) : slot;
 
 const InfiniteScroll = forwardRef<InfiniteScrollRef, InfiniteScrollProps>(
 	(
@@ -130,34 +136,58 @@ const InfiniteScroll = forwardRef<InfiniteScrollRef, InfiniteScrollProps>(
 
 		useImperativeHandle(ref, () => ({ check }), [check]);
 
+		const retry = useCallback(() => {
+			lockedRef.current = false;
+			emitLoad(true);
+		}, [emitLoad]);
+
+		const detail = useMemo(
+			() => resolveInfiniteScrollDetail({ status: infiniteScrollState.status, retry }),
+			[infiniteScrollState.status, retry]
+		);
+
 		useEffect(() => {
+			// 任一阻塞状态解除后主动复检，避免内容变化后停在边界不再触发
+			// Re-check after any blocking state clears so the component does not stall at the boundary
 			if (!loading) lockedRef.current = false;
-		}, [loading, error, finished, disabled]);
+			if (loading || error || finished || disabled) return;
+			const frame = window.requestAnimationFrame(check);
+			return () => window.cancelAnimationFrame(frame);
+		}, [check, loading, error, finished, disabled]);
 
 		useEffect(() => {
 			const scrollElement = getScrollElement(scrollTarget, rootRef.current);
 			const remove = addScrollListener(scrollElement, check);
+			let observer: IntersectionObserver | null = null;
+			if (rootRef.current && typeof IntersectionObserver !== 'undefined') {
+				const root = scrollElement === window ? null : (scrollElement as HTMLElement);
+				observer = new IntersectionObserver(
+					(entries) => {
+						if (entries.some((entry) => entry.isIntersecting)) check();
+					},
+					{ root, rootMargin: resolveInfiniteScrollRootMargin({ direction, offset }) }
+				);
+				observer.observe(rootRef.current);
+			}
 			if (immediateCheck) window.setTimeout(check, 0);
-			return remove;
-		}, [check, immediateCheck, scrollTarget]);
-
-		const retry = () => {
-			lockedRef.current = false;
-			emitLoad(true);
-		};
+			return () => {
+				observer?.disconnect();
+				remove();
+			};
+		}, [check, direction, immediateCheck, offset, scrollTarget]);
 
 		const customContent =
-			children ||
+			renderSlotContent(children, detail) ??
 			(infiniteScrollState.status === 'loading'
-				? loadingChild
+				? renderSlotContent(loadingChild, detail)
 				: infiniteScrollState.status === 'finished'
-					? finishedChild
+					? renderSlotContent(finishedChild, detail)
 					: infiniteScrollState.status === 'error'
-						? errorChild
+						? renderSlotContent(errorChild, detail)
 						: null);
 
 		return (
-			<div ref={rootRef} className={infiniteScrollState.rootClass} aria-busy={infiniteScrollState.ariaBusy}>
+			<div ref={rootRef} className={infiniteScrollState.rootClass} aria-busy={infiniteScrollState.ariaBusy} aria-live="polite">
 				{customContent ?? (
 					<>
 						{infiniteScrollState.status === 'loading' ? (

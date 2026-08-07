@@ -52,6 +52,7 @@ import type {
 	PullRefreshChangeDetail as CommonPullRefreshChangeDetail,
 	PullRefreshProps as CommonPullRefreshProps,
 	InfiniteScrollProps as CommonInfiniteScrollProps,
+	InfiniteScrollSlotDetail as CommonInfiniteScrollSlotDetail,
 	MaskProps as CommonMaskProps,
 	ModalProps as CommonModalProps,
 	NavBarProps as CommonNavBarProps,
@@ -131,7 +132,9 @@ export type {
 	TimePickerTypeProps,
 	PullRefreshStatus,
 	PullRefreshChangeDetail,
-	InfiniteScrollDirection
+	InfiniteScrollDirection,
+	InfiniteScrollStatus,
+	InfiniteScrollSlotDetail
 } from '@any-tdf/common/types';
 
 export type EasingProps = AnimationEasingProps;
@@ -280,7 +283,7 @@ export type PullRefreshProps = Omit<
 	canReleaseChild?: (detail: CommonPullRefreshChangeDetail) => ReactNode;
 	refreshingChild?: (detail: CommonPullRefreshChangeDetail) => ReactNode;
 	successChild?: (detail: CommonPullRefreshChangeDetail) => ReactNode;
-	scrollTarget?: HTMLElement | RefObject<HTMLElement | null> | string | null;
+	scrollTarget?: HTMLElement | Window | RefObject<HTMLElement | null> | string | null;
 	onRefresh?: () => void;
 	onrefresh?: () => void;
 	onChange?: (detail: CommonPullRefreshChangeDetail) => void;
@@ -291,15 +294,17 @@ export type InfiniteScrollRef = {
 	check: () => void;
 };
 
+export type InfiniteScrollSlotContent = ReactNode | ((detail: CommonInfiniteScrollSlotDetail) => ReactNode);
+
 export type InfiniteScrollProps = Omit<
 	CommonInfiniteScrollProps,
 	'children' | 'loadingChild' | 'finishedChild' | 'errorChild' | 'scrollTarget' | 'onload'
 > & {
-	children?: ReactNode;
-	loadingChild?: ReactNode;
-	finishedChild?: ReactNode;
-	errorChild?: ReactNode;
-	scrollTarget?: HTMLElement | RefObject<HTMLElement | null> | string | null;
+	children?: InfiniteScrollSlotContent;
+	loadingChild?: InfiniteScrollSlotContent;
+	finishedChild?: InfiniteScrollSlotContent;
+	errorChild?: InfiniteScrollSlotContent;
+	scrollTarget?: HTMLElement | Window | RefObject<HTMLElement | null> | string | null;
 	onLoad?: (isRetry: boolean) => void;
 	onload?: (isRetry: boolean) => void;
 };

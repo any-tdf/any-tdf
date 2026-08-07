@@ -46,9 +46,30 @@ export type ResolvePullRefreshGestureOptions = {
 	startY: number;
 };
 
+export type PullRefreshGestureLock = 'none' | 'vertical' | 'horizontal';
+
+export type ResolvePullRefreshGestureLockOptions = {
+	current?: PullRefreshGestureLock;
+	deltaX: number;
+	deltaY: number;
+	slop?: number;
+};
+
 export type ResolvePullRefreshDistanceOptions = {
 	deltaY: number;
 	pullFactor?: number;
+	threshold?: number;
+	maxDistance?: number;
+};
+
+export type ResolvePullRefreshDampingOptions = {
+	distance: number;
+	threshold?: number;
+};
+
+export type ResolvePullRefreshTransitionDurationOptions = {
+	animationDuration?: number;
+	status?: PullRefreshStatus;
 };
 
 export type ResolvePullRefreshReleaseActionOptions = {
@@ -112,10 +133,45 @@ export const resolvePullRefreshGestureIntent = ({ currentX, currentY, startX, st
 	};
 };
 
-export const resolvePullRefreshDistance = ({ deltaY, pullFactor = 1 }: ResolvePullRefreshDistanceOptions) => {
-	const safeFactor = Math.max(0.01, normalizeNumber(pullFactor, 1));
-	return Math.max(0, deltaY * safeFactor);
+export const resolvePullRefreshGestureLock = ({
+	current = 'none',
+	deltaX,
+	deltaY,
+	slop = 4
+}: ResolvePullRefreshGestureLockOptions): PullRefreshGestureLock => {
+	if (current !== 'none') return current;
+	const absX = Math.abs(deltaX);
+	const absY = Math.abs(deltaY);
+	const safeSlop = Math.max(0, normalizeNumber(slop, 4));
+	if (absX < safeSlop && absY < safeSlop) return 'none';
+	return absX >= absY ? 'horizontal' : 'vertical';
 };
+
+export const resolvePullRefreshDamping = ({ distance, threshold = 60 }: ResolvePullRefreshDampingOptions) => {
+	const safeThreshold = Math.max(1, normalizeNumber(threshold, 60));
+	const safeDistance = Math.max(0, normalizeNumber(distance, 0));
+	if (safeDistance <= safeThreshold) return safeDistance;
+	if (safeDistance <= safeThreshold * 2) return safeThreshold + (safeDistance - safeThreshold) / 2;
+	return safeThreshold * 1.5 + (safeDistance - safeThreshold * 2) / 4;
+};
+
+export const resolvePullRefreshDistance = ({
+	deltaY,
+	pullFactor = 1,
+	threshold = 60,
+	maxDistance = 0
+}: ResolvePullRefreshDistanceOptions) => {
+	const safeFactor = Math.max(0.01, normalizeNumber(pullFactor, 1));
+	const damped = resolvePullRefreshDamping({ distance: Math.max(0, deltaY) * safeFactor, threshold });
+	const safeMax = Math.max(0, normalizeNumber(maxDistance, 0));
+	return Math.round(safeMax > 0 ? Math.min(damped, safeMax) : damped);
+};
+
+export const resolvePullRefreshTransitionDuration = ({
+	animationDuration = 300,
+	status = 'normal'
+}: ResolvePullRefreshTransitionDurationOptions = {}) =>
+	status === 'pulling' || status === 'canRelease' ? 0 : Math.max(0, normalizeNumber(animationDuration, 300));
 
 export const resolvePullRefreshCanStart = ({
 	disabled = false,
@@ -215,8 +271,9 @@ export const resolvePullRefreshDerived = ({
 	const nextStatus = resolvePullRefreshStatus({ disabled, distance, refreshing, status, threshold });
 	const safeDistance =
 		nextStatus === 'refreshing' || nextStatus === 'success' ? Math.max(0, normalizeNumber(headHeight, 50)) : Math.max(0, distance);
-	const headStyleValue = resolvePullRefreshHeadStyleValue({ height: headHeight, animationDuration });
-	const contentStyleValue = resolvePullRefreshContentStyleValue({ distance: safeDistance, animationDuration });
+	const transitionDuration = resolvePullRefreshTransitionDuration({ animationDuration, status: nextStatus });
+	const headStyleValue = resolvePullRefreshHeadStyleValue({ height: headHeight, animationDuration: transitionDuration });
+	const contentStyleValue = resolvePullRefreshContentStyleValue({ distance: safeDistance, animationDuration: transitionDuration });
 
 	return {
 		contentClass: joinClasses(['relative transition-transform will-change-transform', contentClass]),

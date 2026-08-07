@@ -14,24 +14,25 @@ This file embeds the English component guide, API, FAQ, and version documentatio
 
 ## Basic Usage
 
-InfiniteScroll loads more data when the scroll position approaches an edge. It is controlled by `loading`, `finished`, and `error`.
+InfiniteScroll loads more data when the page scrolls near a boundary. The component is controlled: `loading`, `finished`, and `error` are managed externally.
 
 Default text uses component text props first, then `ConfigProvider` `locale.infiniteScroll`, then built-in fallback text. The loading icon is configured by `loadingIcon`, using the same props as the Loading component.
 
 ## Trigger Rules
 
-- With `direction` set to `down`, `load` is emitted when distance to bottom is less than or equal to `offset`.
-- With `direction` set to `up`, `load` is emitted when distance to top is less than or equal to `offset`.
-- `loading`, `finished`, `error`, or `disabled` blocks repeated loading.
-- Clicking the error content retries with `isRetry = true`.
+- With `direction` set to `down`, `load` is emitted when the distance to the bottom is less than or equal to `offset`.
+- With `direction` set to `up`, `load` is emitted when the distance to the top is less than or equal to `offset`.
+- Besides listening to scroll events, the component observes its own sentinel element with IntersectionObserver, so content height changes that bring the sentinel into the boundary also trigger a check.
+- While any of `loading`, `finished`, `error`, or `disabled` is true, loading does not fire again. Once all of them clear, the component re-checks automatically so a changed list does not stall at the boundary.
+- Clicking the error content emits `load` again with `isRetry = true`.
 
-## Manual Check
+## Active Check
 
-The component exposes `check()` through ref. Call it after data changes, tab switches, overlay display, or container size changes.
+The component exposes a `check()` method through ref, useful after data changes, tab switches, overlay display, or container resizing.
 
 ## Custom Content
 
-The default UI shows loading, finished, and error text. Use the `loadingChild`, `finishedChild`, and `errorChild` named slots for custom status content.
+Default text is shown for loading, finished, and error states. Use the `loadingChild`, `finishedChild`, and `errorChild` named slots to customize state content. The slot `detail` parameter provides `status` and `retry`, and `retry` can be bound directly to a custom retry button. Passing the default slot takes over the status content completely.
 
 ## API
 
@@ -64,10 +65,17 @@ The default UI shows loading, finished, and error text. Use the `loadingChild`, 
 
 | Name          | Parameters | Description                  |
 | ------------- | ---------- | ---------------------------- |
-| default       | -          | Fully custom status content. |
-| loadingChild  | -          | Loading content.             |
-| finishedChild | -          | Finished content.            |
-| errorChild    | -          | Error content.               |
+| default       | `detail`   | Fully custom status content. |
+| loadingChild  | `detail`   | Loading content.             |
+| finishedChild | `detail`   | Finished content.            |
+| errorChild    | `detail`   | Error content.               |
+
+## InfiniteScrollSlotDetail
+
+| Name   | Type                                           | Description                              |
+| ------ | ---------------------------------------------- | ---------------------------------------- |
+| status | `'idle' \| 'loading' \| 'finished' \| 'error'` | Current status.                          |
+| retry  | `() => void`                                   | Emit `load` again with `isRetry = true`. |
 
 ## Ref Methods
 
@@ -77,20 +85,32 @@ The default UI shows loading, finished, and error text. Use the `loadingChild`, 
 
 ## FAQ
 
-## Why does it stop loading?
+## Why doesn't it keep loading?
 
-Check whether `loading`, `finished`, `error`, or `disabled` is blocking the trigger. If the list is short, call `check()` after rendering data.
+Check whether `loading`, `finished`, `error`, or `disabled` is blocking the trigger. If the list is short, you can also call `check()` after the data renders.
 
-## How is `finished` different from `hasMore`?
+## Why does it load continuously when the content is shorter than one screen?
 
-This component uses `finished = true` to mean no more data, equivalent to `hasMore = false`.
+The component checks once on mount according to `immediateCheck`, and re-checks automatically after blocking states such as `loading` clear. As long as the sentinel stays within the boundary, `load` keeps firing, which prevents a short list from stalling on one screen. Set `:immediate-check="false"` if the initial check is not wanted.
 
-## How does retry work?
+## What is the difference between `finished` and `hasMore`?
 
-Set `error` to `true` to show the error state. Clicking the default error content calls `load` with `isRetry = true`.
+This component uses `finished = true` to indicate there is no more data, equivalent to `hasMore = false`.
+
+## How do I retry after a failure?
+
+Set `error` to `true` to show the failure content. Clicking the default error content emits `load` with `isRetry = true`. With a custom `errorChild` slot, bind `detail.retry` to your own retry button.
+
+## How do I load at the top?
+
+Set `direction="up"` and place the component at the top of the list. Scrolling near the top emits `load`. After prepending history data, adjust `scrollTop` to keep the reading position so it does not immediately retrigger at the top.
 
 ## Version
 
 ## 3.0.0
 
 - [!tag|A|0|] Added InfiniteScroll with up and down detection, finished state, error retry, custom status content, and the `check()` method.
+- [!tag|A|0|] Added the `detail` parameter to state content slots, providing `status` and `retry`.
+- [!tag|O|0|] Automatically re-checks after blocking states clear, and IntersectionObserver triggers checks when content height changes.
+- [!tag|O|0|] Added `aria-live` announcements to the status area.
+- [!tag|B|2|] Fixed named slots not rendering.

@@ -8,7 +8,9 @@
 	import {
 		infiniteScrollDefaultTexts,
 		resolveInfiniteScrollDerived,
+		resolveInfiniteScrollDetail,
 		resolveInfiniteScrollDistance,
+		resolveInfiniteScrollRootMargin,
 		resolveInfiniteScrollShouldLoad
 	} from '@any-tdf/common/derived/infiniteScroll';
 
@@ -66,12 +68,18 @@
 						: undefined)
 	);
 	const loadingIconState = $derived(loadingIcon === null ? null : { ...defaultLoadingIcon, ...loadingIcon });
+	const detail = $derived(resolveInfiniteScrollDetail({ status: infiniteScrollState.status, retry }));
 
 	const emitLoad = (isRetry: boolean) => {
 		if (locked) return;
 		locked = true;
 		onload?.(isRetry);
 	};
+
+	function retry() {
+		locked = false;
+		emitLoad(true);
+	}
 
 	export function check() {
 		const scrollElement = getScrollElement(scrollTarget, rootEl);
@@ -83,17 +91,15 @@
 	}
 
 	$effect(() => {
-		if (loading) return;
-		locked = false;
+		// 任一阻塞状态解除后主动复检，避免内容变化后停在边界不再触发
+		// Re-check after any blocking state clears so the component does not stall at the boundary
+		const blocked = loading || error || finished || disabled;
+		if (!loading) locked = false;
+		if (blocked) return;
 		if (!mounted || !rootEl || typeof window === 'undefined') return;
 		const frame = window.requestAnimationFrame(check);
 		return () => window.cancelAnimationFrame(frame);
 	});
-
-	const retry = () => {
-		locked = false;
-		emitLoad(true);
-	};
 
 	onMount(() => {
 		mounted = true;
@@ -102,12 +108,11 @@
 		let observer: IntersectionObserver | null = null;
 		if (rootEl && typeof IntersectionObserver !== 'undefined') {
 			const root = scrollElement === window ? null : (scrollElement as HTMLElement);
-			const rootMargin = direction === 'up' ? `${Math.max(0, offset)}px 0px 0px` : `0px 0px ${Math.max(0, offset)}px 0px`;
 			observer = new IntersectionObserver(
 				(entries) => {
 					if (entries.some((entry) => entry.isIntersecting)) check();
 				},
-				{ root, rootMargin }
+				{ root, rootMargin: resolveInfiniteScrollRootMargin({ direction, offset }) }
 			);
 			observer.observe(rootEl);
 		}
@@ -120,9 +125,9 @@
 	});
 </script>
 
-<div bind:this={rootEl} class={infiniteScrollState.rootClass} aria-busy={infiniteScrollState.ariaBusy}>
+<div bind:this={rootEl} class={infiniteScrollState.rootClass} aria-busy={infiniteScrollState.ariaBusy} aria-live="polite">
 	{#if customContent}
-		{@render customContent()}
+		{@render customContent(detail)}
 	{:else if infiniteScrollState.status === 'loading'}
 		<div class={infiniteScrollState.textClass}>
 			{#if loadingIconState}

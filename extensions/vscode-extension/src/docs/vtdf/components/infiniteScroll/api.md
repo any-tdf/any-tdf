@@ -25,12 +25,19 @@
 
 ## InfiniteScroll Slots
 
-| 名称          | 参数 | 说明                 |
-| ------------- | ---- | -------------------- |
-| default       | -    | 完全自定义状态内容。 |
-| loadingChild  | -    | 加载中内容。         |
-| finishedChild | -    | 加载完成内容。       |
-| errorChild    | -    | 加载失败内容。       |
+| 名称          | 参数     | 说明                 |
+| ------------- | -------- | -------------------- |
+| default       | `detail` | 完全自定义状态内容。 |
+| loadingChild  | `detail` | 加载中内容。         |
+| finishedChild | `detail` | 加载完成内容。       |
+| errorChild    | `detail` | 加载失败内容。       |
+
+## InfiniteScrollSlotDetail
+
+| 名称   | 类型                                           | 说明                                  |
+| ------ | ---------------------------------------------- | ------------------------------------- |
+| status | `'idle' \| 'loading' \| 'finished' \| 'error'` | 当前状态。                            |
+| retry  | `() => void`                                   | 以 `isRetry = true` 重新触发 `load`。 |
 
 ## Ref 方法
 

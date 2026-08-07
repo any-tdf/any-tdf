@@ -1,7 +1,7 @@
 import { joinClasses } from './helpers.js';
-import type { InfiniteScrollDirection } from '../types/index.js';
+import type { InfiniteScrollDirection, InfiniteScrollSlotDetail, InfiniteScrollStatus } from '../types/index.js';
 
-export type InfiniteScrollStatus = 'idle' | 'loading' | 'finished' | 'error';
+export type { InfiniteScrollStatus };
 
 export type InfiniteScrollDerivedOptions = {
 	direction?: InfiniteScrollDirection;
@@ -63,6 +63,22 @@ export const resolveInfiniteScrollDistance = ({
 	if (direction === 'up') return Math.max(0, scrollTop);
 	return Math.max(0, scrollHeight - scrollTop - clientHeight);
 };
+
+export const resolveInfiniteScrollRootMargin = ({
+	direction = 'down',
+	offset = 300
+}: { direction?: InfiniteScrollDirection; offset?: number } = {}) => {
+	const safeOffset = Math.max(0, normalizeNumber(offset, 300));
+	return direction === 'up' ? `${safeOffset}px 0px 0px 0px` : `0px 0px ${safeOffset}px 0px`;
+};
+
+export const resolveInfiniteScrollDetail = ({
+	status = 'idle',
+	retry
+}: {
+	status?: InfiniteScrollStatus;
+	retry: () => void;
+}): InfiniteScrollSlotDetail => ({ status, retry });
 
 export const resolveInfiniteScrollShouldLoad = ({
 	disabled = false,

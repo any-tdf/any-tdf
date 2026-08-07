@@ -21,40 +21,47 @@ Default text uses component text props first, then `ConfigProvider` `locale.pull
 ## Interaction Rules
 
 - Pull gestures are handled only when the scroll container is at the top.
-- Horizontal swipes, disabled state, and active refreshing state do not trigger another refresh.
+- The gesture direction locks once it starts: horizontal swipes never trigger a refresh, only vertical pull-downs enter the refresh flow, and dragging back past the start point cancels the pull.
+- Pull distance equals gesture distance multiplied by `pullFactor`. Beyond `threshold` the distance is damped (the further you pull, the heavier it feels), and `maxDistance` can cap it.
+- While tracking the finger there is no transition animation, so the content stays glued to the finger; release rebound, entering refresh, and success exit animate over `animationDuration`.
 - Releasing after the distance reaches `threshold` calls `onRefresh`.
 - When `refreshing` changes from `true` to `false`, `successText` is shown for `successDuration`.
+- On desktop, holding the left mouse button and dragging down works the same as touch.
+- The head status area uses `aria-live`, so status text changes are announced by assistive technologies.
 
 ## Custom Content
 
-The default header shows pulling, release, refreshing, and success text. Use `normalChild`, `pullingChild`, `canReleaseChild`, `refreshingChild`, and `successChild` to customize every state.
+The default header shows pulling, release, refreshing, and success text. Use `normalChild`, `pullingChild`, `canReleaseChild`, `refreshingChild`, and `successChild` render props to customize every state. The render prop `detail` parameter provides `status`, `distance`, and `progress`, which can drive progress rings, rotating arrows, and similar animations.
 
 ## Scroll Container
 
 The component finds the nearest scroll container by default. Pass `scrollTarget` for overlays, tabs, or nested scrolling areas.
 
+For nested scrolling, add `overscroll-behavior: contain` (Tailwind class `overscroll-contain`) to the scroll container to avoid the browser's native pull-to-refresh or scroll chaining. PullRefresh and InfiniteScroll can be combined inside the same scroll container, handling top refresh and bottom loading respectively.
+
 ## API
 
 ## PullRefresh Props
 
-| Name              | Type                                      | Default                                                 | Required | Description                                                                |
-| ----------------- | ----------------------------------------- | ------------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
-| refreshing        | `boolean`                                 | `false`                                                 | N        | Whether refresh is active. Controlled state.                               |
-| disabled          | `boolean`                                 | `false`                                                 | N        | Disable pull refresh.                                                      |
-| headHeight        | `number`                                  | `50`                                                    | N        | Header height in pixels.                                                   |
-| threshold         | `number`                                  | `60`                                                    | N        | Distance required before release can refresh.                              |
-| pullFactor        | `number`                                  | `1`                                                     | N        | Ratio from gesture distance to pull distance.                              |
-| successDuration   | `number`                                  | `500`                                                   | N        | Success state duration in milliseconds.                                    |
-| animationDuration | `number`                                  | `300`                                                   | N        | Rebound and state animation duration in milliseconds.                      |
-| pullingText       | `string`                                  | `'Pull to refresh'`                                     | N        | Default pulling text.                                                      |
-| canReleaseText    | `string`                                  | `'Release to refresh'`                                  | N        | Default release text.                                                      |
-| refreshingText    | `string`                                  | `'Refreshing...'`                                       | N        | Default refreshing text.                                                   |
-| successText       | `string`                                  | `'Refresh complete'`                                    | N        | Default success text.                                                      |
-| loadingIcon       | [`Loading`](./loading.md) \| `null`       | `{ type: '1_0', width: '4', height: '4', theme: true }` | N        | Loading icon props for the refreshing state. Pass `null` to hide the icon. |
-| scrollTarget      | `HTMLElement \| Window \| string \| null` | `null`                                                  | N        | Custom scroll container.                                                   |
-| injClass          | `string`                                  | `''`                                                    | N        | CSS class injected into root.                                              |
-| headClass         | `string`                                  | `''`                                                    | N        | CSS class injected into header.                                            |
-| contentClass      | `string`                                  | `''`                                                    | N        | CSS class injected into content container.                                 |
+| Name              | Type                                                                        | Default                                                 | Required | Description                                                                                   |
+| ----------------- | --------------------------------------------------------------------------- | ------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------- |
+| refreshing        | `boolean`                                                                   | `false`                                                 | N        | Whether refresh is active. Controlled state.                                                  |
+| disabled          | `boolean`                                                                   | `false`                                                 | N        | Disable pull refresh.                                                                         |
+| headHeight        | `number`                                                                    | `50`                                                    | N        | Header height in pixels.                                                                      |
+| threshold         | `number`                                                                    | `60`                                                    | N        | Distance required before release can refresh, and the knee point of damping. In pixels.       |
+| pullFactor        | `number`                                                                    | `1`                                                     | N        | Ratio from gesture distance to pull distance.                                                 |
+| maxDistance       | `number`                                                                    | `0`                                                     | N        | Maximum pull distance in pixels. `0` means unlimited (damping still applies).                 |
+| successDuration   | `number`                                                                    | `500`                                                   | N        | Success state duration in milliseconds.                                                       |
+| animationDuration | `number`                                                                    | `300`                                                   | N        | Rebound and state animation duration in milliseconds. No animation while tracking the finger. |
+| pullingText       | `string`                                                                    | `'Pull to refresh'`                                     | N        | Default pulling text.                                                                         |
+| canReleaseText    | `string`                                                                    | `'Release to refresh'`                                  | N        | Default release text.                                                                         |
+| refreshingText    | `string`                                                                    | `'Refreshing...'`                                       | N        | Default refreshing text.                                                                      |
+| successText       | `string`                                                                    | `'Refresh complete'`                                    | N        | Default success text.                                                                         |
+| loadingIcon       | [`Loading`](./loading.md) \| `null`                                         | `{ type: '1_0', width: '4', height: '4', theme: true }` | N        | Loading icon props for the refreshing state. Pass `null` to hide the icon.                    |
+| scrollTarget      | `HTMLElement \| Window \| RefObject<HTMLElement \| null> \| string \| null` | `null`                                                  | N        | Custom scroll container.                                                                      |
+| injClass          | `string`                                                                    | `''`                                                    | N        | CSS class injected into root.                                                                 |
+| headClass         | `string`                                                                    | `''`                                                    | N        | CSS class injected into header.                                                               |
+| contentClass      | `string`                                                                    | `''`                                                    | N        | CSS class injected into content container.                                                    |
 
 ## PullRefresh Events
 
@@ -67,14 +74,14 @@ The component finds the nearest scroll container by default. Pass `scrollTarget`
 
 ## PullRefresh Children
 
-| Name            | Type                                 | Parameters | Description                  |
-| --------------- | ------------------------------------ | ---------- | ---------------------------- |
-| children        | `ReactNode`                          | -          | Default content.             |
-| normalChild     | `ReactNode \| (detail) => ReactNode` | `detail`   | Normal state content.        |
-| pullingChild    | `ReactNode \| (detail) => ReactNode` | `detail`   | Pulling state content.       |
-| canReleaseChild | `ReactNode \| (detail) => ReactNode` | `detail`   | Release-ready state content. |
-| refreshingChild | `ReactNode \| (detail) => ReactNode` | `detail`   | Refreshing state content.    |
-| successChild    | `ReactNode \| (detail) => ReactNode` | `detail`   | Success state content.       |
+| Name            | Type                                                            | Parameters | Description                  |
+| --------------- | --------------------------------------------------------------- | ---------- | ---------------------------- |
+| children        | `ReactNode`                                                     | -          | Default content.             |
+| normalChild     | `ReactNode \| ((detail: PullRefreshChangeDetail) => ReactNode)` | `detail`   | Normal state content.        |
+| pullingChild    | `ReactNode \| ((detail: PullRefreshChangeDetail) => ReactNode)` | `detail`   | Pulling state content.       |
+| canReleaseChild | `ReactNode \| ((detail: PullRefreshChangeDetail) => ReactNode)` | `detail`   | Release-ready state content. |
+| refreshingChild | `ReactNode \| ((detail: PullRefreshChangeDetail) => ReactNode)` | `detail`   | Refreshing state content.    |
+| successChild    | `ReactNode \| ((detail: PullRefreshChangeDetail) => ReactNode)` | `detail`   | Success state content.       |
 
 ## PullRefreshChangeDetail
 
@@ -92,7 +99,19 @@ PullRefresh handles gestures and visual states only. Data loading belongs to the
 
 ## Why does pulling not trigger refresh?
 
-Make sure the scroll container is at the top, the component is not disabled, and it is not already refreshing. Pass `scrollTarget` explicitly for nested scrolling.
+Make sure the scroll container is at the top, the component is not disabled, and it is not already refreshing. Pass `scrollTarget` explicitly for nested scrolling. Also, if the gesture starts horizontally, the direction lock treats it as a horizontal gesture and the pull is ignored.
+
+## Why does pulling feel heavier past the threshold?
+
+That is the built-in damping curve: within `threshold` the distance follows the finger, beyond it the extra distance is halved, and beyond twice the `threshold` it is quartered. Set `maxDistance` to cap the distance.
+
+## How do I avoid conflicts with the browser's native pull-to-refresh?
+
+Add `overscroll-behavior: contain` (Tailwind class `overscroll-contain`) to the scroll container or page root so the scroll chain does not leak into the browser's default gesture.
+
+## Can I try it on desktop?
+
+Yes. In addition to touch gestures, you can hold the left mouse button and drag down with the same interaction rules.
 
 ## Can it be used with InfiniteScroll?
 
@@ -103,3 +122,6 @@ Yes. PullRefresh handles top refresh, while InfiniteScroll handles edge loading.
 ## 3.0.0
 
 - [!tag|A|0|] Added PullRefresh with controlled refreshing state, success feedback, custom state content, and custom scroll container support.
+- [!tag|A|0|] Added the `maxDistance` prop, with a damping curve applied to pull distance beyond `threshold`.
+- [!tag|O|0|] Disabled transition animation while tracking the finger for better follow-through; added gesture direction lock, and dragging back past the start point cancels the pull.
+- [!tag|O|0|] Supported mouse drag refresh on desktop, and added `aria-live` announcements to the head status area.

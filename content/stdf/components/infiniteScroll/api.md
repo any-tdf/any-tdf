@@ -25,12 +25,19 @@
 
 ## InfiniteScroll Snippets
 
-| 名称          | 类型      | 参数 | 说明                 |
-| ------------- | --------- | ---- | -------------------- |
-| children      | `Snippet` | -    | 完全自定义状态内容。 |
-| loadingChild  | `Snippet` | -    | 加载中内容。         |
-| finishedChild | `Snippet` | -    | 加载完成内容。       |
-| errorChild    | `Snippet` | -    | 加载失败内容。       |
+| 名称          | 类型                | 参数     | 说明                 |
+| ------------- | ------------------- | -------- | -------------------- |
+| children      | `Snippet<[detail]>` | `detail` | 完全自定义状态内容。 |
+| loadingChild  | `Snippet<[detail]>` | `detail` | 加载中内容。         |
+| finishedChild | `Snippet<[detail]>` | `detail` | 加载完成内容。       |
+| errorChild    | `Snippet<[detail]>` | `detail` | 加载失败内容。       |
+
+## InfiniteScrollSlotDetail
+
+| 名称   | 类型                                           | 说明                                    |
+| ------ | ---------------------------------------------- | --------------------------------------- |
+| status | `'idle' \| 'loading' \| 'finished' \| 'error'` | 当前状态。                              |
+| retry  | `() => void`                                   | 以 `isRetry = true` 重新触发 `onload`。 |
 
 ## 方法
 

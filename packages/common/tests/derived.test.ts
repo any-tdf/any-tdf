@@ -910,7 +910,13 @@ import {
 	resolveImagePreviewVisibleResetAction,
 	resolveImagePreviewSwipeDirection
 } from '../src/derived/imagePreview';
-import { resolveInfiniteScrollDistance, resolveInfiniteScrollShouldLoad, resolveInfiniteScrollStatus } from '../src/derived/infiniteScroll';
+import {
+	resolveInfiniteScrollDetail,
+	resolveInfiniteScrollDistance,
+	resolveInfiniteScrollRootMargin,
+	resolveInfiniteScrollShouldLoad,
+	resolveInfiniteScrollStatus
+} from '../src/derived/infiniteScroll';
 import {
 	resolveIconAccessibility,
 	resolveIconCssSizeValue,
@@ -1545,10 +1551,13 @@ import {
 	resolveProgressTrackClass
 } from '../src/derived/progress';
 import {
+	resolvePullRefreshDamping,
 	resolvePullRefreshDistance,
 	resolvePullRefreshGestureIntent,
+	resolvePullRefreshGestureLock,
 	resolvePullRefreshReleaseAction,
-	resolvePullRefreshStatus
+	resolvePullRefreshStatus,
+	resolvePullRefreshTransitionDuration
 } from '../src/derived/pullRefresh';
 import {
 	formatProgressLoopPercentText,
@@ -3915,6 +3924,35 @@ describe('pullRefresh derived', () => {
 		expect(resolvePullRefreshDistance({ deltaY: 80, pullFactor: 0.5 })).toBe(40);
 	});
 
+	test('locks gesture direction after the slop threshold', () => {
+		expect(resolvePullRefreshGestureLock({ deltaX: 1, deltaY: 2 })).toBe('none');
+		expect(resolvePullRefreshGestureLock({ deltaX: 3, deltaY: 30 })).toBe('vertical');
+		expect(resolvePullRefreshGestureLock({ deltaX: 30, deltaY: 5 })).toBe('horizontal');
+		expect(resolvePullRefreshGestureLock({ current: 'vertical', deltaX: 60, deltaY: 2 })).toBe('vertical');
+		expect(resolvePullRefreshGestureLock({ current: 'horizontal', deltaX: 2, deltaY: 60 })).toBe('horizontal');
+	});
+
+	test('damps pull distance beyond the threshold', () => {
+		expect(resolvePullRefreshDamping({ distance: 50, threshold: 60 })).toBe(50);
+		expect(resolvePullRefreshDamping({ distance: 80, threshold: 60 })).toBe(70);
+		expect(resolvePullRefreshDamping({ distance: 120, threshold: 60 })).toBe(90);
+		expect(resolvePullRefreshDamping({ distance: 220, threshold: 60 })).toBe(115);
+		expect(resolvePullRefreshDistance({ deltaY: 80, threshold: 60 })).toBe(70);
+		expect(resolvePullRefreshDistance({ deltaY: -20, threshold: 60 })).toBe(0);
+	});
+
+	test('caps pull distance with maxDistance', () => {
+		expect(resolvePullRefreshDistance({ deltaY: 400, threshold: 60, maxDistance: 100 })).toBe(100);
+		expect(resolvePullRefreshDistance({ deltaY: 400, threshold: 60, maxDistance: 0 })).toBe(160);
+	});
+
+	test('drops transition duration while tracking the finger', () => {
+		expect(resolvePullRefreshTransitionDuration({ status: 'pulling', animationDuration: 300 })).toBe(0);
+		expect(resolvePullRefreshTransitionDuration({ status: 'canRelease', animationDuration: 300 })).toBe(0);
+		expect(resolvePullRefreshTransitionDuration({ status: 'refreshing', animationDuration: 300 })).toBe(300);
+		expect(resolvePullRefreshTransitionDuration({ status: 'normal', animationDuration: 300 })).toBe(300);
+	});
+
 	test('resolves status and release action', () => {
 		expect(resolvePullRefreshStatus({ distance: 0 })).toBe('normal');
 		expect(resolvePullRefreshStatus({ distance: 30, threshold: 60 })).toBe('pulling');
@@ -3933,6 +3971,20 @@ describe('infiniteScroll derived', () => {
 	test('resolves distance by direction', () => {
 		expect(resolveInfiniteScrollDistance({ direction: 'down', scrollTop: 600, clientHeight: 300, scrollHeight: 1000 })).toBe(100);
 		expect(resolveInfiniteScrollDistance({ direction: 'up', scrollTop: 24, clientHeight: 300, scrollHeight: 1000 })).toBe(24);
+	});
+
+	test('resolves observer root margin by direction and offset', () => {
+		expect(resolveInfiniteScrollRootMargin({ direction: 'down', offset: 300 })).toBe('0px 0px 300px 0px');
+		expect(resolveInfiniteScrollRootMargin({ direction: 'up', offset: 120 })).toBe('120px 0px 0px 0px');
+		expect(resolveInfiniteScrollRootMargin({ direction: 'down', offset: -10 })).toBe('0px 0px 0px 0px');
+	});
+
+	test('resolves slot detail with status and retry', () => {
+		let retried = 0;
+		const detail = resolveInfiniteScrollDetail({ status: 'error', retry: () => (retried += 1) });
+		expect(detail.status).toBe('error');
+		detail.retry();
+		expect(retried).toBe(1);
 	});
 
 	test('resolves load guard and status', () => {

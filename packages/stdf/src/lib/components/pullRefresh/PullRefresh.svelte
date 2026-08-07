@@ -13,7 +13,9 @@
 		resolvePullRefreshDerived,
 		resolvePullRefreshDistance,
 		resolvePullRefreshGestureIntent,
-		resolvePullRefreshReleaseAction
+		resolvePullRefreshGestureLock,
+		resolvePullRefreshReleaseAction,
+		type PullRefreshGestureLock
 	} from '@any-tdf/common/derived/pullRefresh';
 
 	const currentLang: LangProps = getContext('STDF_lang') || zh_CN;
@@ -26,6 +28,7 @@
 		headHeight = 50,
 		threshold = 60,
 		pullFactor = 1,
+		maxDistance = 0,
 		successDuration = 500,
 		animationDuration = 300,
 		pullingText = pullRefreshLang.pullingText,
@@ -53,6 +56,8 @@
 	let startX = 0;
 	let startY = 0;
 	let canPull = false;
+	let gestureLock: PullRefreshGestureLock = 'none';
+	let mouseDragging = false;
 	let wasRefreshing = refreshing;
 	let successTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -122,30 +127,42 @@
 		}
 	});
 
-	const handleTouchStart = (event: TouchEvent) => {
-		const touch = event.touches[0];
+	const startGesture = (clientX: number, clientY: number) => {
 		const scrollElement = getScrollElement(scrollTarget, rootEl);
 		canPull = resolvePullRefreshCanStart({ disabled, refreshing, scrollTop: getScrollMetrics(scrollElement).scrollTop });
-		startX = touch.clientX;
-		startY = touch.clientY;
+		gestureLock = 'none';
+		startX = clientX;
+		startY = clientY;
 	};
 
-	const handleTouchMove = (event: TouchEvent) => {
+	const moveGesture = (clientX: number, clientY: number, preventDefault: () => void) => {
 		if (!canPull) return;
-		const touch = event.touches[0];
-		const intent = resolvePullRefreshGestureIntent({ currentX: touch.clientX, currentY: touch.clientY, startX, startY });
-		if (intent.isHorizontal || intent.deltaY <= 0 || !intent.isPullDown) return;
-		event.preventDefault();
-		const nextDistance = resolvePullRefreshDistance({ deltaY: intent.deltaY, pullFactor });
-		const nextStatus: PullRefreshStatus = nextDistance >= threshold ? 'canRelease' : 'pulling';
+		const intent = resolvePullRefreshGestureIntent({ currentX: clientX, currentY: clientY, startX, startY });
+		gestureLock = resolvePullRefreshGestureLock({ current: gestureLock, deltaX: intent.deltaX, deltaY: intent.deltaY });
+		if (gestureLock !== 'vertical') return;
+		if (intent.deltaY <= 0) {
+			// 回拖超过起点时取消下拉，并把滚动交还给原生容器
+			// Dragging back past the start point cancels the pull and hands scrolling back to the native container
+			if (distance !== 0 || status !== 'normal') {
+				distance = 0;
+				status = 'normal';
+				emitChange('normal', 0);
+			}
+			return;
+		}
+		preventDefault();
+		const nextDistance = resolvePullRefreshDistance({ deltaY: intent.deltaY, pullFactor, threshold, maxDistance });
+		const nextStatus: PullRefreshStatus = nextDistance <= 0 ? 'normal' : nextDistance >= threshold ? 'canRelease' : 'pulling';
+		if (nextDistance === distance && nextStatus === status) return;
 		distance = nextDistance;
 		status = nextStatus;
 		emitChange(nextStatus, nextDistance);
 	};
 
-	const handleTouchEnd = () => {
+	const endGesture = () => {
 		if (!canPull) return;
 		canPull = false;
+		gestureLock = 'none';
 		const action = resolvePullRefreshReleaseAction({ disabled, distance, headHeight, refreshing, threshold });
 		distance = action.nextDistance;
 		status = action.nextStatus;
@@ -153,12 +170,66 @@
 		if (action.shouldRefresh) onrefresh?.();
 	};
 
-	onDestroy(clearSuccessTimer);
+	const handleTouchStart = (event: TouchEvent) => {
+		const touch = event.touches[0];
+		startGesture(touch.clientX, touch.clientY);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		const touch = event.touches[0];
+		moveGesture(touch.clientX, touch.clientY, () => {
+			if (event.cancelable) event.preventDefault();
+		});
+	};
+
+	const handleMouseMove = (event: MouseEvent) => {
+		if (!mouseDragging) return;
+		if ((event.buttons & 1) !== 1) {
+			handleMouseUp();
+			return;
+		}
+		moveGesture(event.clientX, event.clientY, () => event.preventDefault());
+	};
+
+	const removeMouseListeners = () => {
+		mouseDragging = false;
+		window.removeEventListener('mousemove', handleMouseMove);
+		window.removeEventListener('mouseup', handleMouseUp);
+	};
+
+	function handleMouseUp() {
+		if (!mouseDragging) return;
+		removeMouseListeners();
+		endGesture();
+	}
+
+	const handleMouseDown = (event: MouseEvent) => {
+		if (event.button !== 0) return;
+		startGesture(event.clientX, event.clientY);
+		if (!canPull) return;
+		mouseDragging = true;
+		window.addEventListener('mousemove', handleMouseMove);
+		window.addEventListener('mouseup', handleMouseUp);
+	};
+
+	onDestroy(() => {
+		clearSuccessTimer();
+		if (mouseDragging) removeMouseListeners();
+	});
 </script>
 
-<div bind:this={rootEl} role="presentation" class={pullRefreshState.rootClass} ontouchstart={handleTouchStart} ontouchmove={handleTouchMove} ontouchend={handleTouchEnd} ontouchcancel={handleTouchEnd}>
+<div
+	bind:this={rootEl}
+	role="presentation"
+	class={pullRefreshState.rootClass}
+	ontouchstart={handleTouchStart}
+	ontouchmove={handleTouchMove}
+	ontouchend={endGesture}
+	ontouchcancel={endGesture}
+	onmousedown={handleMouseDown}
+>
 	<div class={pullRefreshState.trackClass}>
-		<div class={pullRefreshState.headClass} style={pullRefreshState.headStyleString}>
+		<div class={pullRefreshState.headClass} style={pullRefreshState.headStyleString} aria-live="polite">
 			{#if customHead}
 				{@render customHead(detail)}
 			{:else}

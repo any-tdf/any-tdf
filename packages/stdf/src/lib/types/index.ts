@@ -112,6 +112,7 @@ import type {
 	PullRefreshChangeDetail as CommonPullRefreshChangeDetail,
 	PullRefreshProps as CommonPullRefreshProps,
 	InfiniteScrollProps as CommonInfiniteScrollProps,
+	InfiniteScrollSlotDetail as CommonInfiniteScrollSlotDetail,
 	ToastFunction as CommonToastFunction,
 	AlertFunction as CommonAlertFunction,
 	SignatureProps as CommonSignatureProps,
@@ -164,6 +165,8 @@ export type {
 	PullRefreshStatus,
 	PullRefreshChangeDetail,
 	InfiniteScrollDirection,
+	InfiniteScrollStatus,
+	InfiniteScrollSlotDetail,
 	DialogResult,
 	ModalResult,
 	LoadingFnOptions,
@@ -770,10 +773,10 @@ export type InfiniteScrollProps = Omit<
 	CommonInfiniteScrollProps,
 	'children' | 'loadingChild' | 'finishedChild' | 'errorChild' | 'onload'
 > & {
-	children?: Snippet;
-	loadingChild?: Snippet;
-	finishedChild?: Snippet;
-	errorChild?: Snippet;
+	children?: Snippet<[detail: CommonInfiniteScrollSlotDetail]>;
+	loadingChild?: Snippet<[detail: CommonInfiniteScrollSlotDetail]>;
+	finishedChild?: Snippet<[detail: CommonInfiniteScrollSlotDetail]>;
+	errorChild?: Snippet<[detail: CommonInfiniteScrollSlotDetail]>;
 	onload?: (isRetry: boolean) => void;
 };
 

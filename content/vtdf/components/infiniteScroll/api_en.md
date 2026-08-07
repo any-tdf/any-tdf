@@ -27,10 +27,17 @@
 
 | Name          | Parameters | Description                  |
 | ------------- | ---------- | ---------------------------- |
-| default       | -          | Fully custom status content. |
-| loadingChild  | -          | Loading content.             |
-| finishedChild | -          | Finished content.            |
-| errorChild    | -          | Error content.               |
+| default       | `detail`   | Fully custom status content. |
+| loadingChild  | `detail`   | Loading content.             |
+| finishedChild | `detail`   | Finished content.            |
+| errorChild    | `detail`   | Error content.               |
+
+## InfiniteScrollSlotDetail
+
+| Name   | Type                                           | Description                              |
+| ------ | ---------------------------------------------- | ---------------------------------------- |
+| status | `'idle' \| 'loading' \| 'finished' \| 'error'` | Current status.                          |
+| retry  | `() => void`                                   | Emit `load` again with `isRetry = true`. |
 
 ## Ref Methods
 

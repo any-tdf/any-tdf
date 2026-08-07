@@ -1,6 +1,6 @@
 import type { RefObject } from 'react';
 
-export type ScrollTarget = HTMLElement | RefObject<HTMLElement | null> | string | null | undefined;
+export type ScrollTarget = HTMLElement | Window | RefObject<HTMLElement | null> | string | null | undefined;
 
 const isRefObject = (target: ScrollTarget): target is RefObject<HTMLElement | null> =>
 	typeof target === 'object' && target !== null && 'current' in target;

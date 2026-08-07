@@ -22,8 +22,9 @@ Default text uses component text props first, then `ConfigProvider` `locale.infi
 
 - With `direction` set to `down`, `onLoad` is triggered when distance to bottom is less than or equal to `offset`.
 - With `direction` set to `up`, `onLoad` is triggered when distance to top is less than or equal to `offset`.
-- `loading`, `finished`, `error`, or `disabled` blocks repeated loading.
-- Clicking the error content retries with `isRetry = true`.
+- Besides listening to scroll events, the component observes its own sentinel element with IntersectionObserver, so content height changes that bring the sentinel into the boundary also trigger a check.
+- While any of `loading`, `finished`, `error`, or `disabled` is true, loading does not fire again. Once all of them clear, the component re-checks automatically so a changed list does not stall at the boundary.
+- Clicking the error content triggers `onLoad` again with `isRetry = true`.
 
 ## Manual Check
 
@@ -31,28 +32,28 @@ The component exposes `check()` through ref. Call it after data changes, tab swi
 
 ## Custom Content
 
-The default UI shows loading, finished, and error text. Use `loadingChild`, `finishedChild`, and `errorChild` for custom status content.
+The default UI shows loading, finished, and error text. Use `loadingChild`, `finishedChild`, and `errorChild` render props for custom status content. The render prop `detail` parameter provides `status` and `retry`, and `retry` can be bound directly to a custom retry button. Passing `children` takes over the status content completely.
 
 ## API
 
 ## InfiniteScroll Props
 
-| Name           | Type                                      | Default                                                 | Required | Description                                                             |
-| -------------- | ----------------------------------------- | ------------------------------------------------------- | -------- | ----------------------------------------------------------------------- |
-| loading        | `boolean`                                 | `false`                                                 | N        | Whether loading is active. Controlled state.                            |
-| finished       | `boolean`                                 | `false`                                                 | N        | Whether there is no more data.                                          |
-| error          | `boolean`                                 | `false`                                                 | N        | Whether loading failed.                                                 |
-| disabled       | `boolean`                                 | `false`                                                 | N        | Disable scroll loading.                                                 |
-| offset         | `number`                                  | `300`                                                   | N        | Edge distance that triggers loading, in pixels.                         |
-| direction      | `'up' \| 'down'`                          | `'down'`                                                | N        | Detect top or bottom.                                                   |
-| immediateCheck | `boolean`                                 | `true`                                                  | N        | Whether to check immediately after mount.                               |
-| loadingText    | `string`                                  | `'Loading...'`                                          | N        | Default loading text.                                                   |
-| finishedText   | `string`                                  | `'No more data'`                                        | N        | Default finished text.                                                  |
-| errorText      | `string`                                  | `'Load failed, click to retry'`                         | N        | Default error text.                                                     |
-| loadingIcon    | [`Loading`](./loading.md) \| `null`       | `{ type: '1_0', width: '4', height: '4', theme: true }` | N        | Loading icon props for the loading state. Pass `null` to hide the icon. |
-| scrollTarget   | `HTMLElement \| Window \| string \| null` | `null`                                                  | N        | Custom scroll container.                                                |
-| injClass       | `string`                                  | `''`                                                    | N        | CSS class injected into root.                                           |
-| textClass      | `string`                                  | `''`                                                    | N        | CSS class injected into status text.                                    |
+| Name           | Type                                                                        | Default                                                 | Required | Description                                                             |
+| -------------- | --------------------------------------------------------------------------- | ------------------------------------------------------- | -------- | ----------------------------------------------------------------------- |
+| loading        | `boolean`                                                                   | `false`                                                 | N        | Whether loading is active. Controlled state.                            |
+| finished       | `boolean`                                                                   | `false`                                                 | N        | Whether there is no more data.                                          |
+| error          | `boolean`                                                                   | `false`                                                 | N        | Whether loading failed.                                                 |
+| disabled       | `boolean`                                                                   | `false`                                                 | N        | Disable scroll loading.                                                 |
+| offset         | `number`                                                                    | `300`                                                   | N        | Edge distance that triggers loading, in pixels.                         |
+| direction      | `'up' \| 'down'`                                                            | `'down'`                                                | N        | Detect top or bottom.                                                   |
+| immediateCheck | `boolean`                                                                   | `true`                                                  | N        | Whether to check immediately after mount.                               |
+| loadingText    | `string`                                                                    | `'Loading...'`                                          | N        | Default loading text.                                                   |
+| finishedText   | `string`                                                                    | `'No more data'`                                        | N        | Default finished text.                                                  |
+| errorText      | `string`                                                                    | `'Load failed, click to retry'`                         | N        | Default error text.                                                     |
+| loadingIcon    | [`Loading`](./loading.md) \| `null`                                         | `{ type: '1_0', width: '4', height: '4', theme: true }` | N        | Loading icon props for the loading state. Pass `null` to hide the icon. |
+| scrollTarget   | `HTMLElement \| Window \| RefObject<HTMLElement \| null> \| string \| null` | `null`                                                  | N        | Custom scroll container.                                                |
+| injClass       | `string`                                                                    | `''`                                                    | N        | CSS class injected into root.                                           |
+| textClass      | `string`                                                                    | `''`                                                    | N        | CSS class injected into status text.                                    |
 
 ## InfiniteScroll Events
 
@@ -63,12 +64,19 @@ The default UI shows loading, finished, and error text. Use `loadingChild`, `fin
 
 ## InfiniteScroll Children
 
-| Name          | Type        | Parameters | Description                  |
-| ------------- | ----------- | ---------- | ---------------------------- |
-| children      | `ReactNode` | -          | Fully custom status content. |
-| loadingChild  | `ReactNode` | -          | Loading content.             |
-| finishedChild | `ReactNode` | -          | Finished content.            |
-| errorChild    | `ReactNode` | -          | Error content.               |
+| Name          | Type                                                             | Parameters | Description                  |
+| ------------- | ---------------------------------------------------------------- | ---------- | ---------------------------- |
+| children      | `ReactNode \| ((detail: InfiniteScrollSlotDetail) => ReactNode)` | `detail`   | Fully custom status content. |
+| loadingChild  | `ReactNode \| ((detail: InfiniteScrollSlotDetail) => ReactNode)` | `detail`   | Loading content.             |
+| finishedChild | `ReactNode \| ((detail: InfiniteScrollSlotDetail) => ReactNode)` | `detail`   | Finished content.            |
+| errorChild    | `ReactNode \| ((detail: InfiniteScrollSlotDetail) => ReactNode)` | `detail`   | Error content.               |
+
+## InfiniteScrollSlotDetail
+
+| Name   | Type                                           | Description                                   |
+| ------ | ---------------------------------------------- | --------------------------------------------- |
+| status | `'idle' \| 'loading' \| 'finished' \| 'error'` | Current status.                               |
+| retry  | `() => void`                                   | Trigger `onLoad` again with `isRetry = true`. |
 
 ## Ref Methods
 
@@ -82,16 +90,27 @@ The default UI shows loading, finished, and error text. Use `loadingChild`, `fin
 
 Check whether `loading`, `finished`, `error`, or `disabled` is blocking the trigger. If the list is short, call `check()` after rendering data.
 
+## Why does it load continuously when the content is shorter than one screen?
+
+The component checks once on mount according to `immediateCheck`, and re-checks automatically after blocking states such as `loading` clear. As long as the sentinel stays within the boundary, `onLoad` keeps firing, which prevents a short list from stalling on one screen. Set `immediateCheck={false}` if the initial check is not wanted.
+
 ## How is `finished` different from `hasMore`?
 
 This component uses `finished = true` to mean no more data, equivalent to `hasMore = false`.
 
 ## How does retry work?
 
-Set `error` to `true` to show the error state. Clicking the default error content calls `onLoad` with `isRetry = true`.
+Set `error` to `true` to show the error state. Clicking the default error content calls `onLoad` with `isRetry = true`. With a custom `errorChild`, bind `detail.retry` to your own retry button.
+
+## How do I load at the top?
+
+Set `direction="up"` and place the component at the top of the list. Scrolling near the top triggers `onLoad`. After prepending history data, adjust `scrollTop` to keep the reading position so it does not immediately retrigger at the top.
 
 ## Version
 
 ## 3.0.0
 
 - [!tag|A|0|] Added InfiniteScroll with up and down detection, finished state, error retry, custom status content, and the `check()` method.
+- [!tag|A|0|] Added the `detail` parameter to state content render props, providing `status` and `retry`.
+- [!tag|O|0|] Automatically re-checks after blocking states clear, and IntersectionObserver triggers checks when content height changes.
+- [!tag|O|0|] Added `aria-live` announcements to the status area.

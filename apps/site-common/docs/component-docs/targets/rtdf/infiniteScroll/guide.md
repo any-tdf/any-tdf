@@ -8,7 +8,8 @@ InfiniteScroll 用于页面滚动接近边界时加载更多数据。组件采�
 
 - `direction` 为 `down` 时，距离底部小于等于 `offset` 会触发 `onLoad`。
 - `direction` 为 `up` 时，距离顶部小于等于 `offset` 会触发 `onLoad`。
-- `loading`、`finished`、`error`、`disabled` 任一为真时，不会重复触发。
+- 除了监听滚动事件，组件还会通过 IntersectionObserver 观察自身占位元素，内容高度变化使占位元素进入边界时同样会检测。
+- `loading`、`finished`、`error`、`disabled` 任一为真时，不会重复触发；这些状态全部解除后会自动复检一次，避免列表变化后停在边界不再加载。
 - `error` 状态内容点击后，会以 `isRetry = true` 重新触发 `onLoad`。
 
 ## 主动检测
@@ -17,4 +18,4 @@ InfiniteScroll 用于页面滚动接近边界时加载更多数据。组件采�
 
 ## 自定义内容
 
-默认会展示加载中、加载完成和加载失败文案。也可以使用 `loadingChild`、`finishedChild`、`errorChild` 自定义状态内容。
+默认会展示加载中、加载完成和加载失败文案。也可以使用 `loadingChild`、`finishedChild`、`errorChild` render props 自定义状态内容，render props 的 `detail` 参数提供 `status` 和 `retry`，其中 `retry` 可直接绑定到自定义重试按钮。传入 `children` 则完全接管状态内容。

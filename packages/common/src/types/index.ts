@@ -562,6 +562,7 @@ export type PullRefreshProps = {
 	headHeight?: number;
 	threshold?: number;
 	pullFactor?: number;
+	maxDistance?: number;
 	successDuration?: number;
 	animationDuration?: number;
 	pullingText?: string;
@@ -569,7 +570,7 @@ export type PullRefreshProps = {
 	refreshingText?: string;
 	successText?: string;
 	loadingIcon?: LoadingProps | null;
-	scrollTarget?: HTMLElement | string | null;
+	scrollTarget?: HTMLElement | Window | string | null;
 	injClass?: string;
 	headClass?: string;
 	contentClass?: string;
@@ -581,6 +582,11 @@ export type PullRefreshProps = {
 	successChild?: AnyTdfSnippet<[detail: PullRefreshChangeDetail]>;
 };
 export type InfiniteScrollDirection = 'up' | 'down';
+export type InfiniteScrollStatus = 'idle' | 'loading' | 'finished' | 'error';
+export type InfiniteScrollSlotDetail = {
+	status: InfiniteScrollStatus;
+	retry: () => void;
+};
 export type InfiniteScrollProps = {
 	loading?: boolean;
 	finished?: boolean;
@@ -593,13 +599,13 @@ export type InfiniteScrollProps = {
 	finishedText?: string;
 	errorText?: string;
 	loadingIcon?: LoadingProps | null;
-	scrollTarget?: HTMLElement | string | null;
+	scrollTarget?: HTMLElement | Window | string | null;
 	injClass?: string;
 	textClass?: string;
-	children?: AnyTdfSnippet;
-	loadingChild?: AnyTdfSnippet;
-	finishedChild?: AnyTdfSnippet;
-	errorChild?: AnyTdfSnippet;
+	children?: AnyTdfSnippet<[detail: InfiniteScrollSlotDetail]>;
+	loadingChild?: AnyTdfSnippet<[detail: InfiniteScrollSlotDetail]>;
+	finishedChild?: AnyTdfSnippet<[detail: InfiniteScrollSlotDetail]>;
+	errorChild?: AnyTdfSnippet<[detail: InfiniteScrollSlotDetail]>;
 };
 export type MaskProps = {
 	visible?: boolean;

@@ -14,24 +14,25 @@ This file embeds the English component guide, API, FAQ, and version documentatio
 
 ## Basic Usage
 
-InfiniteScroll loads more data when the scroll position approaches an edge. It is controlled by `loading`, `finished`, and `error`.
+InfiniteScroll loads more data when the page scrolls near a boundary. The component is controlled: `loading`, `finished`, and `error` are managed externally.
 
 Default text uses component text props first, then `ConfigProvider` `locale.infiniteScroll`, then built-in fallback text. The loading icon is configured by `loadingIcon`, using the same props as the Loading component.
 
 ## Trigger Rules
 
-- With `direction` set to `down`, `onload` is triggered when distance to bottom is less than or equal to `offset`.
-- With `direction` set to `up`, `onload` is triggered when distance to top is less than or equal to `offset`.
-- `loading`, `finished`, `error`, or `disabled` blocks repeated loading.
-- Clicking the error content retries with `isRetry = true`.
+- With `direction` set to `down`, `onload` fires when the distance to the bottom is less than or equal to `offset`.
+- With `direction` set to `up`, `onload` fires when the distance to the top is less than or equal to `offset`.
+- Besides listening to scroll events, the component observes its own sentinel element with IntersectionObserver, so content height changes that bring the sentinel into the boundary also trigger a check.
+- While any of `loading`, `finished`, `error`, or `disabled` is true, loading does not fire again. Once all of them clear, the component re-checks automatically so a changed list does not stall at the boundary.
+- Clicking the error content triggers `onload` again with `isRetry = true`.
 
-## Manual Check
+## Active Check
 
-The component exposes `check()`. Call it after data changes, tab switches, overlay display, or container size changes.
+The component exposes a `check()` method, useful after data changes, tab switches, overlay display, or container resizing.
 
 ## Custom Content
 
-The default UI shows loading, finished, and error text. Use `loadingChild`, `finishedChild`, and `errorChild` snippets for custom status content.
+Default text is shown for loading, finished, and error states. Use the `loadingChild`, `finishedChild`, and `errorChild` snippets to customize state content. The snippet `detail` parameter provides `status` and `retry`, and `retry` can be bound directly to a custom retry button. Passing `children` takes over the status content completely.
 
 ## API
 
@@ -43,54 +44,72 @@ The default UI shows loading, finished, and error text. Use `loadingChild`, `fin
 | finished       | `boolean`                                 | `false`                                                 | N        | Whether there is no more data.                                          |
 | error          | `boolean`                                 | `false`                                                 | N        | Whether loading failed.                                                 |
 | disabled       | `boolean`                                 | `false`                                                 | N        | Disable scroll loading.                                                 |
-| offset         | `number`                                  | `300`                                                   | N        | Edge distance that triggers loading, in pixels.                         |
-| direction      | `'up' \| 'down'`                          | `'down'`                                                | N        | Detect top or bottom.                                                   |
+| offset         | `number`                                  | `300`                                                   | N        | Boundary distance that triggers loading, in pixels.                     |
+| direction      | `'up' \| 'down'`                          | `'down'`                                                | N        | Watch the top or the bottom.                                            |
 | immediateCheck | `boolean`                                 | `true`                                                  | N        | Whether to check immediately after mount.                               |
 | loadingText    | `string`                                  | `'Loading...'`                                          | N        | Default loading text.                                                   |
 | finishedText   | `string`                                  | `'No more data'`                                        | N        | Default finished text.                                                  |
-| errorText      | `string`                                  | `'Load failed, click to retry'`                         | N        | Default error text.                                                     |
+| errorText      | `string`                                  | `'Failed to load, click to retry'`                      | N        | Default error text.                                                     |
 | loadingIcon    | [`Loading`](./loading.md) \| `null`       | `{ type: '1_0', width: '4', height: '4', theme: true }` | N        | Loading icon props for the loading state. Pass `null` to hide the icon. |
 | scrollTarget   | `HTMLElement \| Window \| string \| null` | `null`                                                  | N        | Custom scroll container.                                                |
 | injClass       | `string`                                  | `''`                                                    | N        | CSS class injected into root.                                           |
-| textClass      | `string`                                  | `''`                                                    | N        | CSS class injected into status text.                                    |
+| textClass      | `string`                                  | `''`                                                    | N        | CSS class injected into the status text.                                |
 
 ## InfiniteScroll Events
 
-| Name   | Type                         | Parameters                                 | Description                                  |
-| ------ | ---------------------------- | ------------------------------------------ | -------------------------------------------- |
-| onload | `(isRetry: boolean) => void` | `isRetry` - whether this is an error retry | Called when the trigger distance is reached. |
+| Name   | Type                         | Parameters                        | Description                                  |
+| ------ | ---------------------------- | --------------------------------- | -------------------------------------------- |
+| onload | `(isRetry: boolean) => void` | `isRetry` - whether it is a retry | Called when the trigger distance is reached. |
 
 ## InfiniteScroll Snippets
 
-| Name          | Type      | Parameters | Description                  |
-| ------------- | --------- | ---------- | ---------------------------- |
-| children      | `Snippet` | -          | Fully custom status content. |
-| loadingChild  | `Snippet` | -          | Loading content.             |
-| finishedChild | `Snippet` | -          | Finished content.            |
-| errorChild    | `Snippet` | -          | Error content.               |
+| Name          | Type                | Parameters | Description                  |
+| ------------- | ------------------- | ---------- | ---------------------------- |
+| children      | `Snippet<[detail]>` | `detail`   | Fully custom status content. |
+| loadingChild  | `Snippet<[detail]>` | `detail`   | Loading content.             |
+| finishedChild | `Snippet<[detail]>` | `detail`   | Finished content.            |
+| errorChild    | `Snippet<[detail]>` | `detail`   | Error content.               |
+
+## InfiniteScrollSlotDetail
+
+| Name   | Type                                           | Description                                   |
+| ------ | ---------------------------------------------- | --------------------------------------------- |
+| status | `'idle' \| 'loading' \| 'finished' \| 'error'` | Current status.                               |
+| retry  | `() => void`                                   | Trigger `onload` again with `isRetry = true`. |
 
 ## Methods
 
-| Name  | Type         | Description                                          |
-| ----- | ------------ | ---------------------------------------------------- |
-| check | `() => void` | Manually checks whether loading should be triggered. |
+| Name  | Type         | Description                                              |
+| ----- | ------------ | -------------------------------------------------------- |
+| check | `() => void` | Actively check whether the current position should load. |
 
 ## FAQ
 
-## Why does it stop loading?
+## Why doesn't it keep loading?
 
-Check whether `loading`, `finished`, `error`, or `disabled` is blocking the trigger. If the list is short, call `check()` after rendering data.
+Check whether `loading`, `finished`, `error`, or `disabled` is blocking the trigger. If the list is short, you can also call `check()` after the data renders.
 
-## How is `finished` different from `hasMore`?
+## Why does it load continuously when the content is shorter than one screen?
 
-This component uses `finished = true` to mean no more data, equivalent to `hasMore = false`.
+The component checks once on mount according to `immediateCheck`, and re-checks automatically after blocking states such as `loading` clear. As long as the sentinel stays within the boundary, `onload` keeps firing, which prevents a short list from stalling on one screen. Set `immediateCheck={false}` if the initial check is not wanted.
 
-## How does retry work?
+## What is the difference between `finished` and `hasMore`?
 
-Set `error` to `true` to show the error state. Clicking the default error content calls `onload` with `isRetry = true`.
+This component uses `finished = true` to indicate there is no more data, equivalent to `hasMore = false`.
+
+## How do I retry after a failure?
+
+Set `error` to `true` to show the failure content. Clicking the default error content triggers `onload` with `isRetry = true`. With a custom `errorChild`, bind `detail.retry` to your own retry button.
+
+## How do I load at the top?
+
+Set `direction="up"` and place the component at the top of the list. Scrolling near the top triggers `onload`. After prepending history data, adjust `scrollTop` to keep the reading position so it does not immediately retrigger at the top.
 
 ## Version
 
 ## 3.0.0
 
-- [!tag|A|0|] Added InfiniteScroll with up and down detection, finished state, error retry, custom status content, and the `check()` method.
+- [!tag|A|0|] Added the InfiniteScroll component with up/down boundary detection, finished state, error retry, custom state content, and the `check()` method.
+- [!tag|A|0|] Added the `detail` parameter to state content snippets, providing `status` and `retry`.
+- [!tag|O|0|] Automatically re-checks after blocking states clear, and IntersectionObserver triggers checks when content height changes.
+- [!tag|O|0|] Added `aria-live` announcements to the status area.

@@ -1,4 +1,4 @@
-export type ScrollTarget = HTMLElement | string | null | undefined;
+export type ScrollTarget = HTMLElement | Window | string | null | undefined;
 
 export const getScrollElement = (target: ScrollTarget, fallback?: HTMLElement | null): HTMLElement | Window => {
 	if (typeof window === 'undefined') return fallback || ({} as HTMLElement);

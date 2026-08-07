@@ -7,14 +7,20 @@ Default text uses component text props first, then `ConfigProvider` `locale.pull
 ## Interaction Rules
 
 - Pull gestures are handled only when the scroll container is at the top.
-- Horizontal swipes, disabled state, and active refreshing state do not trigger another refresh.
+- The gesture direction locks once it starts: horizontal swipes never trigger a refresh, only vertical pull-downs enter the refresh flow, and dragging back past the start point cancels the pull.
+- Pull distance equals gesture distance multiplied by `pullFactor`. Beyond `threshold` the distance is damped (the further you pull, the heavier it feels), and `maxDistance` can cap it.
+- While tracking the finger there is no transition animation, so the content stays glued to the finger; release rebound, entering refresh, and success exit animate over `animationDuration`.
 - Releasing after the distance reaches `threshold` emits `refresh`.
 - When `refreshing` changes from `true` to `false`, `successText` is shown for `successDuration`.
+- On desktop, holding the left mouse button and dragging down works the same as touch.
+- The head status area uses `aria-live`, so status text changes are announced by assistive technologies.
 
 ## Custom Content
 
-The default header shows pulling, release, refreshing, and success text. Use the `normalChild`, `pullingChild`, `canReleaseChild`, `refreshingChild`, and `successChild` named slots to customize every state.
+The default header shows pulling, release, refreshing, and success text. Use the `normalChild`, `pullingChild`, `canReleaseChild`, `refreshingChild`, and `successChild` named slots to customize every state. The slot `detail` parameter provides `status`, `distance`, and `progress`, which can drive progress rings, rotating arrows, and similar animations.
 
 ## Scroll Container
 
 The component finds the nearest scroll container by default. Pass `scrollTarget` for overlays, tabs, or nested scrolling areas.
+
+For nested scrolling, add `overscroll-behavior: contain` (Tailwind class `overscroll-contain`) to the scroll container to avoid the browser's native pull-to-refresh or scroll chaining. PullRefresh and InfiniteScroll can be combined inside the same scroll container, handling top refresh and bottom loading respectively.
