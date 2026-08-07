@@ -83,8 +83,6 @@ export const descList = [
 		titleZh: '视觉',
 		desc: '视觉表现清晰统一，主题与组件样式灵活可定制。',
 		descEn: 'Clear visual language with flexible themes and component styles.',
-		icon: '/assets/images/home/s.jpeg',
-		icon_d: '/assets/images/home/s-d.png',
 		shwTip: false
 	},
 	{
@@ -92,8 +90,6 @@ export const descList = [
 		titleZh: '轻量',
 		desc: '体积小，按需引入，适合移动端。',
 		descEn: 'Compact size, tree-shakable, mobile-ready.',
-		icon: '/assets/images/home/t.jpeg',
-		icon_d: '/assets/images/home/t-d.png',
 		shwTip: true
 	},
 	{
@@ -101,8 +97,6 @@ export const descList = [
 		titleZh: '设计',
 		desc: '移动端交互优化，主题系统可配置。',
 		descEn: 'Mobile-first interactions with configurable themes.',
-		icon: '/assets/images/home/d.jpeg',
-		icon_d: '/assets/images/home/d-d.png',
 		shwTip: false
 	},
 	{
@@ -110,8 +104,6 @@ export const descList = [
 		titleZh: '快速',
 		desc: '配套脚手架与工具链，开发与构建更高效。',
 		descEn: 'Scaffolded tooling for faster dev and build.',
-		icon: '/assets/images/home/f.jpeg',
-		icon_d: '/assets/images/home/f.jpeg',
 		shwTip: false
 	}
 ];

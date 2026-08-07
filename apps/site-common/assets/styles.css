@@ -2950,21 +2950,6 @@ nav.has-icons .site-sidebar-link.is-active {
 	}
 }
 
-/* Home code playground */
-@keyframes blink {
-	0%,
-	50% {
-		opacity: 1;
-	}
-	51%,
-	100% {
-		opacity: 0;
-	}
-}
-.animate-blink {
-	animation: blink 1s infinite;
-}
-
 /* Components documentation */
 .site-component-main {
 	padding: 1rem 1.25rem;

@@ -82,8 +82,6 @@ export const descList = [
 		titleZh: '简单',
 		desc: '代码清晰，文档完善，易于使用。',
 		descEn: 'Clear code, complete docs, easy to use.',
-		icon: '/assets/images/home/s.jpeg',
-		icon_d: '/assets/images/home/s-d.png',
 		shwTip: false
 	},
 	{
@@ -91,8 +89,6 @@ export const descList = [
 		titleZh: '轻量',
 		desc: '体积小，无依赖，适合移动端。',
 		descEn: 'Small size, no deps, for mobile.',
-		icon: '/assets/images/home/t.jpeg',
-		icon_d: '/assets/images/home/t-d.png',
 		shwTip: true
 	},
 	{
@@ -100,8 +96,6 @@ export const descList = [
 		titleZh: '设计',
 		desc: '优化移动端设计交互，支持主题配置。',
 		descEn: 'Better mobile design & themes.',
-		icon: '/assets/images/home/d.jpeg',
-		icon_d: '/assets/images/home/d-d.png',
 		shwTip: false
 	},
 	{
@@ -109,8 +103,6 @@ export const descList = [
 		titleZh: '快速',
 		desc: '配套脚手架，无虚拟 DOM，性能卓越。',
 		descEn: 'With CLI, no vDOM, high performance.',
-		icon: '/assets/images/home/f.jpeg',
-		icon_d: '/assets/images/home/f.jpeg',
 		shwTip: false
 	}
 ];
