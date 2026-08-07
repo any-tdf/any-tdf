@@ -113,6 +113,14 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
+<svelte:head>
+	<title>{isZh ? '组件' : 'Components'} - STDF</title>
+	<meta
+		name="description"
+		content={isZh ? 'STDF 组件文档，查看示例源码、API、指南、常见问题与版本记录。' : 'STDF component documentation with demo source, API, guides, FAQs, and version history.'}
+	/>
+</svelte:head>
+
 <div class="site-doc-toolbar">
 	<button class="site-header-action" onclick={() => isShowNavStore.set(!$isShowNavStore)} type="button">☰ {isZh ? '组件目录' : 'Components'}</button>
 	{#if currentTab === 0}

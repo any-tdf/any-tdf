@@ -2,6 +2,11 @@
 	const isZh = localStorage.getItem('lang') === 'zh_CN';
 </script>
 
+<svelte:head>
+	<title>STDF - {isZh ? '快捷键' : 'Shortcut key'}</title>
+	<meta name="description" content={isZh ? 'STDF 移动 web 组件库 - 快捷键' : 'STDF mobile web component library - Shortcut key'} />
+</svelte:head>
+
 <article class="prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark mx-auto hidden max-w-full pb-8 md:block">
 	{#if isZh}
 		<h2>全站</h2>

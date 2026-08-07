@@ -12,6 +12,11 @@
 	);
 </script>
 
+<svelte:head>
+	<title>STDF - {isZh ? 'MD 插件' : 'MD plugin'}</title>
+	<meta name="description" content={isZh ? 'STDF 移动 web 组件库 - MD 插件' : 'STDF mobile web component library - MD plugin'} />
+</svelte:head>
+
 <article class="prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark mx-auto max-w-full pb-8">
 	{@html text}
 </article>

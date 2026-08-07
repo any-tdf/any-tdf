@@ -10,6 +10,11 @@
 	const hljsText = mdTextToHljs((isZh ? text : text_en).replace(/<a href="/g, '<a target="_blank" href="'));
 </script>
 
+<svelte:head>
+	<title>STDF - {isZh ? '兼容性' : 'Compatibility'}</title>
+	<meta name="description" content={isZh ? 'STDF 移动 web 组件库 - 兼容性' : 'STDF mobile web component library - Compatibility'} />
+</svelte:head>
+
 <article class="prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark mx-auto max-w-full pb-8">
 	{@html hljsText}
 </article>

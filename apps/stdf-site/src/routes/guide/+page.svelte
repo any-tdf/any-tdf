@@ -12,6 +12,11 @@
 	);
 </script>
 
+<svelte:head>
+	<title>STDF - {isZh ? '快速上手' : 'Quick start'}</title>
+	<meta name="description" content={isZh ? 'STDF 移动 web 组件库 - 快速上手' : 'STDF mobile web component library - Quick start'} />
+</svelte:head>
+
 <article class="prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark mx-auto max-w-full pb-12">
 	{@html text}
 </article>

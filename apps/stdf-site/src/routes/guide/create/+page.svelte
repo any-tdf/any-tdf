@@ -12,6 +12,11 @@
 	);
 </script>
 
+<svelte:head>
+	<title>STDF - {isZh ? '脚手架' : 'Create CLI'}</title>
+	<meta name="description" content={isZh ? 'STDF 移动 web 组件库 - 脚手架' : 'STDF mobile web component library - Create CLI'} />
+</svelte:head>
+
 <article class="prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark mx-auto max-w-full pb-8">
 	{@html text}
 </article>

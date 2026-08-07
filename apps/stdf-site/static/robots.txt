@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://stdf.dev/sitemap.xml

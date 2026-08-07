@@ -14,6 +14,11 @@
 	const showBuiltInIconGallery = htmlParts.length > 1;
 </script>
 
+<svelte:head>
+	<title>STDF - {isZh ? '图标' : 'Icon'}</title>
+	<meta name="description" content={isZh ? 'STDF 移动 web 组件库 - 图标' : 'STDF mobile web component library - Icon'} />
+</svelte:head>
+
 <article class="prose dark:prose-invert prose-strong:text-primary dark:prose-strong:text-dark mx-auto max-w-full pb-8">
 	{#if showBuiltInIconGallery}
 		{@html htmlParts[0]}

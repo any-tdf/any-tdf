@@ -1,3 +1,12 @@
+<script lang="ts">
+	const isZh = localStorage.getItem('lang') === 'zh_CN';
+</script>
+
+<svelte:head>
+	<title>STDF - LOGO</title>
+	<meta name="description" content={isZh ? 'STDF 移动 web 组件库 - LOGO' : 'STDF mobile web component library - LOGO'} />
+</svelte:head>
+
 <div class="mx-auto max-w-full">
 	<div class="mb-4 flex justify-around gap-3 text-9xl font-bold md:justify-start md:gap-10">
 		<div class="text-dark dark:text-primary">S</div>
