@@ -882,7 +882,7 @@ onBeforeUnmount(() => {
 					{{ isZh ? '已复制' : 'Copied' }}
 				</div>
 			</div>
-			<div class="relative flex-none group/hint">
+			<div class="relative flex-none group/hint" tabindex="0">
 				<svg
 					class="h-4 w-4 cursor-help text-black/40 dark:text-white/40"
 					xmlns="http://www.w3.org/2000/svg"
@@ -894,7 +894,7 @@ onBeforeUnmount(() => {
 					/>
 				</svg>
 				<div
-					class="pointer-events-none absolute -top-1 right-6 w-40 rounded bg-black px-2 py-1.5 text-xs text-white opacity-0 transition-opacity group-hover/hint:opacity-100 dark:bg-white dark:text-black"
+					class="pointer-events-none absolute -top-1 right-6 w-40 rounded bg-black px-2 py-1.5 text-xs text-white opacity-0 transition-opacity group-hover/hint:opacity-100 group-focus-within/hint:opacity-100 dark:bg-white dark:text-black"
 				>
 					{{ isZh ? '转换精度损失肉眼不可见' : 'Precision loss is imperceptible' }}
 				</div>
@@ -910,7 +910,7 @@ onBeforeUnmount(() => {
 			<div class="flex items-center gap-2">
 				<span class="text-xs text-black/60 dark:text-white/60">WCAG</span>
 				<span class="font-mono text-sm font-bold" :class="contrastInfo.color">{{ contrastInfo.level }}</span>
-				<div class="relative flex-none group/wcag">
+				<div class="relative flex-none group/wcag" tabindex="0">
 					<svg
 						class="h-3.5 w-3.5 cursor-help text-black/40 dark:text-white/40"
 						xmlns="http://www.w3.org/2000/svg"
@@ -922,7 +922,7 @@ onBeforeUnmount(() => {
 						/>
 					</svg>
 					<div
-						class="pointer-events-none absolute bottom-full right-0 z-10 mb-2 w-48 rounded bg-black px-2.5 py-2 text-xs leading-relaxed text-white opacity-0 transition-opacity group-hover/wcag:opacity-100 dark:bg-white dark:text-black"
+						class="pointer-events-none absolute bottom-full right-0 z-10 mb-2 w-48 rounded bg-black px-2.5 py-2 text-xs leading-relaxed text-white opacity-0 transition-opacity group-hover/wcag:opacity-100 group-focus-within/wcag:opacity-100 dark:bg-white dark:text-black"
 					>
 						<div class="mb-1 font-medium">{{ isZh ? '网页内容无障碍指南' : 'Web Content Accessibility Guidelines' }}</div>
 						<div class="space-y-0.5 text-white/80 dark:text-black/70">
