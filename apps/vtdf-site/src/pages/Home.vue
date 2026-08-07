@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
 						</p>
 					</div>
 				</div>
-				<div class="site-panel overflow-hidden"><ThemeSystem /></div>
+				<div class="site-panel site-panel-bleed overflow-hidden"><ThemeSystem /></div>
 			</section>
 
 			<section class="site-section">
@@ -215,7 +215,7 @@ onBeforeUnmount(() => {
 					</div>
 				</div>
 				<div class="site-split" v-reveal="{ selector: ':scope > *', stagger: 90 }">
-					<div class="site-panel p-6">
+					<div class="site-panel p-4 md:p-6">
 						<div class="mb-4 font-mono text-xs text-(--site-text-muted)">CONTRIBUTORS</div>
 						<a href="https://github.com/any-tdf/any-tdf/graphs/contributors" target="_blank" rel="noreferrer">
 							<img
@@ -228,7 +228,7 @@ onBeforeUnmount(() => {
 							/>
 						</a>
 					</div>
-					<div class="site-panel p-6">
+					<div class="site-panel p-4 md:p-6">
 						<div class="mb-4 font-mono text-xs text-(--site-text-muted)">SPONSORS / GITHUB</div>
 						<div class="flex flex-wrap gap-3">
 							<a

@@ -54,7 +54,7 @@ const TechStack = ({ lang = 'zh_CN' }: TechStackProps) => {
 	];
 
 	return (
-		<section className="p-6 md:p-8">
+		<section className="p-4 md:p-8">
 			<div className="mx-auto max-w-6xl">
 				{/* 标题 */}
 				<div className="text-center mb-12">

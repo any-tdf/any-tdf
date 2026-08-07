@@ -15,7 +15,7 @@ const ComponentsGrid = () => {
 	const filteredComponents = menuList.find((item) => item.class === activeCategory || item.class_en === activeCategory)?.childs || [];
 
 	return (
-		<section className="relative overflow-hidden p-6 md:p-8">
+		<section className="relative overflow-hidden p-4 md:p-8">
 			<div className="relative z-10 mx-auto max-w-6xl">
 				<div className="mb-12 text-center">
 					<div className="border-primary/20 bg-primary/5 text-primary dark:border-dark/20 dark:bg-dark/5 dark:text-dark mb-6 inline-flex items-center gap-2 border px-4 py-1.5 text-sm">

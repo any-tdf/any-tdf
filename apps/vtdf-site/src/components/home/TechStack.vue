@@ -78,7 +78,7 @@ const vtdfAdvantages = computed(() => [
 </script>
 
 <template>
-	<section class="p-6 md:p-8">
+	<section class="p-4 md:p-8">
 		<div class="mx-auto max-w-6xl">
 			<!-- 标题 -->
 			<div class="text-center mb-12">

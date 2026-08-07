@@ -152,7 +152,7 @@ const Home = () => {
 							</p>
 						</div>
 					</div>
-					<div className="site-panel overflow-hidden">
+					<div className="site-panel site-panel-bleed overflow-hidden">
 						<ThemeSystem />
 					</div>
 				</section>
@@ -231,7 +231,7 @@ const Home = () => {
 						</div>
 					</div>
 					<div className="site-split" ref={communityGridRef}>
-						<div className="site-panel p-6">
+						<div className="site-panel p-4 md:p-6">
 							<div className="mb-4 font-mono text-xs text-(--site-text-muted)">CONTRIBUTORS</div>
 							<a href="https://github.com/any-tdf/any-tdf/graphs/contributors" target="_blank" rel="noreferrer">
 								<img
@@ -244,7 +244,7 @@ const Home = () => {
 								/>
 							</a>
 						</div>
-						<div className="site-panel p-6">
+						<div className="site-panel p-4 md:p-6">
 							<div className="mb-4 font-mono text-xs text-(--site-text-muted)">SPONSORS / GITHUB</div>
 							<div className="flex flex-wrap gap-3">
 								{thinkGithub.map((item) => (

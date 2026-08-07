@@ -10,7 +10,7 @@
 	let filteredComponents = $derived(menuList.find((item) => item.class === activeCategory || item.class_en === activeCategory)?.childs || []);
 </script>
 
-<section class="relative overflow-hidden p-6 md:p-8">
+<section class="relative overflow-hidden p-4 md:p-8">
 	<div class="relative z-10 mx-auto max-w-6xl">
 		<div class="mb-12 text-center">
 			<div

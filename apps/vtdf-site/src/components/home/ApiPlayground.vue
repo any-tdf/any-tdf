@@ -125,7 +125,7 @@ const codePreview = computed(() => {
 </script>
 
 <template>
-	<section class="relative overflow-hidden p-6 md:p-8">
+	<section class="relative overflow-hidden p-4 md:p-8">
 		<div class="relative z-10 mx-auto max-w-6xl">
 			<div class="mb-12 text-center">
 				<!-- 标签 -->

@@ -123,7 +123,7 @@ const ApiPlayground = () => {
 		}`;
 
 	return (
-		<section className="relative overflow-hidden p-6 md:p-8">
+		<section className="relative overflow-hidden p-4 md:p-8">
 			<div className="relative z-10 mx-auto max-w-6xl">
 				<div className="mb-12 text-center">
 					{/* 标签 */}

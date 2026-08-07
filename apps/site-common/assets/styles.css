@@ -1050,11 +1050,11 @@ body *::selection {
 	}
 
 	.site-home-rail {
-		width: calc(100% - 1rem);
+		width: calc(100% - 0.5rem);
 	}
 
 	.site-hero-copy {
-		padding: 4rem 1.25rem 2.5rem;
+		padding: 4rem 0.75rem 2.5rem;
 	}
 
 	.site-hero-title {
@@ -1070,7 +1070,7 @@ body *::selection {
 	}
 
 	.site-section {
-		padding: 4rem 1.25rem;
+		padding: 4rem 0.75rem;
 	}
 
 	.site-section-heading {
@@ -1082,6 +1082,10 @@ body *::selection {
 	.site-split,
 	.site-footer-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.site-feature-card {
+		padding: 1rem;
 	}
 
 	.site-doc-main {
@@ -1103,8 +1107,16 @@ body *::selection {
 		margin-left: 0;
 	}
 
+	/* The home theme panel bleeds to the rail edges so the preview keeps full width. */
+	.site-panel-bleed {
+		width: calc(100% + 1.5rem);
+		margin-left: -0.75rem;
+		border-right: 0;
+		border-left: 0;
+	}
+
 	.site-footer {
-		padding: 3rem 1.25rem 1.5rem;
+		padding: 3rem 0.75rem 1.5rem;
 	}
 }
 
