@@ -208,11 +208,13 @@ bun run dev:vtdf
 
 Any TDF 基于 [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE) 开源。
 
-## Star 历史
+## 项目统计
 
-<a href="https://github.com/any-tdf/any-tdf">
+<a href="https://any-tdf.dev/#statistics">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline&amp;theme=dark" />
-    <img alt="Any TDF Star 历史图" width="100%" src="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline" />
+    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/project-stats-zh_CN-dark.svg" />
+    <img alt="Any TDF 项目统计" width="100%" src="../.github/assets/project-stats-zh_CN-light.svg" />
   </picture>
 </a>
+
+数据每日通过公开的 GitHub 和 npm API 更新，趋势从 Any TDF 的首个快照开始累计。

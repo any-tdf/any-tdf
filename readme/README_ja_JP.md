@@ -208,11 +208,13 @@ bun run dev:vtdf
 
 Any TDF は [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE) の下で公開されています。
 
-## Star History
+## プロジェクト統計
 
-<a href="https://github.com/any-tdf/any-tdf">
+<a href="https://any-tdf.dev/#statistics">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline&amp;theme=dark" />
-    <img alt="Any TDF Star History" width="100%" src="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline" />
+    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/project-stats-ja_JP-dark.svg" />
+    <img alt="Any TDF プロジェクト統計" width="100%" src="../.github/assets/project-stats-ja_JP-light.svg" />
   </picture>
 </a>
+
+データは公開されている GitHub と npm の API から毎日更新され、トレンド履歴は Any TDF の最初のスナップショットから蓄積されます。

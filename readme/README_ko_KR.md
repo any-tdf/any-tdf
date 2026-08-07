@@ -208,11 +208,13 @@ bun run dev:vtdf
 
 Any TDF는 [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)로 배포됩니다.
 
-## Star History
+## 프로젝트 통계
 
-<a href="https://github.com/any-tdf/any-tdf">
+<a href="https://any-tdf.dev/#statistics">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline&amp;theme=dark" />
-    <img alt="Any TDF Star History" width="100%" src="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline" />
+    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/project-stats-ko_KR-dark.svg" />
+    <img alt="Any TDF 프로젝트 통계" width="100%" src="../.github/assets/project-stats-ko_KR-light.svg" />
   </picture>
 </a>
+
+데이터는 공개 GitHub 및 npm API를 통해 매일 갱신되며, 추이 기록은 Any TDF의 첫 번째 스냅샷부터 누적됩니다.

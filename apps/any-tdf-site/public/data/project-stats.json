@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "repository": "any-tdf/any-tdf",
+  "updatedAt": "2026-08-07T09:39:44.341Z",
+  "current": {
+    "github": {
+      "stars": 771,
+      "forks": 44,
+      "openIssues": 2,
+      "openPullRequests": 0
+    },
+    "npm": {
+      "period": {
+        "start": "2026-07-31",
+        "end": "2026-08-06"
+      },
+      "coreWeeklyDownloads": 923,
+      "ecosystemWeeklyDownloads": 2433,
+      "packages": [
+        {
+          "name": "stdf",
+          "group": "core",
+          "weeklyDownloads": 416
+        },
+        {
+          "name": "rtdf",
+          "group": "core",
+          "weeklyDownloads": 257
+        },
+        {
+          "name": "vtdf",
+          "group": "core",
+          "weeklyDownloads": 250
+        },
+        {
+          "name": "@any-tdf/common",
+          "group": "foundation",
+          "weeklyDownloads": 297
+        },
+        {
+          "name": "create-any-tdf",
+          "group": "tooling",
+          "weeklyDownloads": 238
+        },
+        {
+          "name": "@any-tdf/react-motion",
+          "group": "motion",
+          "weeklyDownloads": 252
+        },
+        {
+          "name": "@any-tdf/vue-motion",
+          "group": "motion",
+          "weeklyDownloads": 214
+        },
+        {
+          "name": "@any-tdf/react-confetti",
+          "group": "effects",
+          "weeklyDownloads": 244
+        },
+        {
+          "name": "@any-tdf/vue-confetti",
+          "group": "effects",
+          "weeklyDownloads": 218
+        },
+        {
+          "name": "@any-tdf/vite-plugin-md-ts",
+          "group": "tooling",
+          "weeklyDownloads": 18
+        },
+        {
+          "name": "@any-tdf/vite-plugin-svg-symbol",
+          "group": "tooling",
+          "weeklyDownloads": 29
+        }
+      ]
+    }
+  },
+  "history": [
+    {
+      "date": "2026-08-07",
+      "stars": 771,
+      "forks": 44,
+      "openIssues": 2,
+      "openPullRequests": 0,
+      "coreWeeklyDownloads": 923,
+      "ecosystemWeeklyDownloads": 2433
+    }
+  ]
+}

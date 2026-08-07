@@ -1,0 +1,59 @@
+name: Update Project Statistics
+
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: project-statistics
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Refresh GitHub and npm Statistics
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Test statistics generator
+        run: bun test scripts/update-project-stats.test.ts
+
+      - name: Update statistics snapshot
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bun run scripts/update-project-stats.mjs
+
+      - name: Verify generated statistics
+        run: bun run scripts/update-project-stats.mjs --check
+
+      - name: Commit statistics snapshot
+        run: |
+          if git diff --quiet -- \
+            apps/any-tdf-site/public/data/project-stats.json \
+            .github/assets/project-stats-*.svg; then
+            echo "Project statistics are already current."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            apps/any-tdf-site/public/data/project-stats.json \
+            .github/assets/project-stats-*.svg
+          git commit --message "chore: update project statistics"
+          git pull --rebase origin main
+          git push origin HEAD:main

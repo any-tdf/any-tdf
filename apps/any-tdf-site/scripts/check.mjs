@@ -19,6 +19,9 @@ const manifest = await Bun.file(resolve(appRoot, "package.json")).json();
 const html = await Bun.file(resolve(appRoot, "index.html")).text();
 const script = await Bun.file(resolve(appRoot, "src/main.js")).text();
 const styles = await readStyleGraph(resolve(appRoot, "src/styles.css"));
+const projectStats = await Bun.file(
+  resolve(appRoot, "public/data/project-stats.json"),
+).json();
 const lightFavicon = await Bun.file(resolve(appRoot, "public/favicon.svg")).text();
 const darkFavicon = await Bun.file(
   resolve(appRoot, "public/favicon-dark.svg"),
@@ -122,6 +125,39 @@ const requiredFooterTranslationKeys = [
   "footerTools",
   "footerBuiltInIcons",
   "footerLicense",
+];
+const requiredCommunityTranslationKeys = [
+  "communityTitle",
+  "communityDescription",
+  "contributorsTitle",
+  "contributorsDescription",
+  "contributorsAlt",
+  "contributorsAction",
+  "sponsorsTitle",
+  "sponsorsDescription",
+  "sponsorsAction",
+];
+const requiredStatisticsTranslationKeys = [
+  "statisticsTitle",
+  "statisticsDescription",
+  "statisticsTracking",
+  "statisticsStars",
+  "statisticsForks",
+  "statisticsCoreDownloads",
+  "statisticsEcosystemDownloads",
+  "statisticsTrendTitle",
+  "statisticsTrendDescription",
+  "statisticsChartEmpty",
+  "statisticsPackagesTitle",
+  "statisticsPublicPackages",
+  "statisticsNpmPeriod",
+  "statisticsOpenIssues",
+  "statisticsOpenPullRequests",
+  "statisticsUpdated",
+  "statisticsSource",
+  "statisticsTrackingSince",
+  "statisticsLastNinetyDays",
+  "statisticsChartAria",
 ];
 const forbiddenFrameworkDependencies = ["react", "react-dom", "svelte", "vue"];
 const requiredAcronymWords = [
@@ -260,8 +296,10 @@ for (const filename of supportAssetFiles) {
     throw new Error(`The support dialog must reuse the STDF ${filename} asset.`);
 }
 
-if ([...html.matchAll(/data-support-trigger/g)].length !== 2)
-  throw new Error("The support entry must be available in desktop and mobile navigation.");
+if ([...html.matchAll(/data-support-trigger/g)].length !== 3)
+  throw new Error(
+    "The support entry must be available in desktop navigation, mobile navigation, and the community section.",
+  );
 for (const hook of [
   "data-support-dialog",
   'data-support-payment="wechat"',
@@ -299,11 +337,111 @@ for (const link of requiredLinks) {
   if (!html.includes(link)) throw new Error(`The portal is missing ${link}.`);
 }
 
+if (
+  projectStats.schemaVersion !== 1 ||
+  projectStats.repository !== "any-tdf/any-tdf"
+)
+  throw new Error("The portal project statistics schema or repository is invalid.");
+if (
+  !Array.isArray(projectStats.current.npm.packages) ||
+  projectStats.current.npm.packages.length !== 11 ||
+  !Array.isArray(projectStats.history) ||
+  projectStats.history.length === 0
+)
+  throw new Error(
+    "The portal project statistics must include all public npm packages and daily history.",
+  );
+for (const value of [
+  projectStats.current.github.stars,
+  projectStats.current.github.forks,
+  projectStats.current.github.openIssues,
+  projectStats.current.github.openPullRequests,
+  projectStats.current.npm.coreWeeklyDownloads,
+  projectStats.current.npm.ecosystemWeeklyDownloads,
+]) {
+  if (!Number.isInteger(value) || value < 0)
+    throw new Error("The portal project statistics contain an invalid count.");
+}
+for (const hook of [
+  'id="statistics"',
+  "data-project-stats",
+  "data-stat-chart",
+  "data-stat-chart-empty",
+  "data-stat-package-list",
+  "data-stat-updated",
+]) {
+  if (!html.includes(hook))
+    throw new Error(`The project statistics section is missing ${hook}.`);
+}
+for (const key of requiredStatisticsTranslationKeys) {
+  if ([...script.matchAll(new RegExp(`\\b${key}:`, "g"))].length !== 2)
+    throw new Error(
+      `The project statistics must translate ${key} in both languages.`,
+    );
+}
+if (
+  !script.includes("fetch('/data/project-stats.json'") ||
+  !script.includes("const renderProjectStats = () =>") ||
+  !script.includes("history.slice(-90)")
+)
+  throw new Error(
+    "The project statistics section must load the public snapshot and render the latest 90 days.",
+  );
+for (const selector of [
+  ".portal-statistics-shell",
+  ".portal-statistics-chart-line",
+  ".portal-statistics-package-list",
+]) {
+  if (!styles.includes(selector))
+    throw new Error(`The project statistics presentation is missing ${selector}.`);
+}
+
 for (const resource of requiredEcosystemResources) {
   if (!html.includes(resource.name))
     throw new Error(`The ecosystem directory is missing ${resource.name}.`);
   if (!html.includes(resource.link))
     throw new Error(`The ecosystem directory is missing ${resource.link}.`);
+}
+
+const portalCommunityMarkup = html.match(
+  /<section id="community"[\s\S]*?<\/section>/,
+)?.[0];
+if (!portalCommunityMarkup)
+  throw new Error("The portal community section is missing.");
+for (const value of [
+  "https://github.com/any-tdf/any-tdf/graphs/contributors",
+  "https://contrib.nn.ci/api?repo=any-tdf/any-tdf&amp;cols=7",
+  "data-sponsor-list",
+]) {
+  if (!portalCommunityMarkup.includes(value))
+    throw new Error(`The portal community section is missing ${value}.`);
+}
+for (const key of requiredCommunityTranslationKeys) {
+  if (!portalCommunityMarkup.includes(`data-i18n="${key}"`) &&
+      !portalCommunityMarkup.includes(`data-i18n-alt="${key}"`) &&
+      !portalCommunityMarkup.includes(`data-i18n-aria="${key}"`))
+    throw new Error(
+      `The portal community section is missing the ${key} translation hook.`,
+    );
+  if ([...script.matchAll(new RegExp(`\\b${key}:`, "g"))].length !== 2)
+    throw new Error(
+      `The portal community section must translate ${key} in both languages.`,
+    );
+}
+if (
+  !script.includes("createThemeLabels, thinkGithub") ||
+  !script.includes("thinkGithub.map(createSponsorProfile)")
+)
+  throw new Error(
+    "The portal community section must reuse the shared sponsor list.",
+  );
+for (const selector of [
+  ".portal-community-grid",
+  ".portal-contributors-visual",
+  ".portal-sponsor-list",
+]) {
+  if (!styles.includes(selector))
+    throw new Error(`The portal community presentation is missing ${selector}.`);
 }
 
 const portalFooterMarkup = html.match(

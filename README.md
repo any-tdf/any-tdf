@@ -208,11 +208,13 @@ Thanks to [sbscan](https://github.com/sbscan), [MuGuiLin](https://github.com/MuG
 
 Any TDF is released under the [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE).
 
-## Star history
+## Project statistics
 
-<a href="https://github.com/any-tdf/any-tdf">
+<a href="https://any-tdf.dev/#statistics">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline&amp;theme=dark" />
-    <img alt="Any TDF star history chart" width="100%" src="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline" />
+    <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/project-stats-dark.svg" />
+    <img alt="Any TDF project statistics" width="100%" src="./.github/assets/project-stats-light.svg" />
   </picture>
 </a>
+
+Data is updated daily from the public GitHub and npm APIs. Trend history accumulates from the first Any TDF snapshot.

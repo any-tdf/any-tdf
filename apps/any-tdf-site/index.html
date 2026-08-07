@@ -315,7 +315,12 @@
 							</div>
 						</div>
 
-						<div class="site-hero-visual portal-hero-visual" role="img" aria-label="Any TDF 架构概览" data-i18n-aria="architecturePreviewLabel">
+						<div
+							class="site-hero-visual portal-hero-visual"
+							role="img"
+							aria-label="Any TDF 架构概览"
+							data-i18n-aria="architecturePreviewLabel"
+						>
 							<div class="portal-system-map" data-reveal>
 								<div class="portal-map-header">
 									<span>SYSTEM / ANY TDF</span>
@@ -585,9 +590,145 @@
 						</div>
 					</section>
 
-					<section id="architecture" class="site-section">
+					<section id="statistics" class="site-section portal-statistics-section">
 						<div class="site-section-heading" data-reveal>
 							<div class="site-section-index">02</div>
+							<div>
+								<div class="site-section-kicker">OPEN SOURCE PULSE</div>
+								<h2 class="site-section-title" data-i18n="statisticsTitle">用公开数据，记录项目每天的成长</h2>
+								<p class="site-section-description" data-i18n="statisticsDescription">
+									GitHub 与 npm 的公开数据每天汇入同一份快照，README 和官网共同使用，不依赖第三方历史图表服务。
+								</p>
+							</div>
+						</div>
+
+						<div class="portal-statistics-shell" data-project-stats data-reveal>
+							<div class="portal-statistics-status">
+								<span>LIVE / DAILY SNAPSHOT</span>
+								<span class="portal-statistics-live"><i aria-hidden="true"></i><span data-i18n="statisticsTracking">持续采集中</span></span>
+							</div>
+
+							<div class="portal-statistics-grid">
+								<article class="portal-statistic-card">
+									<span>01 / GITHUB</span>
+									<strong data-stat-value="stars">—</strong>
+									<small data-i18n="statisticsStars">Stars</small>
+								</article>
+								<article class="portal-statistic-card">
+									<span>02 / GITHUB</span>
+									<strong data-stat-value="forks">—</strong>
+									<small data-i18n="statisticsForks">Forks</small>
+								</article>
+								<article class="portal-statistic-card">
+									<span>03 / STDF · RTDF · VTDF</span>
+									<strong data-stat-value="coreWeeklyDownloads">—</strong>
+									<small data-i18n="statisticsCoreDownloads">核心包近 7 天下载</small>
+								</article>
+								<article class="portal-statistic-card">
+									<span>04 / npm ECOSYSTEM</span>
+									<strong data-stat-value="ecosystemWeeklyDownloads">—</strong>
+									<small data-i18n="statisticsEcosystemDownloads">生态包近 7 天下载</small>
+								</article>
+							</div>
+
+							<div class="portal-statistics-detail-grid">
+								<article class="portal-statistics-chart-panel">
+									<header class="portal-statistics-panel-header">
+										<div>
+											<span>STAR GROWTH</span>
+											<h3 data-i18n="statisticsTrendTitle">Star 增长趋势</h3>
+										</div>
+										<small data-stat-tracking-period>—</small>
+									</header>
+									<div class="portal-statistics-chart-frame">
+										<svg
+											class="portal-statistics-chart"
+											viewBox="0 0 720 260"
+											preserveAspectRatio="none"
+											role="img"
+											aria-label="Star 增长趋势"
+											data-stat-chart
+										>
+											<defs>
+												<linearGradient id="portal-statistics-area" x1="0" y1="0" x2="0" y2="1">
+													<stop class="portal-statistics-area-start" offset="0" />
+													<stop class="portal-statistics-area-end" offset="1" />
+												</linearGradient>
+											</defs>
+											<g class="portal-statistics-chart-grid" aria-hidden="true">
+												<line x1="56" y1="30" x2="692" y2="30" />
+												<line x1="56" y1="120" x2="692" y2="120" />
+												<line x1="56" y1="210" x2="692" y2="210" />
+											</g>
+											<text class="portal-statistics-chart-label" x="46" y="34" text-anchor="end" data-stat-chart-max>—</text>
+											<text class="portal-statistics-chart-label" x="46" y="214" text-anchor="end" data-stat-chart-min>—</text>
+											<path class="portal-statistics-chart-area" data-stat-chart-area />
+											<path class="portal-statistics-chart-line" data-stat-chart-line />
+											<g data-stat-chart-points></g>
+											<text
+												class="portal-statistics-chart-empty"
+												x="374"
+												y="125"
+												text-anchor="middle"
+												data-i18n="statisticsChartEmpty"
+												data-stat-chart-empty
+											>
+												趋势从今天开始累计
+											</text>
+										</svg>
+									</div>
+									<footer class="portal-statistics-chart-dates">
+										<time data-stat-chart-start>—</time>
+										<span data-i18n="statisticsTrendDescription">每日快照，最多展示最近 90 天</span>
+										<time data-stat-chart-end>—</time>
+									</footer>
+								</article>
+
+								<article class="portal-statistics-packages-panel">
+									<header class="portal-statistics-panel-header">
+										<div>
+											<span>PACKAGE ACTIVITY</span>
+											<h3 data-i18n="statisticsPackagesTitle">npm 包活跃度</h3>
+										</div>
+										<small><b data-stat-package-count>—</b> <span data-i18n="statisticsPublicPackages">个公开包</span></small>
+									</header>
+									<p class="portal-statistics-packages-period">
+										<span data-i18n="statisticsNpmPeriod">统计周期</span>
+										<time data-stat-npm-period>—</time>
+									</p>
+									<ol class="portal-statistics-package-list" data-stat-package-list></ol>
+								</article>
+							</div>
+
+							<footer class="portal-statistics-footer">
+								<div class="portal-statistics-repository-state">
+									<a href="https://github.com/any-tdf/any-tdf/issues" target="_blank" rel="noreferrer">
+										<b data-stat-value="openIssues">—</b>
+										<span data-i18n="statisticsOpenIssues">开放 Issue</span>
+									</a>
+									<a href="https://github.com/any-tdf/any-tdf/pulls" target="_blank" rel="noreferrer">
+										<b data-stat-value="openPullRequests">—</b>
+										<span data-i18n="statisticsOpenPullRequests">开放 PR</span>
+									</a>
+								</div>
+								<div class="portal-statistics-source">
+									<span><span data-i18n="statisticsUpdated">更新于</span> <time data-stat-updated>—</time></span>
+									<a
+										href="https://github.com/any-tdf/any-tdf/blob/main/apps/any-tdf-site/public/data/project-stats.json"
+										target="_blank"
+										rel="noreferrer"
+										data-i18n="statisticsSource"
+									>
+										查看公开数据源
+									</a>
+								</div>
+							</footer>
+						</div>
+					</section>
+
+					<section id="architecture" class="site-section">
+						<div class="site-section-heading" data-reveal>
+							<div class="site-section-index">03</div>
 							<div>
 								<div class="site-section-kicker">ARCHITECTURE</div>
 								<h2 class="site-section-title" data-i18n="architectureTitle">共享产品逻辑，保留框架原生渲染</h2>
@@ -682,7 +823,7 @@
 
 					<section id="principles" class="site-section">
 						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">03</div>
+							<div class="site-section-index">04</div>
 							<div>
 								<div class="site-section-kicker">DESIGN PRINCIPLES</div>
 								<h2 class="site-section-title" data-i18n="principlesTitle">统一但不抹平差异</h2>
@@ -730,7 +871,7 @@
 
 					<section id="resources" class="site-section portal-resource-section">
 						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">04</div>
+							<div class="site-section-index">05</div>
 							<div>
 								<div class="site-section-kicker">ECOSYSTEM DIRECTORY</div>
 								<h2 class="site-section-title" data-i18n="resourcesTitle">组件之外，还有完整的开发工具链</h2>
@@ -994,6 +1135,70 @@
 						</div>
 					</section>
 
+					<section id="community" class="site-section portal-community-section">
+						<div class="site-section-heading" data-reveal>
+							<div class="site-section-index">06</div>
+							<div>
+								<div class="site-section-kicker">COMMUNITY</div>
+								<h2 class="site-section-title" data-i18n="communityTitle">由社区共同建设</h2>
+								<p class="site-section-description" data-i18n="communityDescription">
+									感谢每一位贡献者和赞助者，让 Any TDF 保持开放并持续演进。
+								</p>
+							</div>
+						</div>
+
+						<div class="portal-community-grid" data-reveal>
+							<article class="portal-community-panel portal-community-contributors">
+								<header class="portal-community-panel-header">
+									<div>
+										<span>01 / CONTRIBUTORS</span>
+										<h3 data-i18n="contributorsTitle">贡献者</h3>
+									</div>
+									<a
+										class="portal-community-action"
+										href="https://github.com/any-tdf/any-tdf/graphs/contributors"
+										target="_blank"
+										rel="noreferrer"
+										data-i18n="contributorsAction"
+									>
+										查看全部贡献者
+									</a>
+								</header>
+								<p data-i18n="contributorsDescription">每一次提交、反馈和改进，都在推动整个跨框架生态向前发展。</p>
+								<a
+									class="portal-contributors-visual"
+									href="https://github.com/any-tdf/any-tdf/graphs/contributors"
+									target="_blank"
+									rel="noreferrer"
+								>
+									<img
+										src="https://contrib.nn.ci/api?repo=any-tdf/any-tdf&amp;cols=7"
+										alt="Any TDF 贡献者"
+										width="488"
+										height="74"
+										loading="lazy"
+										decoding="async"
+										data-i18n-alt="contributorsAlt"
+									/>
+								</a>
+							</article>
+
+							<article class="portal-community-panel portal-community-sponsors">
+								<header class="portal-community-panel-header">
+									<div>
+										<span>02 / SPONSORS</span>
+										<h3 data-i18n="sponsorsTitle">赞助者</h3>
+									</div>
+									<button class="portal-community-action" type="button" data-support-trigger data-i18n="sponsorsAction">
+										支持 Any TDF
+									</button>
+								</header>
+								<p data-i18n="sponsorsDescription">感谢这些朋友通过赞助支持长期维护、文档建设与生态扩展。</p>
+								<div class="portal-sponsor-list" data-sponsor-list data-i18n-aria="sponsorsTitle" aria-label="赞助者"></div>
+							</article>
+						</div>
+					</section>
+
 					<footer class="site-footer portal-footer">
 						<div class="portal-footer-grid">
 							<div class="portal-footer-group">
@@ -1027,10 +1232,7 @@
 										>vite-plugin-svg-symbol</a
 									>
 									<a href="https://www.npmjs.com/package/@any-tdf/vite-plugin-md-ts" target="_blank" rel="noreferrer">vite-plugin-md-ts</a>
-									<a
-										href="https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension"
-										target="_blank"
-										rel="noreferrer"
+									<a href="https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension" target="_blank" rel="noreferrer"
 										>Any TDF for VS Code</a
 									>
 									<a href="https://react-motion.any-tdf.dev" target="_blank" rel="noreferrer">react-motion</a>
@@ -1145,7 +1347,13 @@
 							<small data-i18n="supportChina">推荐中国地区使用</small>
 						</span>
 						<span class="portal-support-payment-code">
-							<img src="/assets/fund/wp_code.png" alt="微信赞赏二维码" loading="lazy" decoding="async" data-i18n-alt="supportWechatCodeAlt" />
+							<img
+								src="/assets/fund/wp_code.png"
+								alt="微信赞赏二维码"
+								loading="lazy"
+								decoding="async"
+								data-i18n-alt="supportWechatCodeAlt"
+							/>
 							<small data-i18n="supportWechatScan">微信扫一扫</small>
 						</span>
 					</button>
@@ -1166,7 +1374,13 @@
 							<small data-i18n="supportChina">推荐中国地区使用</small>
 						</span>
 						<span class="portal-support-payment-code">
-							<img src="/assets/fund/ap_code.png" alt="支付宝收款二维码" loading="lazy" decoding="async" data-i18n-alt="supportAlipayCodeAlt" />
+							<img
+								src="/assets/fund/ap_code.png"
+								alt="支付宝收款二维码"
+								loading="lazy"
+								decoding="async"
+								data-i18n-alt="supportAlipayCodeAlt"
+							/>
 							<small data-i18n="supportAlipayScan">支付宝扫一扫</small>
 						</span>
 					</button>

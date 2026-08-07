@@ -4,8 +4,10 @@
 @import './styles/support-dialog.css';
 @import './styles/hero-map.css';
 @import './styles/products.css';
+@import './styles/statistics.css';
 @import './styles/architecture.css';
 @import './styles/ecosystem.css';
+@import './styles/community.css';
 @import './styles/cta-footer.css';
 @import './styles/motion.css';
 @import './styles/responsive-wide.css';

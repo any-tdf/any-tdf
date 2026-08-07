@@ -1,5 +1,5 @@
 import { themes } from '@any-tdf/common/theme/runtime';
-import { createThemeLabels } from '@any-tdf/site-common/data';
+import { createThemeLabels, thinkGithub } from '@any-tdf/site-common/data';
 import { siteHeaderIconPaths } from '@any-tdf/site-common/site';
 import {
 	Blocks,
@@ -47,6 +47,29 @@ createIcons({
 
 for (const icon of document.querySelectorAll('[data-site-header-icon]')) {
 	icon.querySelector('path').setAttribute('d', siteHeaderIconPaths[icon.dataset.siteHeaderIcon]);
+}
+
+const createSponsorProfile = ({ name }) => {
+	const link = document.createElement('a');
+	link.href = `https://github.com/${name}`;
+	link.target = '_blank';
+	link.rel = 'noreferrer';
+	link.title = name;
+	const avatar = document.createElement('img');
+	avatar.src = `https://avatars.githubusercontent.com/${name}?size=96`;
+	avatar.alt = name;
+	avatar.width = 48;
+	avatar.height = 48;
+	avatar.loading = 'lazy';
+	avatar.decoding = 'async';
+	const label = document.createElement('span');
+	label.textContent = `@${name}`;
+	link.append(avatar, label);
+	return link;
+};
+
+for (const container of document.querySelectorAll('[data-sponsor-list]')) {
+	container.replaceChildren(...thinkGithub.map(createSponsorProfile));
 }
 
 const translations = {
@@ -100,6 +123,26 @@ const translations = {
 		styling: '样式基础',
 		package: 'npm 包',
 		openSite: '打开官网',
+		statisticsTitle: '用公开数据，记录项目每天的成长',
+		statisticsDescription: 'GitHub 与 npm 的公开数据每天汇入同一份快照，README 和官网共同使用，不依赖第三方历史图表服务。',
+		statisticsTracking: '持续采集中',
+		statisticsStars: 'Stars',
+		statisticsForks: 'Forks',
+		statisticsCoreDownloads: '核心包近 7 天下载',
+		statisticsEcosystemDownloads: '生态包近 7 天下载',
+		statisticsTrendTitle: 'Star 增长趋势',
+		statisticsTrendDescription: '每日快照，最多展示最近 90 天',
+		statisticsChartEmpty: '趋势从今天开始累计',
+		statisticsPackagesTitle: 'npm 包活跃度',
+		statisticsPublicPackages: '个公开包',
+		statisticsNpmPeriod: '统计周期',
+		statisticsOpenIssues: '开放 Issue',
+		statisticsOpenPullRequests: '开放 PR',
+		statisticsUpdated: '更新于',
+		statisticsSource: '查看公开数据源',
+		statisticsTrackingSince: '持续采集自',
+		statisticsLastNinetyDays: '最近 90 天',
+		statisticsChartAria: 'Any TDF Star 增长趋势',
 		architectureTitle: '共享产品逻辑，保留框架原生渲染',
 		architectureDescription: 'Any TDF 共享状态推导、主题、语言、SVG 数据与公共类型，但不把 Svelte、React、Vue 强行合并为同一套渲染源码。',
 		architectureRule: '依赖方向保持单向',
@@ -149,6 +192,15 @@ const translations = {
 		vscodeExtensionResourceDescription: '为 STDF、RTDF 与 VTDF 提供组件 API 悬停文档、版本信息和框架原生代码补全。',
 		ctaTitle: '从你熟悉的框架开始',
 		ctaDescription: '访问对应官网，查看指南、组件、主题生成器和在线 Demo。',
+		communityTitle: '由社区共同建设',
+		communityDescription: '感谢每一位贡献者和赞助者，让 Any TDF 保持开放并持续演进。',
+		contributorsTitle: '贡献者',
+		contributorsDescription: '每一次提交、反馈和改进，都在推动整个跨框架生态向前发展。',
+		contributorsAlt: 'Any TDF 贡献者',
+		contributorsAction: '查看全部贡献者',
+		sponsorsTitle: '赞助者',
+		sponsorsDescription: '感谢这些朋友通过赞助支持长期维护、文档建设与生态扩展。',
+		sponsorsAction: '支持 Any TDF',
 		footerRelated: '相关',
 		footerTools: '工具',
 		footerBuiltInIcons: '内置图标',
@@ -209,6 +261,27 @@ const translations = {
 		styling: 'Styling',
 		package: 'npm package',
 		openSite: 'Open website',
+		statisticsTitle: 'Public signals, captured every day',
+		statisticsDescription:
+			'Public GitHub and npm data flows into one daily snapshot shared by the README and website, without relying on a third-party history chart.',
+		statisticsTracking: 'Collecting daily',
+		statisticsStars: 'Stars',
+		statisticsForks: 'Forks',
+		statisticsCoreDownloads: 'Core downloads · last 7 days',
+		statisticsEcosystemDownloads: 'Ecosystem downloads · last 7 days',
+		statisticsTrendTitle: 'Star growth',
+		statisticsTrendDescription: 'Daily snapshots · latest 90 days',
+		statisticsChartEmpty: 'Trend tracking starts today',
+		statisticsPackagesTitle: 'npm package activity',
+		statisticsPublicPackages: 'public packages',
+		statisticsNpmPeriod: 'Reporting period',
+		statisticsOpenIssues: 'open issues',
+		statisticsOpenPullRequests: 'open PRs',
+		statisticsUpdated: 'Updated',
+		statisticsSource: 'View public data',
+		statisticsTrackingSince: 'Tracking since',
+		statisticsLastNinetyDays: 'Latest 90 days',
+		statisticsChartAria: 'Any TDF Star growth',
 		architectureTitle: 'Share product logic, keep native rendering',
 		architectureDescription:
 			'Any TDF shares derived state, themes, language, SVG data, and public types without forcing Svelte, React, and Vue into one rendering source.',
@@ -270,6 +343,15 @@ const translations = {
 			'Component API hover documentation, version information, and framework-native completions for STDF, RTDF, and VTDF.',
 		ctaTitle: 'Start with the framework you know',
 		ctaDescription: 'Visit its website for guides, components, the theme generator, and interactive Demos.',
+		communityTitle: 'Built together by the community',
+		communityDescription: 'Thanks to every contributor and sponsor keeping Any TDF open and evolving.',
+		contributorsTitle: 'Contributors',
+		contributorsDescription: 'Every commit, report, and improvement moves the entire cross-framework ecosystem forward.',
+		contributorsAlt: 'Any TDF contributors',
+		contributorsAction: 'View all contributors',
+		sponsorsTitle: 'Sponsors',
+		sponsorsDescription: 'Thanks to these friends for supporting long-term maintenance, documentation, and ecosystem growth.',
+		sponsorsAction: 'Support Any TDF',
 		footerRelated: 'Related',
 		footerTools: 'Tools',
 		footerBuiltInIcons: 'Built-in Icons',
@@ -328,6 +410,7 @@ let currentLanguage = savedLanguage === 'zh' || savedLanguage === 'en' ? savedLa
 let currentModePreference = modePreferences.includes(savedModePreference) ? savedModePreference : 'auto';
 let currentColorTheme = colorThemeNames.has(savedColorTheme) ? savedColorTheme : defaultColorTheme;
 let currentMode = root.dataset.mode === 'dark' ? 'dark' : 'light';
+let projectStats = null;
 
 const themeColorContext = document.createElement('canvas').getContext('2d');
 const toHexColor = (color) => {
@@ -457,6 +540,132 @@ for (const control of document.querySelectorAll('[data-mode-choice]')) {
 	});
 }
 
+const projectStatsContainer = document.querySelector('[data-project-stats]');
+const svgNamespace = 'http://www.w3.org/2000/svg';
+const formatStatNumber = (value) => new Intl.NumberFormat(currentLanguage === 'zh' ? 'zh-CN' : 'en-US').format(value);
+const formatStatDate = (value) => value;
+const formatStatsUpdatedAt = (value) => `${value.slice(0, 10)} ${value.slice(11, 16)} UTC`;
+const createProjectStatsChart = (history) => {
+	const recentHistory = history.slice(-90);
+	const chart = { left: 56, right: 692, top: 30, bottom: 210 };
+	const starValues = recentHistory.map(({ stars }) => stars);
+	const valueMinimum = Math.min(...starValues);
+	const valueMaximum = Math.max(...starValues);
+	const valuePadding = Math.max(1, Math.ceil((valueMaximum - valueMinimum || valueMaximum * 0.02) / 2));
+	const minimum = Math.max(0, valueMinimum - valuePadding);
+	const maximum = valueMaximum + valuePadding;
+	const range = maximum - minimum;
+	const points = recentHistory.map((entry, index) => {
+		const progress = recentHistory.length === 1 ? 1 : index / (recentHistory.length - 1);
+		return {
+			...entry,
+			x: chart.left + progress * (chart.right - chart.left),
+			y: chart.bottom - ((entry.stars - minimum) / range) * (chart.bottom - chart.top)
+		};
+	});
+	const linePath =
+		points.length > 1 ? points.map(({ x, y }, index) => `${index === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`).join(' ') : '';
+	const areaPath = linePath
+		? `${linePath} L ${points.at(-1).x.toFixed(2)} ${chart.bottom} L ${points[0].x.toFixed(2)} ${chart.bottom} Z`
+		: '';
+	return { recentHistory, minimum, maximum, points, linePath, areaPath };
+};
+const renderProjectStats = () => {
+	if (!projectStatsContainer || !projectStats) return;
+	const dictionary = translations[currentLanguage];
+	const { github, npm } = projectStats.current;
+	const values = {
+		stars: github.stars,
+		forks: github.forks,
+		openIssues: github.openIssues,
+		openPullRequests: github.openPullRequests,
+		coreWeeklyDownloads: npm.coreWeeklyDownloads,
+		ecosystemWeeklyDownloads: npm.ecosystemWeeklyDownloads
+	};
+
+	for (const element of projectStatsContainer.querySelectorAll('[data-stat-value]')) {
+		element.textContent = formatStatNumber(values[element.dataset.statValue]);
+	}
+
+	projectStatsContainer.querySelector('[data-stat-package-count]').textContent = formatStatNumber(npm.packages.length);
+	projectStatsContainer.querySelector('[data-stat-npm-period]').textContent =
+		`${formatStatDate(npm.period.start)} — ${formatStatDate(npm.period.end)}`;
+	projectStatsContainer.querySelector('[data-stat-updated]').textContent = formatStatsUpdatedAt(projectStats.updatedAt);
+
+	const sortedPackages = [...npm.packages].sort(
+		(left, right) => right.weeklyDownloads - left.weeklyDownloads || left.name.localeCompare(right.name)
+	);
+	const maximumPackageDownloads = Math.max(...sortedPackages.map(({ weeklyDownloads }) => weeklyDownloads));
+	const packageItems = sortedPackages.slice(0, 6).map((packageData) => {
+		const item = document.createElement('li');
+		item.className = 'portal-statistics-package';
+		const heading = document.createElement('div');
+		heading.className = 'portal-statistics-package-heading';
+		const identity = document.createElement('span');
+		const link = document.createElement('a');
+		link.href = `https://www.npmjs.com/package/${encodeURIComponent(packageData.name)}`;
+		link.target = '_blank';
+		link.rel = 'noreferrer';
+		const name = document.createElement('code');
+		name.textContent = packageData.name;
+		link.append(name);
+		const group = document.createElement('small');
+		group.textContent = packageData.group.toUpperCase();
+		identity.append(link, group);
+		const downloads = document.createElement('strong');
+		downloads.textContent = formatStatNumber(packageData.weeklyDownloads);
+		heading.append(identity, downloads);
+		const meter = document.createElement('span');
+		meter.className = 'portal-statistics-package-meter';
+		meter.setAttribute('aria-hidden', 'true');
+		const fill = document.createElement('i');
+		fill.style.setProperty(
+			'--portal-package-share',
+			`${maximumPackageDownloads === 0 ? 0 : (packageData.weeklyDownloads / maximumPackageDownloads) * 100}%`
+		);
+		meter.append(fill);
+		item.append(heading, meter);
+		return item;
+	});
+	projectStatsContainer.querySelector('[data-stat-package-list]').replaceChildren(...packageItems);
+
+	const { recentHistory, minimum, maximum, points, linePath, areaPath } = createProjectStatsChart(projectStats.history);
+	const firstEntry = recentHistory[0];
+	const lastEntry = recentHistory.at(-1);
+	const chart = projectStatsContainer.querySelector('[data-stat-chart]');
+	chart.setAttribute('aria-label', `${dictionary.statisticsChartAria}: ${firstEntry.stars} → ${lastEntry.stars}`);
+	projectStatsContainer.querySelector('[data-stat-chart-min]').textContent = formatStatNumber(minimum);
+	projectStatsContainer.querySelector('[data-stat-chart-max]').textContent = formatStatNumber(maximum);
+	projectStatsContainer.querySelector('[data-stat-chart-line]').setAttribute('d', linePath);
+	projectStatsContainer.querySelector('[data-stat-chart-area]').setAttribute('d', areaPath);
+	const chartPoints = points.map((point, index) => {
+		const circle = document.createElementNS(svgNamespace, 'circle');
+		circle.classList.add('portal-statistics-chart-point');
+		circle.setAttribute('cx', point.x.toFixed(2));
+		circle.setAttribute('cy', point.y.toFixed(2));
+		circle.setAttribute('r', index === points.length - 1 ? '5' : '3');
+		const title = document.createElementNS(svgNamespace, 'title');
+		title.textContent = `${formatStatDate(point.date)} · ${formatStatNumber(point.stars)} Stars`;
+		circle.append(title);
+		return circle;
+	});
+	projectStatsContainer.querySelector('[data-stat-chart-points]').replaceChildren(...chartPoints);
+	projectStatsContainer.querySelector('[data-stat-chart-empty]').toggleAttribute('hidden', recentHistory.length > 1);
+	projectStatsContainer.querySelector('[data-stat-chart-start]').textContent = formatStatDate(firstEntry.date);
+	projectStatsContainer.querySelector('[data-stat-chart-end]').textContent = formatStatDate(lastEntry.date);
+	projectStatsContainer.querySelector('[data-stat-tracking-period]').textContent =
+		projectStats.history.length > 90
+			? dictionary.statisticsLastNinetyDays
+			: `${dictionary.statisticsTrackingSince} ${formatStatDate(firstEntry.date)}`;
+	projectStatsContainer.dataset.ready = 'true';
+};
+const loadProjectStats = async () => {
+	const response = await fetch('/data/project-stats.json', { headers: { Accept: 'application/json' } });
+	if (!response.ok) throw new Error(`Project statistics returned ${response.status}.`);
+	projectStats = await response.json();
+	renderProjectStats();
+};
+
 const applyLanguage = (language) => {
 	currentLanguage = language;
 	const dictionary = translations[language];
@@ -487,6 +696,7 @@ const applyLanguage = (language) => {
 	updateColorThemeControls();
 	updateColorThemeLabels();
 	updateMenuControl();
+	if (projectStats) renderProjectStats();
 };
 
 for (const control of document.querySelectorAll('[data-language-toggle]')) {
@@ -725,3 +935,5 @@ if (currentUrl.searchParams.has('fund')) {
 	history.replaceState(history.state, '', `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`);
 	openSupportDialog();
 }
+
+await loadProjectStats();

@@ -208,11 +208,13 @@ bun run dev:vtdf
 
 Any TDF распространяется по [лицензии MIT](https://github.com/any-tdf/any-tdf/blob/main/LICENSE).
 
-## История звёзд
+## Статистика проекта
 
-<a href="https://github.com/any-tdf/any-tdf">
+<a href="https://any-tdf.dev/#statistics">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline&amp;theme=dark" />
-    <img alt="График истории звёзд Any TDF" width="100%" src="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline" />
+    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/project-stats-ru_RU-dark.svg" />
+    <img alt="Статистика проекта Any TDF" width="100%" src="../.github/assets/project-stats-ru_RU-light.svg" />
   </picture>
 </a>
+
+Данные ежедневно обновляются через публичные API GitHub и npm. История трендов накапливается с первого снимка Any TDF.

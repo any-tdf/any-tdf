@@ -208,11 +208,13 @@ Vielen Dank an [sbscan](https://github.com/sbscan), [MuGuiLin](https://github.co
 
 Any TDF wird unter der [MIT-Lizenz](https://github.com/any-tdf/any-tdf/blob/main/LICENSE) veröffentlicht.
 
-## Star-Verlauf
+## Projektstatistiken
 
-<a href="https://github.com/any-tdf/any-tdf">
+<a href="https://any-tdf.dev/#statistics">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline&amp;theme=dark" />
-    <img alt="Any TDF Star-Verlauf" width="100%" src="https://api.star-history.com/svg?repos=any-tdf/any-tdf&amp;type=Timeline" />
+    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/project-stats-de_DE-dark.svg" />
+    <img alt="Any TDF Projektstatistiken" width="100%" src="../.github/assets/project-stats-de_DE-light.svg" />
   </picture>
 </a>
+
+Die Daten werden täglich über die öffentlichen GitHub- und npm-APIs aktualisiert. Der Trendverlauf wird ab dem ersten Any TDF Snapshot aufgebaut.

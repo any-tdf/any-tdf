@@ -1,0 +1,191 @@
+.portal-community-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(22rem, 0.85fr);
+	border-top: 1px solid var(--site-divider);
+	border-left: 1px solid var(--site-divider);
+}
+
+.portal-community-panel {
+	display: flex;
+	min-width: 0;
+	min-height: 19rem;
+	flex-direction: column;
+	padding: 1.5rem;
+	border-right: 1px solid var(--site-divider);
+	border-bottom: 1px solid var(--site-divider);
+	background: var(--site-bg);
+}
+
+.portal-community-sponsors {
+	background: var(--site-bg-alt);
+}
+
+.portal-community-panel-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.portal-community-panel-header span {
+	color: var(--site-text-muted);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.625rem;
+	font-weight: 700;
+	letter-spacing: 0.09em;
+}
+
+.portal-community-panel-header h3 {
+	margin: 0.5rem 0 0;
+	font-size: clamp(1.375rem, 2.5vw, 2rem);
+	letter-spacing: -0.035em;
+}
+
+.portal-community-action {
+	display: inline-flex;
+	min-height: 2.5rem;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--site-divider-strong);
+	padding: 0.5rem 0.75rem;
+	background: transparent;
+	color: var(--site-text-soft);
+	font: inherit;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		border-color var(--site-transition),
+		background-color var(--site-transition),
+		color var(--site-transition);
+}
+
+.portal-community-action:hover {
+	border-color: var(--site-accent);
+	background: color-mix(in oklch, var(--site-accent) 6%, transparent);
+	color: var(--site-accent);
+}
+
+.portal-community-action:focus-visible {
+	outline: 2px solid var(--site-accent);
+	outline-offset: 0.25rem;
+}
+
+.portal-community-panel > p {
+	max-width: 38rem;
+	margin: 1rem 0 0;
+	color: var(--site-text-soft);
+	font-size: 0.875rem;
+	line-height: 1.75;
+}
+
+.portal-contributors-visual {
+	display: flex;
+	min-height: 7.5rem;
+	align-items: center;
+	margin-top: auto;
+	padding: 1rem;
+	border: 1px solid var(--site-divider);
+	background: color-mix(in oklch, var(--site-bg-elevated) 78%, transparent);
+}
+
+.portal-contributors-visual:hover {
+	border-color: var(--site-accent);
+}
+
+.portal-contributors-visual:focus-visible {
+	outline: 2px solid var(--site-accent);
+	outline-offset: 0.25rem;
+}
+
+.portal-contributors-visual img {
+	display: block;
+	width: min(100%, 30.5rem);
+	height: auto;
+}
+
+.portal-sponsor-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+	gap: 0.75rem;
+	margin-top: auto;
+	padding-top: 2rem;
+}
+
+.portal-sponsor-list a {
+	display: flex;
+	min-width: 0;
+	min-height: 4.5rem;
+	align-items: center;
+	gap: 0.75rem;
+	border: 1px solid var(--site-divider);
+	padding: 0.625rem;
+	background: var(--site-bg);
+	color: var(--site-text);
+	text-decoration: none;
+	transition:
+		border-color var(--site-transition),
+		color var(--site-transition);
+}
+
+.portal-sponsor-list a:hover {
+	border-color: var(--site-accent);
+	color: var(--site-accent);
+}
+
+.portal-sponsor-list a:focus-visible {
+	outline: 2px solid var(--site-accent);
+	outline-offset: 0.25rem;
+}
+
+.portal-sponsor-list img {
+	width: 3rem;
+	height: 3rem;
+	flex: none;
+	border: 1px solid var(--site-divider);
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.portal-sponsor-list span {
+	overflow: hidden;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+@media (max-width: 79.999rem) {
+	.portal-community-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 47.999rem) {
+	.portal-community-panel {
+		min-height: 17rem;
+		padding: 1rem;
+	}
+
+	.portal-community-panel-header {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.portal-community-action {
+		width: 100%;
+	}
+
+	.portal-contributors-visual {
+		min-height: 6rem;
+		margin-top: 1.5rem;
+	}
+
+	.portal-sponsor-list {
+		margin-top: 1.5rem;
+		padding-top: 0;
+	}
+}
