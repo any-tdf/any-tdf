@@ -14,7 +14,7 @@
 	<text x="78" y="73" fill="#8e8c86" font-size="12" font-weight="700" letter-spacing="1.6">OPEN SOURCE PULSE</text>
 	<text x="78" y="108" fill="#f5f2e8" font-size="31" font-weight="750">Any TDF in numbers</text>
 	<text x="1152" y="73" text-anchor="end" fill="#8093ff" font-size="12" font-weight="700" letter-spacing="1.2">LIVE SNAPSHOT</text>
-	<text x="1152" y="105" text-anchor="end" fill="#c3c0b6" font-size="13">GitHub + npm · Aug 7, 2026 UTC</text>
+	<text x="1152" y="105" text-anchor="end" fill="#c3c0b6" font-size="13">GitHub + npm · Aug 8, 2026 UTC</text>
 	<g transform="translate(48 154)">
 		<rect width="264" height="126" rx="12" fill="#191a1e" stroke="#34363d" />
 		<text x="20" y="30" fill="#8e8c86" font-size="12" font-weight="700" letter-spacing="1.2">GITHUB STARS</text>
@@ -48,10 +48,11 @@
 		<line x1="76" y1="526" x2="1124" y2="526" stroke="#34363d" stroke-dasharray="4 8" />
 		<text x="64" y="380" text-anchor="end" fill="#8e8c86" font-size="11">779</text>
 		<text x="64" y="530" text-anchor="end" fill="#8e8c86" font-size="11">763</text>
-		<circle cx="1124" cy="451" r="8" fill="#191a1e" stroke="#ffc043" stroke-width="4" />
-		<text x="600" y="452" text-anchor="middle" fill="#c3c0b6" font-size="15">Tracking starts here — daily snapshots will build this trend.</text>
+		<path d="M 76.00 451.00 L 1124.00 451.00 L 1124.00 526 L 76.00 526 Z" fill="url(#stats-area)" />
+		<path d="M 76.00 451.00 L 1124.00 451.00" fill="none" stroke="#ffc043" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+		<circle cx="1124" cy="451" r="7" fill="#191a1e" stroke="#ffc043" stroke-width="4" />
 		<text x="76" y="544" fill="#8e8c86" font-size="11">Aug 7, 2026</text>
-		<text x="1124" y="544" text-anchor="end" fill="#8e8c86" font-size="11">Aug 7, 2026</text>
+		<text x="1124" y="544" text-anchor="end" fill="#8e8c86" font-size="11">Aug 8, 2026</text>
 	</g>
-	<text x="48" y="570" fill="#8e8c86" font-size="11">Public GitHub and npm APIs · Daily snapshots: 1</text>
+	<text x="48" y="570" fill="#8e8c86" font-size="11">Public GitHub and npm APIs · Daily snapshots: 2</text>
 </svg>
