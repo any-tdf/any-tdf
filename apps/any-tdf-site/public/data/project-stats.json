@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "repository": "any-tdf/any-tdf",
-  "updatedAt": "2026-08-08T03:45:37.109Z",
+  "updatedAt": "2026-08-09T03:54:22.781Z",
   "current": {
     "github": {
       "stars": 771,
@@ -87,6 +87,15 @@
     },
     {
       "date": "2026-08-08",
+      "stars": 771,
+      "forks": 44,
+      "openIssues": 2,
+      "openPullRequests": 0,
+      "coreWeeklyDownloads": 923,
+      "ecosystemWeeklyDownloads": 2433
+    },
+    {
+      "date": "2026-08-09",
       "stars": 771,
       "forks": 44,
       "openIssues": 2,

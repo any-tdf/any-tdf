@@ -14,7 +14,7 @@
 	<text x="78" y="73" fill="#818697" font-size="12" font-weight="700" letter-spacing="1.6">ПУЛЬС OPEN SOURCE</text>
 	<text x="78" y="108" fill="#101225" font-size="31" font-weight="750">Any TDF в цифрах</text>
 	<text x="1152" y="73" text-anchor="end" fill="#d99200" font-size="12" font-weight="700" letter-spacing="1.2">ТЕКУЩИЙ СНИМОК</text>
-	<text x="1152" y="105" text-anchor="end" fill="#5f6475" font-size="13">GitHub + npm · 8 авг. 2026 г. UTC</text>
+	<text x="1152" y="105" text-anchor="end" fill="#5f6475" font-size="13">GitHub + npm · 9 авг. 2026 г. UTC</text>
 	<g transform="translate(48 154)">
 		<rect width="264" height="126" rx="12" fill="#ffffff" stroke="#dfe2ec" />
 		<text x="20" y="30" fill="#818697" font-size="12" font-weight="700" letter-spacing="1.2">STARS НА GITHUB</text>
@@ -48,11 +48,11 @@
 		<line x1="76" y1="526" x2="1124" y2="526" stroke="#dfe2ec" stroke-dasharray="4 8" />
 		<text x="64" y="380" text-anchor="end" fill="#818697" font-size="11">779</text>
 		<text x="64" y="530" text-anchor="end" fill="#818697" font-size="11">763</text>
-		<path d="M 76.00 451.00 L 1124.00 451.00 L 1124.00 526 L 76.00 526 Z" fill="url(#stats-area)" />
-		<path d="M 76.00 451.00 L 1124.00 451.00" fill="none" stroke="#0b24fb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+		<path d="M 76.00 451.00 L 600.00 451.00 L 1124.00 451.00 L 1124.00 526 L 76.00 526 Z" fill="url(#stats-area)" />
+		<path d="M 76.00 451.00 L 600.00 451.00 L 1124.00 451.00" fill="none" stroke="#0b24fb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
 		<circle cx="1124" cy="451" r="7" fill="#ffffff" stroke="#0b24fb" stroke-width="4" />
 		<text x="76" y="544" fill="#818697" font-size="11">7 авг. 2026 г.</text>
-		<text x="1124" y="544" text-anchor="end" fill="#818697" font-size="11">8 авг. 2026 г.</text>
+		<text x="1124" y="544" text-anchor="end" fill="#818697" font-size="11">9 авг. 2026 г.</text>
 	</g>
-	<text x="48" y="570" fill="#818697" font-size="11">Публичные API GitHub и npm · Ежедневных снимков: 2</text>
+	<text x="48" y="570" fill="#818697" font-size="11">Публичные API GitHub и npm · Ежедневных снимков: 3</text>
 </svg>
