@@ -139,14 +139,12 @@ const requiredCommunityTranslationKeys = [
 ];
 const requiredStatisticsTranslationKeys = [
   "statisticsTitle",
-  "statisticsDescription",
   "statisticsTracking",
   "statisticsStars",
   "statisticsForks",
   "statisticsCoreDownloads",
   "statisticsEcosystemDownloads",
   "statisticsTrendTitle",
-  "statisticsTrendDescription",
   "statisticsChartEmpty",
   "statisticsPackagesTitle",
   "statisticsPublicPackages",
@@ -156,7 +154,6 @@ const requiredStatisticsTranslationKeys = [
   "statisticsUpdated",
   "statisticsSource",
   "statisticsTrackingSince",
-  "statisticsLastNinetyDays",
   "statisticsChartAria",
 ];
 const forbiddenFrameworkDependencies = ["react", "react-dom", "svelte", "vue"];
@@ -201,9 +198,19 @@ const requiredLucideIcons = [
 const requiredBrandIcons = ["github"];
 const requiredSiteHeaderIcons = ["language", "github"];
 const requiredArchitectureMotionHooks = [
-  "portal-map-flow",
-  "portal-map-line",
-  "portal-map-flow-path",
+  "data-hero-stack",
+  "portal-stack-scene",
+  'data-stack-layer="app"',
+  'data-stack-layer="renderers"',
+  'data-stack-layer="core"',
+];
+const requiredHeroStackTranslationKeys = [
+  "stackApp",
+  "stackAppDetail",
+  "stackRenderers",
+  "stackRenderersDetail",
+  "stackCore",
+  "stackCoreDetail",
 ];
 const requiredAnyTdfLogoColors = [
   "oklch(0.467 0.296 264.886)",
@@ -338,7 +345,7 @@ for (const link of requiredLinks) {
 }
 
 if (
-  projectStats.schemaVersion !== 1 ||
+  projectStats.schemaVersion !== 2 ||
   projectStats.repository !== "any-tdf/any-tdf"
 )
   throw new Error("The portal project statistics schema or repository is invalid.");
@@ -382,10 +389,10 @@ for (const key of requiredStatisticsTranslationKeys) {
 if (
   !script.includes("fetch('/data/project-stats.json'") ||
   !script.includes("const renderProjectStats = () =>") ||
-  !script.includes("history.slice(-90)")
+  !script.includes("const createProjectStatsChart = (history) =>")
 )
   throw new Error(
-    "The project statistics section must load the public snapshot and render the latest 90 days.",
+    "The project statistics section must load the public snapshot and render the full history.",
   );
 for (const selector of [
   ".portal-statistics-shell",
@@ -509,24 +516,44 @@ for (const hook of requiredArchitectureMotionHooks) {
     throw new Error(`The architecture preview is missing the ${hook} motion hook.`);
 }
 
-if (!styles.includes("@keyframes portal-map-flow"))
-  throw new Error("The architecture preview is missing its directional flow animation.");
+for (const key of requiredHeroStackTranslationKeys) {
+  if (!html.includes(`data-i18n="${key}"`))
+    throw new Error(`The hero stack is missing the ${key} translation hook.`);
+  if ([...script.matchAll(new RegExp(`\\b${key}:`, "g"))].length !== 2)
+    throw new Error(`The hero stack must translate ${key} in both languages.`);
+}
+if (!script.includes("document.querySelector('[data-hero-stack]')"))
+  throw new Error("The hero stack must locate its scroll container.");
 if (
-  !/\.portal-map-flow-path\s*\{[^}]*stroke-dasharray:\s*1;[^}]*stroke-dashoffset:\s*1;/s.test(
+  !script.includes("heroStack.style.setProperty('--stack-progress'") ||
+  !script.includes("requestAnimationFrame(updateHeroStack)")
+)
+  throw new Error("The hero stack scroll driver must write --stack-progress through rAF.");
+
+if (!/\.portal-stack-scene\s*\{[^}]*transform-style:\s*preserve-3d/s.test(styles))
+  throw new Error("The hero stack scene must render its layers in a shared 3D space.");
+if (
+  !/\.portal-stack\s*\{[^}]*--p:\s*var\(--stack-progress/s.test(styles) ||
+  !/\.portal-stack\s*\{[^}]*--render-split:/s.test(styles)
+)
+  throw new Error("The hero stack layers must stage their motion from --stack-progress.");
+if (
+  !/\.portal-stack-plate::before\s*\{[\s\S]*?rotateX\(-90deg\)/s.test(styles) ||
+  !/\.portal-stack-plate::after\s*\{[\s\S]*?rotateY\(-90deg\)/s.test(styles)
+)
+  throw new Error("The hero stack plates must keep their extruded front and side faces.");
+if (
+  !/@media \(min-width:\s*64rem\)\s*\{[\s\S]*?\.portal-hero-scroll\s+\.site-hero\s*\{[^}]*position:\s*sticky/s.test(
     styles,
   )
 )
-  throw new Error(
-    "The architecture signal must draw a continuous route instead of a detached dash.",
-  );
-if (/\.portal-map-connector::before|\.portal-map-connector span::/s.test(styles))
-  throw new Error(
-    "The architecture preview must not maintain a second disconnected CSS connector geometry.",
-  );
-if (!/\.portal-map-line\s*\{[^}]*stroke:\s*var\(--site-divider-strong\)/s.test(styles))
-  throw new Error(
-    "The architecture preview must retain an uninterrupted static SVG connector beneath its animated signal.",
-  );
+  throw new Error("The hero stack must pin the hero while scrolling on desktop.");
+if (
+  !/@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?--stack-progress:\s*1 !important/s.test(
+    styles,
+  )
+)
+  throw new Error("The hero stack must render its final static state under reduced motion.");
 if (!styles.includes("@media (prefers-reduced-motion: reduce)"))
   throw new Error("The portal motion must respect reduced-motion preferences.");
 
@@ -678,7 +705,7 @@ if (
     "The product logos must share the same reversible Any TDF layer palette.",
   );
 for (const selector of [
-  ".portal-renderer strong",
+  ".portal-stack-plate-renderer .portal-stack-plate-label",
   ".portal-adapter-grid b",
   ".portal-motion-packages span",
 ]) {
@@ -737,12 +764,12 @@ if (!mobileGithubMarkup || mobileGithubMarkup.replace(/<[^>]+>/g, "").trim())
   throw new Error("The mobile GitHub action must remain icon-only.");
 if (!mobileLanguageMarkup || mobileLanguageMarkup.replace(/<[^>]+>/g, "").trim())
   throw new Error("The mobile language action must remain icon-only.");
-if (/\.portal-map-common\s*\{[^}]*border-left:/s.test(styles))
+if (/\.portal-stack-plate-core\s*\{[^}]*border-left:/s.test(styles))
   throw new Error(
-    "The shared core card must not use a single-sided accent border.",
+    "The shared core plate must not use a single-sided accent border.",
   );
-if (/\.portal-renderer\s*\{[^}]*border-top:/s.test(styles))
-  throw new Error("Renderer cards must not use single-sided accent borders.");
+if (/\.portal-stack-plate-renderer\s*\{[^}]*border-top:/s.test(styles))
+  throw new Error("Renderer plates must not use single-sided accent borders.");
 if (styles.includes(".portal-product-card::before"))
   throw new Error("Product cards must not use a colored top-edge accent.");
 if (

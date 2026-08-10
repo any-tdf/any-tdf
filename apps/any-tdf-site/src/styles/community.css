@@ -10,7 +10,7 @@
 	min-width: 0;
 	min-height: 19rem;
 	flex-direction: column;
-	padding: 1.5rem;
+	padding: 2rem;
 	border-right: 1px solid var(--site-divider);
 	border-bottom: 1px solid var(--site-divider);
 	background: var(--site-bg);
@@ -24,7 +24,7 @@
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: 1.5rem;
 }
 
 .portal-community-panel-header span {

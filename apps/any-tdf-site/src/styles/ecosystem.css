@@ -102,8 +102,8 @@
 	min-height: 14rem;
 	flex-direction: column;
 	justify-content: space-between;
-	gap: 2rem;
-	padding: 1.5rem;
+	gap: 3rem;
+	padding: 2rem;
 	background: var(--site-bg-elevated);
 	color: var(--site-text);
 	text-decoration: none;

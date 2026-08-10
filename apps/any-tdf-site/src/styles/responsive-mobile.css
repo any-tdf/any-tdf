@@ -168,49 +168,50 @@
 		inset: 0.75rem;
 	}
 
-	.portal-map-body {
-		padding: 0.75rem;
+	.portal-hero-scroll {
+		--stack-progress: 1;
 	}
 
-	.portal-map-header {
-		min-height: auto;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		padding-block: 0.75rem;
+	.portal-stack {
+		--plate-size: 11rem;
+		--plate-t: 0.85rem;
+		--f4: 0;
+		--z-renderers: 8.5rem;
+		--z-app: 10.05rem;
+		width: 100%;
+		height: auto;
 	}
 
-	.portal-map-layer {
-		grid-template-columns: 1fr;
-		padding: 1rem;
+	.portal-stack-stage {
+		min-height: 32rem;
 	}
 
-	.portal-map-layer strong {
-		overflow-wrap: anywhere;
+	.portal-stack-scene {
+		top: 42%;
+		left: 50%;
 	}
 
-	.portal-map-renderers {
-		gap: 0.375rem;
+	.portal-stack-captions {
+		top: auto;
+		right: 0.875rem;
+		bottom: 0;
+		left: 0.875rem;
+		display: grid;
+		width: auto;
+		gap: 0.625rem;
 	}
 
-	.portal-renderer {
-		min-height: 6rem;
-		padding: 0.625rem;
+	.portal-stack-caption {
+		position: static;
+		width: auto;
 	}
 
-	.portal-renderer::after {
+	.portal-stack-hint {
 		display: none;
 	}
 
-	.portal-renderer strong {
-		font-size: 1rem;
-	}
-
-	.portal-map-output {
-		grid-template-columns: 1fr;
-	}
-
-	.portal-map-output div {
-		justify-content: flex-start;
+	.portal-stack-leader {
+		display: none;
 	}
 
 	.portal-product-grid,
@@ -384,21 +385,17 @@
 		inset: 0.25rem;
 	}
 
-	.portal-map-renderers {
-		gap: 0.25rem;
+	.portal-stack {
+		--plate-size: 9.5rem;
+		--plate-t: 0.7rem;
 	}
 
-	.portal-renderer {
-		min-height: 5.5rem;
-		padding: 0.5rem;
+	.portal-stack-stage {
+		min-height: 28rem;
 	}
 
-	.portal-renderer span {
-		font-size: 0.625rem;
-	}
-
-	.portal-renderer strong {
-		font-size: 0.875rem;
+	.portal-stack-caption small {
+		font-size: 0.6875rem;
 	}
 
 	.portal-motion-packages {

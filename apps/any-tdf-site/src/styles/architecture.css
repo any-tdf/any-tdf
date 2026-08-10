@@ -19,7 +19,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	border-right: 1px solid var(--site-divider);
-	padding: 1.25rem;
+	padding: 2rem;
 }
 
 .portal-architecture-label span {
@@ -45,7 +45,7 @@
 	flex-direction: column;
 	justify-content: center;
 	gap: 0.75rem;
-	padding: 1.5rem;
+	padding: 2rem;
 }
 
 .portal-architecture-content b {
@@ -89,7 +89,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	border-right: 1px solid var(--site-divider);
-	padding: 1.25rem;
+	padding: 2rem;
 }
 
 .portal-adapter-grid > div:last-child {
@@ -183,7 +183,7 @@
 	min-height: 13rem;
 	flex-direction: column;
 	justify-content: space-between;
-	padding: 1.5rem;
+	padding: 2rem;
 	color: var(--site-text);
 	text-decoration: none;
 	transition:
@@ -217,7 +217,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: 1.5rem;
 }
 
 .portal-motion-packages strong {

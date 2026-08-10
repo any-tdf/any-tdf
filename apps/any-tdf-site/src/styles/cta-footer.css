@@ -5,7 +5,7 @@
 .portal-cta {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(24rem, 0.8fr);
-	gap: 4rem;
+	gap: 5rem;
 	align-items: center;
 }
 
@@ -60,7 +60,7 @@
 .portal-footer-grid {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: 2rem;
+	gap: 2.5rem;
 }
 
 .portal-footer-group h3 {

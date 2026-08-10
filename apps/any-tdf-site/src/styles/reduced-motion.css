@@ -16,10 +16,6 @@
 		animation: none;
 	}
 
-	.portal-live-dot i {
-		animation: none;
-	}
-
 	.portal-product-logo-lightning {
 		animation: none;
 		stroke: none;
@@ -34,14 +30,19 @@
 		stroke-dashoffset: 0;
 	}
 
-	.portal-map-flow-path,
-	.portal-renderer::after {
-		display: none;
+	.portal-hero-scroll {
+		--stack-progress: 1 !important;
+		block-size: auto;
 	}
 
-	.portal-map-output b {
-		animation: none;
-		transform: none;
+	.portal-hero-scroll .portal-stack {
+		--f4: 0;
+	}
+
+	.portal-hero-scroll .site-hero {
+		position: static;
+		block-size: auto;
+		overflow: visible;
 	}
 
 	.has-motion [data-reveal] {

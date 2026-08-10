@@ -278,7 +278,8 @@
 
 			<main id="top" class="site-home">
 				<div class="site-home-rail">
-					<section class="site-hero portal-hero">
+					<div class="portal-hero-scroll" data-hero-stack>
+						<section class="site-hero portal-hero">
 						<div class="site-hero-copy" data-reveal>
 							<div class="site-eyebrow">SVELTE · REACT · VUE · TAILWIND CSS</div>
 							<h1 class="site-hero-title portal-hero-title">Any TDF</h1>
@@ -310,7 +311,6 @@
 								</a>
 							</div>
 							<div class="portal-hero-note">
-								<span>01</span>
 								<p data-i18n="heroNote">共享行为契约，不共享框架限制。</p>
 							</div>
 						</div>
@@ -321,48 +321,86 @@
 							aria-label="Any TDF 架构概览"
 							data-i18n-aria="architecturePreviewLabel"
 						>
-							<div class="portal-system-map" data-reveal>
-								<div class="portal-map-header">
-									<span>SYSTEM / ANY TDF</span>
-									<span class="portal-live-dot"><i></i> MONOREPO</span>
-								</div>
-								<div class="portal-map-body">
-									<div class="portal-map-layer portal-map-common">
-										<span class="portal-map-index">01 / SHARED CORE</span>
-										<strong>@any-tdf/common</strong>
-										<small data-i18n="mapCommon">状态派生 · 主题语义 · 公共类型</small>
+							<div class="portal-stack" data-reveal>
+								<div class="portal-stack-stage">
+									<div class="portal-stack-captions">
+										<div class="portal-stack-caption" data-stack-caption="app">
+											<span>YOUR APP</span>
+											<strong data-i18n="stackApp">你的应用</strong>
+											<small data-i18n="stackAppDetail">业务界面，框架由你决定</small>
+										</div>
+										<div class="portal-stack-caption" data-stack-caption="renderers">
+											<span>FRAMEWORK LAYER</span>
+											<strong data-i18n="stackRenderers">框架层</strong>
+											<small data-i18n="stackRenderersDetail">STDF · RTDF · VTDF 原生实现</small>
+										</div>
+										<div class="portal-stack-caption" data-stack-caption="core">
+											<span>SHARED CORE</span>
+											<strong data-i18n="stackCore">共享层</strong>
+											<small data-i18n="stackCoreDetail">@any-tdf/common · 状态 · 主题 · 类型 · 内置图标</small>
+										</div>
 									</div>
-									<div class="portal-map-connector" aria-hidden="true">
-										<svg class="portal-map-flow" viewBox="0 0 1000 100" preserveAspectRatio="none" focusable="false">
-											<path class="portal-map-line" d="M500 0V50M166.667 50H833.333M166.667 50V100M500 50V100M833.333 50V100" />
-											<path class="portal-map-flow-path" pathLength="1" d="M500 0V50H166.667V100" />
-											<path class="portal-map-flow-path" pathLength="1" d="M500 0V100" />
-											<path class="portal-map-flow-path" pathLength="1" d="M500 0V50H833.333V100" />
-										</svg>
+									<i class="portal-stack-leader" data-stack-leader="app"></i>
+									<i class="portal-stack-leader" data-stack-leader="renderers"></i>
+									<i class="portal-stack-leader" data-stack-leader="core"></i>
+									<div class="portal-stack-scene" aria-hidden="true">
+										<div class="portal-stack-glow"></div>
+										<div class="portal-stack-shadow"></div>
+										<div class="portal-stack-layer" data-stack-layer="core">
+											<div class="portal-stack-plate portal-stack-plate-core">
+												<span class="portal-stack-plate-label">@any-tdf/common</span>
+												<span class="portal-stack-plate-chip">npm</span>
+												<span class="portal-stack-core-tokens"><b>state</b><b>theme</b><b>types</b><b>icons</b></span>
+												<span class="portal-stack-core-rows"><i></i><i></i><i></i></span>
+												<i class="portal-stack-core-stripes"></i>
+												<i class="portal-stack-core-grid"></i>
+											</div>
+										</div>
+										<div class="portal-stack-layer" data-stack-layer="renderers">
+											<div class="portal-stack-plate portal-stack-plate-renderer" data-renderer="svelte">
+												<span class="portal-stack-plate-label">STDF</span>
+												<img class="portal-stack-plate-logo" src="/frameworks/svelte.svg" alt="" aria-hidden="true" />
+												<i class="portal-stack-plate-rows"></i>
+												<span class="portal-stack-plate-sub">Svelte</span>
+											</div>
+											<div class="portal-stack-plate portal-stack-plate-renderer" data-renderer="react">
+												<span class="portal-stack-plate-label">RTDF</span>
+												<span class="portal-stack-plate-logo portal-stack-plate-logo-switch" aria-hidden="true">
+													<img class="portal-stack-logo-light" src="/frameworks/react-light.svg" alt="" />
+													<img class="portal-stack-logo-dark" src="/frameworks/react-dark.svg" alt="" />
+												</span>
+												<i class="portal-stack-plate-rows"></i>
+												<span class="portal-stack-plate-sub">React</span>
+											</div>
+											<div class="portal-stack-plate portal-stack-plate-renderer" data-renderer="vue">
+												<span class="portal-stack-plate-label">VTDF</span>
+												<img class="portal-stack-plate-logo" src="/frameworks/vue.svg" alt="" aria-hidden="true" />
+												<i class="portal-stack-plate-rows"></i>
+												<span class="portal-stack-plate-sub">Vue</span>
+											</div>
+										</div>
+										<div class="portal-stack-layer" data-stack-layer="app">
+											<div class="portal-stack-plate portal-stack-plate-app">
+												<span class="portal-stack-plate-label">YOUR APP</span>
+												<i class="portal-stack-app-topbar"></i>
+												<i class="portal-stack-app-block portal-stack-app-block-a"></i>
+												<i class="portal-stack-app-block portal-stack-app-block-b"></i>
+												<i class="portal-stack-app-block portal-stack-app-block-c"></i>
+												<span class="portal-stack-app-bars"><i></i><i></i><i></i><i></i></span>
+												<i class="portal-stack-app-list"></i>
+												<i class="portal-stack-app-button"></i>
+											</div>
+										</div>
 									</div>
-									<div class="portal-map-renderers">
-										<div class="portal-renderer" data-renderer="svelte"><span>02A</span><strong>STDF</strong><small>Svelte</small></div>
-										<div class="portal-renderer" data-renderer="react"><span>02B</span><strong>RTDF</strong><small>React</small></div>
-										<div class="portal-renderer" data-renderer="vue"><span>02C</span><strong>VTDF</strong><small>Vue</small></div>
-									</div>
-									<div class="portal-map-connector portal-map-connector-down" aria-hidden="true">
-										<svg class="portal-map-flow" viewBox="0 0 1000 100" preserveAspectRatio="none" focusable="false">
-											<path class="portal-map-line" d="M500 0V100" />
-											<path class="portal-map-flow-path" pathLength="1" d="M500 0V100" />
-										</svg>
-									</div>
-									<div class="portal-map-output">
-										<span>03 / DELIVERY</span>
-										<div><b>npm</b><b>Docs</b><b>Demo</b></div>
-									</div>
+									<span class="portal-stack-hint">SCROLL ↓</span>
 								</div>
 							</div>
 						</div>
 					</section>
+					</div>
 
 					<section id="products" class="site-section">
 						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">01</div>
 							<div>
 								<div class="site-section-kicker">PRODUCT FAMILY</div>
 								<h2 class="site-section-title" data-i18n="productsTitle">同一套设计语言，三种原生实现</h2>
@@ -375,7 +413,7 @@
 						<div class="site-feature-grid portal-product-grid" data-reveal-group>
 							<article class="site-feature-card portal-product-card" data-product="svelte" data-reveal>
 								<div class="portal-product-topline">
-									<span>01 / SVELTE</span>
+									<span>SVELTE</span>
 									<img class="portal-framework-logo" data-framework-logo="svelte" src="/frameworks/svelte.svg" alt="" aria-hidden="true" />
 								</div>
 								<div class="portal-product-identity">
@@ -435,7 +473,7 @@
 
 							<article class="site-feature-card portal-product-card" data-product="react" data-reveal>
 								<div class="portal-product-topline">
-									<span>02 / REACT</span>
+									<span>REACT</span>
 									<span class="portal-framework-logo portal-framework-logo-switch" data-framework-logo="react" aria-hidden="true">
 										<img class="portal-framework-logo-light" src="/frameworks/react-light.svg" alt="" />
 										<img class="portal-framework-logo-dark" src="/frameworks/react-dark.svg" alt="" />
@@ -524,7 +562,7 @@
 
 							<article class="site-feature-card portal-product-card" data-product="vue" data-reveal>
 								<div class="portal-product-topline">
-									<span>03 / VUE</span>
+									<span>VUE</span>
 									<img class="portal-framework-logo" data-framework-logo="vue" src="/frameworks/vue.svg" alt="" aria-hidden="true" />
 								</div>
 								<div class="portal-product-identity">
@@ -590,150 +628,14 @@
 						</div>
 					</section>
 
-					<section id="statistics" class="site-section portal-statistics-section">
-						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">02</div>
-							<div>
-								<div class="site-section-kicker">OPEN SOURCE PULSE</div>
-								<h2 class="site-section-title" data-i18n="statisticsTitle">用公开数据，记录项目每天的成长</h2>
-								<p class="site-section-description" data-i18n="statisticsDescription">
-									GitHub 与 npm 的公开数据每天汇入同一份快照，README 和官网共同使用，不依赖第三方历史图表服务。
-								</p>
-							</div>
-						</div>
-
-						<div class="portal-statistics-shell" data-project-stats data-reveal>
-							<div class="portal-statistics-status">
-								<span>LIVE / DAILY SNAPSHOT</span>
-								<span class="portal-statistics-live"><i aria-hidden="true"></i><span data-i18n="statisticsTracking">持续采集中</span></span>
-							</div>
-
-							<div class="portal-statistics-grid">
-								<article class="portal-statistic-card">
-									<span>01 / GITHUB</span>
-									<strong data-stat-value="stars">—</strong>
-									<small data-i18n="statisticsStars">Stars</small>
-								</article>
-								<article class="portal-statistic-card">
-									<span>02 / GITHUB</span>
-									<strong data-stat-value="forks">—</strong>
-									<small data-i18n="statisticsForks">Forks</small>
-								</article>
-								<article class="portal-statistic-card">
-									<span>03 / STDF · RTDF · VTDF</span>
-									<strong data-stat-value="coreWeeklyDownloads">—</strong>
-									<small data-i18n="statisticsCoreDownloads">核心包近 7 天下载</small>
-								</article>
-								<article class="portal-statistic-card">
-									<span>04 / npm ECOSYSTEM</span>
-									<strong data-stat-value="ecosystemWeeklyDownloads">—</strong>
-									<small data-i18n="statisticsEcosystemDownloads">生态包近 7 天下载</small>
-								</article>
-							</div>
-
-							<div class="portal-statistics-detail-grid">
-								<article class="portal-statistics-chart-panel">
-									<header class="portal-statistics-panel-header">
-										<div>
-											<span>STAR GROWTH</span>
-											<h3 data-i18n="statisticsTrendTitle">Star 增长趋势</h3>
-										</div>
-										<small data-stat-tracking-period>—</small>
-									</header>
-									<div class="portal-statistics-chart-frame">
-										<svg
-											class="portal-statistics-chart"
-											viewBox="0 0 720 260"
-											preserveAspectRatio="none"
-											role="img"
-											aria-label="Star 增长趋势"
-											data-stat-chart
-										>
-											<defs>
-												<linearGradient id="portal-statistics-area" x1="0" y1="0" x2="0" y2="1">
-													<stop class="portal-statistics-area-start" offset="0" />
-													<stop class="portal-statistics-area-end" offset="1" />
-												</linearGradient>
-											</defs>
-											<g class="portal-statistics-chart-grid" aria-hidden="true">
-												<line x1="56" y1="30" x2="692" y2="30" />
-												<line x1="56" y1="120" x2="692" y2="120" />
-												<line x1="56" y1="210" x2="692" y2="210" />
-											</g>
-											<text class="portal-statistics-chart-label" x="46" y="34" text-anchor="end" data-stat-chart-max>—</text>
-											<text class="portal-statistics-chart-label" x="46" y="214" text-anchor="end" data-stat-chart-min>—</text>
-											<path class="portal-statistics-chart-area" data-stat-chart-area />
-											<path class="portal-statistics-chart-line" data-stat-chart-line />
-											<g data-stat-chart-points></g>
-											<text
-												class="portal-statistics-chart-empty"
-												x="374"
-												y="125"
-												text-anchor="middle"
-												data-i18n="statisticsChartEmpty"
-												data-stat-chart-empty
-											>
-												趋势从今天开始累计
-											</text>
-										</svg>
-									</div>
-									<footer class="portal-statistics-chart-dates">
-										<time data-stat-chart-start>—</time>
-										<span data-i18n="statisticsTrendDescription">每日快照，最多展示最近 90 天</span>
-										<time data-stat-chart-end>—</time>
-									</footer>
-								</article>
-
-								<article class="portal-statistics-packages-panel">
-									<header class="portal-statistics-panel-header">
-										<div>
-											<span>PACKAGE ACTIVITY</span>
-											<h3 data-i18n="statisticsPackagesTitle">npm 包活跃度</h3>
-										</div>
-										<small><b data-stat-package-count>—</b> <span data-i18n="statisticsPublicPackages">个公开包</span></small>
-									</header>
-									<p class="portal-statistics-packages-period">
-										<span data-i18n="statisticsNpmPeriod">统计周期</span>
-										<time data-stat-npm-period>—</time>
-									</p>
-									<ol class="portal-statistics-package-list" data-stat-package-list></ol>
-								</article>
-							</div>
-
-							<footer class="portal-statistics-footer">
-								<div class="portal-statistics-repository-state">
-									<a href="https://github.com/any-tdf/any-tdf/issues" target="_blank" rel="noreferrer">
-										<b data-stat-value="openIssues">—</b>
-										<span data-i18n="statisticsOpenIssues">开放 Issue</span>
-									</a>
-									<a href="https://github.com/any-tdf/any-tdf/pulls" target="_blank" rel="noreferrer">
-										<b data-stat-value="openPullRequests">—</b>
-										<span data-i18n="statisticsOpenPullRequests">开放 PR</span>
-									</a>
-								</div>
-								<div class="portal-statistics-source">
-									<span><span data-i18n="statisticsUpdated">更新于</span> <time data-stat-updated>—</time></span>
-									<a
-										href="https://github.com/any-tdf/any-tdf/blob/main/apps/any-tdf-site/public/data/project-stats.json"
-										target="_blank"
-										rel="noreferrer"
-										data-i18n="statisticsSource"
-									>
-										查看公开数据源
-									</a>
-								</div>
-							</footer>
-						</div>
-					</section>
 
 					<section id="architecture" class="site-section">
 						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">03</div>
 							<div>
 								<div class="site-section-kicker">ARCHITECTURE</div>
 								<h2 class="site-section-title" data-i18n="architectureTitle">共享产品逻辑，保留框架原生渲染</h2>
 								<p class="site-section-description" data-i18n="architectureDescription">
-									Any TDF 共享状态推导、主题、语言、SVG 数据与公共类型，但不把 Svelte、React、Vue 强行合并为同一套渲染源码。
+									Any TDF 共享状态推导、主题、语言、内置图标与公共类型，但不把 Svelte、React、Vue 强行合并为同一套渲染源码。
 								</p>
 							</div>
 						</div>
@@ -746,13 +648,12 @@
 							<div class="portal-architecture-stack">
 								<div class="portal-architecture-row portal-architecture-core">
 									<div class="portal-architecture-label">
-										<span>01</span>
 										<i class="portal-layer-icon" data-lucide="layers" aria-hidden="true"></i>
 										<strong data-i18n="sharedLayer">共享层</strong>
 									</div>
 									<div class="portal-architecture-content">
 										<b>@any-tdf/common</b>
-										<span data-i18n="sharedLayerDetail">组件状态 · 主题语义 · 语言与类型 · SVG 数据</span>
+										<span data-i18n="sharedLayerDetail">组件状态 · 主题语义 · 语言与类型 · 内置图标</span>
 									</div>
 								</div>
 								<div class="portal-flow-line" aria-hidden="true">
@@ -760,7 +661,6 @@
 								</div>
 								<div class="portal-architecture-row">
 									<div class="portal-architecture-label">
-										<span>02</span>
 										<i class="portal-layer-icon" data-lucide="plug" aria-hidden="true"></i>
 										<strong data-i18n="adapterLayer">适配层</strong>
 									</div>
@@ -775,7 +675,6 @@
 								</div>
 								<div class="portal-architecture-row">
 									<div class="portal-architecture-label">
-										<span>03</span>
 										<i class="portal-layer-icon" data-lucide="panels-top-left" aria-hidden="true"></i>
 										<strong data-i18n="experienceLayer">体验层</strong>
 									</div>
@@ -823,7 +722,6 @@
 
 					<section id="principles" class="site-section">
 						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">04</div>
 							<div>
 								<div class="site-section-kicker">DESIGN PRINCIPLES</div>
 								<h2 class="site-section-title" data-i18n="principlesTitle">统一但不抹平差异</h2>
@@ -871,7 +769,6 @@
 
 					<section id="resources" class="site-section portal-resource-section">
 						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">05</div>
 							<div>
 								<div class="site-section-kicker">ECOSYSTEM DIRECTORY</div>
 								<h2 class="site-section-title" data-i18n="resourcesTitle">组件之外，还有完整的开发工具链</h2>
@@ -888,44 +785,12 @@
 										<i class="portal-layer-icon" data-lucide="package-open" aria-hidden="true"></i>
 									</span>
 									<div>
-										<span>01 / REGISTRY</span>
+										<span>REGISTRY</span>
 										<h3 data-i18n="npmResourcesTitle">npm 包</h3>
 									</div>
 									<strong>06</strong>
 								</header>
 								<div class="portal-resource-grid">
-									<a class="portal-resource-card" href="https://react-confetti.any-tdf.dev" target="_blank" rel="noreferrer">
-										<div class="portal-resource-card-topline">
-											<span>NPM · REACT</span>
-											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
-										</div>
-										<div class="portal-resource-card-copy">
-											<h4>@any-tdf/react-confetti</h4>
-											<p data-i18n="reactConfettiResourceDescription">
-												面向 React 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。
-											</p>
-										</div>
-										<div class="portal-resource-target">
-											<span data-i18n="officialWebsite">官网</span>
-											<code>react-confetti.any-tdf.dev</code>
-										</div>
-									</a>
-									<a class="portal-resource-card" href="https://vue-confetti.any-tdf.dev" target="_blank" rel="noreferrer">
-										<div class="portal-resource-card-topline">
-											<span>NPM · VUE</span>
-											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
-										</div>
-										<div class="portal-resource-card-copy">
-											<h4>@any-tdf/vue-confetti</h4>
-											<p data-i18n="vueConfettiResourceDescription">
-												面向 Vue 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。
-											</p>
-										</div>
-										<div class="portal-resource-target">
-											<span data-i18n="officialWebsite">官网</span>
-											<code>vue-confetti.any-tdf.dev</code>
-										</div>
-									</a>
 									<a class="portal-resource-card" href="https://www.npmjs.com/package/@any-tdf/common" target="_blank" rel="noreferrer">
 										<div class="portal-resource-card-topline">
 											<span>NPM · CORE</span>
@@ -992,6 +857,38 @@
 											<code>npmjs.com</code>
 										</div>
 									</a>
+									<a class="portal-resource-card" href="https://react-confetti.any-tdf.dev" target="_blank" rel="noreferrer">
+										<div class="portal-resource-card-topline">
+											<span>NPM · REACT</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>@any-tdf/react-confetti</h4>
+											<p data-i18n="reactConfettiResourceDescription">
+												面向 React 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span data-i18n="officialWebsite">官网</span>
+											<code>react-confetti.any-tdf.dev</code>
+										</div>
+									</a>
+									<a class="portal-resource-card" href="https://vue-confetti.any-tdf.dev" target="_blank" rel="noreferrer">
+										<div class="portal-resource-card-topline">
+											<span>NPM · VUE</span>
+											<i class="portal-inline-icon" data-lucide="external-link" aria-hidden="true"></i>
+										</div>
+										<div class="portal-resource-card-copy">
+											<h4>@any-tdf/vue-confetti</h4>
+											<p data-i18n="vueConfettiResourceDescription">
+												面向 Vue 的纯 HTML 与 CSS 彩纸动画，保持 svelte-confetti 的轻量实现和 SSR 兼容。
+											</p>
+										</div>
+										<div class="portal-resource-target">
+											<span data-i18n="officialWebsite">官网</span>
+											<code>vue-confetti.any-tdf.dev</code>
+										</div>
+									</a>
 								</div>
 							</section>
 
@@ -1001,7 +898,7 @@
 										<i class="portal-layer-icon" data-lucide="blocks" aria-hidden="true"></i>
 									</span>
 									<div>
-										<span>02 / AI CONTEXT</span>
+										<span>AI CONTEXT</span>
 										<h3 data-i18n="skillsResourcesTitle">AI Skill</h3>
 									</div>
 									<strong>03</strong>
@@ -1079,7 +976,7 @@
 										<i class="portal-layer-icon" data-lucide="code-xml" aria-hidden="true"></i>
 									</span>
 									<div>
-										<span>03 / EDITOR</span>
+										<span>EDITOR</span>
 										<h3 data-i18n="vscodeResourcesTitle">VS Code 插件</h3>
 									</div>
 									<strong>01</strong>
@@ -1137,7 +1034,6 @@
 
 					<section id="community" class="site-section portal-community-section">
 						<div class="site-section-heading" data-reveal>
-							<div class="site-section-index">06</div>
 							<div>
 								<div class="site-section-kicker">COMMUNITY</div>
 								<h2 class="site-section-title" data-i18n="communityTitle">由社区共同建设</h2>
@@ -1151,7 +1047,7 @@
 							<article class="portal-community-panel portal-community-contributors">
 								<header class="portal-community-panel-header">
 									<div>
-										<span>01 / CONTRIBUTORS</span>
+										<span>CONTRIBUTORS</span>
 										<h3 data-i18n="contributorsTitle">贡献者</h3>
 									</div>
 									<a
@@ -1186,7 +1082,7 @@
 							<article class="portal-community-panel portal-community-sponsors">
 								<header class="portal-community-panel-header">
 									<div>
-										<span>02 / SPONSORS</span>
+										<span>SPONSORS</span>
 										<h3 data-i18n="sponsorsTitle">赞助者</h3>
 									</div>
 									<button class="portal-community-action" type="button" data-support-trigger data-i18n="sponsorsAction">
@@ -1196,6 +1092,131 @@
 								<p data-i18n="sponsorsDescription">感谢这些朋友通过赞助支持长期维护、文档建设与生态扩展。</p>
 								<div class="portal-sponsor-list" data-sponsor-list data-i18n-aria="sponsorsTitle" aria-label="赞助者"></div>
 							</article>
+						</div>
+					</section>
+
+					<section id="statistics" class="site-section portal-statistics-section">
+						<div class="site-section-heading" data-reveal>
+							<div>
+								<div class="site-section-kicker">OPEN SOURCE PULSE</div>
+								<h2 class="site-section-title" data-i18n="statisticsTitle">用公开数据，记录项目成长</h2>
+							</div>
+						</div>
+
+						<div class="portal-statistics-shell" data-project-stats data-reveal>
+							<div class="portal-statistics-status">
+								<span>LIVE / DAILY SNAPSHOT</span>
+								<span class="portal-statistics-live"><i aria-hidden="true"></i><span data-i18n="statisticsTracking">持续采集中</span></span>
+							</div>
+
+							<div class="portal-statistics-grid">
+								<article class="portal-statistic-card">
+									<span>GITHUB</span>
+									<strong data-stat-value="stars">—</strong>
+									<small data-i18n="statisticsStars">Stars</small>
+								</article>
+								<article class="portal-statistic-card">
+									<span>GITHUB</span>
+									<strong data-stat-value="forks">—</strong>
+									<small data-i18n="statisticsForks">Forks</small>
+								</article>
+								<article class="portal-statistic-card">
+									<span>STDF · RTDF · VTDF</span>
+									<strong data-stat-value="coreWeeklyDownloads">—</strong>
+									<small data-i18n="statisticsCoreDownloads">核心包近 7 天下载</small>
+								</article>
+								<article class="portal-statistic-card">
+									<span>npm ECOSYSTEM</span>
+									<strong data-stat-value="ecosystemWeeklyDownloads">—</strong>
+									<small data-i18n="statisticsEcosystemDownloads">生态包近 7 天下载</small>
+								</article>
+							</div>
+
+							<div class="portal-statistics-detail-grid">
+								<article class="portal-statistics-chart-panel">
+									<header class="portal-statistics-panel-header">
+										<div>
+											<span>STAR GROWTH</span>
+											<h3 data-i18n="statisticsTrendTitle">Star 增长趋势</h3>
+										</div>
+										<small data-stat-tracking-period>—</small>
+									</header>
+									<div class="portal-statistics-chart-frame">
+										<svg
+											class="portal-statistics-chart"
+											viewBox="0 0 720 260"
+											preserveAspectRatio="none"
+											role="img"
+											aria-label="Star 增长趋势"
+											data-stat-chart
+										>
+											<defs>
+												<linearGradient id="portal-statistics-area" x1="0" y1="0" x2="0" y2="1">
+													<stop class="portal-statistics-area-start" offset="0" />
+													<stop class="portal-statistics-area-end" offset="1" />
+												</linearGradient>
+											</defs>
+											<g class="portal-statistics-chart-grid" aria-hidden="true" data-stat-chart-grid></g>
+											<g class="portal-statistics-chart-labels" data-stat-chart-labels></g>
+											<path class="portal-statistics-chart-area" data-stat-chart-area />
+											<path class="portal-statistics-chart-line" data-stat-chart-line />
+											<text
+												class="portal-statistics-chart-empty"
+												x="374"
+												y="125"
+												text-anchor="middle"
+												data-i18n="statisticsChartEmpty"
+												data-stat-chart-empty
+											>
+												趋势从今天开始累计
+											</text>
+										</svg>
+									</div>
+									<footer class="portal-statistics-chart-dates">
+										<time data-stat-chart-start>—</time>
+										<time data-stat-chart-end>—</time>
+									</footer>
+								</article>
+
+								<article class="portal-statistics-packages-panel">
+									<header class="portal-statistics-panel-header">
+										<div>
+											<span>PACKAGE ACTIVITY</span>
+											<h3 data-i18n="statisticsPackagesTitle">npm 包活跃度</h3>
+										</div>
+										<small><b data-stat-package-count>—</b> <span data-i18n="statisticsPublicPackages">个公开包</span></small>
+									</header>
+									<p class="portal-statistics-packages-period">
+										<span data-i18n="statisticsNpmPeriod">统计周期</span>
+										<time data-stat-npm-period>—</time>
+									</p>
+									<ol class="portal-statistics-package-list" data-stat-package-list></ol>
+								</article>
+							</div>
+
+							<footer class="portal-statistics-footer">
+								<div class="portal-statistics-repository-state">
+									<a href="https://github.com/any-tdf/any-tdf/issues" target="_blank" rel="noreferrer">
+										<b data-stat-value="openIssues">—</b>
+										<span data-i18n="statisticsOpenIssues">开放 Issue</span>
+									</a>
+									<a href="https://github.com/any-tdf/any-tdf/pulls" target="_blank" rel="noreferrer">
+										<b data-stat-value="openPullRequests">—</b>
+										<span data-i18n="statisticsOpenPullRequests">开放 PR</span>
+									</a>
+								</div>
+								<div class="portal-statistics-source">
+									<span><span data-i18n="statisticsUpdated">更新于</span> <time data-stat-updated>—</time></span>
+									<a
+										href="https://github.com/any-tdf/any-tdf/blob/main/apps/any-tdf-site/public/data/project-stats.json"
+										target="_blank"
+										rel="noreferrer"
+										data-i18n="statisticsSource"
+									>
+										查看公开数据源
+									</a>
+								</div>
+							</footer>
 						</div>
 					</section>
 

@@ -347,7 +347,7 @@ body *::selection {
 	position: relative;
 	z-index: 1;
 	border-bottom: 1px solid var(--site-divider);
-	padding: 6rem 3.5rem;
+	padding: 10rem 3.5rem;
 	background: color-mix(in oklch, var(--site-bg) 96%, transparent);
 }
 
@@ -357,16 +357,8 @@ body *::selection {
 
 .site-section-heading {
 	display: grid;
-	grid-template-columns: 5rem minmax(0, 1fr);
-	gap: 2rem;
-	margin-bottom: 3rem;
-}
-
-.site-section-index {
-	color: var(--site-text-muted);
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	font-size: 0.875rem;
-	letter-spacing: 0.12em;
+	grid-template-columns: minmax(0, 1fr);
+	margin-bottom: 6rem;
 }
 
 .site-section-title {
@@ -401,9 +393,9 @@ body *::selection {
 }
 
 .site-feature-card {
-	min-height: 14rem;
+	min-height: 15rem;
 	border-width: 0 1px 1px 0;
-	padding: 1.5rem;
+	padding: 1.75rem;
 	transition: background-color var(--site-transition);
 }
 
@@ -427,7 +419,7 @@ body *::selection {
 .site-footer {
 	position: relative;
 	z-index: 1;
-	padding: 4rem 3.5rem 2rem;
+	padding: 5rem 3.5rem 2.5rem;
 }
 
 .site-footer a {
@@ -465,7 +457,7 @@ body *::selection {
 	}
 
 	.site-section {
-		padding: 5rem 2rem;
+		padding: 7rem 2rem;
 	}
 }
 
@@ -483,7 +475,7 @@ body *::selection {
 	}
 
 	.site-section {
-		padding: 4rem 1.25rem;
+		padding: 6rem 1.25rem;
 	}
 
 	.site-section-heading {

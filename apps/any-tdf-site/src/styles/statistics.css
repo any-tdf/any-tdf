@@ -9,7 +9,7 @@
 	min-height: 3rem;
 	align-items: center;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: 1.5rem;
 	padding: 0.75rem 1rem;
 	border-bottom: 1px solid var(--site-divider);
 	color: var(--site-text-muted);
@@ -46,7 +46,7 @@
 	min-height: 11rem;
 	flex-direction: column;
 	justify-content: space-between;
-	padding: 1.25rem;
+	padding: 2rem;
 	border-right: 1px solid var(--site-divider);
 	background: color-mix(in oklch, var(--site-bg-elevated) 74%, transparent);
 }
@@ -91,7 +91,7 @@
 .portal-statistics-chart-panel,
 .portal-statistics-packages-panel {
 	min-width: 0;
-	padding: 1.5rem;
+	padding: 2rem;
 }
 
 .portal-statistics-packages-panel {
@@ -104,7 +104,7 @@
 	min-height: 3.5rem;
 	align-items: flex-start;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: 1.5rem;
 }
 
 .portal-statistics-panel-header h3 {
@@ -129,9 +129,6 @@
 .portal-statistics-chart-frame {
 	margin-top: 1rem;
 	border: 1px solid var(--site-divider);
-	background-image: linear-gradient(var(--site-grid) 1px, transparent 1px), linear-gradient(90deg, var(--site-grid) 1px, transparent 1px);
-	background-position: -1px -1px;
-	background-size: 2rem 2rem;
 }
 
 .portal-statistics-chart {
@@ -185,25 +182,14 @@
 	vector-effect: non-scaling-stroke;
 }
 
-.portal-statistics-chart-point {
-	fill: var(--site-bg);
-	stroke: var(--site-accent);
-	stroke-width: 2;
-	vector-effect: non-scaling-stroke;
-}
-
 .portal-statistics-chart-dates {
 	display: grid;
-	grid-template-columns: minmax(5rem, 1fr) auto minmax(5rem, 1fr);
+	grid-template-columns: repeat(2, minmax(5rem, 1fr));
 	gap: 0.75rem;
 	margin-top: 0.75rem;
 	color: var(--site-text-muted);
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 	font-size: 0.625rem;
-}
-
-.portal-statistics-chart-dates span {
-	text-align: center;
 }
 
 .portal-statistics-chart-dates time:last-child {
@@ -214,7 +200,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: 1.5rem;
 	margin: 1rem 0 0;
 	padding: 0.75rem 0;
 	border-top: 1px solid var(--site-divider);
@@ -245,7 +231,7 @@
 	display: flex;
 	align-items: flex-end;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: 1.5rem;
 }
 
 .portal-statistics-package-heading > span {
@@ -324,7 +310,7 @@
 .portal-statistics-source {
 	display: flex;
 	align-items: center;
-	gap: 1rem;
+	gap: 1.5rem;
 }
 
 .portal-statistics-repository-state a,

@@ -113,7 +113,12 @@ const translations = {
 		exploreArchitecture: '了解架构',
 		heroNote: '共享行为契约，不共享框架限制。',
 		architecturePreviewLabel: 'Any TDF 架构概览',
-		mapCommon: '状态派生 · 主题语义 · 公共类型',
+		stackApp: '你的应用',
+		stackAppDetail: '业务界面，框架由你决定',
+		stackRenderers: '框架层',
+		stackRenderersDetail: '按框架三选一',
+		stackCore: '共享层',
+		stackCoreDetail: '@any-tdf/common · 状态 · 主题 · 类型 · 内置图标',
 		productsTitle: '同一套设计语言，三种原生实现',
 		productsDescription: '每个组件库都基于 Tailwind CSS，并遵循一致的组件能力、主题语义和文档结构，同时保留对应框架最自然的开发方式。',
 		stdfDescription: '面向 Svelte 的移动 Web 组件库，保持简洁的组件语法与轻量运行时体验。',
@@ -123,15 +128,13 @@ const translations = {
 		styling: '样式基础',
 		package: 'npm 包',
 		openSite: '打开官网',
-		statisticsTitle: '用公开数据，记录项目每天的成长',
-		statisticsDescription: 'GitHub 与 npm 的公开数据每天汇入同一份快照，README 和官网共同使用，不依赖第三方历史图表服务。',
+		statisticsTitle: '用公开数据，记录项目成长',
 		statisticsTracking: '持续采集中',
 		statisticsStars: 'Stars',
 		statisticsForks: 'Forks',
 		statisticsCoreDownloads: '核心包近 7 天下载',
 		statisticsEcosystemDownloads: '生态包近 7 天下载',
 		statisticsTrendTitle: 'Star 增长趋势',
-		statisticsTrendDescription: '每日快照，最多展示最近 90 天',
 		statisticsChartEmpty: '趋势从今天开始累计',
 		statisticsPackagesTitle: 'npm 包活跃度',
 		statisticsPublicPackages: '个公开包',
@@ -141,13 +144,12 @@ const translations = {
 		statisticsUpdated: '更新于',
 		statisticsSource: '查看公开数据源',
 		statisticsTrackingSince: '持续采集自',
-		statisticsLastNinetyDays: '最近 90 天',
 		statisticsChartAria: 'Any TDF Star 增长趋势',
 		architectureTitle: '共享产品逻辑，保留框架原生渲染',
-		architectureDescription: 'Any TDF 共享状态推导、主题、语言、SVG 数据与公共类型，但不把 Svelte、React、Vue 强行合并为同一套渲染源码。',
+		architectureDescription: 'Any TDF 共享状态推导、主题、语言、内置图标与公共类型，但不把 Svelte、React、Vue 强行合并为同一套渲染源码。',
 		architectureRule: '依赖方向保持单向',
 		sharedLayer: '共享层',
-		sharedLayerDetail: '组件状态 · 主题语义 · 语言与类型 · SVG 数据',
+		sharedLayerDetail: '组件状态 · 主题语义 · 语言与类型 · 内置图标',
 		adapterLayer: '适配层',
 		svelteAdapter: 'Svelte 组件、事件与插槽',
 		reactAdapter: 'React 组件、Props 与 Hook',
@@ -250,7 +252,12 @@ const translations = {
 		exploreArchitecture: 'Architecture',
 		heroNote: 'Share behavior contracts, not framework constraints.',
 		architecturePreviewLabel: 'Any TDF architecture overview',
-		mapCommon: 'Derived state · Theme semantics · Shared types',
+		stackApp: 'Your app',
+		stackAppDetail: 'Product UI on the framework you choose',
+		stackRenderers: 'Framework layer',
+		stackRenderersDetail: 'Pick one of the three',
+		stackCore: 'Shared layer',
+		stackCoreDetail: '@any-tdf/common · States · Themes · Types · Built-in icons',
 		productsTitle: 'One design language, three native implementations',
 		productsDescription:
 			'Every library is built on Tailwind CSS and follows the same component capabilities, theme semantics, and documentation structure while preserving each framework’s natural development model.',
@@ -262,15 +269,12 @@ const translations = {
 		package: 'npm package',
 		openSite: 'Open website',
 		statisticsTitle: 'Public signals, captured every day',
-		statisticsDescription:
-			'Public GitHub and npm data flows into one daily snapshot shared by the README and website, without relying on a third-party history chart.',
 		statisticsTracking: 'Collecting daily',
 		statisticsStars: 'Stars',
 		statisticsForks: 'Forks',
 		statisticsCoreDownloads: 'Core downloads · last 7 days',
 		statisticsEcosystemDownloads: 'Ecosystem downloads · last 7 days',
 		statisticsTrendTitle: 'Star growth',
-		statisticsTrendDescription: 'Daily snapshots · latest 90 days',
 		statisticsChartEmpty: 'Trend tracking starts today',
 		statisticsPackagesTitle: 'npm package activity',
 		statisticsPublicPackages: 'public packages',
@@ -280,14 +284,13 @@ const translations = {
 		statisticsUpdated: 'Updated',
 		statisticsSource: 'View public data',
 		statisticsTrackingSince: 'Tracking since',
-		statisticsLastNinetyDays: 'Latest 90 days',
 		statisticsChartAria: 'Any TDF Star growth',
 		architectureTitle: 'Share product logic, keep native rendering',
 		architectureDescription:
-			'Any TDF shares derived state, themes, language, SVG data, and public types without forcing Svelte, React, and Vue into one rendering source.',
+			'Any TDF shares derived state, themes, language, built-in icons, and public types without forcing Svelte, React, and Vue into one rendering source.',
 		architectureRule: 'Dependencies flow in one direction',
 		sharedLayer: 'Shared layer',
-		sharedLayerDetail: 'Component state · Theme semantics · Language and types · SVG data',
+		sharedLayerDetail: 'Component state · Theme semantics · Language and types · Built-in icons',
 		adapterLayer: 'Adapter layer',
 		svelteAdapter: 'Svelte components, events, and slots',
 		reactAdapter: 'React components, props, and hooks',
@@ -545,18 +548,35 @@ const svgNamespace = 'http://www.w3.org/2000/svg';
 const formatStatNumber = (value) => new Intl.NumberFormat(currentLanguage === 'zh' ? 'zh-CN' : 'en-US').format(value);
 const formatStatDate = (value) => value;
 const formatStatsUpdatedAt = (value) => `${value.slice(0, 10)} ${value.slice(11, 16)} UTC`;
+const formatStatAxisDate = (value, precise) => {
+	if (precise) return value;
+	return currentLanguage === 'zh'
+		? value.slice(0, 7)
+		: new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${value}T00:00:00Z`));
+};
+const createAxisTicks = (valueMinimum, valueMaximum) => {
+	const roughStep = Math.max(valueMaximum, 1) / 4;
+	const power = 10 ** Math.floor(Math.log10(roughStep));
+	const normalized = roughStep / power;
+	const step = Math.max(1, (normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10) * power);
+	const maximum = step * Math.ceil(valueMaximum / step) || step;
+	const minimum = Math.max(0, Math.floor(valueMinimum / step) * step);
+	const ticks = [];
+	for (let value = minimum; value <= maximum; value += step) ticks.push(value);
+	return { minimum, maximum, ticks };
+};
 const createProjectStatsChart = (history) => {
-	const recentHistory = history.slice(-90);
+	const series = history;
 	const chart = { left: 56, right: 692, top: 30, bottom: 210 };
-	const starValues = recentHistory.map(({ stars }) => stars);
-	const valueMinimum = Math.min(...starValues);
-	const valueMaximum = Math.max(...starValues);
-	const valuePadding = Math.max(1, Math.ceil((valueMaximum - valueMinimum || valueMaximum * 0.02) / 2));
-	const minimum = Math.max(0, valueMinimum - valuePadding);
-	const maximum = valueMaximum + valuePadding;
+	const starValues = series.map(({ stars }) => stars);
+	const { minimum, maximum, ticks: tickValues } = createAxisTicks(Math.min(...starValues), Math.max(...starValues));
 	const range = maximum - minimum;
-	const points = recentHistory.map((entry, index) => {
-		const progress = recentHistory.length === 1 ? 1 : index / (recentHistory.length - 1);
+	const ticks = tickValues.map((value) => ({
+		value,
+		y: chart.bottom - ((value - minimum) / range) * (chart.bottom - chart.top)
+	}));
+	const points = series.map((entry, index) => {
+		const progress = series.length === 1 ? 1 : index / (series.length - 1);
 		return {
 			...entry,
 			x: chart.left + progress * (chart.right - chart.left),
@@ -568,7 +588,19 @@ const createProjectStatsChart = (history) => {
 	const areaPath = linePath
 		? `${linePath} L ${points.at(-1).x.toFixed(2)} ${chart.bottom} L ${points[0].x.toFixed(2)} ${chart.bottom} Z`
 		: '';
-	return { recentHistory, minimum, maximum, points, linePath, areaPath };
+	const precise = (Date.parse(series.at(-1).date) - Date.parse(series[0].date)) / 86400000 <= 120;
+	const firstTime = Date.parse(series[0].date);
+	const lastTime = Date.parse(series.at(-1).date);
+	const yearTicks = [];
+	if (lastTime > firstTime) {
+		for (let year = Number(series[0].date.slice(0, 4)) + 1; Date.parse(`${year}-01-01`) < lastTime; year += 1) {
+			yearTicks.push({
+				year,
+				x: chart.left + ((Date.parse(`${year}-01-01`) - firstTime) / (lastTime - firstTime)) * (chart.right - chart.left)
+			});
+		}
+	}
+	return { series, linePath, areaPath, precise, chart, yearTicks, ticks };
 };
 const renderProjectStats = () => {
 	if (!projectStatsContainer || !projectStats) return;
@@ -629,40 +661,56 @@ const renderProjectStats = () => {
 	});
 	projectStatsContainer.querySelector('[data-stat-package-list]').replaceChildren(...packageItems);
 
-	const { recentHistory, minimum, maximum, points, linePath, areaPath } = createProjectStatsChart(projectStats.history);
-	const firstEntry = recentHistory[0];
-	const lastEntry = recentHistory.at(-1);
+	const { series, linePath, areaPath, precise, chart: bounds, yearTicks, ticks } = createProjectStatsChart(projectStats.history);
+	const firstEntry = series[0];
+	const lastEntry = series.at(-1);
 	const chart = projectStatsContainer.querySelector('[data-stat-chart]');
 	chart.setAttribute('aria-label', `${dictionary.statisticsChartAria}: ${firstEntry.stars} → ${lastEntry.stars}`);
-	projectStatsContainer.querySelector('[data-stat-chart-min]').textContent = formatStatNumber(minimum);
-	projectStatsContainer.querySelector('[data-stat-chart-max]').textContent = formatStatNumber(maximum);
 	projectStatsContainer.querySelector('[data-stat-chart-line]').setAttribute('d', linePath);
 	projectStatsContainer.querySelector('[data-stat-chart-area]').setAttribute('d', areaPath);
-	const chartPoints = points.map((point, index) => {
-		const circle = document.createElementNS(svgNamespace, 'circle');
-		circle.classList.add('portal-statistics-chart-point');
-		circle.setAttribute('cx', point.x.toFixed(2));
-		circle.setAttribute('cy', point.y.toFixed(2));
-		circle.setAttribute('r', index === points.length - 1 ? '5' : '3');
-		const title = document.createElementNS(svgNamespace, 'title');
-		title.textContent = `${formatStatDate(point.date)} · ${formatStatNumber(point.stars)} Stars`;
-		circle.append(title);
-		return circle;
+	const createGridLine = (attributes) => {
+		const line = document.createElementNS(svgNamespace, 'line');
+		for (const [name, value] of Object.entries(attributes)) line.setAttribute(name, value);
+		return line;
+	};
+	const gridLines = ticks.map(({ y }) => createGridLine({ x1: bounds.left, x2: bounds.right, y1: y, y2: y }));
+	for (const { x } of yearTicks) gridLines.push(createGridLine({ x1: x, x2: x, y1: bounds.top, y2: bounds.bottom }));
+	projectStatsContainer.querySelector('[data-stat-chart-grid]').replaceChildren(...gridLines);
+	const tickLabels = ticks.map(({ value, y }) => {
+		const label = document.createElementNS(svgNamespace, 'text');
+		label.setAttribute('class', 'portal-statistics-chart-label');
+		label.setAttribute('x', '46');
+		label.setAttribute('y', (y + 4).toFixed(2));
+		label.setAttribute('text-anchor', 'end');
+		label.textContent = formatStatNumber(value);
+		return label;
 	});
-	projectStatsContainer.querySelector('[data-stat-chart-points]').replaceChildren(...chartPoints);
-	projectStatsContainer.querySelector('[data-stat-chart-empty]').toggleAttribute('hidden', recentHistory.length > 1);
-	projectStatsContainer.querySelector('[data-stat-chart-start]').textContent = formatStatDate(firstEntry.date);
-	projectStatsContainer.querySelector('[data-stat-chart-end]').textContent = formatStatDate(lastEntry.date);
+	const yearLabels = yearTicks.map(({ year, x }) => {
+		const label = document.createElementNS(svgNamespace, 'text');
+		label.setAttribute('class', 'portal-statistics-chart-label');
+		label.setAttribute('x', x.toFixed(2));
+		label.setAttribute('y', String(bounds.bottom + 14));
+		label.setAttribute('text-anchor', 'middle');
+		label.textContent = String(year);
+		return label;
+	});
+	projectStatsContainer.querySelector('[data-stat-chart-labels]').replaceChildren(...tickLabels, ...yearLabels);
+	projectStatsContainer.querySelector('[data-stat-chart-empty]').toggleAttribute('hidden', series.length > 1);
+	projectStatsContainer.querySelector('[data-stat-chart-start]').textContent = formatStatAxisDate(firstEntry.date, precise);
+	projectStatsContainer.querySelector('[data-stat-chart-end]').textContent = formatStatAxisDate(lastEntry.date, precise);
 	projectStatsContainer.querySelector('[data-stat-tracking-period]').textContent =
-		projectStats.history.length > 90
-			? dictionary.statisticsLastNinetyDays
-			: `${dictionary.statisticsTrackingSince} ${formatStatDate(firstEntry.date)}`;
+		`${dictionary.statisticsTrackingSince} ${formatStatAxisDate(projectStats.history[0].date, precise)}`;
 	projectStatsContainer.dataset.ready = 'true';
 };
 const loadProjectStats = async () => {
 	const response = await fetch('/data/project-stats.json', { headers: { Accept: 'application/json' } });
 	if (!response.ok) throw new Error(`Project statistics returned ${response.status}.`);
 	projectStats = await response.json();
+	if (Array.isArray(projectStats.history[0])) {
+		projectStats.history = projectStats.history.map((values) =>
+			Object.fromEntries(projectStats.historyFields.map((field, index) => [field, values[index]]))
+		);
+	}
 	renderProjectStats();
 };
 
@@ -918,6 +966,31 @@ if ('IntersectionObserver' in window) {
 	for (const card of productCards) productCardObserver.observe(card);
 } else {
 	for (const card of productCards) card.classList.add('is-in-view');
+}
+
+const heroStack = document.querySelector('[data-hero-stack]');
+if (heroStack) {
+	let heroStackFrame = 0;
+	const updateHeroStack = () => {
+		heroStackFrame = 0;
+		if (motionQuery.matches || !desktopNavigation.matches) {
+			heroStack.style.removeProperty('--stack-progress');
+			return;
+		}
+		const rect = heroStack.getBoundingClientRect();
+		const range = rect.height - window.innerHeight;
+		const progress = range > 0 ? Math.min(1, Math.max(0, -rect.top / range)) : 1;
+		heroStack.style.setProperty('--stack-progress', progress.toFixed(3));
+	};
+	const requestHeroStackUpdate = () => {
+		if (heroStackFrame) return;
+		heroStackFrame = requestAnimationFrame(updateHeroStack);
+	};
+	window.addEventListener('scroll', requestHeroStackUpdate, { passive: true });
+	window.addEventListener('resize', requestHeroStackUpdate);
+	desktopNavigation.addEventListener('change', requestHeroStackUpdate);
+	motionQuery.addEventListener('change', requestHeroStackUpdate);
+	updateHeroStack();
 }
 
 systemMode.addEventListener('change', () => {

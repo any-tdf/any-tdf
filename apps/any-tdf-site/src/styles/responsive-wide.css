@@ -1,9 +1,3 @@
-@media (min-width: 64rem) {
-	.portal-hero {
-		grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
-	}
-}
-
 @media (max-width: 79.999rem) {
 	.portal-product-grid,
 	.portal-principle-grid {
