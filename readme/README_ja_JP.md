@@ -217,4 +217,4 @@ Any TDF は [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE) 
   </picture>
 </a>
 
-データは公開されている GitHub と npm の API から毎日更新され、トレンド履歴は Any TDF の最初のスナップショットから蓄積されます。
+データは公開されている GitHub と npm の API から毎週更新され、トレンド履歴は Any TDF の最初のスナップショットから蓄積されます。

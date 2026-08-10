@@ -217,4 +217,4 @@ Any TDF wird unter der [MIT-Lizenz](https://github.com/any-tdf/any-tdf/blob/main
   </picture>
 </a>
 
-Die Daten werden täglich über die öffentlichen GitHub- und npm-APIs aktualisiert. Der Trendverlauf wird ab dem ersten Any TDF Snapshot aufgebaut.
+Die Daten werden wöchentlich über die öffentlichen GitHub- und npm-APIs aktualisiert. Der Trendverlauf wird ab dem ersten Any TDF Snapshot aufgebaut.

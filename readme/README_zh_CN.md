@@ -217,4 +217,4 @@ Any TDF 基于 [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENS
   </picture>
 </a>
 
-数据每日通过公开的 GitHub 和 npm API 更新，趋势从 Any TDF 的首个快照开始累计。
+数据每周通过公开的 GitHub 和 npm API 更新，趋势从 Any TDF 的首个快照开始累计。

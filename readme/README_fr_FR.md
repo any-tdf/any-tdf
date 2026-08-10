@@ -217,4 +217,4 @@ Any TDF est publié sous [licence MIT](https://github.com/any-tdf/any-tdf/blob/m
   </picture>
 </a>
 
-Les données sont mises à jour quotidiennement depuis les API publiques de GitHub et npm. L'historique des tendances s'accumule à partir du premier instantané Any TDF.
+Les données sont mises à jour chaque semaine depuis les API publiques de GitHub et npm. L'historique des tendances s'accumule à partir du premier instantané Any TDF.

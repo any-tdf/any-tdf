@@ -217,4 +217,4 @@ Any TDF는 [MIT License](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)�
   </picture>
 </a>
 
-데이터는 공개 GitHub 및 npm API를 통해 매일 갱신되며, 추이 기록은 Any TDF의 첫 번째 스냅샷부터 누적됩니다.
+데이터는 공개 GitHub 및 npm API를 통해 매주 갱신되며, 추이 기록은 Any TDF의 첫 번째 스냅샷부터 누적됩니다.

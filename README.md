@@ -217,4 +217,4 @@ Any TDF is released under the [MIT License](https://github.com/any-tdf/any-tdf/b
   </picture>
 </a>
 
-Data is updated daily from the public GitHub and npm APIs. Trend history accumulates from the first Any TDF snapshot.
+Data is updated weekly from the public GitHub and npm APIs. Trend history accumulates from the first Any TDF snapshot.
