@@ -389,7 +389,7 @@ for (const key of requiredStatisticsTranslationKeys) {
 if (
   !script.includes("fetch('/data/project-stats.json'") ||
   !script.includes("const renderProjectStats = () =>") ||
-  !script.includes("const createProjectStatsChart = (history) =>")
+  !script.includes("const createProjectStatsChart = (history, compact = false) =>")
 )
   throw new Error(
     "The project statistics section must load the public snapshot and render the full history.",

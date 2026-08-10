@@ -565,9 +565,12 @@ const createAxisTicks = (valueMinimum, valueMaximum) => {
 	for (let value = minimum; value <= maximum; value += step) ticks.push(value);
 	return { minimum, maximum, ticks };
 };
-const createProjectStatsChart = (history) => {
+const createProjectStatsChart = (history, compact = false) => {
 	const series = history;
-	const chart = { left: 56, right: 692, top: 30, bottom: 210 };
+	const chart = compact
+		? { left: 44, right: 380, top: 24, bottom: 240, viewBox: '0 0 400 280' }
+		: { left: 56, right: 692, top: 30, bottom: 210, viewBox: '0 0 720 260' };
+	chart.labelX = chart.left - 10;
 	const starValues = series.map(({ stars }) => stars);
 	const { minimum, maximum, ticks: tickValues } = createAxisTicks(Math.min(...starValues), Math.max(...starValues));
 	const range = maximum - minimum;
@@ -661,10 +664,15 @@ const renderProjectStats = () => {
 	});
 	projectStatsContainer.querySelector('[data-stat-package-list]').replaceChildren(...packageItems);
 
-	const { series, linePath, areaPath, precise, chart: bounds, yearTicks, ticks } = createProjectStatsChart(projectStats.history);
+	const chart = projectStatsContainer.querySelector('[data-stat-chart]');
+	const compact = chart.clientWidth > 0 && chart.clientWidth < 480;
+	const { series, linePath, areaPath, precise, chart: bounds, yearTicks, ticks } = createProjectStatsChart(
+		projectStats.history,
+		compact
+	);
 	const firstEntry = series[0];
 	const lastEntry = series.at(-1);
-	const chart = projectStatsContainer.querySelector('[data-stat-chart]');
+	chart.setAttribute('viewBox', bounds.viewBox);
 	chart.setAttribute('aria-label', `${dictionary.statisticsChartAria}: ${firstEntry.stars} → ${lastEntry.stars}`);
 	projectStatsContainer.querySelector('[data-stat-chart-line]').setAttribute('d', linePath);
 	projectStatsContainer.querySelector('[data-stat-chart-area]').setAttribute('d', areaPath);
@@ -679,7 +687,7 @@ const renderProjectStats = () => {
 	const tickLabels = ticks.map(({ value, y }) => {
 		const label = document.createElementNS(svgNamespace, 'text');
 		label.setAttribute('class', 'portal-statistics-chart-label');
-		label.setAttribute('x', '46');
+		label.setAttribute('x', String(bounds.labelX));
 		label.setAttribute('y', (y + 4).toFixed(2));
 		label.setAttribute('text-anchor', 'end');
 		label.textContent = formatStatNumber(value);
@@ -694,6 +702,9 @@ const renderProjectStats = () => {
 		label.textContent = String(year);
 		return label;
 	});
+	const emptyLabel = projectStatsContainer.querySelector('[data-stat-chart-empty]');
+	emptyLabel.setAttribute('x', String((bounds.left + bounds.right) / 2));
+	emptyLabel.setAttribute('y', String((bounds.top + bounds.bottom) / 2 + 5));
 	projectStatsContainer.querySelector('[data-stat-chart-labels]').replaceChildren(...tickLabels, ...yearLabels);
 	projectStatsContainer.querySelector('[data-stat-chart-empty]').toggleAttribute('hidden', series.length > 1);
 	projectStatsContainer.querySelector('[data-stat-chart-start]').textContent = formatStatAxisDate(firstEntry.date, precise);
@@ -1001,6 +1012,12 @@ document.querySelector('[data-current-year]').textContent = String(new Date().ge
 applyColorTheme(currentColorTheme);
 applyModePreference(currentModePreference, false);
 applyLanguage(currentLanguage);
+
+let projectStatsResizeTimer;
+window.addEventListener('resize', () => {
+	clearTimeout(projectStatsResizeTimer);
+	projectStatsResizeTimer = setTimeout(renderProjectStats, 150);
+});
 
 const currentUrl = new URL(window.location.href);
 if (currentUrl.searchParams.has('fund')) {
