@@ -3109,9 +3109,12 @@ nav.has-icons .site-sidebar-link.is-active {
 	max-width: calc(100vw - 2rem);
 }
 
-.site-fund-panel {
-	max-height: 85dvh;
-	width: calc(100vw - 2rem);
+/* 放入 components 层，让 md:w-200 等工具类在桌面端覆盖宽度 / put in components layer so utilities like md:w-200 can override width on desktop */
+@layer components {
+	.site-fund-panel {
+		max-height: 85dvh;
+		width: calc(100vw - 2rem);
+	}
 }
 
 /* Guide layout */

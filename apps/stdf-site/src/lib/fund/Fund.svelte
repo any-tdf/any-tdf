@@ -81,7 +81,7 @@
 		role="dialog"
 		aria-modal="true"
 		aria-label={isZh ? '支持' : 'Support'}
-		class="site-fund-panel mx-auto overflow-y-auto rounded-xl bg-white p-4 shadow-lg md:w-200 md:p-8 dark:bg-gray-950"
+		class="site-fund-panel mx-auto max-w-md overflow-y-auto rounded-xl bg-white p-4 shadow-lg md:w-200 md:max-w-none md:p-8 dark:bg-gray-950"
 	>
 		<div class="flex justify-between">
 			<div class="text-xl font-bold">{isZh ? '支持' : 'Support'}</div>

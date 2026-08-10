@@ -70,7 +70,7 @@ onBeforeUnmount(() => {
 			role="dialog"
 			aria-modal="true"
 			:aria-label="isZh ? '支持' : 'Support'"
-			class="mx-4 rounded-xl bg-white p-4 shadow-lg md:mx-auto md:w-200 md:p-8 dark:bg-gray-950"
+			class="site-fund-panel mx-auto max-w-md overflow-y-auto rounded-xl bg-white p-4 shadow-lg md:w-200 md:max-w-none md:p-8 dark:bg-gray-950"
 			@click.stop
 		>
 			<div class="flex justify-between">
