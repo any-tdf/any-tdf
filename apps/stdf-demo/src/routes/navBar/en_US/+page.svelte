@@ -57,7 +57,7 @@
 			</div>
 		{/snippet}
 		{#snippet titleChild()}
-			<div class="my-2 h-8 rounded-full bg-white px-3 text-sm leading-8 dark:bg-black/50">custom styles by injClass and Snippet</div>
+			<div class="my-2 h-8 rounded-full bg-white px-3 text-sm leading-8 dark:bg-black/50">injClass + Snippet</div>
 		{/snippet}
 		{#snippet rightChild()}
 			<div class="m-2 h-8 w-8 rounded-full bg-white text-center leading-8 dark:bg-black/50">

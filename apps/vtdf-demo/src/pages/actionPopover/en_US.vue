@@ -103,14 +103,14 @@ const ringActions8: RingActionProps[] = [
 
 		<div class="mx-4 mt-4 flex items-center justify-center gap-4">
 			<div ref="triggerRef2" class="inline-block">
-				<Button size="sm" height-out="0" @click="() => (visible2 = !visible2)">Center aligned</Button>
+				<Button size="sm" height-out="0" @click="() => (visible2 = !visible2)">Center</Button>
 			</div>
 			<ActionPopover v-model:visible="visible2" :trigger-ref="triggerRef2" :actions="actions" inline-align="center" />
 		</div>
 
 		<div class="mx-4 mt-4 flex items-center justify-end gap-4">
 			<div ref="triggerRef3" class="inline-block">
-				<Button size="sm" height-out="0" @click="() => (visible3 = !visible3)">Right aligned</Button>
+				<Button size="sm" height-out="0" @click="() => (visible3 = !visible3)">Right</Button>
 			</div>
 			<ActionPopover v-model:visible="visible3" :trigger-ref="triggerRef3" :actions="actions" inline-align="right" />
 		</div>
@@ -165,7 +165,7 @@ const ringActions8: RingActionProps[] = [
 		<div class="mx-4 mt-8 text-sm font-bold">Horizontal layout</div>
 		<div class="mx-4 mt-4 flex items-center gap-4">
 			<div ref="triggerRef9" class="inline-block">
-				<Button size="sm" height-out="0" @click="() => (visible9 = !visible9)">Horizontal actions</Button>
+				<Button size="sm" height-out="0" @click="() => (visible9 = !visible9)">Horizontal</Button>
 			</div>
 			<ActionPopover v-model:visible="visible9" :trigger-ref="triggerRef9" :actions="actionsWithIcon2" inline-align="left" layout="h" />
 		</div>

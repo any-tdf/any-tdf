@@ -98,19 +98,19 @@
 	</div>
 
 	<div class="mb-4 px-4 font-bold">Used in Cell</div>
-	<Cell title="Switch" detail="Click anywhere in the row to trigger the switch" right={{ type: 'switch' }} />
+	<Cell title="Switch" detail="Click row to toggle" right={{ type: 'switch' }} />
 	<Cell title="Switch with Text" right={{ type: 'switch', switch: { inside: ['😭', '😄'] } }} switchActive />
 	<Cell title="Full Radius Switch" right={{ type: 'switch', switch: { radius: 'full' } }} />
 	<Cell
 		title="Async Control"
-		detail="Switch triggered 2 seconds after click"
+		detail="Toggles after 2s"
 		right={{ type: 'switch', switch: { async: true } }}
 		switchActive={cellCheck}
 		onclick={cellAsyncFun}
 	/>
 	<Cell
 		title="Async Loading"
-		detail="Switch triggered 3 seconds after click"
+		detail="Toggles after 3s"
 		right={{ type: 'switch', switch: { async: true, inside: cellLoading ? 'loading' : null } }}
 		switchActive={cellLoadingCheck}
 		onclick={cellLoadingFun}

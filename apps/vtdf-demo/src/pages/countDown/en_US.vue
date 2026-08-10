@@ -185,7 +185,7 @@ const clockValues = computed(() => [
 			<CountDown ref="countDownRef2" :time="3 * 1000" :auto-start="false" @finish="() => (showToast = true)" />
 		</div>
 		<div class="flex gap-2 p-4">
-			<Button size="sm" @click="() => countDownRef2?.start()">Start Countdown</Button>
+			<Button size="sm" @click="() => countDownRef2?.start()">Start</Button>
 			<Button size="sm" fill="line" @click="() => countDownRef2?.reset()">Reset</Button>
 		</div>
 	</div>

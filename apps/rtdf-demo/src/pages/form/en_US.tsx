@@ -124,7 +124,7 @@ const FormEn = () => {
 			<Divider text="Increased Spacing" />
 			<Form form={formCardConfig} space="4" />
 
-			<Divider text="Increase the radius of cards, inputs and submit button" />
+			<Divider text="Increase card and input radius" />
 			<Form form={formCardRadioConfig} card={{ radius: '4xl' }} submitButton={{ radius: 'full' }} />
 
 			<Divider text="Input Field Line Style" />

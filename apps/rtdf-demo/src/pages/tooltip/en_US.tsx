@@ -22,7 +22,7 @@ function TooltipEn() {
 			<div className="mx-4 mt-2 text-sm opacity-60">Click trigger element to show/hide tooltip</div>
 			<div className="flex justify-around p-4">
 				<Tooltip content="This is a tooltip message">
-					<Button size="sm">Click to Show</Button>
+					<Button size="sm">Show</Button>
 				</Tooltip>
 			</div>
 
@@ -150,7 +150,7 @@ function TooltipEn() {
 						</div>
 					)}
 				>
-					<Button size="sm">Custom Content</Button>
+					<Button size="sm">Custom</Button>
 				</Tooltip>
 			</div>
 

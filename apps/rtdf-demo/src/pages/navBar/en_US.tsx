@@ -58,7 +58,7 @@ function NavBarEn() {
 				}
 				titleChild={
 					<div className="my-2 h-8 rounded-full bg-white px-3 text-sm leading-8 dark:bg-black/50">
-						custom styles by injClass and Snippet
+						injClass + Snippet
 					</div>
 				}
 				rightChild={

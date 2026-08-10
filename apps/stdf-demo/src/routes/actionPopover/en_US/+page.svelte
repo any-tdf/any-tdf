@@ -102,14 +102,14 @@
 
 	<div class="mx-4 mt-4 flex items-center justify-center gap-4">
 		<div bind:this={triggerRef2} class="inline-block">
-			<Button size="sm" onclick={() => (visible2 = !visible2)} heightOut="0">Center aligned</Button>
+			<Button size="sm" onclick={() => (visible2 = !visible2)} heightOut="0">Center</Button>
 		</div>
 		<ActionPopover bind:visible={visible2} triggerRef={triggerRef2} actions={actions} inlineAlign="center" />
 	</div>
 
 	<div class="mx-4 mt-4 flex items-center justify-end gap-4">
 		<div bind:this={triggerRef3} class="inline-block">
-			<Button size="sm" onclick={() => (visible3 = !visible3)} heightOut="0">Right aligned</Button>
+			<Button size="sm" onclick={() => (visible3 = !visible3)} heightOut="0">Right</Button>
 		</div>
 		<ActionPopover bind:visible={visible3} triggerRef={triggerRef3} actions={actions} inlineAlign="right" />
 	</div>
@@ -156,7 +156,7 @@
 	<div class="mx-4 mt-8 text-sm font-bold">Horizontal layout</div>
 	<div class="mx-4 mt-4 flex items-center gap-4">
 		<div bind:this={triggerRef9} class="inline-block">
-			<Button size="sm" onclick={() => (visible9 = !visible9)} heightOut="0">Horizontal actions</Button>
+			<Button size="sm" onclick={() => (visible9 = !visible9)} heightOut="0">Horizontal</Button>
 		</div>
 		<ActionPopover bind:visible={visible9} triggerRef={triggerRef9} actions={actionsWithIcon2} inlineAlign="left" layout="h" />
 	</div>

@@ -202,7 +202,7 @@
 		/>
 	</div>
 	<div class="flex gap-2 p-4">
-		<Button size="sm" onclick={() => countDownRef2?.start()}>Start Countdown</Button>
+		<Button size="sm" onclick={() => countDownRef2?.start()}>Start</Button>
 		<Button size="sm" fill="line" onclick={() => countDownRef2?.reset()}>Reset</Button>
 	</div>
 </div>

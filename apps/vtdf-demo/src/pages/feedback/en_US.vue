@@ -161,7 +161,7 @@ const simulateFormSubmit = async () => {
 		<Cell title="Info" @click="showToastInfo" />
 		<Cell title="Loading" @click="showToastLoading" />
 		<div v-if="loadingToastId" class="px-4 py-2">
-			<Button @click="hideToastLoading" fill="line" size="sm">Close loading toast</Button>
+			<Button @click="hideToastLoading" fill="line" size="sm">Close toast</Button>
 		</div>
 		<Cell title="Multiple toasts stacked" @click="showMultipleToasts" />
 

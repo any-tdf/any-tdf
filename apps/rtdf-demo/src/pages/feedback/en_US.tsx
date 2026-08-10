@@ -160,7 +160,7 @@ function FeedbackEn() {
 			{loadingToastId ? (
 				<div className="px-4 py-2">
 					<Button onClick={hideToastLoading} fill="line" size="sm">
-						Close loading toast
+						Close toast
 					</Button>
 				</div>
 			) : null}

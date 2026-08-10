@@ -199,7 +199,7 @@ function CountDownEn() {
 			</div>
 			<div className="flex gap-2 p-4">
 				<Button size="sm" onClick={() => countDownRef2.current?.start()}>
-					Start Countdown
+					Start
 				</Button>
 				<Button size="sm" fill="lineState" onClick={() => countDownRef2.current?.reset()}>
 					Reset

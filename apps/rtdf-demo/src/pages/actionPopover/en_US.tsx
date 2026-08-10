@@ -112,7 +112,7 @@ const ActionPopoverEn = () => {
 			<div className="mx-4 mt-4 flex items-center justify-center gap-4">
 				<div ref={triggerRef2} className="inline-block">
 					<Button size="sm" onClick={() => setVisible2(!visible2)} heightOut="0">
-						Center aligned
+						Center
 					</Button>
 				</div>
 				<ActionPopover
@@ -127,7 +127,7 @@ const ActionPopoverEn = () => {
 			<div className="mx-4 mt-4 flex items-center justify-end gap-4">
 				<div ref={triggerRef3} className="inline-block">
 					<Button size="sm" onClick={() => setVisible3(!visible3)} heightOut="0">
-						Right aligned
+						Right
 					</Button>
 				</div>
 				<ActionPopover
@@ -231,7 +231,7 @@ const ActionPopoverEn = () => {
 			<div className="mx-4 mt-4 flex items-center gap-4">
 				<div ref={triggerRef9} className="inline-block">
 					<Button size="sm" onClick={() => setVisible9(!visible9)} heightOut="0">
-						Horizontal actions
+						Horizontal
 					</Button>
 				</div>
 				<ActionPopover

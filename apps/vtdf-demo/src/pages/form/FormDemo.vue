@@ -98,7 +98,7 @@ const messages = {
 		submitWithoutValues: 'No values, submission not allowed',
 		card: 'Card Layout',
 		space: 'Increased Spacing',
-		radius: 'Increase the radius of cards, inputs and submit button',
+		radius: 'Increase card and input radius',
 		line: 'Input Field Line Style'
 	}
 };

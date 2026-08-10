@@ -176,7 +176,7 @@
 	<Cell title="Loading" onclick={showToastLoading} />
 	{#if loadingToastId}
 		<div class="px-4 py-2">
-			<Button onclick={hideToastLoading} fill="line" size="sm">Close loading toast</Button>
+			<Button onclick={hideToastLoading} fill="line" size="sm">Close toast</Button>
 		</div>
 	{/if}
 	<Cell title="Multiple toasts stacked" onclick={showMultipleToasts} />
