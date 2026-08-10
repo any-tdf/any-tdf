@@ -33,7 +33,7 @@ const stats = computed(() => [
 	{
 		value: 70,
 		suffix: '+',
-		label: isZh.value ? 'Snippets 片段' : 'Snippets',
+		label: isZh.value ? 'Slots 插槽' : 'Slots',
 		desc: isZh.value ? '自定义内容区域' : 'Custom content areas',
 		// ri-layout-masonry-line
 		icon: 'M22 9.999V20a1 1 0 0 1-1 1h-8V9.999h9zm-11 6V21H3a1 1 0 0 1-1-1v-4.001h9zM11 3v10.999H2V4a1 1 0 0 1 1-1h8zm10 0a1 1 0 0 1 1 1v3.999h-9V3h8z'

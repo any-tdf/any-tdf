@@ -111,10 +111,10 @@ const codePreview = computed(() => {
 	if (border.value !== 'solid') props.push(formatProp('border', border.value));
 	if (love.value) props.push(formatBoolProp('love'));
 	if (disabled.value) props.push(formatBoolProp('disabled'));
-	if (showIcon.value) props.push(formatProp('icon', "{{ name: 'ri-heart-line', size: 18 }}", true));
+	if (showIcon.value) props.push(formatProp(':icon', "{ name: 'ri-heart-line', size: 18 }", true));
 	if (showIcon.value && iconPosition.value !== 'left') props.push(formatProp('iconPosition', iconPosition.value));
 	if (showLoading.value)
-		props.push(formatProp('loading', `{{ type: '1_28', height: '6', width: '6', inverse: ${fill.value === 'base'} }}`, true));
+		props.push(formatProp(':loading', `{ type: '1_28', height: '6', width: '6', inverse: ${fill.value === 'base'} }`, true));
 
 	if (props.length === 0) {
 		return `<span class="${tagColor}">&lt;Button&gt;</span><span class="${textColor}">${buttonText}</span><span class="${tagColor}">&lt;/Button&gt;</span>`;
@@ -363,7 +363,7 @@ const codePreview = computed(() => {
 							<div class="mb-2 break-all text-left text-xs text-gray-500 dark:text-gray-400">
 								{{ isZh ? '更多属性：' : 'More Props: ' }}
 								<span class="text-gray-400 dark:text-gray-500"
-									>heightOut, heightIn, customSize, customWidth, customHeight, disabledLoading, injClass, type, onclick...</span
+									>heightOut, heightIn, customSize, customWidth, customHeight, disabledLoading, injClass, type, @click...</span
 								>
 								<a
 									href="/components"
