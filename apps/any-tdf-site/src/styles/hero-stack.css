@@ -42,15 +42,16 @@
 
 .portal-stack {
 	--p: var(--stack-progress, 0);
-	--plate-size: 14rem;
-	--plate-t: 1.2rem;
+	--stack-zoom: 1.2;
+	--plate-size: calc(16rem * var(--stack-zoom));
+	--plate-t: calc(1.2rem * var(--stack-zoom));
 	--f1: clamp(0, (var(--p) - 0.08) / 0.24, 1);
 	--f2: clamp(0, (var(--p) - 0.38) / 0.24, 1);
 	--f3: clamp(0, (var(--p) - 0.68) / 0.24, 1);
 	--f4: clamp(0, (var(--p) - 0.9) / 0.1, 1);
-	--z-renderers: calc(1.55rem + var(--f2) * 4.45rem + var(--f3) * 7rem);
-	--z-app: calc(3.1rem + var(--f1) * 11.45rem + var(--f2) * 4.45rem - var(--f3) * 4.45rem);
-	--z-core: calc(var(--f4) * 11.45rem);
+	--z-renderers: calc((1.55rem + var(--f2) * 4.45rem + var(--f3) * 7rem) * var(--stack-zoom));
+	--z-app: calc((3.1rem + var(--f1) * 11.45rem + var(--f2) * 4.45rem - var(--f3) * 4.45rem) * var(--stack-zoom));
+	--z-core: calc(var(--f4) * 11.45rem * var(--stack-zoom));
 	--scene-top: 62%;
 	--render-split: calc(clamp(0, var(--f2) / 0.35, 1) * (1 - var(--f3)));
 	--sel-1: clamp(0, (1.2 - var(--f2) * 3) / 0.4, 1);
@@ -699,11 +700,6 @@ html[data-mode='dark'] .portal-stack-logo-dark {
 		margin: 0;
 	}
 
-	.portal-hero .site-button-row {
-		grid-column: 2;
-		margin-top: 1.25rem;
-	}
-
 	.portal-hero .portal-hero-note {
 		grid-column: 2;
 		max-width: 34rem;
@@ -718,10 +714,10 @@ html[data-mode='dark'] .portal-stack-logo-dark {
 
 @media (min-width: 64rem) and (max-height: 52rem) {
 	.portal-stack {
-		--plate-size: 13.5rem;
+		--plate-size: calc(15rem * var(--stack-zoom));
 		--scene-top: 64%;
-		--z-renderers: calc(1.55rem + var(--f2) * 3.95rem + var(--f3) * 5.05rem);
-		--z-app: calc(3.1rem + var(--f1) * 9.45rem + var(--f2) * 3.95rem - var(--f3) * 4.35rem);
-		--z-core: calc(var(--f4) * 9.05rem);
+		--z-renderers: calc((1.55rem + var(--f2) * 3.95rem + var(--f3) * 5.05rem) * var(--stack-zoom));
+		--z-app: calc((3.1rem + var(--f1) * 9.45rem + var(--f2) * 3.95rem - var(--f3) * 4.35rem) * var(--stack-zoom));
+		--z-core: calc(var(--f4) * 9.05rem * var(--stack-zoom));
 	}
 }

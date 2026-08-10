@@ -192,10 +192,8 @@ const requiredLucideIcons = [
   "refresh-cw",
   "repeat-2",
   "sun",
-  "workflow",
   "x",
 ];
-const requiredBrandIcons = ["github"];
 const requiredSiteHeaderIcons = ["language", "github"];
 const requiredArchitectureMotionHooks = [
   "data-hero-stack",
@@ -486,11 +484,6 @@ for (const dependency of forbiddenFrameworkDependencies) {
 for (const icon of requiredLucideIcons) {
   if (!html.includes(`data-lucide="${icon}"`))
     throw new Error(`The portal is missing the ${icon} Lucide icon.`);
-}
-
-for (const icon of requiredBrandIcons) {
-  if (!html.includes(`data-icon="${icon}"`))
-    throw new Error(`The portal is missing the ${icon} brand icon.`);
 }
 
 for (const icon of requiredSiteHeaderIcons) {

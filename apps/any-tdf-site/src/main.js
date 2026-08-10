@@ -18,7 +18,6 @@ import {
 	RefreshCw,
 	Repeat2,
 	Sun,
-	Workflow,
 	X
 } from 'lucide';
 import './styles.css';
@@ -40,7 +39,6 @@ createIcons({
 		RefreshCw,
 		Repeat2,
 		Sun,
-		Workflow,
 		X
 	}
 });
@@ -108,9 +106,7 @@ const translations = {
 		supportWechatCodeAlt: '微信赞赏二维码',
 		supportAlipayCodeAlt: '支付宝收款二维码',
 		supportNote: '欢迎在赞助留言中附上你的 GitHub 或其他社交账号链接，Any TDF 将在项目仓库和官网中展示感谢！',
-		heroDescription: '一个共享产品语言、面向三种框架原生实现的移动 Web 组件系统。选择你熟悉的框架，获得一致的设计、主题与交互体验。',
-		chooseFramework: '选择框架',
-		exploreArchitecture: '了解架构',
+		heroDescription: '一个共享产品语言、面向三种框架原生实现的移动 Web 组件系统。',
 		heroNote: '共享行为契约，不共享框架限制。',
 		architecturePreviewLabel: 'Any TDF 架构概览',
 		stackApp: '你的应用',
@@ -247,9 +243,7 @@ const translations = {
 		supportNote:
 			'Feel free to include your GitHub or another social profile in your sponsorship message. Any TDF will gratefully acknowledge your support in the project repository and on the website!',
 		heroDescription:
-			'One shared product language, implemented natively for three frameworks. Choose the framework you know and keep the same design, theming, and interaction experience.',
-		chooseFramework: 'Products',
-		exploreArchitecture: 'Architecture',
+			'A mobile Web component system with a shared product language, natively implemented for three frameworks.',
 		heroNote: 'Share behavior contracts, not framework constraints.',
 		architecturePreviewLabel: 'Any TDF architecture overview',
 		stackApp: 'Your app',
@@ -984,7 +978,7 @@ if (heroStack) {
 	let heroStackFrame = 0;
 	const updateHeroStack = () => {
 		heroStackFrame = 0;
-		if (motionQuery.matches || !desktopNavigation.matches) {
+		if (motionQuery.matches) {
 			heroStack.style.removeProperty('--stack-progress');
 			return;
 		}

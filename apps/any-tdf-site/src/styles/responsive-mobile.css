@@ -142,21 +142,18 @@
 		line-height: 1.7;
 	}
 
-	.site-button-row {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 0.5rem;
-		margin-top: 1.75rem;
+	.site-hero-copy {
+		text-align: center;
 	}
 
-	.site-button {
-		width: 100%;
-		min-height: 3.25rem;
-		justify-content: space-between;
+	.site-hero-copy .site-eyebrow {
+		justify-content: center;
 	}
 
 	.portal-hero-note {
+		justify-content: center;
 		margin-top: 2rem;
+		text-align: center;
 	}
 
 	.portal-hero-visual {
@@ -169,41 +166,54 @@
 	}
 
 	.portal-hero-scroll {
-		--stack-progress: 1;
+		block-size: 300vh;
+	}
+
+	.portal-hero-scroll .site-hero {
+		position: sticky;
+		top: var(--site-header-height);
+		display: grid;
+		grid-template-rows: auto minmax(0, 1fr);
+		align-items: stretch;
+		block-size: calc(100dvh - var(--site-header-height));
+		overflow: clip;
+	}
+
+	.portal-hero-scroll .portal-hero-visual {
+		min-height: 0;
+		padding: 0.5rem 1rem 1rem;
+		overflow: clip;
 	}
 
 	.portal-stack {
-		--plate-size: 11rem;
+		--stack-zoom: 1;
+		--plate-size: 12.5rem;
 		--plate-t: 0.85rem;
-		--f4: 0;
-		--z-renderers: 8.5rem;
-		--z-app: 10.05rem;
-		width: 100%;
-		height: auto;
+		--scene-top: 58%;
 	}
 
 	.portal-stack-stage {
-		min-height: 32rem;
+		min-height: 0;
 	}
 
 	.portal-stack-scene {
-		top: 42%;
-		left: 50%;
+		scale: 0.78;
 	}
 
 	.portal-stack-captions {
 		top: auto;
-		right: 0.875rem;
-		bottom: 0;
-		left: 0.875rem;
-		display: grid;
-		width: auto;
-		gap: 0.625rem;
+		bottom: 0.75rem;
 	}
 
-	.portal-stack-caption {
-		position: static;
+	.portal-stack-caption,
+	.portal-stack-caption[data-stack-caption='renderers'] {
+		top: auto;
+		right: auto;
+		bottom: 0;
+		left: 0;
 		width: auto;
+		max-width: 15rem;
+		opacity: calc(var(--a) * (1 - var(--f4)));
 	}
 
 	.portal-stack-hint {
@@ -381,13 +391,25 @@
 		padding: 0.5rem;
 	}
 
+	.portal-hero-scroll .portal-hero-visual {
+		min-height: 0;
+	}
+
+	.portal-hero-scroll .portal-stack-stage {
+		min-height: 0;
+	}
+
 	.portal-hero-visual::before {
 		inset: 0.25rem;
 	}
 
 	.portal-stack {
-		--plate-size: 9.5rem;
+		--plate-size: 10.5rem;
 		--plate-t: 0.7rem;
+	}
+
+	.portal-stack-scene {
+		scale: 0.7;
 	}
 
 	.portal-stack-stage {
