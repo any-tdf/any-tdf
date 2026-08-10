@@ -103,7 +103,7 @@ const StatCounter = () => {
 
 	// 数字动画
 	const [counts, setCounts] = useState(stats.map(() => 0));
-	const [isVisible, setIsVisible] = useState(false);
+	const hasAnimatedRef = useRef(false);
 	const animationFrameRef = useRef<number | null>(null);
 
 	const animateNumbers = () => {
@@ -129,8 +129,8 @@ const StatCounter = () => {
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (entries[0].isIntersecting && !isVisible) {
-					setIsVisible(true);
+				if (entries[0].isIntersecting && !hasAnimatedRef.current) {
+					hasAnimatedRef.current = true;
 					animateNumbers();
 				}
 			},
@@ -147,7 +147,7 @@ const StatCounter = () => {
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isVisible]);
+	}, []);
 
 	return (
 		<section id="stat-counter" className="stat-counter">
