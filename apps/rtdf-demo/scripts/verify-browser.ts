@@ -70,13 +70,13 @@ process.on('SIGINT', () => {
 
 const waitForJson = async <T>(url: string) => {
 	let lastError = '';
-	for (let i = 0; i < 80; i += 1) {
+	for (let i = 0; i < 300; i += 1) {
 		const response = await fetch(url).catch((error: Error) => {
 			lastError = error.message;
 			return undefined;
 		});
 		if (response?.ok) return response.json() as Promise<T>;
-		await sleep(100);
+		await sleep(200);
 	}
 	throw new Error(`Unable to connect to Chrome DevTools: ${lastError}`);
 };
