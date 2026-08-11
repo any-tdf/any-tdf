@@ -200,62 +200,69 @@ const waitFor = async (predicate: () => Promise<boolean>, label: string, timeout
 };
 
 const clickText = async (text: string, index = 0) => {
-	const ok = await runInPage<boolean>(`
-		const text = ${JSON.stringify(text)};
-		const index = ${index};
-		const visible = (el) => {
-			const rect = el.getBoundingClientRect();
-			const style = getComputedStyle(el);
-			return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
-		};
-		const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim();
-		const clickables = [...document.querySelectorAll('button,[role="button"],a')].filter(visible);
-		const clickableExact = clickables.filter((el) => normalize(el.textContent || el.value) === text);
-		const clickableLoose = clickables
-			.filter((el) => normalize(el.textContent || el.value).includes(text))
-			.sort((a, b) => normalize(a.textContent || a.value).length - normalize(b.textContent || b.value).length);
-		const nested = [...document.querySelectorAll('input,textarea,div,span')].filter(visible);
-		const nestedExact = nested.filter((el) => normalize(el.textContent || el.value) === text);
-		const nestedLoose = nested
-			.filter((el) => normalize(el.textContent || el.value).includes(text))
-			.sort((a, b) => normalize(a.textContent || a.value).length - normalize(b.textContent || b.value).length);
-		const target = clickableExact[index] || clickableLoose[index] || nestedExact[index] || nestedLoose[index];
-		if (!target) return false;
-		const clickable = target.closest('button,[role="button"],a') || target;
-		clickable.scrollIntoView({ block: 'center', inline: 'center' });
-		clickable.click();
-		return true;
-	`);
-	if (!ok) throw new Error(`Unable to click text: ${text}`);
+	// lazy 路由内容异步渲染，轮询等待目标出现后再点击 / lazy routes render async, poll until the target shows up
+	await waitFor(
+		() =>
+			runInPage<boolean>(`
+			const text = ${JSON.stringify(text)};
+			const index = ${index};
+			const visible = (el) => {
+				const rect = el.getBoundingClientRect();
+				const style = getComputedStyle(el);
+				return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+			};
+			const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim();
+			const clickables = [...document.querySelectorAll('button,[role="button"],a')].filter(visible);
+			const clickableExact = clickables.filter((el) => normalize(el.textContent || el.value) === text);
+			const clickableLoose = clickables
+				.filter((el) => normalize(el.textContent || el.value).includes(text))
+				.sort((a, b) => normalize(a.textContent || a.value).length - normalize(b.textContent || b.value).length);
+			const nested = [...document.querySelectorAll('input,textarea,div,span')].filter(visible);
+			const nestedExact = nested.filter((el) => normalize(el.textContent || el.value) === text);
+			const nestedLoose = nested
+				.filter((el) => normalize(el.textContent || el.value).includes(text))
+				.sort((a, b) => normalize(a.textContent || a.value).length - normalize(b.textContent || b.value).length);
+			const target = clickableExact[index] || clickableLoose[index] || nestedExact[index] || nestedLoose[index];
+			if (!target) return false;
+			const clickable = target.closest('button,[role="button"],a') || target;
+			clickable.scrollIntoView({ block: 'center', inline: 'center' });
+			clickable.click();
+			return true;
+		`),
+		`clickable text: ${text}`
+	);
 	await sleep(150);
 };
 
 const setInputValue = async (currentValue: string, nextValue: string) => {
-	const result = await runInPage<{ ok: boolean; reason?: string; candidates: Array<{ tag: string; type: string; value: string }> }>(`
-		const isVisible = (element) => {
-			const rect = element.getBoundingClientRect();
-			const style = getComputedStyle(element);
-			return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
-		};
-		const all = [...document.querySelectorAll('input,textarea')];
-		const editable = all.filter((element) => !element.disabled && !element.readOnly && isVisible(element));
-		const input = editable.find((element) => element.value === ${JSON.stringify(currentValue)});
-		const candidates = editable.slice(0, 8).map((element) => ({
-			tag: element.tagName.toLowerCase(),
-			type: element instanceof HTMLInputElement ? element.type : 'textarea',
-			value: element.value,
-		}));
-		if (!input) return { ok: false, reason: 'target input not found', candidates };
-		input.scrollIntoView({ block: 'center', inline: 'center' });
-		input.focus();
-		input.select();
-		return {
-			ok: document.activeElement === input,
-			reason: document.activeElement === input ? '' : 'target input did not receive focus',
-			candidates,
-		};
-	`);
-	if (!result.ok) throw new Error(`Unable to focus input: ${JSON.stringify(result)}`);
+	// lazy 路由内容异步渲染，轮询等待目标输入框出现并聚焦 / lazy routes render async, poll until the input shows up and receives focus
+	await waitFor(async () => {
+		const result = await runInPage<{ ok: boolean; reason?: string; candidates: Array<{ tag: string; type: string; value: string }> }>(`
+			const isVisible = (element) => {
+				const rect = element.getBoundingClientRect();
+				const style = getComputedStyle(element);
+				return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+			};
+			const all = [...document.querySelectorAll('input,textarea')];
+			const editable = all.filter((element) => !element.disabled && !element.readOnly && isVisible(element));
+			const input = editable.find((element) => element.value === ${JSON.stringify(currentValue)});
+			const candidates = editable.slice(0, 8).map((element) => ({
+				tag: element.tagName.toLowerCase(),
+				type: element instanceof HTMLInputElement ? element.type : 'textarea',
+				value: element.value,
+			}));
+			if (!input) return { ok: false, reason: 'target input not found', candidates };
+			input.scrollIntoView({ block: 'center', inline: 'center' });
+			input.focus();
+			input.select();
+			return {
+				ok: document.activeElement === input,
+				reason: document.activeElement === input ? '' : 'target input did not receive focus',
+				candidates,
+			};
+		`);
+		return result.ok;
+	}, `focusable input: ${currentValue}`);
 	await page.call('Input.insertText', { text: nextValue });
 	await waitFor(
 		() =>
@@ -425,6 +432,15 @@ const scenarios: Scenario[] = [
 		name: 'BottomSheet animates in and out',
 		path: '/bottomSheet/zh_CN',
 		steps: [
+			// 等待 lazy 路由内容渲染出触发元素 / wait for the lazy route content to render the trigger
+			() =>
+				waitFor(
+					() =>
+						runInPage<boolean>(
+							`return [...document.querySelectorAll('div')].some((el) => typeof el.onclick === 'function' && (el.textContent || '').replace(/\\s+/g, ' ').trim() === '基础用法');`
+						),
+					'bottom sheet trigger'
+				),
 			async () => {
 				const metrics = await runInPage<{
 					clicked: boolean;
@@ -552,6 +568,15 @@ const scenarios: Scenario[] = [
 		name: 'ActionPopover demo variants open actions',
 		path: '/actionPopover/zh_CN',
 		steps: [
+			// 等待 lazy 路由内容渲染出触发按钮 / wait for the lazy route content to render the trigger buttons
+			() =>
+				waitFor(
+					() =>
+						runInPage<boolean>(
+							`return [...document.querySelectorAll('button')].some((button) => (button.textContent || '').replace(/\\s+/g, ' ').trim() === '更多操作');`
+						),
+					'actionPopover demo triggers'
+				),
 			async () => {
 				const metrics = await runInPage<{ passed: boolean; failures: string[] }>(`
 					const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -719,16 +744,19 @@ const scenarios: Scenario[] = [
 		name: 'Card ActionPopover opens user actions',
 		path: '/card/en_US',
 		steps: [
+			// 等待 lazy 路由内容渲染出卡片按钮后再点击 / poll until the lazy route renders the card action button
 			() =>
-				runInPage<boolean>(`
-					const button = document.querySelector('button[aria-label="More actions"]');
-					if (!button) return false;
-					button.scrollIntoView({ block: 'center', inline: 'center' });
-					button.click();
-					return true;
-				`).then((ok) => {
-					if (!ok) throw new Error('Unable to click card action button');
-				}),
+				waitFor(
+					() =>
+						runInPage<boolean>(`
+							const button = document.querySelector('button[aria-label="More actions"]');
+							if (!button) return false;
+							button.scrollIntoView({ block: 'center', inline: 'center' });
+							button.click();
+							return true;
+						`),
+					'card action button'
+				),
 			() =>
 				waitFor(
 					() =>
@@ -781,20 +809,23 @@ const scenarios: Scenario[] = [
 		name: 'Tabs custom transition stays below tab bar',
 		path: '/tabs/en_US',
 		steps: [
-			async () => {
-				const ok = await runInPage<boolean>(`
-					const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim();
-					const header = [...document.querySelectorAll('div')].find((el) => normalize(el.textContent) === 'Custom transition');
-					const root = header?.nextElementSibling;
-					if (!header || !root) return false;
-					header.scrollIntoView({ block: 'center', inline: 'center' });
-					const carButton = [...root.querySelectorAll('button')].find((button) => normalize(button.textContent) === 'car');
-					if (!carButton) return false;
-					carButton.click();
-					return true;
-				`);
-				if (!ok) throw new Error('Unable to click custom transition tab');
-			},
+			// 等待 lazy 路由内容渲染出自定义过渡标签后再点击 / poll until the lazy route renders the custom transition tab
+			() =>
+				waitFor(
+					() =>
+						runInPage<boolean>(`
+							const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim();
+							const header = [...document.querySelectorAll('div')].find((el) => normalize(el.textContent) === 'Custom transition');
+							const root = header?.nextElementSibling;
+							if (!header || !root) return false;
+							header.scrollIntoView({ block: 'center', inline: 'center' });
+							const carButton = [...root.querySelectorAll('button')].find((button) => normalize(button.textContent) === 'car');
+							if (!carButton) return false;
+							carButton.click();
+							return true;
+						`),
+					'custom transition tab'
+				),
 			() =>
 				waitFor(
 					() =>
@@ -1009,7 +1040,20 @@ const scenarios: Scenario[] = [
 		name: 'Theme switch changes mode attribute',
 		path: '/button/en_US',
 		steps: [
-			() => runInPage<boolean>(`document.querySelector('button[aria-label="切换到暗色模式"]')?.click(); return true;`),
+			// 轮询点击暗色开关(按钮文案随语言切换),直到 data-mode 变为 dark / poll the dark toggle (label follows locale) until data-mode flips
+			() =>
+				waitFor(
+					() =>
+						runInPage<boolean>(`
+							if (document.documentElement.getAttribute('data-mode') === 'dark') return true;
+							const button =
+								document.querySelector('button[aria-label="切换到暗色模式"]') || document.querySelector('button[aria-label="Switch to dark mode"]');
+							if (!button) return false;
+							button.click();
+							return document.documentElement.getAttribute('data-mode') === 'dark';
+						`),
+					'dark mode toggle'
+				),
 			() =>
 				waitFor(() => runInPage<boolean>(`return document.documentElement.getAttribute('data-mode') === 'dark';`), 'dark mode attribute')
 		]
