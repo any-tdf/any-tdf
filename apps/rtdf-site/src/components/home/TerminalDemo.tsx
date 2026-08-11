@@ -63,13 +63,14 @@ const TerminalDemo = ({ lang = 'zh_CN' }: TerminalDemoProps) => {
 	const [showOutput, setShowOutput] = useState(false);
 	const [showCursor, setShowCursor] = useState(true);
 	const [isAnimating, setIsAnimating] = useState(false);
-	const [hasStarted, setHasStarted] = useState(false);
 	const [completedCommands, setCompletedCommands] = useState<Array<Pick<Command, 'cmd' | 'output' | 'isDevOutput'>>>([]);
 	const commands = getCommands(activeManager);
 
 	const typingTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 	const cursorTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 	const stepTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+	// 标记动画是否已由 IntersectionObserver 触发，只触发一次
+	const hasStartedRef = useRef(false);
 	// 用 ref 跟踪最新的步骤状态，避免闭包捕获旧值
 	const stateRef = useRef({ currentStep, commands });
 	stateRef.current = { currentStep, commands };
@@ -83,15 +84,18 @@ const TerminalDemo = ({ lang = 'zh_CN' }: TerminalDemoProps) => {
 		let index = 0;
 		setCurrentText('');
 		setShowOutput(false);
-		typingTimerRef.current = setInterval(() => {
+		const timer = setInterval(() => {
 			if (index < text.length) {
-				setCurrentText((prev) => prev + text[index]);
+				// 同步取出当前字符，避免 updater 延迟执行时读到递增后的 index
+				const char = text[index];
 				index += 1;
+				setCurrentText((prev) => prev + char);
 				return;
 			}
-			if (typingTimerRef.current) clearInterval(typingTimerRef.current);
+			clearInterval(timer);
 			onComplete();
 		}, 42);
+		typingTimerRef.current = timer;
 	};
 
 	const nextStep = () => {
@@ -137,8 +141,9 @@ const TerminalDemo = ({ lang = 'zh_CN' }: TerminalDemoProps) => {
 		cursorTimerRef.current = setInterval(() => setShowCursor((prev) => !prev), 530);
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (entries[0].isIntersecting && !hasStarted) {
-					setHasStarted(true);
+				// 用 ref 做只触发一次的标记，避免 effect 依赖状态导致重跑时清理掉动画定时器
+				if (entries[0].isIntersecting && !hasStartedRef.current) {
+					hasStartedRef.current = true;
 					replay();
 				}
 			},
@@ -152,7 +157,7 @@ const TerminalDemo = ({ lang = 'zh_CN' }: TerminalDemoProps) => {
 			if (cursorTimerRef.current) clearInterval(cursorTimerRef.current);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [hasStarted]);
+	}, []);
 
 	return (
 		<section id="terminal-demo" className="terminal-demo">
