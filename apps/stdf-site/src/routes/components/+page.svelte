@@ -94,9 +94,9 @@
 
 	const handleKeydown = (event: KeyboardEvent) => {
 		if ($isCmdKStore) return;
-		// 表单元素内一律不拦截，保留原生输入行为
-		const target = event.target as HTMLElement | null;
-		if (target && (target.closest('input, textarea, select') || target.isContentEditable)) return;
+		// 表单元素内一律不拦截，保留原生输入行为（合成事件的目标可能是 window，需先判断是否为元素）
+		const target = event.target;
+		if (target instanceof HTMLElement && (target.closest('input, textarea, select') || target.isContentEditable)) return;
 		// 仅在焦点位于侧边菜单内或未聚焦任何控件（body）时响应方向键，避免劫持页面滚动和组件自身的键盘导航
 		const active = document.activeElement as HTMLElement | null;
 		if (active && active !== document.body && !menuRoot?.contains(active)) return;
