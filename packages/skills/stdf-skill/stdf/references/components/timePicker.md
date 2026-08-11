@@ -149,6 +149,10 @@ type TimePickerObj = { YYYY: string; MM: string; DD: string; hh: string; mm: str
 
 ## Version
 
+## 3.0.0
+
+- [!tag|B|1|] Fixed the issue where the TimePicker could not be used to make a selection, related to [Issue#54](https://github.com/any-tdf/any-tdf/issues/54). [!issue|zhang000333|]
+
 ## 2.0.2
 
 - [!tag|B|1|] Fixed an issue where opening the component could freeze the page. [!issue|MuGuiLin|]

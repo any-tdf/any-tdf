@@ -1,3 +1,7 @@
+## 3.0.0
+
+- [!tag|B|1|] 修复时间选择器无法选择的问题，关联 [Issue#54](https://github.com/any-tdf/any-tdf/issues/54)。[!issue|zhang000333|]
+
 ## 2.0.2
 
 - [!tag|B|1|] 修复组件打开后页面卡死的问题。[!issue|MuGuiLin|]
