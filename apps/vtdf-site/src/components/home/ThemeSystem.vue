@@ -868,9 +868,11 @@ const endDrag = () => {
 
 					<!-- 分割线手柄（单元素动态 class，避免拖拽途中跨断点卸载元素导致指针捕获丢失） -->
 					<div
-						:class="splitAxis === 'y'
-							? 'absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize touch-none'
-							: 'absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize touch-none'"
+						:class="
+							splitAxis === 'y'
+								? 'absolute left-0 z-20 h-0.5 w-full -translate-y-1/2 cursor-ns-resize touch-none'
+								: 'absolute top-0 z-20 h-full w-0.5 -translate-x-1/2 cursor-ew-resize touch-none'
+						"
 						:style="splitAxis === 'y' ? { top: `${sliderPos}%` } : { left: `${sliderPos}%` }"
 						@pointerdown="startDrag"
 					>

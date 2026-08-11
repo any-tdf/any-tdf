@@ -31,7 +31,9 @@ const keydownFunc = (e: KeyboardEvent) => {
 	if (e.key !== 'Tab') return;
 	const panel = panelEl.value;
 	if (!panel) return;
-	const focusableEls = Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter((el) => el.offsetParent !== null);
+	const focusableEls = Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter(
+		(el) => el.offsetParent !== null
+	);
 	if (focusableEls.length === 0) return;
 	const firstEl = focusableEls[0];
 	const lastEl = focusableEls[focusableEls.length - 1];

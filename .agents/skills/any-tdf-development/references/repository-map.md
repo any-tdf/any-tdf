@@ -4,25 +4,25 @@ Use this map to find the owning source before editing related copies.
 
 ## Ownership
 
-| Area | Owning paths | Required companions |
-| --- | --- | --- |
-| Shared component behavior | `packages/common/src/derived`, `packages/common/src/types`, `packages/common/src/svg` | Common tests plus all affected framework adapters and Demos |
-| Themes and locales | `packages/common/src/theme`, `packages/common/src/lang` | Framework exports, site theme behavior, skill theme data when changed |
-| Svelte library | `packages/stdf/src/lib` | `apps/stdf-demo`, STDF docs, package tests |
-| React library | `packages/rtdf/src/lib` | `apps/rtdf-demo`, RTDF docs, package tests |
-| Vue library | `packages/vtdf/src/lib` | `apps/vtdf-demo`, VTDF docs, package tests |
-| Shared site behavior | `apps/site-common/src`, `apps/site-common/assets` | Three framework sites and shared parity checks |
-| Framework sites | `apps/stdf-site`, `apps/rtdf-site`, `apps/vtdf-site` | Matching site verification and browser scenarios |
-| Framework Demos | `apps/stdf-demo`, `apps/rtdf-demo`, `apps/vtdf-demo` | Matching parity, SSR, route, and browser checks |
-| Project portal | `apps/any-tdf-site` | Portal `check`, build, and responsive interaction coverage |
-| Component documentation source | `apps/site-common/docs/component-docs` | Generated `content/{stdf,rtdf,vtdf}/components` |
-| Guide content | `content/{stdf,rtdf,vtdf}/guide` | Matching framework site routes and navigation |
-| Project generator | `packages/create-any-tdf` | Template verification and generated version fallback |
-| Build plugins | `packages/vite-plugin-md-ts`, `packages/vite-plugin-svg-symbol` | Package-local tests and packaging checks |
-| Motion and confetti | `packages/{react,vue}-{motion,confetti}` | Paired-package parity and fixed version groups |
-| VS Code extension | `extensions/vscode-extension` | Generated API docs and menu data from content/site-common |
-| Framework AI skills | `packages/skills/{stdf,rtdf,vtdf}-skill` | Generated component references, theme data, and package validation |
-| Repository automation | `scripts`, `.github/workflows`, `.changeset` | Root automation tests and structural checks |
+| Area                           | Owning paths                                                                          | Required companions                                                   |
+| ------------------------------ | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Shared component behavior      | `packages/common/src/derived`, `packages/common/src/types`, `packages/common/src/svg` | Common tests plus all affected framework adapters and Demos           |
+| Themes and locales             | `packages/common/src/theme`, `packages/common/src/lang`                               | Framework exports, site theme behavior, skill theme data when changed |
+| Svelte library                 | `packages/stdf/src/lib`                                                               | `apps/stdf-demo`, STDF docs, package tests                            |
+| React library                  | `packages/rtdf/src/lib`                                                               | `apps/rtdf-demo`, RTDF docs, package tests                            |
+| Vue library                    | `packages/vtdf/src/lib`                                                               | `apps/vtdf-demo`, VTDF docs, package tests                            |
+| Shared site behavior           | `apps/site-common/src`, `apps/site-common/assets`                                     | Three framework sites and shared parity checks                        |
+| Framework sites                | `apps/stdf-site`, `apps/rtdf-site`, `apps/vtdf-site`                                  | Matching site verification and browser scenarios                      |
+| Framework Demos                | `apps/stdf-demo`, `apps/rtdf-demo`, `apps/vtdf-demo`                                  | Matching parity, SSR, route, and browser checks                       |
+| Project portal                 | `apps/any-tdf-site`                                                                   | Portal `check`, build, and responsive interaction coverage            |
+| Component documentation source | `apps/site-common/docs/component-docs`                                                | Generated `content/{stdf,rtdf,vtdf}/components`                       |
+| Guide content                  | `content/{stdf,rtdf,vtdf}/guide`                                                      | Matching framework site routes and navigation                         |
+| Project generator              | `packages/create-any-tdf`                                                             | Template verification and generated version fallback                  |
+| Build plugins                  | `packages/vite-plugin-md-ts`, `packages/vite-plugin-svg-symbol`                       | Package-local tests and packaging checks                              |
+| Motion and confetti            | `packages/{react,vue}-{motion,confetti}`                                              | Paired-package parity and fixed version groups                        |
+| VS Code extension              | `extensions/vscode-extension`                                                         | Generated API docs and menu data from content/site-common             |
+| Framework AI skills            | `packages/skills/{stdf,rtdf,vtdf}-skill`                                              | Generated component references, theme data, and package validation    |
+| Repository automation          | `scripts`, `.github/workflows`, `.changeset`                                          | Root automation tests and structural checks                           |
 
 ## Generated Outputs
 

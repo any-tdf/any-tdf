@@ -420,7 +420,11 @@ html[data-mode='dark'] .portal-stack-shadow {
 	left: 0.75rem;
 	width: 42%;
 	height: 2.2rem;
-	background-image: repeating-linear-gradient(90deg, color-mix(in oklch, var(--site-accent) 45%, transparent) 0 2px, transparent 2px 0.5rem);
+	background-image: repeating-linear-gradient(
+		90deg,
+		color-mix(in oklch, var(--site-accent) 45%, transparent) 0 2px,
+		transparent 2px 0.5rem
+	);
 	mask-image: linear-gradient(to right, black 55%, transparent 96%);
 	transform: scaleX(clamp(0, (var(--f3) - 0.45) / 0.3, 1));
 	transform-origin: left;
@@ -571,7 +575,11 @@ html[data-mode='dark'] .portal-stack-shadow {
 	--dim: calc(1 - var(--render-split) * (1 - var(--sel)) * 0.65);
 	width: calc(var(--plate-size) / 3);
 	height: var(--plate-size);
-	border-color: color-mix(in oklch, var(--site-divider-strong), var(--site-accent) calc(var(--render-split) * (0.15 + var(--sel) * 0.85) * 100%));
+	border-color: color-mix(
+		in oklch,
+		var(--site-divider-strong),
+		var(--site-accent) calc(var(--render-split) * (0.15 + var(--sel) * 0.85) * 100%)
+	);
 	background: color-mix(in oklch, var(--site-bg), var(--site-text) calc(var(--render-split) * (1 - var(--sel)) * 7%));
 }
 
@@ -638,7 +646,8 @@ html[data-mode='dark'] .portal-stack-logo-dark {
 
 .portal-stack-plate-renderer[data-renderer='svelte'] {
 	--sel: var(--sel-1);
-	transform: translateX(calc(var(--plate-size) / -3 - var(--render-split) * 3.5rem)) translateZ(calc(var(--sel) * var(--render-split) * 1rem));
+	transform: translateX(calc(var(--plate-size) / -3 - var(--render-split) * 3.5rem))
+		translateZ(calc(var(--sel) * var(--render-split) * 1rem));
 }
 
 .portal-stack-plate-renderer[data-renderer='react'] {
@@ -648,7 +657,8 @@ html[data-mode='dark'] .portal-stack-logo-dark {
 
 .portal-stack-plate-renderer[data-renderer='vue'] {
 	--sel: var(--sel-3);
-	transform: translateX(calc(var(--plate-size) / 3 + var(--render-split) * 3.5rem)) translateZ(calc(var(--sel) * var(--render-split) * 1rem));
+	transform: translateX(calc(var(--plate-size) / 3 + var(--render-split) * 3.5rem))
+		translateZ(calc(var(--sel) * var(--render-split) * 1rem));
 }
 
 .portal-stack-hint {

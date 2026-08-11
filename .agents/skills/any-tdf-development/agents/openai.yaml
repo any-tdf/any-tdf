@@ -1,4 +1,4 @@
 interface:
-  display_name: "Any TDF Development"
-  short_description: "Develop and verify the Any TDF monorepo safely."
-  default_prompt: "Use $any-tdf-development to implement and verify a change in the Any TDF monorepo."
+  display_name: 'Any TDF Development'
+  short_description: 'Develop and verify the Any TDF monorepo safely.'
+  default_prompt: 'Use $any-tdf-development to implement and verify a change in the Any TDF monorepo.'

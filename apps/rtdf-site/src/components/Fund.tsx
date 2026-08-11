@@ -79,7 +79,13 @@ const Fund = () => {
 								<img src="https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&color=000" alt="GitHub" />
 							</a>
 						</div>
-						<button ref={closeBtnRef} className="site-header-action" type="button" aria-label={isZh ? '关闭' : 'Close'} onClick={closeFundFun}>
+						<button
+							ref={closeBtnRef}
+							className="site-header-action"
+							type="button"
+							aria-label={isZh ? '关闭' : 'Close'}
+							onClick={closeFundFun}
+						>
 							×
 						</button>
 					</div>

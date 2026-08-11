@@ -260,7 +260,12 @@ const CmdK = () => {
 					</div>
 					<div className="rounded-sm border border-black/10 px-2 py-1 text-xs font-bold dark:border-white/10">ESC</div>
 				</div>
-				<div id="cmdk-listbox" role="listbox" className="overflow-y-auto px-6 pb-6" style={{ maxHeight: `${(document.documentElement.clientHeight * 3) / 4}px` }}>
+				<div
+					id="cmdk-listbox"
+					role="listbox"
+					className="overflow-y-auto px-6 pb-6"
+					style={{ maxHeight: `${(document.documentElement.clientHeight * 3) / 4}px` }}
+				>
 					{cmdKValue === '' ? (
 						<div className="mt-2 text-xs text-black/50 dark:text-white/30">
 							{latelyList.length === 0

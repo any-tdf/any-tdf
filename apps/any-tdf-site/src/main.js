@@ -242,8 +242,7 @@ const translations = {
 		supportAlipayCodeAlt: 'Alipay payment QR code',
 		supportNote:
 			'Feel free to include your GitHub or another social profile in your sponsorship message. Any TDF will gratefully acknowledge your support in the project repository and on the website!',
-		heroDescription:
-			'A mobile Web component system with a shared product language, natively implemented for three frameworks.',
+		heroDescription: 'A mobile Web component system with a shared product language, natively implemented for three frameworks.',
 		heroNote: 'Share behavior contracts, not framework constraints.',
 		architecturePreviewLabel: 'Any TDF architecture overview',
 		stackApp: 'Your app',
@@ -660,10 +659,7 @@ const renderProjectStats = () => {
 
 	const chart = projectStatsContainer.querySelector('[data-stat-chart]');
 	const compact = chart.clientWidth > 0 && chart.clientWidth < 480;
-	const { series, linePath, areaPath, precise, chart: bounds, yearTicks, ticks } = createProjectStatsChart(
-		projectStats.history,
-		compact
-	);
+	const { series, linePath, areaPath, precise, chart: bounds, yearTicks, ticks } = createProjectStatsChart(projectStats.history, compact);
 	const firstEntry = series[0];
 	const lastEntry = series.at(-1);
 	chart.setAttribute('viewBox', bounds.viewBox);

@@ -286,10 +286,7 @@ function App() {
 					<Route path="*" element={<Navigate to={fallbackPath} replace />} />
 				</Routes>
 			</Suspense>
-			<div
-				ref={themePanelRef}
-				className="rtdf-theme-panel-wrap pointer-events-none fixed inset-x-0 top-14 overflow-hidden pb-4 pl-2"
-			>
+			<div ref={themePanelRef} className="rtdf-theme-panel-wrap pointer-events-none fixed inset-x-0 top-14 overflow-hidden pb-4 pl-2">
 				<div
 					className={`pointer-events-auto mr-2 rounded-lg border border-black/10 bg-white p-2 shadow-md transition-transform duration-500 dark:border-white/10 dark:bg-black ${
 						showTheme ? 'translate-x-0' : 'rtdf-theme-panel-hidden'
