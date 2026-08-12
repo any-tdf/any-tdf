@@ -48,7 +48,7 @@ One shared design system. Three framework-native mobile component libraries.
 [![GitHub stars](https://img.shields.io/github/stars/any-tdf/any-tdf?logo=github&label=stars&style=flat-square&color=A1DAD7&logoColor=D9F8F2&labelColor=011918)](https://github.com/any-tdf/any-tdf)
 [![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github&style=flat-square&color=B9C46A&logoColor=F3F3CB&labelColor=161901)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
 
-[STDF](https://stdf.dev) • [RTDF](https://rtdf.dev) • [VTDF](https://vtdf.dev) • [Issues](https://github.com/any-tdf/any-tdf/issues) • [Discussions](https://github.com/any-tdf/any-tdf/discussions)
+[STDF](https://stdf.dev) • [RTDF](https://rtdf.dev) • [VTDF](https://vtdf.dev)
 
 [English](./README.md) • [简体中文](./readme/README_zh_CN.md) • [繁體中文](./readme/README_zh_TW.md) • [日本語](./readme/README_ja_JP.md) • [한국어](./readme/README_ko_KR.md) • [Español](./readme/README_es_ES.md) • [Русский](./readme/README_ru_RU.md) • [Français](./readme/README_fr_FR.md) • [Deutsch](./readme/README_de_DE.md) • [Italiano](./readme/README_it_IT.md)
 
