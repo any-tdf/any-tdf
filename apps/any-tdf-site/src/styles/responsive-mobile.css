@@ -198,6 +198,11 @@
 		scale: 0.78;
 	}
 
+	.portal-stack-core-tokens {
+		scale: 0.72;
+		transform-origin: top left;
+	}
+
 	.portal-stack-captions {
 		top: auto;
 		bottom: 0.75rem;
