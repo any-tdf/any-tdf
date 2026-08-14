@@ -170,16 +170,14 @@
 	}
 
 	.portal-hero-scroll .site-hero {
-		position: sticky;
-		top: var(--site-header-height);
-		display: grid;
-		grid-template-rows: auto minmax(0, 1fr);
-		align-items: stretch;
-		block-size: calc(100dvh - var(--site-header-height));
-		overflow: clip;
+		display: block;
+		block-size: 100%;
 	}
 
 	.portal-hero-scroll .portal-hero-visual {
+		position: sticky;
+		top: var(--site-header-height);
+		block-size: calc(100dvh - var(--site-header-height));
 		min-height: 0;
 		padding: 0.5rem 1rem 1rem;
 		overflow: clip;

@@ -971,6 +971,10 @@ if ('IntersectionObserver' in window) {
 
 const heroStack = document.querySelector('[data-hero-stack]');
 if (heroStack) {
+	const heroStackMobile = matchMedia('(max-width: 47.999rem)');
+	const heroStackCopy = heroStack.querySelector('.site-hero-copy');
+	const heroStackVisual = heroStack.querySelector('.portal-hero-visual');
+	const siteHeader = document.querySelector('.site-header');
 	let heroStackFrame = 0;
 	const updateHeroStack = () => {
 		heroStackFrame = 0;
@@ -979,8 +983,15 @@ if (heroStack) {
 			return;
 		}
 		const rect = heroStack.getBoundingClientRect();
-		const range = rect.height - window.innerHeight;
-		const progress = range > 0 ? Math.min(1, Math.max(0, -rect.top / range)) : 1;
+		let progress;
+		if (heroStackMobile.matches) {
+			const pinStart = siteHeader.offsetHeight - heroStackCopy.offsetHeight;
+			const range = rect.height - heroStackCopy.offsetHeight - heroStackVisual.offsetHeight;
+			progress = range > 0 ? Math.min(1, Math.max(0, (pinStart - rect.top) / range)) : 1;
+		} else {
+			const range = rect.height - window.innerHeight;
+			progress = range > 0 ? Math.min(1, Math.max(0, -rect.top / range)) : 1;
+		}
 		heroStack.style.setProperty('--stack-progress', progress.toFixed(3));
 	};
 	const requestHeroStackUpdate = () => {
@@ -990,6 +1001,7 @@ if (heroStack) {
 	window.addEventListener('scroll', requestHeroStackUpdate, { passive: true });
 	window.addEventListener('resize', requestHeroStackUpdate);
 	desktopNavigation.addEventListener('change', requestHeroStackUpdate);
+	heroStackMobile.addEventListener('change', requestHeroStackUpdate);
 	motionQuery.addEventListener('change', requestHeroStackUpdate);
 	updateHeroStack();
 }
