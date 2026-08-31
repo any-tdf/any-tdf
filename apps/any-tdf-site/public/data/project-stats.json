@@ -1,76 +1,76 @@
 {
   "schemaVersion": 2,
   "repository": "any-tdf/any-tdf",
-  "updatedAt": "2026-08-24T03:17:15.441Z",
+  "updatedAt": "2026-08-31T08:39:48.190Z",
   "current": {
     "github": {
-      "stars": 774,
-      "forks": 44,
+      "stars": 775,
+      "forks": 43,
       "openIssues": 2,
       "openPullRequests": 0
     },
     "npm": {
       "period": {
-        "start": "2026-08-16",
-        "end": "2026-08-22"
+        "start": "2026-08-23",
+        "end": "2026-08-29"
       },
-      "coreWeeklyDownloads": 93,
-      "ecosystemWeeklyDownloads": 214,
+      "coreWeeklyDownloads": 105,
+      "ecosystemWeeklyDownloads": 183,
       "packages": [
         {
           "name": "stdf",
           "group": "core",
-          "weeklyDownloads": 64
+          "weeklyDownloads": 95
         },
         {
           "name": "rtdf",
           "group": "core",
-          "weeklyDownloads": 14
+          "weeklyDownloads": 5
         },
         {
           "name": "vtdf",
           "group": "core",
-          "weeklyDownloads": 15
+          "weeklyDownloads": 5
         },
         {
           "name": "@any-tdf/common",
           "group": "foundation",
-          "weeklyDownloads": 22
+          "weeklyDownloads": 8
         },
         {
           "name": "create-any-tdf",
           "group": "tooling",
-          "weeklyDownloads": 12
+          "weeklyDownloads": 5
         },
         {
           "name": "@any-tdf/react-motion",
           "group": "motion",
-          "weeklyDownloads": 16
+          "weeklyDownloads": 7
         },
         {
           "name": "@any-tdf/vue-motion",
           "group": "motion",
-          "weeklyDownloads": 12
+          "weeklyDownloads": 7
         },
         {
           "name": "@any-tdf/react-confetti",
           "group": "effects",
-          "weeklyDownloads": 14
+          "weeklyDownloads": 11
         },
         {
           "name": "@any-tdf/vue-confetti",
           "group": "effects",
-          "weeklyDownloads": 13
+          "weeklyDownloads": 4
         },
         {
           "name": "@any-tdf/vite-plugin-md-ts",
           "group": "tooling",
-          "weeklyDownloads": 5
+          "weeklyDownloads": 4
         },
         {
           "name": "@any-tdf/vite-plugin-svg-symbol",
           "group": "tooling",
-          "weeklyDownloads": 27
+          "weeklyDownloads": 32
         }
       ]
     }
@@ -260,6 +260,7 @@
     ["2026-08-09", 771, 44, 0, 0, 0, 0],
     ["2026-08-10", 771, 44, 2, 0, 1467, 3207],
     ["2026-08-17", 774, 44, 2, 0, 84, 225],
-    ["2026-08-24", 774, 44, 2, 0, 93, 214]
+    ["2026-08-24", 774, 44, 2, 0, 93, 214],
+    ["2026-08-31", 775, 43, 2, 0, 105, 183]
   ]
 }
