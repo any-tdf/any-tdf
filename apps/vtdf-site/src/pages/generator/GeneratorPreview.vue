@@ -342,7 +342,7 @@ const lineLegend = computed(() => [0, 1, 2, 3].filter((index) => props.extendLis
 						{{ isZh ? '加载中' : 'Loading' }} <span class="opacity-50">Loading</span>
 					</div>
 					<div class="flex flex-wrap items-center justify-around gap-2">
-						<Loading v-for="type in randomLoadingTypes" :key="type" theme :type="type" />
+						<Loading v-for="type in randomLoadingTypes" :key="type" theme :type="type" :data-site-generator-loading="type" />
 					</div>
 				</template>
 

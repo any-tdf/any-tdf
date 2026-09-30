@@ -150,6 +150,13 @@ const page = await CDPClient.create(target.webSocketDebuggerUrl);
 await page.call('Runtime.enable');
 await page.call('Page.enable');
 
+// Keep randomized previews reproducible, including the layout that previously matched the preview container as Loading.
+const randomSeed = Number(process.env.VTDF_SITE_BROWSER_SEED ?? 5);
+if (!Number.isInteger(randomSeed)) throw new Error('VTDF_SITE_BROWSER_SEED must be an integer.');
+await page.call('Page.addScriptToEvaluateOnNewDocument', {
+	source: `let siteVerificationSeed = ${randomSeed}; Math.random = () => ((siteVerificationSeed = (Math.imul(siteVerificationSeed, 1664525) + 1013904223) >>> 0) / 4294967296);`
+});
+
 const browserErrors: string[] = [];
 const baselineBrowserErrorMessages = ['width 或 height 小于 20 会使移动端点击困难！'];
 page.on('Runtime.exceptionThrown', (params) => {
@@ -851,17 +858,7 @@ const assertGeneratorLoadingLazyAnimation = async () => {
 		backInView: { visible: boolean; animatedCount: number; runningCount: number; pausedCount: number; states: string[] };
 	}>(`
 		const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-		const normalize = (value) => (value || '').replace(/\\s+/g, ' ').trim();
-		// 通过区块标签文本定位 Loading 预览块（label 文本为 加载中/Loading + Loading 组件名）
-		const root = [...document.querySelectorAll('div')]
-			.filter((element) => {
-				const text = normalize(element.textContent || '');
-				return (text.includes('加载中 Loading') || text.endsWith('Loading Loading') || text.startsWith('Loading Loading')
-						|| text === '加载中 Loading' || text === 'Loading Loading')
-					&& element.querySelector('svg');
-			})
-			.sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0]
-			|| [...document.querySelectorAll('div.break-inside-avoid')].find((element) => normalize(element.textContent || '').startsWith('加载中') || normalize(element.textContent || '').startsWith('Loading'));
+		const root = document.querySelector('[data-site-generator-loading]');
 		const container = root?.closest('[data-theme="generator-preview"]');
 		const readState = () => {
 			const rect = root?.getBoundingClientRect();
@@ -900,21 +897,30 @@ const assertGeneratorLoadingLazyAnimation = async () => {
 				backInView: readState()
 			};
 		}
-		root.scrollIntoView({ block: 'center', inline: 'nearest' });
+		root.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
 		await wait(700);
 		const inView = readState();
 		const containerRect = container.getBoundingClientRect();
 		const rootRect = root.getBoundingClientRect();
 		const rootCenter = rootRect.top - containerRect.top + rootRect.height / 2 + container.scrollTop;
-		container.scrollTop = rootCenter < container.scrollHeight / 2 ? container.scrollHeight : 0;
+		const rootCenterX = rootRect.left - containerRect.left + rootRect.width / 2 + container.scrollLeft;
+		container.scrollTo({
+			top: rootCenter < container.scrollHeight / 2 ? container.scrollHeight : 0,
+			left: rootCenterX < container.scrollWidth / 2 ? container.scrollWidth : 0,
+			behavior: 'instant'
+		});
 		await wait(700);
 		let offView = readState();
 		if (offView.visible) {
-			container.scrollTop = container.scrollTop === 0 ? container.scrollHeight : 0;
+			container.scrollTo({
+				top: container.scrollTop === 0 ? container.scrollHeight : 0,
+				left: container.scrollLeft === 0 ? container.scrollWidth : 0,
+				behavior: 'instant'
+			});
 			await wait(700);
 			offView = readState();
 		}
-		root.scrollIntoView({ block: 'center', inline: 'nearest' });
+		root.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
 		await wait(700);
 		const backInView = readState();
 		return { found: true, inView, offView, backInView };
