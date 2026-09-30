@@ -8,6 +8,10 @@ name: Publish One npm Package
 on:
   workflow_call:
     inputs:
+      release-sha:
+        description: Exact commit used by package version detection
+        required: true
+        type: string
       package-name:
         description: Public npm package name
         required: true
@@ -33,6 +37,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.release-sha }}
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2

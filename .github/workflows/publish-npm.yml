@@ -34,6 +34,8 @@ jobs:
       all: ${{ steps.versions.outputs.all }}
       level0: ${{ steps.versions.outputs.level0 }}
       level1: ${{ steps.versions.outputs.level1 }}
+      cli: ${{ steps.versions.outputs.cli }}
+      release-sha: ${{ steps.revision.outputs.sha }}
       releases: ${{ steps.versions.outputs.releases }}
     steps:
       - name: Checkout repository
@@ -41,6 +43,10 @@ jobs:
         with:
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
+
+      - name: Record release commit
+        id: revision
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Download npm publish metadata
         if: github.event_name == 'workflow_run'
@@ -98,6 +104,7 @@ jobs:
     with:
       package-name: ${{ matrix.package.name }}
       package-version: ${{ matrix.package.version }}
+      release-sha: ${{ needs.detect.outputs.release-sha }}
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -119,6 +126,31 @@ jobs:
     with:
       package-name: ${{ matrix.package.name }}
       package-version: ${{ matrix.package.version }}
+      release-sha: ${{ needs.detect.outputs.release-sha }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-cli:
+    name: Publish ${{ matrix.package.name }}@${{ matrix.package.version }}
+    needs:
+      - detect
+      - publish-level-0
+      - publish-level-1
+    if: >-
+      always() &&
+      needs.detect.result == 'success' &&
+      needs.detect.outputs.cli != '[]' &&
+      (needs.publish-level-0.result == 'success' || needs.publish-level-0.result == 'skipped') &&
+      (needs.publish-level-1.result == 'success' || needs.publish-level-1.result == 'skipped')
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.detect.outputs.cli || '[]') }}
+    uses: ./.github/workflows/publish-npm-package.yml
+    with:
+      package-name: ${{ matrix.package.name }}
+      package-version: ${{ matrix.package.version }}
+      release-sha: ${{ needs.detect.outputs.release-sha }}
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -128,18 +160,21 @@ jobs:
       - detect
       - publish-level-0
       - publish-level-1
+      - publish-cli
     if: >-
       always() &&
       needs.detect.result == 'success' &&
       needs.detect.outputs.releases != '[]' &&
       (needs.publish-level-0.result == 'success' || needs.publish-level-0.result == 'skipped') &&
-      (needs.publish-level-1.result == 'success' || needs.publish-level-1.result == 'skipped')
+      (needs.publish-level-1.result == 'success' || needs.publish-level-1.result == 'skipped') &&
+      (needs.publish-cli.result == 'success' || needs.publish-cli.result == 'skipped')
     strategy:
       fail-fast: false
       matrix:
         package: ${{ fromJSON(needs.detect.outputs.releases || '[]') }}
     uses: ./.github/workflows/release.yml
     with:
+      release-sha: ${{ needs.detect.outputs.release-sha }}
       packages-json: ${{ format('[{0}]', toJSON(matrix.package)) }}
       release-key: ${{ format('{0}@{1}', matrix.package.name, matrix.package.version) }}
     secrets: inherit

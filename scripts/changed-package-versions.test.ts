@@ -60,6 +60,17 @@ describe('changed npm package versions', () => {
 		expect(tiers.level1).toEqual([]);
 	});
 
+	test('holds the CLI outside both dependency tiers until framework publishing succeeds', () => {
+		const workspaces = [workspace('@any-tdf/common', '0.0.1'), workspace('stdf', '3.0.0', { '@any-tdf/common': 'workspace:^' }), workspace('create-any-tdf', '0.0.1')];
+		const changes = workspaces.map(({ manifest, manifestPath }) => ({ name: manifest.name, version: manifest.version, manifestPath }));
+		const tiers = createPublishTiers(workspaces, changes);
+		expect(tiers.level0.map(({ name }) => name)).toEqual(['@any-tdf/common']);
+		expect(tiers.level1.map(({ name }) => name)).toEqual(['stdf']);
+		expect(tiers.cli).toEqual([changes[2]]);
+		expect(tiers.releases).toEqual(changes);
+		expect(createPublishTiers(workspaces, [changes[2]]).cli).toEqual([changes[2]]);
+	});
+
 	test('publishes alpha packages to npm without selecting them for GitHub Releases', () => {
 		const workspaces = [workspace('rtdf', '0.0.1-alpha.1'), workspace('stdf', '3.0.0')];
 		const changes = workspaces.map(({ manifest, manifestPath }) => ({

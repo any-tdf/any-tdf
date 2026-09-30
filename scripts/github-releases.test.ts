@@ -67,7 +67,7 @@ describe('Workflow responsibilities', () => {
 		expect(publishWorkflow).toContain('uses: ./.github/workflows/publish-npm-package.yml');
 		expect(publishWorkflow).toContain('uses: ./.github/workflows/release.yml');
 		expect(publishWorkflow).toContain("release-key: ${{ format('{0}@{1}', matrix.package.name, matrix.package.version) }}");
-		expect(publishWorkflow.match(/NPM_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/g)).toHaveLength(2);
+		expect(publishWorkflow.match(/NPM_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/g)).toHaveLength(3);
 		expect(publishWorkflow).not.toContain('changesets/action');
 		expect(packageWorkflow).toContain('secrets:');
 		expect(packageWorkflow).toContain('NPM_TOKEN:');
@@ -82,6 +82,26 @@ describe('Workflow responsibilities', () => {
 		expect(releaseWorkflow).toContain('group: github-releases-${{ github.run_id }}-${{ inputs.release-key }}');
 		expect(releaseWorkflow).not.toContain('npm publish');
 		expect(releaseWorkflow).not.toContain('changesets/action');
+	});
+
+	test('pins package publishing and Release tags to the detected commit', async () => {
+		const publish = await Bun.file(resolve(repositoryRoot, '.github/workflows/publish-npm.yml')).text();
+		const packageWorkflow = await Bun.file(resolve(repositoryRoot, '.github/workflows/publish-npm-package.yml')).text();
+		const release = await Bun.file(resolve(repositoryRoot, '.github/workflows/release.yml')).text();
+		expect(publish).toContain("ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}");
+		expect(publish).toContain('release-sha: ${{ steps.revision.outputs.sha }}');
+		expect(publish.match(/release-sha: \$\{\{ needs.detect.outputs.release-sha \}\}/g)).toHaveLength(4);
+		expect(packageWorkflow).toContain('ref: ${{ inputs.release-sha }}');
+		expect(release).toContain('ref: ${{ inputs.release-sha || github.sha }}');
+		expect(release).toContain('RELEASE_TARGET: ${{ steps.revision.outputs.sha }}');
+		expect(release).not.toContain('RELEASE_TARGET: ${{ github.sha }}');
+		const cliJob = publish.split('  publish-cli:')[1].split('  github-releases:')[0];
+		expect(cliJob).toContain("fromJSON(needs.detect.outputs.cli || '[]')");
+		for (const tier of ['publish-level-0', 'publish-level-1']) {
+			expect(cliJob).toContain(`- ${tier}`);
+			expect(cliJob).toContain(`(needs.${tier}.result == 'success' || needs.${tier}.result == 'skipped')`);
+		}
+		expect(publish.split('  github-releases:')[1]).toContain("(needs.publish-cli.result == 'success' || needs.publish-cli.result == 'skipped')");
 	});
 
 	test('publishes only after CI and preserves the original push comparison base', async () => {

@@ -132,7 +132,7 @@ export const sortPublishCandidates = (workspaces, candidateNames) => {
 	};
 
 	for (const name of [...candidates].sort()) visit(name);
-	return sorted;
+	return [...sorted.filter(({ manifest }) => manifest.name !== 'create-any-tdf'), ...sorted.filter(({ manifest }) => manifest.name === 'create-any-tdf')];
 };
 
 export const createSelectedPublishPlan = async (workspaces, selectedNames, versionExists) => {
@@ -402,6 +402,15 @@ export const packWorkspace = async (workspace, temporaryDirectory) => {
 	return { workspace, manifest: packedManifest, files, archivePath: finalArchive, archiveBytes };
 };
 
+export const assertCliFrameworkAvailability = async (workspaces, versionExists) => {
+	for (const name of ['stdf', 'rtdf', 'vtdf']) {
+		const workspace = workspaces.find(({ manifest }) => manifest.name === name);
+		if (!workspace || !(await versionExists(name, workspace.manifest.version))) {
+			throw new Error(`create-any-tdf requires the current ${name} version to be published before the CLI.`);
+		}
+	}
+};
+
 export const publishCandidates = async (packages, options) => {
 	const published = [];
 	const skipped = [];
@@ -413,6 +422,7 @@ export const publishCandidates = async (packages, options) => {
 			continue;
 		}
 
+		await options.beforePublish?.(packageData);
 		await options.publish(packageData);
 		published.push(`${name}@${version}`);
 		options.markPublished?.(name, version);
@@ -425,9 +435,9 @@ export const createRegistryClient = (registry = defaultRegistry) => {
 	const normalizedRegistry = registry.replace(/\/$/, '');
 	const cache = new Map();
 	const getKey = (name, version) => `${name}@${version}`;
-	const hasVersion = async (name, version) => {
+	const hasVersion = async (name, version, { forceRefresh = false } = {}) => {
 		const key = getKey(name, version);
-		if (cache.get(key) === true) return true;
+		if (!forceRefresh && cache.get(key) === true) return true;
 		const response = await fetch(`${normalizedRegistry}/${encodeURIComponent(name)}/${encodeURIComponent(version)}`, {
 			headers: { accept: 'application/json' }
 		});
@@ -441,9 +451,9 @@ export const createRegistryClient = (registry = defaultRegistry) => {
 
 	return {
 		hasVersion,
-		waitForVersion: async (name, version) => {
+		waitForVersion: async (name, version, options) => {
 			for (let attempt = 0; attempt < 12; attempt += 1) {
-				if (await hasVersion(name, version)) return true;
+				if (await hasVersion(name, version, options)) return true;
 				if (attempt < 11) await Bun.sleep(5000);
 			}
 			return false;
@@ -640,6 +650,13 @@ export const runPublish = async (workspaceRoot, options) => {
 		const result = await publishCandidates(packages, {
 			versionExists: registryClient.hasVersion,
 			markPublished: registryClient.markPublished,
+			beforePublish: async ({ manifest }) => {
+				if (manifest.name === 'create-any-tdf') {
+					await assertCliFrameworkAvailability(workspaces, (name, version) =>
+						registryClient.waitForVersion(name, version, { forceRefresh: true })
+					);
+				}
+			},
 			publish: (packageData) => npmPublish(packageData, options.dryRun)
 		});
 		return result;

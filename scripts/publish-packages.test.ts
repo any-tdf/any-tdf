@@ -1,12 +1,14 @@
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, spyOn, test } from 'bun:test';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { retryRegistryOperation } from './verify-package-consumers.mjs';
 import {
 	assertInternalDependencyAvailability,
+	assertCliFrameworkAvailability,
 	collectWorkspaces,
 	createPublishPlan,
+	createRegistryClient,
 	createSelectedPublishPlan,
 	isConfiguredNodeAuthToken,
 	isTrustedPublishingAuthenticationFailure,
@@ -226,6 +228,51 @@ describe('npm publish planning', () => {
 			publishedRegistry.has(`${name}@${version}`)
 		);
 		expect(retryPlan.map(({ manifest }) => manifest.name)).toEqual(['rtdf']);
+	});
+
+	test('publishes the CLI after every selected framework package', () => {
+		const cli = workspace({ name: 'create-any-tdf', version: '0.0.1' });
+		const plan = sortPublishCandidates([...workspaces, cli], ['create-any-tdf', 'rtdf', '@any-tdf/common', '@any-tdf/react-motion']);
+		expect(plan.map(({ manifest }) => manifest.name)).toEqual(['@any-tdf/common', '@any-tdf/react-motion', 'rtdf', 'create-any-tdf']);
+	});
+
+	test('blocks CLI publication when a current framework version is unavailable', async () => {
+		const frameworks = [workspace({ name: 'stdf', version: '3.0.0' }), workspace({ name: 'rtdf', version: '0.0.1' }), workspace({ name: 'vtdf', version: '0.0.1' })];
+		let published = false;
+		await expect(publishCandidates([{ manifest: { name: 'create-any-tdf', version: '0.0.1' } }], {
+			versionExists: async () => false,
+			beforePublish: async () => assertCliFrameworkAvailability(frameworks, async (name: string) => name !== 'vtdf'),
+			publish: async () => { published = true; }
+		})).rejects.toThrow('current vtdf version');
+		expect(published).toBeFalse();
+		const checked: string[] = [];
+		await assertCliFrameworkAvailability(frameworks, async (name: string, version: string) => { checked.push(`${name}@${version}`); return true; });
+		expect(checked).toEqual(['stdf@3.0.0', 'rtdf@0.0.1', 'vtdf@0.0.1']);
+	});
+
+	test('does not proceed to the CLI after an upstream publication fails', async () => {
+		const published: string[] = [];
+		await expect(publishCandidates([{ manifest: rtdf.manifest }, { manifest: { name: 'create-any-tdf', version: '0.0.1' } }], {
+			versionExists: async () => false,
+			publish: async ({ manifest }: { manifest: Manifest }) => { published.push(manifest.name); throw new Error('upstream failed'); }
+		})).rejects.toThrow('upstream failed');
+		expect(published).toEqual(['rtdf']);
+	});
+
+	test('checks registry visibility even after a framework publication was marked successful', async () => {
+		const lookup = spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{}', { status: 404 }));
+		try {
+			const registry = createRegistryClient();
+			registry.markPublished('stdf', '3.0.0');
+			expect(await registry.hasVersion('stdf', '3.0.0')).toBeTrue();
+			expect(lookup).not.toHaveBeenCalled();
+			expect(await registry.hasVersion('stdf', '3.0.0', { forceRefresh: true })).toBeFalse();
+			lookup.mockResolvedValue(new Response('{}', { status: 200 }));
+			expect(await registry.waitForVersion('stdf', '3.0.0', { forceRefresh: true })).toBeTrue();
+			expect(lookup).toHaveBeenCalledTimes(2);
+		} finally {
+			lookup.mockRestore();
+		}
 	});
 
 	test('skips duplicate versions without creating release metadata', async () => {

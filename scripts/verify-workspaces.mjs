@@ -403,6 +403,8 @@ const requiredPublishWorkflowFragments = [
   "needs.detect.result == 'success'",
   "fromJSON(needs.detect.outputs.level0 || '[]')",
   "fromJSON(needs.detect.outputs.level1 || '[]')",
+  "fromJSON(needs.detect.outputs.cli || '[]')",
+  "release-sha: ${{ needs.detect.outputs.release-sha }}",
   "fromJSON(needs.detect.outputs.releases || '[]')",
   "actions/download-artifact@v4",
   "name: npm-publish-metadata",
@@ -412,6 +414,7 @@ const requiredPublishWorkflowFragments = [
 ];
 const requiredPackagePublishWorkflowFragments = [
   "actions/checkout@v6",
+  "ref: ${{ inputs.release-sha }}",
   "actions/setup-node@v6",
   "node-version: '24'",
   "registry-url: https://registry.npmjs.org",

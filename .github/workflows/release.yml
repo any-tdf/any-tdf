@@ -3,6 +3,10 @@ name: Create GitHub Releases
 on:
   workflow_call:
     inputs:
+      release-sha:
+        description: Exact commit used to publish the packages
+        required: true
+        type: string
       packages-json:
         description: JSON list of published package names and versions
         required: true
@@ -13,6 +17,10 @@ on:
         type: string
   workflow_dispatch:
     inputs:
+      release-sha:
+        description: Commit or ref for the Release, defaulting to the selected workflow ref
+        required: false
+        type: string
       packages-json:
         description: JSON list such as [{"name":"stdf","version":"3.0.0"}]
         required: true
@@ -34,7 +42,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.release-sha || github.sha }}
           fetch-depth: 0
+
+      - name: Record release commit
+        id: revision
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
@@ -48,5 +61,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_PACKAGES_JSON: ${{ inputs.packages-json }}
-          RELEASE_TARGET: ${{ github.sha }}
+          RELEASE_TARGET: ${{ steps.revision.outputs.sha }}
         run: bun run release
