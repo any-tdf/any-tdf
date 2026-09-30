@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/react-motion",
-	"version": "0.0.0-alpha.3",
+	"version": "0.0.1",
 	"description": "React motion utilities compatible with Svelte transition, animate, easing, and motion APIs.",
 	"license": "MIT",
 	"repository": {
@@ -52,8 +52,7 @@
 		}
 	},
 	"publishConfig": {
-		"access": "public",
-		"tag": "alpha"
+		"access": "public"
 	},
 	"scripts": {
 		"build": "rm -rf dist && tsc -p tsconfig.json && bun run ../../scripts/minify-package-js.mjs dist",

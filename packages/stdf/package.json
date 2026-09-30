@@ -1,6 +1,6 @@
 {
 	"name": "stdf",
-	"version": "3.0.0-alpha.3",
+	"version": "3.0.0",
 	"description": "Mobile web component library based on Svelte and Tailwind",
 	"keywords": [
 		"moblie ui",
@@ -81,8 +81,7 @@
 		}
 	},
 	"publishConfig": {
-		"access": "public",
-		"tag": "alpha"
+		"access": "public"
 	},
 	"scripts": {
 		"build": "svelte-kit sync && svelte-package",

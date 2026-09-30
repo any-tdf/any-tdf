@@ -1,6 +1,6 @@
 # STDF 2.x 升级到 3.x 迁移指南
 
-本文以 `2.0.2` 和当前 `3.0.0-alpha.2` 为基准，说明已有 STDF 项目升级后需要处理的改动。
+本文以 `2.0.2` 和当前 `3.0.0` 为基准，说明已有 STDF 项目升级后需要处理的改动。
 
 STDF 3.x 将主题、语言、类型、工具方法、SVG 数据和组件的框架无关逻辑整理到了内部公共层，但应用仍然只需要依赖 `stdf`。这次升级中需要重点检查以下 3 项：
 
@@ -12,21 +12,15 @@ STDF 2.x 已经基于 Svelte 5 和 Tailwind CSS 4，因此从 2.x 升级时，�
 
 ## 1. 升级依赖
 
-3.x 仍处于 alpha 阶段时，使用 `alpha` 标签安装：
+升级 STDF：
 
 ```sh
-bun add stdf@alpha
-```
-
-稳定版发布后，可以改为：
-
-```sh
-bun add stdf@^3
+bun add stdf
 ```
 
 `@any-tdf/common` 是 STDF 3.x 的内部依赖。业务项目不需要直接安装或导入它，也不要在 `package.json` 中手动固定它的版本。
 
-如果项目曾跟随早期 3.x alpha 示例显式安装过该包，可以移除这条直接依赖：
+如果项目已显式安装该包，可以移除这条直接依赖：
 
 ```sh
 bun remove @any-tdf/common
@@ -293,13 +287,13 @@ import { builtInIconLibraryLabelMap, builtInIconLibraryList, type BuiltInIconLib
 2.x：
 
 ```sh
-bun create stdf@latest
+bun create stdf
 ```
 
 3.x：
 
 ```sh
-bun create any-tdf@alpha stdf-app -f svelte
+bun create any-tdf stdf-app -f svelte
 ```
 
 不要为了升级已有项目重新运行脚手架。脚手架只用于创建新项目，已有项目按本文逐项修改即可。

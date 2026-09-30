@@ -12,12 +12,10 @@ Base partagee et independante du framework pour l'ecosysteme de composants `any-
 
 `@any-tdf/common` est le paquet de base partage pour l'ecosysteme `any-tdf`. Il fournit l'etat derive des composants, le calcul des classes, les donnees de style, les donnees SVG, les outils de theme Tailwind CSS, le changement de theme au runtime, les packs de langue, les types et les utilitaires.
 
-Le paquet est actuellement publie sur le canal `alpha`. Les API peuvent encore changer pendant la stabilisation des contrats partages.
-
 # Installation
 
 ```sh
-bun add @any-tdf/common@alpha
+bun add @any-tdf/common
 ```
 
 # Utilisation

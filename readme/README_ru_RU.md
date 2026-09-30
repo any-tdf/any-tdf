@@ -80,20 +80,18 @@ Any TDF — система мобильных компонентов для Svel
 
 ## Быстрый старт
 
-> Семейство компонентов нового поколения сейчас опубликовано в npm с тегом `alpha`. Два плагина Vite используют стабильный тег `latest`.
-
 Создайте TypeScript-проект в интерактивном режиме:
 
 ```sh
-bun create any-tdf@alpha
+bun create any-tdf
 ```
 
 Или явно выберите фреймворк и стартовый шаблон:
 
 ```sh
-bun create any-tdf@alpha my-app -f svelte -t sktt -b lucide
-bun create any-tdf@alpha my-app -f react -t vrtt -b phosphor
-bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f svelte -t sktt -b lucide
+bun create any-tdf my-app -f react -t vrtt -b phosphor
+bun create any-tdf my-app -f vue -t vrtt -b tabler
 ```
 
 Генератор предоставляет шаблоны Vite и SvelteKit, TypeScript, Tailwind CSS или UnoCSS, несколько стратегий значков, встроенные библиотеки значков и настройку одной или нескольких тем. Все параметры описаны в полном [справочнике `create-any-tdf`](../packages/create-any-tdf/README.md).
@@ -101,9 +99,9 @@ bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
 Чтобы добавить библиотеку компонентов в существующее приложение:
 
 ```sh
-bun add stdf@alpha svelte tailwindcss
-bun add rtdf@alpha react react-dom tailwindcss
-bun add vtdf@alpha vue tailwindcss
+bun add stdf svelte tailwindcss
+bun add rtdf react react-dom tailwindcss
+bun add vtdf vue tailwindcss
 ```
 
 Установите только строку для своего фреймворка. Каждый пакет автоматически устанавливает общие зависимости среды выполнения Any TDF. Инструкции по импорту стилей, настройке тем, компонентам и миграции доступны на сайте соответствующей библиотеки.

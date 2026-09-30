@@ -12,12 +12,10 @@ Base condivisa e indipendente dal framework per l'ecosistema di componenti `any-
 
 `@any-tdf/common` e il pacchetto base condiviso per l'ecosistema `any-tdf`. Include stato derivato dei componenti, calcolo delle classi, dati di stile, dati SVG, strumenti tema per Tailwind CSS, cambio tema a runtime, pacchetti lingua, tipi e utility.
 
-Il pacchetto e attualmente pubblicato nel canale `alpha`. Le API possono cambiare mentre i contratti condivisi vengono stabilizzati.
-
 # Installazione
 
 ```sh
-bun add @any-tdf/common@alpha
+bun add @any-tdf/common
 ```
 
 # Uso

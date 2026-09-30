@@ -1,4 +1,4 @@
-> STDF 3.0.0-alpha.0 is based on Svelte v5 and Tailwind CSS v4.
+> STDF 3.0.0 is based on Svelte v5 and Tailwind CSS v4.
 
 ## Svelte
 

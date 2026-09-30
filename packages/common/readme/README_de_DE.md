@@ -12,12 +12,10 @@ Framework-unabhaengige gemeinsame Grundlage fuer das `any-tdf` Komponenten-Oekos
 
 `@any-tdf/common` ist das gemeinsame Basispaket fuer das `any-tdf` Oekosystem. Es enthaelt abgeleiteten Komponentenstatus, Klassenberechnung, Stildaten, SVG-Daten, Tailwind CSS Theme-Werkzeuge, Runtime-Theme-Umschaltung, Sprachpakete, Typen und Hilfsfunktionen.
 
-Das Paket wird derzeit im `alpha` Kanal veroeffentlicht. APIs koennen sich aendern, solange die gemeinsamen Vertraege stabilisiert werden.
-
 # Installation
 
 ```sh
-bun add @any-tdf/common@alpha
+bun add @any-tdf/common
 ```
 
 # Nutzung

@@ -80,20 +80,18 @@ This is not a cross-framework wrapper or a single runtime hidden behind adapters
 
 ## Quick start
 
-> The next-generation component family is currently published on npm under the `alpha` tag. The two Vite plugins use the stable `latest` tag.
-
 Create a TypeScript project interactively:
 
 ```sh
-bun create any-tdf@alpha
+bun create any-tdf
 ```
 
 Or choose the framework and starter explicitly:
 
 ```sh
-bun create any-tdf@alpha my-app -f svelte -t sktt -b lucide
-bun create any-tdf@alpha my-app -f react -t vrtt -b phosphor
-bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f svelte -t sktt -b lucide
+bun create any-tdf my-app -f react -t vrtt -b phosphor
+bun create any-tdf my-app -f vue -t vrtt -b tabler
 ```
 
 The generator provides Vite and SvelteKit templates, TypeScript, Tailwind CSS or UnoCSS, several icon strategies, built-in icon libraries, and single- or multi-theme setups. See the complete [`create-any-tdf` reference](./packages/create-any-tdf/README.md) for every option.
@@ -101,9 +99,9 @@ The generator provides Vite and SvelteKit templates, TypeScript, Tailwind CSS or
 To add a component library to an existing application:
 
 ```sh
-bun add stdf@alpha svelte tailwindcss
-bun add rtdf@alpha react react-dom tailwindcss
-bun add vtdf@alpha vue tailwindcss
+bun add stdf svelte tailwindcss
+bun add rtdf react react-dom tailwindcss
+bun add vtdf vue tailwindcss
 ```
 
 Only install the line for your framework. Each package installs its shared Any TDF runtime dependencies automatically. Continue with the corresponding website for stylesheet imports, theme configuration, components, and migration guides.

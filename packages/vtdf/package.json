@@ -1,6 +1,6 @@
 {
 	"name": "vtdf",
-	"version": "0.0.1-alpha.3",
+	"version": "0.0.1",
 	"description": "Mobile web Vue 3 component library based on Tailwind CSS and the any-tdf design system.",
 	"keywords": [
 		"component library",
@@ -88,8 +88,7 @@
 		}
 	},
 	"publishConfig": {
-		"access": "public",
-		"tag": "alpha"
+		"access": "public"
 	},
 	"scripts": {
 		"build": "vp build --config vite.lib.config.ts && cp src/index.css dist/style.css && vue-tsc -p tsconfig.lib.json && bun run ../../scripts/minify-package-js.mjs dist",

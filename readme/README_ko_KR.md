@@ -80,20 +80,18 @@ Any TDF는 Svelte, React, Vue를 위한 모바일 우선 컴포넌트 시스템�
 
 ## 빠른 시작
 
-> 차세대 컴포넌트 제품군은 현재 npm의 `alpha` 태그로 배포됩니다. 두 Vite 플러그인은 안정적인 `latest` 태그를 사용합니다.
-
 대화형으로 TypeScript 프로젝트를 생성합니다.
 
 ```sh
-bun create any-tdf@alpha
+bun create any-tdf
 ```
 
 프레임워크와 스타터를 직접 지정할 수도 있습니다.
 
 ```sh
-bun create any-tdf@alpha my-app -f svelte -t sktt -b lucide
-bun create any-tdf@alpha my-app -f react -t vrtt -b phosphor
-bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f svelte -t sktt -b lucide
+bun create any-tdf my-app -f react -t vrtt -b phosphor
+bun create any-tdf my-app -f vue -t vrtt -b tabler
 ```
 
 생성기는 Vite 및 SvelteKit 템플릿, TypeScript, Tailwind CSS 또는 UnoCSS, 여러 아이콘 방식, 내장 아이콘 라이브러리, 단일 또는 다중 테마 구성을 제공합니다. 모든 옵션은 [`create-any-tdf` 레퍼런스](../packages/create-any-tdf/README.md)에서 확인하세요.
@@ -101,9 +99,9 @@ bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
 기존 애플리케이션에 컴포넌트 라이브러리를 추가합니다.
 
 ```sh
-bun add stdf@alpha svelte tailwindcss
-bun add rtdf@alpha react react-dom tailwindcss
-bun add vtdf@alpha vue tailwindcss
+bun add stdf svelte tailwindcss
+bun add rtdf react react-dom tailwindcss
+bun add vtdf vue tailwindcss
 ```
 
 사용할 프레임워크의 한 줄만 설치하세요. 각 패키지는 공유 Any TDF 런타임 의존성을 자동으로 설치합니다. 스타일시트 가져오기, 테마 구성, 컴포넌트, 마이그레이션 가이드는 해당 공식 사이트를 참고하세요.

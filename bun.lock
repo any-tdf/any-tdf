@@ -236,7 +236,7 @@
     },
     "packages/common": {
       "name": "@any-tdf/common",
-      "version": "0.0.0-alpha.3",
+      "version": "0.0.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -252,7 +252,7 @@
     },
     "packages/create-any-tdf": {
       "name": "create-any-tdf",
-      "version": "0.0.1-alpha.2",
+      "version": "0.0.1",
       "bin": {
         "create-any-tdf": "dist/index.js",
       },
@@ -270,7 +270,7 @@
     },
     "packages/react-confetti": {
       "name": "@any-tdf/react-confetti",
-      "version": "0.0.0-alpha.3",
+      "version": "0.0.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -312,7 +312,7 @@
     },
     "packages/react-motion": {
       "name": "@any-tdf/react-motion",
-      "version": "0.0.0-alpha.3",
+      "version": "0.0.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -356,7 +356,7 @@
     },
     "packages/rtdf": {
       "name": "rtdf",
-      "version": "0.0.1-alpha.2",
+      "version": "0.0.1",
       "dependencies": {
         "@any-tdf/common": "workspace:^",
         "@any-tdf/react-motion": "workspace:^",
@@ -407,7 +407,7 @@
     },
     "packages/stdf": {
       "name": "stdf",
-      "version": "3.0.0-alpha.2",
+      "version": "3.0.0",
       "dependencies": {
         "@any-tdf/common": "workspace:^",
       },
@@ -462,7 +462,7 @@
     },
     "packages/vtdf": {
       "name": "vtdf",
-      "version": "0.0.1-alpha.2",
+      "version": "0.0.1",
       "dependencies": {
         "@any-tdf/common": "workspace:^",
         "@any-tdf/vue-motion": "workspace:^",
@@ -485,7 +485,7 @@
     },
     "packages/vue-confetti": {
       "name": "@any-tdf/vue-confetti",
-      "version": "0.0.0-alpha.3",
+      "version": "0.0.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",
@@ -519,7 +519,7 @@
     },
     "packages/vue-motion": {
       "name": "@any-tdf/vue-motion",
-      "version": "0.0.0-alpha.3",
+      "version": "0.0.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@types/node": "catalog:",

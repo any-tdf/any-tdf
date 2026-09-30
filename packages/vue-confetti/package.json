@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/vue-confetti",
-	"version": "0.0.0-alpha.3",
+	"version": "0.0.1",
 	"description": "Vue port of svelte-confetti's pure HTML and CSS confetti effect.",
 	"keywords": [
 		"confetti",
@@ -39,8 +39,7 @@
 		}
 	},
 	"publishConfig": {
-		"access": "public",
-		"tag": "alpha"
+		"access": "public"
 	},
 	"scripts": {
 		"build": "rm -rf dist && tsc -p tsconfig.json && bun run ../../scripts/minify-package-js.mjs dist",

@@ -5,13 +5,13 @@ Use this reference when creating a VTDF application with `create-any-tdf`.
 ## Recommended Command
 
 ```sh
-bun create any-tdf@alpha my-app -f vue
+bun create any-tdf my-app -f vue
 ```
 
 Direct creation with options:
 
 ```sh
-bun create any-tdf@alpha my-app -f vue -t vrtt -l zh_CN -i iconify -m multi -b lucide
+bun create any-tdf my-app -f vue -t vrtt -l zh_CN -i iconify -m multi -b lucide
 ```
 
 ## Options

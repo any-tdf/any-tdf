@@ -32,10 +32,10 @@ const getManagerIcon = (manager: PackageManager) => codeGroupSvgData.find((item)
 
 const getCommands = (manager: PackageManager): Command[] => {
 	const createCommand = {
-		bun: 'bun create any-tdf@alpha my-vtdf -f vue',
-		npm: 'npm create any-tdf@alpha my-vtdf -f vue',
-		pnpm: 'pnpm create any-tdf@alpha my-vtdf -f vue',
-		yarn: 'yarn create any-tdf@alpha my-vtdf -f vue'
+		bun: 'bun create any-tdf my-vtdf -f vue',
+		npm: 'npm create any-tdf my-vtdf -f vue',
+		pnpm: 'pnpm create any-tdf my-vtdf -f vue',
+		yarn: 'yarn create any-tdf my-vtdf -f vue'
 	};
 	const installCommand = { bun: 'bun i', npm: 'npm i', pnpm: 'pnpm i', yarn: 'yarn' };
 	const devCommand = { bun: 'bun dev', npm: 'npm run dev', pnpm: 'pnpm dev', yarn: 'yarn dev' };
@@ -54,7 +54,7 @@ const highlightCommand = (command: string) => {
 		.split(' ')
 		.map((part, index) => {
 			if (index === 0 || keywords.includes(part)) return `<span class="text-primary dark:text-dark">${part}</span>`;
-			if (part.startsWith('any-tdf@') || part === 'vue') return `<span class="text-cyan-600 dark:text-cyan-400">${part}</span>`;
+			if (part === 'any-tdf' || part === 'vue') return `<span class="text-cyan-600 dark:text-cyan-400">${part}</span>`;
 			if (part.startsWith('my-')) return `<span class="text-amber-600 dark:text-amber-400">${part}</span>`;
 			return `<span class="text-gray-700 dark:text-gray-300">${part}</span>`;
 		})

@@ -1,4 +1,4 @@
-> STDF 3.0.0-alpha.0 基于 Svelte v5 与 Tailwind CSS v4。
+> STDF 3.0.0 基于 Svelte v5 与 Tailwind CSS v4。
 
 ## Svelte
 

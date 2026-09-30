@@ -12,12 +12,10 @@ Framework-agnostic shared foundation for the `any-tdf` component ecosystem.
 
 `@any-tdf/common` is the shared foundation package for the `any-tdf` component ecosystem. It provides derived component state, class helpers, style data, SVG icon data, Tailwind CSS theme tools, runtime theme switching, language packs, types, and utilities.
 
-The package is currently published on the `alpha` channel. APIs may change while the framework packages align on shared contracts.
-
 # Installation
 
 ```sh
-bun add @any-tdf/common@alpha
+bun add @any-tdf/common
 ```
 
 # Usage

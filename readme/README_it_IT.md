@@ -80,20 +80,18 @@ Non è un wrapper tra framework né un singolo runtime nascosto dietro adattator
 
 ## Avvio rapido
 
-> La nuova generazione di componenti è attualmente pubblicata su npm con il tag `alpha`. I due plugin Vite usano il tag stabile `latest`.
-
 Crea un progetto TypeScript in modo interattivo:
 
 ```sh
-bun create any-tdf@alpha
+bun create any-tdf
 ```
 
 Puoi anche specificare direttamente framework e template:
 
 ```sh
-bun create any-tdf@alpha my-app -f svelte -t sktt -b lucide
-bun create any-tdf@alpha my-app -f react -t vrtt -b phosphor
-bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f svelte -t sktt -b lucide
+bun create any-tdf my-app -f react -t vrtt -b phosphor
+bun create any-tdf my-app -f vue -t vrtt -b tabler
 ```
 
 Il generatore offre template Vite e SvelteKit, TypeScript, Tailwind CSS o UnoCSS, diverse strategie per le icone, librerie di icone integrate e configurazioni con tema singolo o multiplo. Consulta tutte le opzioni nel [riferimento di `create-any-tdf`](../packages/create-any-tdf/README.md).
@@ -101,9 +99,9 @@ Il generatore offre template Vite e SvelteKit, TypeScript, Tailwind CSS o UnoCSS
 Per aggiungere una libreria di componenti a un’applicazione esistente:
 
 ```sh
-bun add stdf@alpha svelte tailwindcss
-bun add rtdf@alpha react react-dom tailwindcss
-bun add vtdf@alpha vue tailwindcss
+bun add stdf svelte tailwindcss
+bun add rtdf react react-dom tailwindcss
+bun add vtdf vue tailwindcss
 ```
 
 Installa solo la riga corrispondente al tuo framework. Ogni pacchetto installa automaticamente le dipendenze runtime condivise di Any TDF. Consulta il sito corrispondente per importare gli stili, configurare i temi, usare i componenti e leggere le guide di migrazione.

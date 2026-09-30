@@ -29,7 +29,7 @@ const highlightCommand = (command: string) => {
 		.split(' ')
 		.map((part, index) => {
 			if (index === 0 || keywords.includes(part)) return `<span class="text-primary dark:text-dark">${part}</span>`;
-			if (part.startsWith('any-tdf@') || part === 'react') return `<span class="text-cyan-600 dark:text-cyan-400">${part}</span>`;
+			if (part === 'any-tdf' || part === 'react') return `<span class="text-cyan-600 dark:text-cyan-400">${part}</span>`;
 			if (part.startsWith('my-')) return `<span class="text-amber-600 dark:text-amber-400">${part}</span>`;
 			return `<span class="text-gray-700 dark:text-gray-300">${part}</span>`;
 		})
@@ -41,10 +41,10 @@ const TerminalDemo = ({ lang = 'zh_CN' }: TerminalDemoProps) => {
 
 	const getCommands = (manager: PackageManager): Command[] => {
 		const createCommand = {
-			bun: 'bun create any-tdf@alpha my-rtdf -f react',
-			npm: 'npm create any-tdf@alpha my-rtdf -f react',
-			pnpm: 'pnpm create any-tdf@alpha my-rtdf -f react',
-			yarn: 'yarn create any-tdf@alpha my-rtdf -f react'
+			bun: 'bun create any-tdf my-rtdf -f react',
+			npm: 'npm create any-tdf my-rtdf -f react',
+			pnpm: 'pnpm create any-tdf my-rtdf -f react',
+			yarn: 'yarn create any-tdf my-rtdf -f react'
 		};
 		const installCommand = { bun: 'bun i', npm: 'npm i', pnpm: 'pnpm i', yarn: 'yarn' };
 		const devCommand = { bun: 'bun dev', npm: 'npm run dev', pnpm: 'pnpm dev', yarn: 'yarn dev' };

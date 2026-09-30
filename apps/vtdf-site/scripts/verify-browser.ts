@@ -1096,7 +1096,7 @@ const scenarios: Scenario[] = [
 		name: 'Guide quick start renders zh',
 		path: '/guide',
 		steps: [
-			() => waitFor(() => bodyIncludes('bun create any-tdf@alpha vtdf-app -f vue'), 'quick start command'),
+			() => waitFor(() => bodyIncludes('bun create any-tdf vtdf-app -f vue'), 'quick start command'),
 			() => assertBodyIncludes('安装')
 		]
 	},

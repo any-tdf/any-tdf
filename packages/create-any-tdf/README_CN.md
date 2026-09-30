@@ -37,7 +37,7 @@ bun create any-tdf my-app -f vue -t vrtt -b tabler
 
 ## 本地源码验收
 
-CLI 只会写入 npm 仓库中真实存在的版本。当前 alpha 包发布前，可使用本仓库源码执行完整模板验收：
+CLI 只会写入 npm 仓库中真实存在的版本。可使用本仓库源码执行完整模板验收：
 
 ```sh
 bun run verify:templates

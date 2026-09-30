@@ -80,20 +80,18 @@ Any TDF 是面向 Svelte、React 和 Vue 的移动优先组件系统。三套组
 
 ## 快速开始
 
-> 新一代组件家族目前通过 npm 的 `alpha` 标签发布，两个 Vite 插件使用稳定的 `latest` 标签。
-
 交互式创建 TypeScript 项目：
 
 ```sh
-bun create any-tdf@alpha
+bun create any-tdf
 ```
 
 也可以直接指定框架和模板：
 
 ```sh
-bun create any-tdf@alpha my-app -f svelte -t sktt -b lucide
-bun create any-tdf@alpha my-app -f react -t vrtt -b phosphor
-bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f svelte -t sktt -b lucide
+bun create any-tdf my-app -f react -t vrtt -b phosphor
+bun create any-tdf my-app -f vue -t vrtt -b tabler
 ```
 
 项目生成器提供 Vite 与 SvelteKit 模板、TypeScript、Tailwind CSS 或 UnoCSS、多种图标方案、内置图标库以及单主题或多主题配置。全部选项请查看 [`create-any-tdf` 参考文档](../packages/create-any-tdf/README.md)。
@@ -101,9 +99,9 @@ bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
 向现有应用添加组件库：
 
 ```sh
-bun add stdf@alpha svelte tailwindcss
-bun add rtdf@alpha react react-dom tailwindcss
-bun add vtdf@alpha vue tailwindcss
+bun add stdf svelte tailwindcss
+bun add rtdf react react-dom tailwindcss
+bun add vtdf vue tailwindcss
 ```
 
 只需安装与你的框架对应的一行。每个组件库都会自动安装其 Any TDF 共享运行时依赖。样式表导入、主题配置、组件和迁移指南请继续查看对应官网。

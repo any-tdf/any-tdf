@@ -102,7 +102,7 @@ const frameworkOptions = [
 		alias: ['stdf'],
 		packageName: 'stdf',
 		packageSection: 'devDependencies',
-		packageTag: 'alpha',
+		packageTag: 'latest',
 		themeCssPath: 'src/app.css',
 		siteUrl: 'https://stdf.dev',
 		defaultProjectName: 'stdf-project'
@@ -113,7 +113,7 @@ const frameworkOptions = [
 		alias: ['rtdf'],
 		packageName: 'rtdf',
 		packageSection: 'dependencies',
-		packageTag: 'alpha',
+		packageTag: 'latest',
 		themeCssPath: 'src/index.css',
 		siteUrl: 'https://rtdf.dev',
 		defaultProjectName: 'rtdf-project'
@@ -124,7 +124,7 @@ const frameworkOptions = [
 		alias: ['vtdf'],
 		packageName: 'vtdf',
 		packageSection: 'dependencies',
-		packageTag: 'alpha',
+		packageTag: 'latest',
 		themeCssPath: 'src/index.css',
 		siteUrl: 'https://vtdf.dev',
 		defaultProjectName: 'vtdf-project'

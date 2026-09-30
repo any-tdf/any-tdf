@@ -17,7 +17,7 @@ Use this reference for installation, entry CSS, and minimal usage.
 Recommended:
 
 ```sh
-bun create any-tdf@alpha my-app -f svelte
+bun create any-tdf my-app -f svelte
 ```
 
 Manual Svelte project setup:

@@ -80,20 +80,18 @@ Any TDF は、Svelte、React、Vue 向けのモバイルファーストなコン
 
 ## クイックスタート
 
-> 次世代コンポーネントファミリーは現在 npm の `alpha` タグで公開されています。2 つの Vite プラグインは安定版の `latest` タグを使用します。
-
 対話形式で TypeScript プロジェクトを作成します。
 
 ```sh
-bun create any-tdf@alpha
+bun create any-tdf
 ```
 
 フレームワークとスターターを直接指定することもできます。
 
 ```sh
-bun create any-tdf@alpha my-app -f svelte -t sktt -b lucide
-bun create any-tdf@alpha my-app -f react -t vrtt -b phosphor
-bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f svelte -t sktt -b lucide
+bun create any-tdf my-app -f react -t vrtt -b phosphor
+bun create any-tdf my-app -f vue -t vrtt -b tabler
 ```
 
 ジェネレーターは、Vite と SvelteKit のテンプレート、TypeScript、Tailwind CSS または UnoCSS、複数のアイコン方式、組み込みアイコンライブラリ、単一・複数テーマ設定を提供します。すべてのオプションは [`create-any-tdf` リファレンス](../packages/create-any-tdf/README.md)を参照してください。
@@ -101,9 +99,9 @@ bun create any-tdf@alpha my-app -f vue -t vrtt -b tabler
 既存のアプリケーションにコンポーネントライブラリを追加します。
 
 ```sh
-bun add stdf@alpha svelte tailwindcss
-bun add rtdf@alpha react react-dom tailwindcss
-bun add vtdf@alpha vue tailwindcss
+bun add stdf svelte tailwindcss
+bun add rtdf react react-dom tailwindcss
+bun add vtdf vue tailwindcss
 ```
 
 使用するフレームワークの行だけをインストールしてください。共有 Any TDF ランタイム依存関係は各パッケージが自動的にインストールします。スタイルシートのインポート、テーマ設定、コンポーネント、移行ガイドは各公式サイトを参照してください。

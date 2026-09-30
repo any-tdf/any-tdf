@@ -7,7 +7,7 @@ Mobile component library based on Svelte and Tailwind CSS.
 ## 安装
 
 ```sh
-bun add stdf@3.0.0-alpha.0
+bun add stdf
 ```
 
 ## 使用

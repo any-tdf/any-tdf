@@ -1,6 +1,6 @@
 # STDF 2.x to 3.x Migration Guide
 
-This guide compares `2.0.2` with the current `3.0.0-alpha.2` release and covers the changes required in an existing STDF application.
+This guide compares `2.0.2` with the current `3.0.0` release and covers the changes required in an existing STDF application.
 
 STDF 3.x moves framework-neutral themes, locales, types, utilities, SVG data, and component logic into an internal shared layer. Applications still depend only on `stdf`. Pay particular attention to these three migration items:
 
@@ -12,21 +12,15 @@ STDF 2.x already requires Svelte 5 and Tailwind CSS 4, so upgrading from 2.x doe
 
 ## 1. Upgrade the Dependency
 
-While 3.x is in alpha, install it through the `alpha` tag:
+Upgrade STDF:
 
 ```sh
-bun add stdf@alpha
-```
-
-After the stable release, use:
-
-```sh
-bun add stdf@^3
+bun add stdf
 ```
 
 `@any-tdf/common` is an internal dependency of STDF 3.x. Applications do not need to install or import it directly, and should not pin its version in `package.json`.
 
-If your project explicitly installed the package while following an early 3.x alpha example, remove that direct dependency:
+If your project explicitly installed this package, remove that direct dependency:
 
 ```sh
 bun remove @any-tdf/common
@@ -293,13 +287,13 @@ Although the public props are broadly compatible, 3.x refactors component intern
 2.x:
 
 ```sh
-bun create stdf@latest
+bun create stdf
 ```
 
 3.x:
 
 ```sh
-bun create any-tdf@alpha stdf-app -f svelte
+bun create any-tdf stdf-app -f svelte
 ```
 
 Do not rerun the scaffold to upgrade an existing application. Apply the migration steps in this guide to the current project instead.

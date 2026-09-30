@@ -7,7 +7,7 @@ Unified scaffolding CLI for creating STDF, RTDF, and VTDF TypeScript projects.
 ## Usage
 
 ```sh
-bun create any-tdf@alpha
+bun create any-tdf
 bun create any-tdf my-app -f svelte -t sktt -b lucide
 bun create any-tdf my-app -f react -t vrut -b phosphor
 bun create any-tdf my-app -f vue -t vrtt -b tabler
@@ -42,7 +42,7 @@ All templates are TypeScript projects. Tailwind CSS and UnoCSS are both supporte
 
 ## Local source validation
 
-The CLI only writes registry versions that really exist. Until the current alpha packages are published, validate the templates against this repository with:
+The CLI only writes registry versions that really exist. Validate the templates against this repository with:
 
 ```sh
 bun run verify:templates

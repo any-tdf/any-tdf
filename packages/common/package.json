@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/common",
-	"version": "0.0.0-alpha.4",
+	"version": "0.0.1",
 	"description": "Framework agnostic shared utilities, theme, language packs, types and derived component utilities for any-tdf component libraries.",
 	"license": "MIT",
 	"author": "any-tdf",
@@ -74,8 +74,7 @@
 		}
 	},
 	"publishConfig": {
-		"access": "public",
-		"tag": "alpha"
+		"access": "public"
 	},
 	"scripts": {
 		"build": "rm -rf dist && NODE_OPTIONS=--max-old-space-size=1024 tsc -p tsconfig.json && bun run ../../scripts/minify-package-js.mjs dist",

@@ -1,14 +1,13 @@
 <div align="center">
 
 [![npm Publish Status](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
-[![npm alpha](https://img.shields.io/npm/v/@any-tdf/common?tag=alpha&logo=npm&label=alpha&style=for-the-badge&color=aeb5f4&logoColor=DCE4FD&labelColor=010319)](https://www.npmjs.com/package/@any-tdf/common)
+[![npm version](https://img.shields.io/npm/v/@any-tdf/common?tag=latest&logo=npm&label=version&style=for-the-badge&color=aeb5f4&logoColor=DCE4FD&labelColor=010319)](https://www.npmjs.com/package/@any-tdf/common)
 [![GitHub license](https://img.shields.io/github/license/any-tdf/any-tdf?logo=github&style=for-the-badge&color=B9C46A&logoColor=F3F3CB&labelColor=161901)](https://github.com/any-tdf/any-tdf/blob/main/LICENSE)
 
 <h1>@any-tdf/common</h1>
 
 ![](https://img.shields.io/badge/-TypeScript-%233178c6?logo=typescript&logoColor=ffffff)
 ![](https://img.shields.io/badge/-Tailwind%20CSS-%2300a6f4?logo=tailwindcss&logoColor=ffffff)
-![](https://img.shields.io/badge/-Alpha-%23f59e0b)
 
 <!-- npm-readme-exclude:start -->
 <p>
@@ -40,8 +39,6 @@
 
 `@any-tdf/common` is the framework-agnostic shared foundation for the `any-tdf` component ecosystem. It contains derived component state helpers, shared SVG data, Tailwind CSS theme utilities, runtime theme switching, language packs, TypeScript types, and small platform utilities.
 
-The package is currently published on the `alpha` channel. APIs may still change while React, Svelte, Vue, and other framework packages finish aligning on the shared contracts.
-
 # Features
 
 - Framework-agnostic component derivation helpers for state, classes, styles, and render metadata.
@@ -54,15 +51,15 @@ The package is currently published on the `alpha` channel. APIs may still change
 # Installation
 
 ```sh
-bun add @any-tdf/common@alpha
+bun add @any-tdf/common
 ```
 
 ```sh
-pnpm add @any-tdf/common@alpha
+pnpm add @any-tdf/common
 ```
 
 ```sh
-npm install @any-tdf/common@alpha
+npm install @any-tdf/common
 ```
 
 # Exports

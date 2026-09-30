@@ -12,12 +12,10 @@
 
 `@any-tdf/common` 是 `any-tdf` 元件生態的共享基礎包，提供跨框架的元件派生狀態、類名計算、樣式資料、 SVG 圖示資料、 Tailwind CSS 主題工具、執行期主題切換、多語言包、型別定義與工具函式。
 
-目前套件定位為 `alpha` 版本。 React 、 Svelte 、 Vue 等框架包在對齊共享協議時， API 仍可能調整。
-
 # 安裝
 
 ```sh
-bun add @any-tdf/common@alpha
+bun add @any-tdf/common
 ```
 
 # 使用
@@ -47,7 +45,7 @@ bun run build
 
 # 發布
 
-`main` 分支的 `package.json` 變更後，工作流會先比較 `version` 欄位。只有版本號變更時才會執行測試、建置與發布。目前發布到 npm 的 `alpha` 標籤。
+`main` 分支的 `package.json` 變更後，工作流會先比較 `version` 欄位。只有版本號變更時才會執行測試、建置與發布。
 
 # 協議
 

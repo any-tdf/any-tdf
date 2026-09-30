@@ -18,7 +18,7 @@ Use this reference for installation, entry CSS, and minimal usage.
 Recommended:
 
 ```sh
-bun create any-tdf@alpha my-app -f vue
+bun create any-tdf my-app -f vue
 ```
 
 Manual Vite Vue project setup:
