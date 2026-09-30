@@ -1,4 +1,7 @@
 import { describe, expect, test } from 'bun:test';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
 import {
 	collectCurrentStats,
 	createChartSeries,
@@ -214,6 +217,26 @@ describe('project statistics history compaction', () => {
 });
 
 describe('project statistics serialization', () => {
+	test('generates JSON accepted by the repository formatter', async () => {
+		const directory = mkdtempSync(resolve(tmpdir(), 'any-tdf-stats-format-'));
+		try {
+			const stats = createProjectStatsDocument({
+				current: createCurrentStats(),
+				updatedAt: '2026-08-07T02:17:00.000Z',
+				previous: { history: createHistory(200) }
+			});
+			const path = resolve(directory, 'project-stats.json');
+			await Bun.write(path, serializeProjectStats(stats));
+			const result = Bun.spawnSync(
+				[resolve(import.meta.dir, '../node_modules/.bin/vp'), 'fmt', '--check', '--disable-nested-config', path],
+				{ cwd: resolve(import.meta.dir, '..'), stdout: 'pipe', stderr: 'pipe' }
+			);
+			expect(result.exitCode, result.stdout.toString() + result.stderr.toString()).toBe(0);
+		} finally {
+			rmSync(directory, { recursive: true, force: true });
+		}
+	});
+
 	test('serializes history as compact rows and restores it losslessly', () => {
 		const stats = createProjectStatsDocument({
 			current: createCurrentStats(),

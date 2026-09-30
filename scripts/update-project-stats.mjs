@@ -440,9 +440,12 @@ export const unpackHistory = (rows) =>
 
 export const serializeProjectStats = (stats) => {
 	const { history, ...rest } = stats;
-	const packed = { ...rest, historyFields, history: [] };
-	const rows = history.map((entry) => `    [${historyFields.map((field) => JSON.stringify(entry[field])).join(', ')}]`);
-	return `${JSON.stringify(packed, null, 2).replace('  "history": []', `  "history": [\n${rows.join(',\n')}\n  ]`)}\n`;
+	const packed = { ...rest, historyFields: [], history: [] };
+	const fields = historyFields.map((field) => JSON.stringify(field)).join(', ');
+	const rows = history.map((entry) => `\t\t[${historyFields.map((field) => JSON.stringify(entry[field])).join(', ')}]`);
+	return `${JSON.stringify(packed, null, '\t')
+		.replace('\t"historyFields": []', `\t"historyFields": [${fields}]`)
+		.replace('\t"history": []', rows.length > 0 ? `\t"history": [\n${rows.join(',\n')}\n\t]` : '\t"history": []')}\n`;
 };
 
 const escapeXml = (value) =>
@@ -662,9 +665,12 @@ const writeProjectStats = async (stats) => {
 
 const checkGeneratedStats = async () => {
 	const stats = validateProjectStats(await readStatsDocument());
-	const outputs = projectStatsLocales.flatMap((locale) =>
-		svgModes.map((mode) => [getSvgPath(locale, mode), renderProjectStatsSvg(stats, mode, locale)])
-	);
+	const outputs = [
+		[dataPath, serializeProjectStats(stats)],
+		...projectStatsLocales.flatMap((locale) =>
+			svgModes.map((mode) => [getSvgPath(locale, mode), renderProjectStatsSvg(stats, mode, locale)])
+		)
+	];
 	const stalePaths = [];
 	for (const [path, expected] of outputs) {
 		const file = Bun.file(path);
