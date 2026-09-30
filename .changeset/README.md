@@ -2,7 +2,9 @@
 
 Changesets are the source of package versions and dependency updates. Select packages by the actual scope of a change.
 
-Write every Changeset summary in English so the version pull request remains readable.
+Write every Changeset summary in English so release metadata remains readable.
+
+Apply pending Changesets locally with `bun run version-packages` before committing package changes to `main`. Commit the generated versions, dependency updates, lockfile, and consumed Changeset deletions together. CI checks the pushed commit before npm publishing and GitHub Release creation; versioning does not create a pull request.
 
 - Use `@any-tdf/common` for component state derivation, shared behavior, themes, languages, SVG data, and public types used by STDF, RTDF, and VTDF.
 - Use `stdf` only for Svelte rendering, events, snippets, or Svelte-specific package output.

@@ -45,7 +45,6 @@ const publishPatterns = [
 	'.changeset/',
 	'.github/workflows/publish-npm-package.yml',
 	'.github/workflows/publish-npm.yml',
-	'.github/workflows/version-packages.yml',
 	'LICENSE',
 	'packages/common/',
 	'packages/create-any-tdf/',

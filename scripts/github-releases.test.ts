@@ -61,7 +61,7 @@ describe('Workflow responsibilities', () => {
 		const publishWorkflow = await Bun.file(resolve(repositoryRoot, '.github/workflows/publish-npm.yml')).text();
 		const packageWorkflow = await Bun.file(resolve(repositoryRoot, '.github/workflows/publish-npm-package.yml')).text();
 		const releaseWorkflow = await Bun.file(resolve(repositoryRoot, '.github/workflows/release.yml')).text();
-		const versionWorkflow = await Bun.file(resolve(repositoryRoot, '.github/workflows/version-packages.yml')).text();
+		const rootManifest = await Bun.file(resolve(repositoryRoot, 'package.json')).json();
 
 		expect(publishWorkflow).toContain('run: bun run publish:npm:changed');
 		expect(publishWorkflow).toContain('uses: ./.github/workflows/publish-npm-package.yml');
@@ -73,11 +73,9 @@ describe('Workflow responsibilities', () => {
 		expect(packageWorkflow).toContain('NPM_TOKEN:');
 		expect(packageWorkflow).toContain('required: false');
 		expect(packageWorkflow).toContain('run: bun run publish:npm -- --package="${{ inputs.package-name }}"');
-		expect(versionWorkflow).not.toContain('changesets/action');
-		expect(versionWorkflow).toContain('run: bun run version-packages');
-		expect(versionWorkflow).toContain('git push --force origin "HEAD:$VERSION_BRANCH"');
-		expect(versionWorkflow).toContain('gh pr create --base main --head "$VERSION_BRANCH"');
-		expect(versionWorkflow).not.toContain('publish: bun run publish:npm');
+		expect(rootManifest.scripts['version-packages']).toContain('changeset version');
+		expect(await Bun.file(resolve(repositoryRoot, '.github/workflows/version-packages.yml')).exists()).toBeFalse();
+		expect(publishWorkflow).not.toContain('gh pr create');
 		expect(releaseWorkflow).toContain('run: bun run release');
 		expect(releaseWorkflow).toContain('group: github-releases-${{ github.run_id }}-${{ inputs.release-key }}');
 		expect(releaseWorkflow).not.toContain('npm publish');

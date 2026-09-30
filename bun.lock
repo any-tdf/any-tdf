@@ -433,7 +433,7 @@
     },
     "packages/vite-plugin-md-ts": {
       "name": "@any-tdf/vite-plugin-md-ts",
-      "version": "0.0.2",
+      "version": "0.0.3",
       "dependencies": {
         "marked": "^18.0.9",
         "rollup-pluginutils": "^2.8.2",
@@ -448,7 +448,7 @@
     },
     "packages/vite-plugin-svg-symbol": {
       "name": "@any-tdf/vite-plugin-svg-symbol",
-      "version": "0.0.3",
+      "version": "0.0.4",
       "dependencies": {
         "svgo": "^4.0.2",
       },

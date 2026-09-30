@@ -1,6 +1,6 @@
 {
 	"name": "@any-tdf/vite-plugin-svg-symbol",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "A Vite and Rollup plugin that combines SVG files into symbol sprites.",
 	"keywords": [
 		"icon",
