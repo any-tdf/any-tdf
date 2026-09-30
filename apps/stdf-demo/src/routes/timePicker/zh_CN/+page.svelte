@@ -24,6 +24,9 @@
 	let visible21 = $state(false);
 	let visible22 = $state(false);
 
+	const dateCases = [{ year: '2024', month: '02' }, { year: '2025', month: '02' }, { year: '2025', month: '04' }];
+	let dateTitle = $state('初始日期与月末截断');
+	let dateResults = $state<Record<string, string>>({});
 	let defaultTimeStr = $state('');
 	let customFormatStr = $state('');
 	let monthFirstStr = $state('');
@@ -135,4 +138,11 @@
 
 	<div class="px-4 py-2">不使用弹出层</div>
 	<TimePicker popup={null} type="YYYYMMDD" height={30} />
+	{#each dateCases as item (`${item.year}-${item.month}`)}
+		<div data-time-picker-regression={`${item.year}-${item.month}`}>
+			<button type="button" data-update-title onclick={() => (dateTitle += '已更新')}>修改标题</button>
+			<TimePicker popup={null} type="YYYYMMDD" title={dateTitle} yearRange={[2024, 2025]} initYear={item.year} initMonth={item.month} initDay="31" onconfirm={(value) => (dateResults[`${item.year}-${item.month}`] = value)} />
+			<output>{dateResults[`${item.year}-${item.month}`]}</output>
+		</div>
+	{/each}
 </div>

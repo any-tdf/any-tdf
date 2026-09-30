@@ -1,3 +1,4 @@
+import { verifyTimePickerBrowser } from '../../../scripts/verify-time-picker-browser.mjs';
 import { existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -29,6 +30,7 @@ const routes = readdirSync(routesRoot, { withFileTypes: true })
 	.filter((entry) => entry.isDirectory() && entry.name !== 'components')
 	.map((entry) => entry.name)
 	.sort();
+const selectedRoutes = scenarioFilter && scenarioFilter !== 'confetti' ? routes.filter((route) => route === scenarioFilter) : routes;
 const failed: { route: string; reason: string }[] = [];
 
 if (!chromePath) {
@@ -278,7 +280,7 @@ const openKeyboardPopup = async (openText: string) => {
 };
 
 if (scenarioFilter !== 'confetti') {
-	for (const route of routes) {
+	for (const route of selectedRoutes) {
 		const url = `${baseUrl}/${route}/zh_CN?channel=iframe&theme=ANYTDF&darkMode=light&lang=zh_CN`;
 		const reason = await navigate(url);
 		if (reason) {
@@ -314,8 +316,19 @@ const checkKeyboardConfetti = async (path: string, openText: string, keys: strin
 	if (!ok) failed.push({ route: path, reason: 'Svelte confetti interaction was not rendered' });
 };
 
+if (!scenarioFilter || scenarioFilter === 'confetti') {
 await checkKeyboardConfetti('/numKeyboard/en_US', 'Please Enter 5201314', ['5', '2', '0', '1', '3', '1', '4'], '5201314');
 await checkKeyboardConfetti('/fullKeyboard/en_US', 'Please input hello', ['h', 'e', 'l', 'l', 'o'], 'hello');
+
+}
+
+if (scenarioFilter !== 'confetti') {
+	const reason = await navigate(`${baseUrl}/timePicker/en_US?channel=iframe&theme=ANYTDF&darkMode=light&lang=en_US`);
+	if (reason) failed.push({ route: 'timePicker initial date', reason });
+	else await verifyTimePickerBrowser(runInPage).catch((error: unknown) => {
+		failed.push({ route: 'timePicker initial date', reason: error instanceof Error ? error.message : String(error) });
+	});
+}
 
 page.close();
 cleanup();
@@ -323,7 +336,7 @@ cleanup();
 const result = {
 	baseUrl,
 	scenarioFilter,
-	checked: scenarioFilter === 'confetti' ? 2 : routes.length + 3,
+	checked: scenarioFilter === 'confetti' ? 2 : selectedRoutes.length + (scenarioFilter ? 2 : 4),
 	failedCount: failed.length,
 	failed
 };

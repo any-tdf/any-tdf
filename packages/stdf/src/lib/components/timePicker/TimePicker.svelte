@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import Popup from '../popup/Popup.svelte';
 	import ScrollRadio from '../scrollRadio/ScrollRadio.svelte';
 	import { zh_CN, type LangProps } from '../../lang/index.js';
@@ -11,7 +11,7 @@
 			resolveTimePickerDerived,
 			resolveTimePickerMonthScrollAction,
 			resolveTimePickerNowSnapshot,
-			resolveTimePickerSelectedDayData,
+			resolveTimePickerInitialSelectionKey,
 			resolveTimePickerYearScrollAction,
 			resolveTimePickerStateOptions
 		} from '@any-tdf/common/derived/timePicker';
@@ -113,21 +113,14 @@
 
 	// 天数列数据
 	// Day column data
-	let baseDayData = $state<{ label: string }[]>(
-		resolveTimePickerSelectedDayData({
-			currentTime,
-			yearData: [],
-			monthData: [],
-			yearIndex: 0,
-			monthIndex: 0
-		})
-	);
-
+	let baseDayData = $state<{ label: string }[]>(untrack(() => initialTimePickerState.tempDayData));
+	let initDayIndex = $state(untrack(() => initialTimePickerState.safeInitDayIndex));
 	// 公共派生层统一 TimePicker 的列数据、文本、样式、可见性和 Popup / inline 布局，滚动状态写入留在组件层。
 	// Shared derivation centralizes TimePicker column data, text, styles, visibility and Popup / inline layout; scroll state writes stay in the component layer.
 	const timePickerState = $derived(resolveTimePickerDerived(resolveTimePickerStateOptions({
 		currentTime,
 		currentDayData: baseDayData,
+		dayInitIndex: initDayIndex,
 		defaults: timePickerLang,
 		props: {
 			type,
@@ -166,31 +159,27 @@
 		viewportHeight: resolveViewportDimension({ value: typeof window === 'undefined' ? undefined : window.innerHeight })
 	})));
 
-	// 初始时天数索引
-	// Initial day index
-	let initDayIndex = $derived(timePickerState.initDayIndex);
+	let initialSelectionKey = untrack(() => resolveTimePickerInitialSelectionKey(initialTimePickerState));
+	let yearIndex = $state(untrack(() => initialTimePickerState.safeInitYearIndex));
+	let monthIndex = $state(untrack(() => initialTimePickerState.safeInitMonthIndex));
+	let dayIndex = $state(untrack(() => initialTimePickerState.safeInitDayIndex));
+	let hourIndex = $state(untrack(() => initialTimePickerState.safeInitHourIndex));
+	let minuteIndex = $state(untrack(() => initialTimePickerState.safeInitMinuteIndex));
+	let secondIndex = $state(untrack(() => initialTimePickerState.safeInitSecondIndex));
 
-	// 年月日时分秒初始索引
-	// Year, month, day, hour, minute, second initial index
-	let yearIndex = 0;
-	let monthIndex = 0;
-	let dayIndex = 0;
-	let hourIndex = 0;
-	let minuteIndex = 0;
-	let secondIndex = 0;
-
-	// 初始一下生成天数数据
-	// Generate day data initially
 	$effect(() => {
-		if (initialTimePickerState.yearData.length > 0 && initialTimePickerState.baseMonthData.length > 0) {
-			baseDayData = resolveTimePickerSelectedDayData({
-				currentTime,
-				yearData: initialTimePickerState.yearData,
-				monthData: initialTimePickerState.baseMonthData,
-				yearIndex,
-				monthIndex
-			});
-		}
+		const state = initialTimePickerState;
+		const nextKey = resolveTimePickerInitialSelectionKey(state);
+		if (initialSelectionKey === nextKey) return;
+		initialSelectionKey = nextKey;
+		baseDayData = state.tempDayData;
+		initDayIndex = state.safeInitDayIndex;
+		yearIndex = state.safeInitYearIndex;
+		monthIndex = state.safeInitMonthIndex;
+		dayIndex = state.safeInitDayIndex;
+		hourIndex = state.safeInitHourIndex;
+		minuteIndex = state.safeInitMinuteIndex;
+		secondIndex = state.safeInitSecondIndex;
 	});
 
 	// 年数据滚动结束时的回调函数
@@ -198,7 +187,7 @@
 	const scrollEndYearFunc = (index: number, isTouch: boolean) => {
 		// 公共动作函数只返回索引和刷新计划，清空和异步填充保留在组件层。
 		// Shared action helper only returns indexes and refresh plans; clearing and async fill stay in the component layer.
-		const action = resolveTimePickerYearScrollAction({ currentTime, index, isTouch, yearData: timePickerState.yearData, monthData: timePickerState.baseMonthData, monthIndex });
+		const action = resolveTimePickerYearScrollAction({ currentTime, index, isTouch: isTouch && index !== yearIndex, yearData: timePickerState.yearData, monthData: timePickerState.baseMonthData, monthIndex });
 		yearIndex = action.nextYearIndex;
 		const refresh = action.refresh;
 		if (refresh.shouldRefresh) {
@@ -216,7 +205,7 @@
 	const scrollEndMonthFunc = (index: number, isTouch: boolean) => {
 		// 公共动作函数只返回索引和刷新计划，清空和异步填充保留在组件层。
 		// Shared action helper only returns indexes and refresh plans; clearing and async fill stay in the component layer.
-		const action = resolveTimePickerMonthScrollAction({ currentTime, index, isTouch, yearData: timePickerState.yearData, monthData: timePickerState.baseMonthData, yearIndex });
+		const action = resolveTimePickerMonthScrollAction({ currentTime, index, isTouch: isTouch && index !== monthIndex, yearData: timePickerState.yearData, monthData: timePickerState.baseMonthData, yearIndex });
 		monthIndex = action.nextMonthIndex;
 		const refresh = action.refresh;
 		if (refresh.shouldRefresh) {
@@ -288,12 +277,12 @@
 	>
 		{#if timePickerState.columns.year.visible}
 			<div class={timePickerState.columns.year.rootClass} style={timePickerState.columns.year.styleString}>
-				<ScrollRadio data={timePickerState.columns.year.data} initIndex={timePickerState.columns.year.initIndex} autoScrollToLast={false} {...yearProps} onscrollEnd={scrollEndYearFunc} />
+				<ScrollRadio data={timePickerState.columns.year.data} initIndex={timePickerState.columns.year.safeInitIndex} autoScrollToLast={false} {...yearProps} onscrollEnd={scrollEndYearFunc} />
 			</div>
 		{/if}
 		{#if timePickerState.columns.month.visible}
 			<div class={timePickerState.columns.month.rootClass} style={timePickerState.columns.month.styleString}>
-				<ScrollRadio data={timePickerState.columns.month.data} lastSelectedIndex={timePickerState.columns.month.initIndex} {...monthProps} onscrollEnd={scrollEndMonthFunc} />
+				<ScrollRadio data={timePickerState.columns.month.data} lastSelectedIndex={timePickerState.columns.month.safeInitIndex} {...monthProps} onscrollEnd={scrollEndMonthFunc} />
 			</div>
 		{/if}
 		{#if baseDayData.length > 0 && timePickerState.columns.day.visible}
@@ -303,14 +292,14 @@
 		{/if}
 		{#if timePickerState.columns.hour.visible}
 			<div class={timePickerState.columns.hour.rootClass} style={timePickerState.columns.hour.styleString}>
-				<ScrollRadio data={timePickerState.columns.hour.data} lastSelectedIndex={timePickerState.columns.hour.initIndex} {...hourProps} onscrollEnd={(index) => (hourIndex = index)} />
+				<ScrollRadio data={timePickerState.columns.hour.data} lastSelectedIndex={timePickerState.columns.hour.safeInitIndex} {...hourProps} onscrollEnd={(index) => (hourIndex = index)} />
 			</div>
 		{/if}
 		{#if timePickerState.columns.minute.visible}
 			<div class={timePickerState.columns.minute.rootClass} style={timePickerState.columns.minute.styleString}>
 				<ScrollRadio
 					data={timePickerState.columns.minute.data}
-					lastSelectedIndex={timePickerState.columns.minute.initIndex}
+					lastSelectedIndex={timePickerState.columns.minute.safeInitIndex}
 					{...minuteProps}
 					onscrollEnd={(index) => (minuteIndex = index)}
 				/>
@@ -320,7 +309,7 @@
 			<div class={timePickerState.columns.second.rootClass} style={timePickerState.columns.second.styleString}>
 				<ScrollRadio
 					data={timePickerState.columns.second.data}
-					lastSelectedIndex={timePickerState.columns.second.initIndex}
+					lastSelectedIndex={timePickerState.columns.second.safeInitIndex}
 					{...secondProps}
 					onscrollEnd={(index) => (secondIndex = index)}
 				/>

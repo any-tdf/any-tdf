@@ -25,6 +25,13 @@ export default function TimePickerEn() {
 	const [visible21, setVisible21] = useState(false);
 	const [visible22, setVisible22] = useState(false);
 
+	const dateCases = [
+		{ year: '2024', month: '02' },
+		{ year: '2025', month: '02' },
+		{ year: '2025', month: '04' }
+	];
+	const [dateTitle, setDateTitle] = useState('Initial date and month end');
+	const [dateResults, setDateResults] = useState<Record<string, string>>({});
 	const [defaultTimeStr, setDefaultTimeStr] = useState('');
 	const [customFormatStr, setCustomFormatStr] = useState('');
 	const [monthFirstStr, setMonthFirstStr] = useState('');
@@ -165,6 +172,24 @@ export default function TimePickerEn() {
 
 			<div className="px-4 py-2">Without Popup</div>
 			<TimePicker popup={null} type="YYYYMMDD" height={30} />
+			{dateCases.map((item) => (
+				<div key={`${item.year}-${item.month}`} data-time-picker-regression={`${item.year}-${item.month}`}>
+					<button type="button" data-update-title onClick={() => setDateTitle(`${dateTitle} updated`)}>
+						Update title
+					</button>
+					<TimePicker
+						popup={null}
+						type="YYYYMMDD"
+						title={dateTitle}
+						yearRange={[2024, 2025]}
+						initYear={item.year}
+						initMonth={item.month}
+						initDay="31"
+						onConfirm={(value) => setDateResults((previous) => ({ ...previous, [`${item.year}-${item.month}`]: value }))}
+					/>
+					<output>{dateResults[`${item.year}-${item.month}`]}</output>
+				</div>
+			))}
 		</div>
 	);
 }

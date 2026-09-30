@@ -14,6 +14,14 @@ const props = withDefaults(
 	}
 );
 
+const dateCases = [
+	{ year: '2024', month: '02' },
+	{ year: '2025', month: '02' },
+	{ year: '2025', month: '04' }
+];
+const dateTitle = ref('');
+const dateResults = ref<Record<string, string>>({});
+
 const messages = {
 	zh_CN: {
 		currentlySelected: '当前选定了：',
@@ -193,5 +201,21 @@ const timeObjStr = computed(() => JSON.stringify(timeObj.value));
 
 		<div class="px-4 py-2">{{ text.withoutPopup }}</div>
 		<TimePicker :popup="null" type="YYYYMMDD" :height="30" />
+		<div v-for="item in dateCases" :key="`${item.year}-${item.month}`" :data-time-picker-regression="`${item.year}-${item.month}`">
+			<button type="button" data-update-title @click="dateTitle += props.locale === 'zh_CN' ? '已更新' : ' updated'">
+				{{ props.locale === 'zh_CN' ? '修改标题' : 'Update title' }}
+			</button>
+			<TimePicker
+				:popup="null"
+				type="YYYYMMDD"
+				:title="`${props.locale === 'zh_CN' ? '初始日期与月末截断' : 'Initial date and month end'}${dateTitle}`"
+				:year-range="[2024, 2025]"
+				:init-year="item.year"
+				:init-month="item.month"
+				init-day="31"
+				@confirm="(value) => (dateResults[`${item.year}-${item.month}`] = value)"
+			/>
+			<output>{{ dateResults[`${item.year}-${item.month}`] }}</output>
+		</div>
 	</div>
 </template>

@@ -1,3 +1,4 @@
+import { verifyTimePickerBrowser } from '../../../scripts/verify-time-picker-browser.mjs';
 import { existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -862,6 +863,11 @@ const scenarios: Scenario[] = [
 		name: 'Picker opens popup',
 		path: '/picker/en_US',
 		steps: [() => clickText('Basic usage'), () => waitFor(() => bodyIncludes('Confirm'), 'picker confirm button')]
+	},
+	{
+		name: 'TimePicker initial date and selection persistence',
+		path: '/timePicker/en_US',
+		steps: [() => verifyTimePickerBrowser(runInPage)]
 	},
 	{
 		name: 'TimePicker opens popup columns',

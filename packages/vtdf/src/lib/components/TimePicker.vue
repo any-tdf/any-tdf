@@ -6,6 +6,7 @@ import {
 	resolveTimePickerConfirmAction,
 	resolveTimePickerDerived,
 	resolveTimePickerInitialVisible,
+	resolveTimePickerInitialSelectionKey,
 	resolveTimePickerMonthScrollAction,
 	resolveTimePickerNowSnapshot,
 	resolveTimePickerYearScrollAction,
@@ -121,7 +122,7 @@ const scrollEndYear = (index: number, isTouch?: boolean) => {
 	const action = resolveTimePickerYearScrollAction({
 		currentTime,
 		index,
-		isTouch,
+		isTouch: isTouch && index !== yearIndex.value,
 		yearData: timePickerState.value.yearData,
 		monthData: timePickerState.value.baseMonthData,
 		monthIndex: monthIndex.value
@@ -144,7 +145,7 @@ const scrollEndMonth = (index: number, isTouch?: boolean) => {
 	const action = resolveTimePickerMonthScrollAction({
 		currentTime,
 		index,
-		isTouch,
+		isTouch: isTouch && index !== monthIndex.value,
 		yearData: timePickerState.value.yearData,
 		monthData: timePickerState.value.baseMonthData,
 		yearIndex: yearIndex.value
@@ -215,50 +216,15 @@ watch(
 );
 
 watch(
-	() => [initialTimePickerState.value.tempDayData, initialTimePickerState.value.initDayIndex] as const,
+	() => resolveTimePickerInitialSelectionKey(initialTimePickerState.value),
 	() => {
 		baseDayData.value = [...initialTimePickerState.value.tempDayData];
 		dayInitIndex.value = initialTimePickerState.value.safeInitDayIndex;
-		dayIndex.value = initialTimePickerState.value.safeInitDayIndex;
-	},
-	{ immediate: true }
-);
-
-watch(
-	() => initialTimePickerState.value.initYearIndex,
-	() => {
 		yearIndex.value = initialTimePickerState.value.safeInitYearIndex;
-	},
-	{ immediate: true }
-);
-
-watch(
-	() => initialTimePickerState.value.initMonthIndex,
-	() => {
 		monthIndex.value = initialTimePickerState.value.safeInitMonthIndex;
-	},
-	{ immediate: true }
-);
-
-watch(
-	() => initialTimePickerState.value.initHourIndex,
-	() => {
+		dayIndex.value = initialTimePickerState.value.safeInitDayIndex;
 		hourIndex.value = initialTimePickerState.value.safeInitHourIndex;
-	},
-	{ immediate: true }
-);
-
-watch(
-	() => initialTimePickerState.value.initMinuteIndex,
-	() => {
 		minuteIndex.value = initialTimePickerState.value.safeInitMinuteIndex;
-	},
-	{ immediate: true }
-);
-
-watch(
-	() => initialTimePickerState.value.initSecondIndex,
-	() => {
 		secondIndex.value = initialTimePickerState.value.safeInitSecondIndex;
 	},
 	{ immediate: true }

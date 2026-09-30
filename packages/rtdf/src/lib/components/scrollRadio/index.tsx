@@ -65,7 +65,7 @@ const ScrollRadio = forwardRef<HTMLDivElement, ScrollRadioProps>(
 		useEffect(() => {
 			const scrollElement = scrollElementRef.current;
 			if (!scrollElement) return;
-			scrollElement.scrollTop = scrollRadioState.scrollTop;
+			scrollElement.scrollTo({ top: scrollRadioState.scrollTop, behavior: 'instant' });
 		}, [scrollRadioState.scrollTop, scrollRadioState.paddedData.length]);
 
 		useEffect(() => {

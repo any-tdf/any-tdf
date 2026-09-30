@@ -1,3 +1,4 @@
+import { verifyTimePickerBrowser } from '../../../scripts/verify-time-picker-browser.mjs';
 import { existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -562,15 +563,26 @@ const checkKeyboardConfetti = async (path: string, openText: string, keys: strin
 	}
 };
 
-if (scenarioFilter !== 'confetti') {
+if (!scenarioFilter) {
 	await checkBottomSheetMotion();
 	await checkCardActionPopover();
 	await checkSwiperLayout();
 	await checkDemoInjectionClasses();
 	await checkTabsInitialLayout();
 }
+if (!scenarioFilter || scenarioFilter === 'confetti') {
 await checkKeyboardConfetti('/numKeyboard/en_US', 'Please enter 5201314', ['5', '2', '0', '1', '3', '1', '4']);
 await checkKeyboardConfetti('/fullKeyboard/en_US', 'Please enter hello', ['h', 'e', 'l', 'l', 'o']);
+
+}
+
+if (scenarioFilter !== 'confetti') {
+	const reason = await navigate(`${baseUrl}/timePicker/en_US?channel=iframe&theme=ANYTDF&darkMode=light&lang=en_US`);
+	if (reason) failed.push({ route: 'timePicker initial date', reason });
+	else await verifyTimePickerBrowser(runInPage).catch((error: unknown) => {
+		failed.push({ route: 'timePicker initial date', reason: error instanceof Error ? error.message : String(error) });
+	});
+}
 
 page.close();
 cleanup();
@@ -578,7 +590,7 @@ cleanup();
 const result = {
 	baseUrl,
 	scenarioFilter,
-	checked: scenarioFilter === 'confetti' ? 2 : selectedRoutes.length + 7,
+	checked: scenarioFilter === 'confetti' ? 2 : selectedRoutes.length + (scenarioFilter ? 1 : 8),
 	failedCount: failed.length,
 	failed
 };

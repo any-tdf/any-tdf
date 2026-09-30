@@ -772,12 +772,19 @@ export const resolveTimePickerDerived = <TPopup = unknown>({
 	const baseHourData = resolveTimePickerHourData(hourRange);
 	const baseMinuteData = resolveTimePickerMinuteData({ minuteRange, minuteStep });
 	const baseSecondData = resolveTimePickerSecondData({ secondRange, secondStep });
-	const tempDayData = resolveTimePickerDayData({ year: currentTime.YYYY, month: currentTime.MM });
-	const baseDayData = currentDayData ? [...currentDayData] : tempDayData;
 	const initYearIndex = resolveTimePickerInitialIndex({ data: yearData, initValue: initYear, currentValue: currentTime.YYYY });
 	const initMonthIndex = resolveTimePickerInitialIndex({ data: baseMonthData, initValue: initMonth, currentValue: currentTime.MM });
-	const initDayIndex =
-		dayInitIndex ?? resolveTimePickerInitialIndex({ data: tempDayData, initValue: initDay, currentValue: currentTime.DD });
+	const tempDayData = resolveTimePickerSelectedDayData({
+		currentTime,
+		yearData,
+		monthData: baseMonthData,
+		yearIndex: initYearIndex,
+		monthIndex: initMonthIndex
+	});
+	const baseDayData = currentDayData ? [...currentDayData] : tempDayData;
+	const requestedDay = Number(initDay === '' ? currentTime.DD : initDay);
+	const initialDay = Math.min(Math.max(1, requestedDay), tempDayData.length);
+	const initDayIndex = Math.max(0, Math.min(dayInitIndex ?? initialDay - 1, baseDayData.length - 1));
 	const initHourIndex = resolveTimePickerInitialIndex({ data: baseHourData, initValue: initHour, currentValue: currentTime.hh });
 	const initMinuteIndex = resolveTimePickerInitialIndex({ data: baseMinuteData, initValue: initMinute, currentValue: currentTime.mm });
 	const initSecondIndex = resolveTimePickerInitialIndex({ data: baseSecondData, initValue: initSecond, currentValue: currentTime.ss });
@@ -887,3 +894,21 @@ export const resolveTimePickerDerived = <TPopup = unknown>({
 		yearData
 	};
 };
+
+// 只在初始列数据或选择值变化时重置状态，语言和布局变化保留用户选择。
+// Reset selection only when initial column data or values change, preserving it across locale and layout updates.
+export const resolveTimePickerInitialSelectionKey = (state: TimePickerDerived): string =>
+	JSON.stringify([
+		state.yearData,
+		state.baseMonthData,
+		state.tempDayData,
+		state.baseHourData,
+		state.baseMinuteData,
+		state.baseSecondData,
+		state.safeInitYearIndex,
+		state.safeInitMonthIndex,
+		state.safeInitDayIndex,
+		state.safeInitHourIndex,
+		state.safeInitMinuteIndex,
+		state.safeInitSecondIndex
+	]);

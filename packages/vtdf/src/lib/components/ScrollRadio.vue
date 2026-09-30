@@ -64,7 +64,7 @@ const css = resolveHiddenScrollbarCss({ selector: '.picker-contents' });
 const scrollToSelected = () => {
 	const scrollElement = scrollElementRef.value;
 	if (!scrollElement) return;
-	scrollElement.scrollTop = scrollRadioState.value.scrollTop;
+	scrollElement.scrollTo({ top: scrollRadioState.value.scrollTop, behavior: 'instant' });
 };
 
 const handleScroll = (event: Event) => {
@@ -85,12 +85,9 @@ const handleScroll = (event: Event) => {
 	});
 };
 
-watch(
-	() => [scrollRadioState.value.scrollTop, scrollRadioState.value.paddedData.length] as const,
-	() => {
-		scrollToSelected();
-	}
-);
+watch([() => scrollRadioState.value.scrollTop, () => scrollRadioState.value.paddedData.length], () => {
+	scrollToSelected();
+});
 
 onMounted(() => {
 	scrollToSelected();

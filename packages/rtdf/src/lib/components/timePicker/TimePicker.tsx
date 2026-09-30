@@ -7,6 +7,7 @@ import {
 	resolveTimePickerConfirmAction,
 	resolveTimePickerDerived,
 	resolveTimePickerInitialVisible,
+	resolveTimePickerInitialSelectionKey,
 	resolveTimePickerMonthScrollAction,
 	resolveTimePickerNowSnapshot,
 	resolveTimePickerYearScrollAction,
@@ -167,14 +168,14 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 	const initialTimePickerState = useMemo(() => resolveTimePickerDerived(timePickerBaseOptions), [timePickerBaseOptions]);
 
 	const [baseDayData, setBaseDayData] = useState<{ label: string }[]>(initialTimePickerState.tempDayData);
-	const [dayInitIndex, setDayInitIndex] = useState(initialTimePickerState.initDayIndex);
+	const [dayInitIndex, setDayInitIndex] = useState(initialTimePickerState.safeInitDayIndex);
 
-	const [yearIndex, setYearIndex] = useState(0);
-	const [monthIndex, setMonthIndex] = useState(0);
-	const [dayIndex, setDayIndex] = useState(0);
-	const [hourIndex, setHourIndex] = useState(0);
-	const [minuteIndex, setMinuteIndex] = useState(0);
-	const [secondIndex, setSecondIndex] = useState(0);
+	const [yearIndex, setYearIndex] = useState(initialTimePickerState.safeInitYearIndex);
+	const [monthIndex, setMonthIndex] = useState(initialTimePickerState.safeInitMonthIndex);
+	const [dayIndex, setDayIndex] = useState(initialTimePickerState.safeInitDayIndex);
+	const [hourIndex, setHourIndex] = useState(initialTimePickerState.safeInitHourIndex);
+	const [minuteIndex, setMinuteIndex] = useState(initialTimePickerState.safeInitMinuteIndex);
+	const [secondIndex, setSecondIndex] = useState(initialTimePickerState.safeInitSecondIndex);
 	// 公共派生层统一 TimePicker 的列数据、文本、样式、可见性和 Popup / inline 布局，滚动状态写入留在组件层。
 	// Shared derivation centralizes TimePicker column data, text, styles, visibility and Popup / inline layout; scroll state writes stay in the component layer.
 	const timePickerState = useMemo(
@@ -227,10 +228,19 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 		[baseDayData, dayInitIndex, timePickerBaseOptions]
 	);
 
+	const initialSelectionKey = useRef(resolveTimePickerInitialSelectionKey(initialTimePickerState));
 	useEffect(() => {
+		const nextKey = resolveTimePickerInitialSelectionKey(initialTimePickerState);
+		if (initialSelectionKey.current === nextKey) return;
+		initialSelectionKey.current = nextKey;
 		setBaseDayData(initialTimePickerState.tempDayData);
-		setDayInitIndex(initialTimePickerState.initDayIndex);
+		setDayInitIndex(initialTimePickerState.safeInitDayIndex);
+		setYearIndex(initialTimePickerState.safeInitYearIndex);
+		setMonthIndex(initialTimePickerState.safeInitMonthIndex);
 		setDayIndex(initialTimePickerState.safeInitDayIndex);
+		setHourIndex(initialTimePickerState.safeInitHourIndex);
+		setMinuteIndex(initialTimePickerState.safeInitMinuteIndex);
+		setSecondIndex(initialTimePickerState.safeInitSecondIndex);
 	}, [initialTimePickerState]);
 
 	const scrollEndYearFunc = useCallback(
@@ -240,7 +250,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 			const action = resolveTimePickerYearScrollAction({
 				currentTime,
 				index,
-				isTouch,
+				isTouch: isTouch && index !== yearIndex,
 				yearData: timePickerState.yearData,
 				monthData: timePickerState.baseMonthData,
 				monthIndex
@@ -256,7 +266,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 				}, 0);
 			}
 		},
-		[currentTime, monthIndex, timePickerState.baseMonthData, timePickerState.yearData]
+		[currentTime, monthIndex, yearIndex, timePickerState.baseMonthData, timePickerState.yearData]
 	);
 
 	const scrollEndMonthFunc = useCallback(
@@ -266,7 +276,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 			const action = resolveTimePickerMonthScrollAction({
 				currentTime,
 				index,
-				isTouch,
+				isTouch: isTouch && index !== monthIndex,
 				yearData: timePickerState.yearData,
 				monthData: timePickerState.baseMonthData,
 				yearIndex
@@ -282,7 +292,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 				}, 0);
 			}
 		},
-		[currentTime, timePickerState.baseMonthData, timePickerState.yearData, yearIndex]
+		[currentTime, monthIndex, timePickerState.baseMonthData, timePickerState.yearData, yearIndex]
 	);
 
 	const clickCancelFunc = useCallback(() => {
@@ -373,7 +383,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 					<div className={timePickerState.columns.year.rootClass} style={timePickerState.columns.year.styleValue}>
 						<ScrollRadio
 							data={timePickerState.columns.year.data}
-							initIndex={timePickerState.columns.year.initIndex}
+							initIndex={timePickerState.columns.year.safeInitIndex}
 							autoScrollToLast={false}
 							{...yearProps}
 							onScrollEnd={scrollEndYearFunc}
@@ -384,7 +394,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 					<div className={timePickerState.columns.month.rootClass} style={timePickerState.columns.month.styleValue}>
 						<ScrollRadio
 							data={timePickerState.columns.month.data}
-							lastSelectedIndex={timePickerState.columns.month.initIndex}
+							lastSelectedIndex={timePickerState.columns.month.safeInitIndex}
 							{...monthProps}
 							onScrollEnd={scrollEndMonthFunc}
 						/>
@@ -399,7 +409,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 					<div className={timePickerState.columns.hour.rootClass} style={timePickerState.columns.hour.styleValue}>
 						<ScrollRadio
 							data={timePickerState.columns.hour.data}
-							lastSelectedIndex={timePickerState.columns.hour.initIndex}
+							lastSelectedIndex={timePickerState.columns.hour.safeInitIndex}
 							{...hourProps}
 							onScrollEnd={(index) => setHourIndex(index)}
 						/>
@@ -409,7 +419,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 					<div className={timePickerState.columns.minute.rootClass} style={timePickerState.columns.minute.styleValue}>
 						<ScrollRadio
 							data={timePickerState.columns.minute.data}
-							lastSelectedIndex={timePickerState.columns.minute.initIndex}
+							lastSelectedIndex={timePickerState.columns.minute.safeInitIndex}
 							{...minuteProps}
 							onScrollEnd={(index) => setMinuteIndex(index)}
 						/>
@@ -419,7 +429,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 					<div className={timePickerState.columns.second.rootClass} style={timePickerState.columns.second.styleValue}>
 						<ScrollRadio
 							data={timePickerState.columns.second.data}
-							lastSelectedIndex={timePickerState.columns.second.initIndex}
+							lastSelectedIndex={timePickerState.columns.second.safeInitIndex}
 							{...secondProps}
 							onScrollEnd={(index) => setSecondIndex(index)}
 						/>

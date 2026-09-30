@@ -75,9 +75,13 @@
 			});
 		}
 	});
+	const selectedScrollTop = $derived(scrollRadioState.scrollTop);
+	const selectedDataLength = $derived(scrollRadioState.paddedData.length);
 	$effect(() => {
-		if (scrollElement) {
-			scrollElement.scrollTop = scrollRadioState.scrollTop;
+		const top = selectedScrollTop;
+		const dataLength = selectedDataLength;
+		if (scrollElement && dataLength > 0) {
+			scrollElement.scrollTo({ top, behavior: 'instant' });
 		}
 	});
 </script>
