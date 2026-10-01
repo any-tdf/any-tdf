@@ -20,14 +20,14 @@ Vite example:
 import svgSymbol from '@any-tdf/vite-plugin-svg-symbol';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
-import { defineConfig } from 'vite-plus';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [vue(), tailwindcss(), svgSymbol([{ inFile: 'src/lib/svgs', outFile: 'public/symbols', fileName: 'symbol' }])]
+	plugins: [vue(), tailwindcss(), svgSymbol([{ inFile: 'src/lib/svgs', outFile: 'public/fonts', fileName: 'symbol' }])]
 });
 ```
 
-If multiple symbol files are generated, pass the matching path to the VTDF `Icon` component or provide a global path through `ConfigProvider`.
+The default public URL is `fonts/symbol.svg`. SvelteKit serves assets from `static`; plain Vite uses `public`. If multiple symbol files are generated, pass the matching path to the VTDF `Icon` component or provide a global path through `ConfigProvider`.
 
 ## Iconify Mode
 
@@ -73,3 +73,5 @@ Some VTDF components use built-in SVG icons internally. The default built-in ico
 - Use SVG symbol sprites for local small icons that should share size and color behavior.
 - Use Iconify when the project needs broad icon libraries.
 - Combining SVG symbol sprites and Iconify in one VTDF project is valid.
+
+Read [the icon guide](guides/icon.md) for built-in library configuration and [the SVG plugin guide](guides/iconPlugin.md) for plugin options.

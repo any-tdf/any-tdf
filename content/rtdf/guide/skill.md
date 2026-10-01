@@ -52,6 +52,8 @@ apps/site-common/docs/component-docs
 
 仓库的 `generate:skills:check` 会逐文件校验这条链路。组件文档更新但 Skill 未重新生成时，检查会失败。
 
+实现相关的英文指南会从 `content/rtdf/guide` 自动同步到 Skill 的 `references/guides`，包含快速开始、兼容性、主题、图标、国际化、脚手架、反馈、工具函数和 Vite 插件。指南索引记录组件库版本。
+
 ### 使用方式
 
 ```text
@@ -73,6 +75,25 @@ $rtdf 使用 ANYTDF 预设生成完整主题配置。
 ```
 
 生成结果可包含 `@plugin "rtdf/theme/plugin"`、`@theme` 或 JSON。
+
+### 安装与更新
+
+推荐使用 `skills` 工具管理安装来源及更新。`skills` 工具通过 npm 运行，但组件库 Skill 本身从 GitHub 下载，不是 npm 包。
+
+```sh
+npx skills add https://github.com/any-tdf/any-tdf/tree/main/packages/skills/rtdf-skill/rtdf -a codex
+npx skills update rtdf -p
+```
+
+上面的命令安装和更新项目级 Skill。用户级安装添加 `-g`，更新使用 `npx skills update rtdf -g`。其他客户端按实际情况选择 `-a`，例如 `claude-code` 或 `cursor`。
+
+工具记录来源仓库、子目录及内容哈希。组件资料、指南或脚本发生变化都会影响整个 Skill 目录的哈希，不需要发布 npm 或同步提高组件库版本。保留安装工具的锁文件；项目级锁文件可随项目提交。安装工具创建的符号链接指向本地副本，仍需要执行更新命令。
+
+手工复制或通过 `$skill-installer` 下载的是本地快照，不会自动跟随 GitHub 更新。更新时从同一来源获取完整目录，保留本地定制，并替换旧目录，避免残留已删除的文件。不要假定重复运行安装器可以覆盖已有目录。若直接链接到维护中的本地仓库，拉取仓库后即可读取更新后的文件。
+
+Codex 会自动识别本地 Skill 的变化；没有显示更新时可重启 Codex。其他客户端的搜索目录和刷新行为以其文档为准。当前对话已经读取的旧说明可能仍在上下文中，验证新说明时应重新读取 Skill，或开始新任务。`SKILL.md` 的 `metadata.version` 只是自定义信息，不会自动拉取远程文件，也不保证刷新对话上下文。
+
+参考：[Agent Skills 规范](https://agentskills.io/specification)、[Codex Skill 加载说明](https://learn.chatgpt.com/docs/build-skills)、[skills 工具](https://github.com/vercel-labs/skills)。
 
 ### 维护
 

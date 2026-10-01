@@ -72,7 +72,8 @@ const normalizeEnglishDoc = (content) =>
 		.replace(
 			/\]\((?:https:\/\/(?:stdf|rtdf|vtdf)\.dev)?\/components\?nav=([A-Za-z0-9]+)(?:&|&amp;)tab=\d+\)/g,
 			(_, nav) => `](./${nav}.md)`
-		);
+		)
+		.replace(/\]\((?:https:\/\/(?:stdf|rtdf|vtdf)\.dev)?\/guide\/(color|icon)\)/g, (_, name) => `](${name === 'color' ? '../color.md' : '../guides/icon.md'})`);
 
 const listDocs = (target, componentName) => {
 	const docsDir = path.join(repositoryRoot, 'content', target, 'components', componentName);

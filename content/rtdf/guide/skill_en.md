@@ -52,6 +52,8 @@ Each component detail combines its English guide, API, FAQ, and version document
 
 The repository's `generate:skills:check` command compares the generated files. It fails when component documentation changes without a matching Skill regeneration.
 
+Implementation guides are generated from `content/rtdf/guide` into `references/guides`, covering setup, compatibility, themes, icons, localization, scaffolding, feedback, utilities, and Vite plugins. The guide index identifies the component-library version.
+
 ### Usage
 
 ```text
@@ -73,6 +75,25 @@ $rtdf Generate the complete theme configuration from the ANYTDF preset.
 ```
 
 The output can contain `@plugin "rtdf/theme/plugin"`, `@theme`, or JSON.
+
+### Installation And Updates
+
+Use the `skills` CLI to manage the source and updates. The CLI runs through npm, but the library Skill itself is downloaded from GitHub and is not an npm package.
+
+```sh
+npx skills add https://github.com/any-tdf/any-tdf/tree/main/packages/skills/rtdf-skill/rtdf -a codex
+npx skills update rtdf -p
+```
+
+These commands target project scope. Add `-g` for a global installation and use `npx skills update rtdf -g` to update it. Choose the actual client with `-a`, such as `claude-code` or `cursor`.
+
+The tool records the source, subdirectory, and content hash. Changes to references, guides, or scripts change the entire Skill folder hash; they require neither an npm release nor a component-library version bump. Preserve the installer's lock metadata; project lock files can be committed with the project. CLI-created symlinks point to a local canonical copy and still require an update command.
+
+Manual copies and `$skill-installer` downloads are local snapshots without automatic GitHub synchronization. Fetch the complete directory from the same source, preserve local customizations, and replace the old directory to avoid leaving removed files behind. Do not assume reinstalling can overwrite an existing destination. A direct symlink to a maintained local clone reads updated files after that clone is refreshed.
+
+Codex detects local Skill changes automatically; restart it if the update does not appear. Other clients define their own discovery paths and refresh behavior. Previously read instructions can remain in the active conversation, so reread the Skill or start a new task when verifying updated guidance. A custom `metadata.version` field alone does not fetch remote files or refresh conversation context.
+
+Sources: [Agent Skills specification](https://agentskills.io/specification), [Codex Skill loading](https://learn.chatgpt.com/docs/build-skills), and [skills CLI](https://github.com/vercel-labs/skills).
 
 ### Maintenance
 

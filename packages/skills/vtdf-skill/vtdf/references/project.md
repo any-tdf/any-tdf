@@ -6,10 +6,10 @@ Use this reference for installation, entry CSS, and minimal usage.
 
 - VTDF targets Vue 3.
 - VTDF expects Tailwind CSS 4 when the application builds its theme CSS.
-- Use `bun` commands by default.
+- Follow the application's package manager; these examples use `bun`.
 - Package import: `vtdf`.
 - Theme runtime helpers: `vtdf/theme`.
-- Tailwind theme plugin: `vtdf/theme/plugin`.
+- Tailwind theme plugin: `vtdf/theme` (also supports `vtdf/theme/plugin`).
 - Locale imports: `vtdf/lang`.
 - Tailwind source registration: `vtdf/source.css`.
 
@@ -37,8 +37,9 @@ Import Tailwind and `vtdf/source.css`, then configure dark mode. The package sou
 ```css
 @import 'tailwindcss';
 @import 'vtdf/source.css';
+@import 'vtdf/style.css';
 
-@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=primary], [data-mode=primary] *):not([data-mode=dark], [data-mode=dark] *)));
 ```
 
 Append a complete theme configuration generated from the skill root. Do not replace it with an abbreviated token block because VTDF components use the full primary, dark, background, text, functional, neutral, and radius namespaces.
@@ -47,7 +48,7 @@ Append a complete theme configuration generated from the skill root. Do not repl
 bun scripts/generate-theme.mjs --preset ANYTDF --format both
 ```
 
-If the application consumes the package's prebuilt CSS instead of compiling VTDF classes with Tailwind, import `vtdf/style.css` once in the application entry and preserve the project's existing theme strategy.
+Import `vtdf/style.css` even when compiling Tailwind classes: it supplies component animation and global styles. `vtdf/source.css` only registers source files.
 
 ## Basic Component Usage
 
@@ -66,3 +67,5 @@ import { Button } from 'vtdf';
 - Keep VTDF app-wide theme variables in the project entry CSS file.
 - Import `vtdf/source.css` instead of hard-coding paths into `node_modules` when the application compiles its own Tailwind CSS.
 - Do not introduce arbitrary Tailwind value classes when a shared token is appropriate.
+
+For the complete framework-specific Vite configuration, CSS tokens, and package-manager commands, read [quick start](guides/quickStart.md).

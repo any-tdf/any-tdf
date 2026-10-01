@@ -16,7 +16,7 @@ This file embeds the English component guide, API, FAQ, and version documentatio
 
 ## Usage
 
-Refer to [Icon](https://stdf.dev/guide/icon).
+Refer to [Icon](../guides/icon.md).
 
 ## Icon Names
 

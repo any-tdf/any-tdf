@@ -23,11 +23,11 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [react(), tailwindcss(), svgSymbol([{ inFile: 'src/lib/svgs', outFile: 'public/symbols', fileName: 'symbol' }])]
+	plugins: [react(), tailwindcss(), svgSymbol([{ inFile: 'src/lib/svgs', outFile: 'public/fonts', fileName: 'symbol' }])]
 });
 ```
 
-If multiple symbol files are generated, pass the matching path to the RTDF `Icon` component or provide a global path through `ConfigProvider`.
+The default public URL is `fonts/symbol.svg`. SvelteKit serves assets from `static`; plain Vite uses `public`. If multiple symbol files are generated, pass the matching path to the RTDF `Icon` component or provide a global path through `ConfigProvider`.
 
 ## Iconify Mode
 
@@ -65,3 +65,5 @@ Use `iconify` for single-color mask icons whose color should follow text color. 
 - Use SVG symbol sprites for local small icons that should share size and color behavior.
 - Use Iconify when the project needs broad icon libraries.
 - Combining SVG symbol sprites and Iconify in one RTDF project is valid.
+
+Read [the icon guide](guides/icon.md) for built-in library configuration and [the SVG plugin guide](guides/iconPlugin.md) for plugin options.

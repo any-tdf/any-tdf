@@ -60,7 +60,7 @@ Note: Since there is an entry animation duration (default 300ms or custom value)
 
 ## type
 
-Toast internally sets corresponding icons for four types: `'success'|'error'|'warning'|'info'` through the `type` prop, and the icon color follows the functional color in the [Color System](/guide/color). You can also pass `'loading'` and `'icon'` to customize display content with loading and icon components, or pass `null` to display no icon. Please refer to examples.
+Toast internally sets corresponding icons for four types: `'success'|'error'|'warning'|'info'` through the `type` prop, and the icon color follows the functional color in the [Color System](../color.md). You can also pass `'loading'` and `'icon'` to customize display content with loading and icon components, or pass `null` to display no icon. Please refer to examples.
 
 ## Vue Slot
 

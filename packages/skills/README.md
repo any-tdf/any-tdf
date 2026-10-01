@@ -30,6 +30,17 @@ cp -R packages/skills/rtdf-skill/rtdf your-project/.agents/skills/
 cp -R packages/skills/vtdf-skill/vtdf your-project/.agents/skills/
 ```
 
+## 更新机制
+
+这些目录不发布到 npm，`package.json` 仅用于私有工作区维护。推荐通过 `skills` 工具安装 GitHub 子目录，后续按项目级或用户级更新：
+
+```sh
+npx skills update stdf rtdf vtdf -p
+npx skills update stdf rtdf vtdf -g
+```
+
+只能更新该工具追踪的安装。手工复制和 `$skill-installer` 下载不会自动同步远程仓库；更新时需要获取完整目录并保留本地定制。目录的内容哈希用于判断变化，无需提高组件库或私有工作区的版本。详见各 Skill 的 README 和 `references/updates.md`。
+
 ## 文档生成链路
 
 ```text
@@ -44,5 +55,7 @@ Skill 中的组件详情是站点英文指南、API、FAQ 和版本文档的离�
 bun run generate:skills
 bun run generate:skills:check
 ```
+
+实现相关的英文指南也从 `content/{stdf,rtdf,vtdf}/guide` 同步到各 Skill 的 `references/guides`，指南索引记录对应组件库版本。生成检查可以阻止指南更新但 Skill 未同步的情况。
 
 各 Skill 的 `test` 还会验证目录名、Frontmatter、引用路径、Codex 元数据、组件索引、主题数据和主题生成脚本。

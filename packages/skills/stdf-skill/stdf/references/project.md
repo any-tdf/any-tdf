@@ -6,7 +6,7 @@ Use this reference for installation, entry CSS, and minimal usage.
 
 - STDF targets Svelte 5.
 - STDF expects Tailwind CSS 4.
-- Use `bun` commands by default.
+- Follow the application's package manager; these examples use `bun`.
 - Package import: `stdf`.
 - Theme helpers and Tailwind theme plugin: `stdf/theme`.
 - Locale imports: `stdf/lang`.
@@ -36,7 +36,7 @@ Import Tailwind and `stdf/source.css`, then configure dark mode. `stdf/source.cs
 @import 'tailwindcss';
 @import 'stdf/source.css';
 
-@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=primary], [data-mode=primary] *):not([data-mode=dark], [data-mode=dark] *)));
 ```
 
 Append a complete theme configuration generated from the skill root. Do not replace it with an abbreviated token block because STDF components use the full primary, dark, background, text, functional, neutral, and radius namespaces.
@@ -60,3 +60,5 @@ bun scripts/generate-theme.mjs --preset ANYTDF --format both
 - Keep STDF app-wide theme variables in `src/app.css` or the project equivalent.
 - Import `stdf/source.css` instead of hard-coding paths into `node_modules`.
 - Do not introduce arbitrary Tailwind value classes when a shared token is appropriate.
+
+For the complete framework-specific Vite configuration, CSS tokens, and package-manager commands, read [quick start](guides/quickStart.md).

@@ -1,6 +1,6 @@
 ---
 name: vtdf
-description: Build, modify, review, and troubleshoot VTDF projects with exact offline component documentation. Use for VTDF or vtdf.dev, Vue 3 mobile UI, Tailwind CSS 4 setup, component APIs, themes and dark mode, icons, i18n, or create-any-tdf scaffolding. Do not use for generic Vue work that has no VTDF dependency.
+description: Build, review, and troubleshoot VTDF Vue 3 applications using exact component APIs, themes, icons, localization, and scaffolding. Use when the project uses vtdf or the user requests VTDF; exclude generic Vue 3 work without VTDF.
 ---
 
 # VTDF
@@ -11,15 +11,18 @@ Use this skill to produce working VTDF code without guessing its public API. VTD
 
 1. Confirm that the target uses `vtdf` and inspect its installed version and existing project conventions.
 2. Load only the references required for the task.
-3. For every component involved, open the component index and the matching detail file before writing props, emits, slots, exposed methods, composables, or imports.
+3. For each indexed component involved, open the component index and the matching detail file before writing props, emits, slots, exposed methods, composables, or imports.
+   For `ConfigProvider`, read the internationalization reference and its generated guide; it is not listed in the component index. For other unindexed exports, inspect the installed package declarations before use.
 4. Implement with Vue 3 patterns already used by the target project.
 5. Run the narrowest relevant project check or test, then report any version or documentation mismatch.
 
 The bundled component references represent the repository snapshot that produced this skill. If a project pins an older VTDF release, read the component detail's version section and preserve the installed release contract. When working inside the Any TDF monorepo, generated documentation and package source take precedence if they reveal a newer change; update the owning documentation source and regenerate the skill instead of hand-editing generated component files.
 
+For the current documentation version, compatibility, functional feedback, utility exports, and Vite Markdown integration, use [the guide index](references/guides.md). These Skill directories are distributed from GitHub, not npm. Updating the component dependency does not update an installed Skill copy.
+
 ## Operating Rules
 
-- Prefer `bun` for package management and commands.
+- Follow the target project's package manager; use `bun` for a new project or this monorepo.
 - Do not guess VTDF component props, emits, slots, exposed methods, composables, or exports.
 - Preserve the target project's Vue 3 conventions and public component behavior.
 - Prefer arrow functions unless the target project has a stronger local convention.
@@ -35,6 +38,7 @@ The bundled component references represent the repository snapshot that produced
 - For the `Icon` component, SVG symbols, and Iconify, read [icons](references/icons.md).
 - For `ConfigProvider` and locale presets, read [internationalization](references/i18n.md).
 - For `create-any-tdf` templates and CLI options, read [scaffolding](references/scaffold.md).
+- For installing or refreshing this Skill, read [Skill updates](references/updates.md). Do not check the network or update installed Skills during ordinary component work.
 - For an exact built-in theme record, inspect `data/themes.json` only after reading the theme reference.
 
 ## Theme Generation
@@ -47,4 +51,4 @@ bun scripts/generate-theme.mjs --random --seed 1 --name MyTheme --format plugin
 bun scripts/generate-theme.mjs --primary "oklch(0.52 0.24 35)" --dark "oklch(0.72 0.18 250)" --format both
 ```
 
-Prefer `@plugin "vtdf/theme/plugin"` for new switchable-theme configuration while preserving the supported path already used by an existing project. Use `@theme` for single-theme variables and for the default variables Tailwind CSS needs to generate utilities.
+Prefer `@plugin "vtdf/theme"` for new switchable-theme configuration while preserving the supported path already used by an existing project. Use `@theme` for single-theme variables and for the default variables Tailwind CSS needs to generate utilities.

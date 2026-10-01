@@ -27,7 +27,7 @@ export default defineConfig({
 });
 ```
 
-If multiple symbol files are generated, pass the matching path to the STDF `Icon` component.
+The default public URL is `fonts/symbol.svg`. SvelteKit serves assets from `static`; plain Vite uses `public`. If multiple symbol files are generated, pass the matching path to the STDF `Icon` component.
 
 ## Iconify Mode
 
@@ -52,6 +52,10 @@ Configure entry CSS:
 Use with STDF:
 
 ```svelte
+<script lang="ts">
+	import { Icon } from 'stdf';
+</script>
+
 <Icon type="iconify" name="solar--cat-broken" />
 ```
 
@@ -63,3 +67,5 @@ Use `iconify` for single-color mask icons whose color should follow text color. 
 - Use SVG symbol sprites for local small icons that should share size and color behavior.
 - Use Iconify when the project needs broad icon libraries.
 - Combining SVG symbol sprites and Iconify in one STDF project is valid.
+
+Read [the icon guide](guides/icon.md) for built-in library configuration and [the SVG plugin guide](guides/iconPlugin.md) for plugin options.

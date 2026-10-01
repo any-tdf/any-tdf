@@ -79,6 +79,8 @@ const requiredFiles = [
 	`${target}/scripts/generate-theme.mjs`,
 	`${target}/references/project.md`,
 	`${target}/references/components.md`,
+	`${target}/references/guides.md`,
+	`${target}/references/updates.md`,
 	`${target}/references/theme.md`,
 	`${target}/references/color.md`,
 	`${target}/references/icons.md`,
@@ -217,6 +219,13 @@ walkFiles(skillRoot)
 [skillPath, ...walkFiles(path.join(skillRoot, 'references')).filter((file) => file.endsWith('.md'))].forEach((file) => {
 	if (existsSync(file) && /\p{Script=Han}/u.test(readFileSync(file, 'utf-8'))) {
 		failures.push(`Bundled AI instructions must be English-only: ${path.relative(packageRoot, file)}`);
+	}
+	if (!existsSync(file)) return;
+	for (const match of readFileSync(file, 'utf-8').matchAll(/\]\(([^)]+)\)/g)) {
+		const reference = match[1];
+		if (/^(?:[a-z]+:|#)/i.test(reference)) continue;
+		const destination = path.resolve(path.dirname(file), reference.split(/[?#]/)[0]);
+		if (!existsSync(destination)) failures.push(`Missing offline reference ${reference} in ${path.relative(packageRoot, file)}`);
 	}
 });
 

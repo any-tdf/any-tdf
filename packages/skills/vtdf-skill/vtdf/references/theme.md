@@ -7,7 +7,7 @@ Use this reference for dark mode, multi-theme mode, and runtime switching.
 VTDF dark mode is driven by `data-mode` on the `html` element. Configure Tailwind CSS 4 with:
 
 ```css
-@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=primary], [data-mode=primary] *):not([data-mode=dark], [data-mode=dark] *)));
 ```
 
 Switch mode at runtime:
@@ -94,17 +94,16 @@ Keys in the plugin block do not use the `--` prefix.
 
 If the project does not need dynamic theme switching, define variables directly in `@theme`. This mode does not require `data-theme`.
 
-```css
-@theme {
-	--color-primary: oklch(0.467 0.296 264.886);
-	--color-dark: oklch(0.845 0.153 80.597);
-	--color-success: oklch(0.704 0.142 167.084);
-	--radius-box: 0.75rem;
-}
-```
+Generate the complete token set with `scripts/generate-theme.mjs --preset ANYTDF --format theme`; components require more than the accent colors.
 
 ## Default Variables In Multi-Theme Mode
 
 When using `@plugin "vtdf/theme/plugin"`, still define a default `@theme` block. Tailwind needs default variables to generate utilities such as `bg-primary` and `text-dark`. The plugin then overrides those variables under `[data-theme="<name>"]`.
 
 Use `scripts/generate-theme.mjs --preset ANYTDF --format both` from the skill root to generate both the plugin block and the default `@theme` block.
+
+## Runtime Details
+
+`getTheme()` and `getMode()` can return `null` when the attribute is absent or during SSR. Initialize client-facing state in the framework's client lifecycle. Switching a recognized built-in name also writes its CSS variables inline, which can override ordinary CSS customization of that built-in name. For custom colors, use a distinct theme name or pass a complete theme object.
+
+Read [the full theme guide](guides/theme.md) for all configuration keys and runtime APIs.

@@ -1,6 +1,6 @@
 ---
 name: stdf
-description: Build, modify, review, and troubleshoot STDF projects with exact offline component documentation. Use for STDF or stdf.dev, Svelte 5 mobile UI, Tailwind CSS 4 setup, component APIs, themes and dark mode, icons, i18n, or create-any-tdf scaffolding. Do not use for generic Svelte work that has no STDF dependency.
+description: Build, review, and troubleshoot STDF Svelte 5 applications using exact component APIs, themes, icons, localization, and scaffolding. Use when the project uses stdf or the user requests STDF; exclude generic Svelte 5 work without STDF.
 ---
 
 # STDF
@@ -11,15 +11,18 @@ Use this skill to produce working STDF code without guessing its public API. STD
 
 1. Confirm that the target uses `stdf` and inspect its installed version and existing project conventions.
 2. Load only the references required for the task.
-3. For every component involved, open the component index and the matching detail file before writing props, events, snippets, methods, or imports.
+3. For each indexed component involved, open the component index and the matching detail file before writing props, events, snippets, methods, or imports.
+   For `ConfigProvider`, read the internationalization reference and its generated guide; it is not listed in the component index. For other unindexed exports, inspect the installed package declarations before use.
 4. Implement with Svelte 5 patterns already used by the target project.
 5. Run the narrowest relevant project check or test, then report any version or documentation mismatch.
 
 The bundled component references represent the repository snapshot that produced this skill. If a project pins an older STDF release, read the component detail's version section and preserve the installed release contract. When working inside the Any TDF monorepo, generated documentation and package source take precedence if they reveal a newer change; update the owning documentation source and regenerate the skill instead of hand-editing generated component files.
 
+For the current documentation version, compatibility, functional feedback, utility exports, and Vite Markdown integration, use [the guide index](references/guides.md). For STDF 2.x migrations, read [the upgrade guide](references/guides/upgrade.md); this migration does not apply to RTDF or VTDF. These Skill directories are distributed from GitHub, not npm. Updating the component dependency does not update an installed Skill copy.
+
 ## Operating Rules
 
-- Prefer `bun` for package management and commands.
+- Follow the target project's package manager; use `bun` for a new project or this monorepo.
 - Do not guess STDF component props, events, snippets, actions, exposed methods, or exports.
 - Preserve the target project's Svelte 5 conventions and public component behavior.
 - For Tailwind CSS 4, avoid arbitrary size and color classes. Put reusable values in CSS variables or shared project CSS.
@@ -32,8 +35,9 @@ The bundled component references represent the repository snapshot that produced
 - For dark mode, multi-theme mode, `@plugin "stdf/theme"`, `@theme`, and runtime switching, read [theme and mode](references/theme.md).
 - For color semantics and generated palettes, read [the color system](references/color.md).
 - For the `Icon` component, SVG symbols, and Iconify, read [icons](references/icons.md).
-- For `STDF_lang` and locale presets, read [internationalization](references/i18n.md).
+- For `ConfigProvider`, `STDF_lang`, and locale presets, read [internationalization](references/i18n.md).
 - For `create-any-tdf` templates and CLI options, read [scaffolding](references/scaffold.md).
+- For installing or refreshing this Skill, read [Skill updates](references/updates.md). Do not check the network or update installed Skills during ordinary component work.
 - For an exact built-in theme record, inspect `data/themes.json` only after reading the theme reference.
 
 ## Theme Generation

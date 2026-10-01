@@ -55,3 +55,5 @@ bun create any-tdf my-app -f svelte -t sktt -l zh_CN -i iconify -m multi -b luci
 ## Built-in Icon Library Presets
 
 `default`, `remix`, `lucide`, `phosphor`, `tabler`, `iconoir`, and `reicon` are supported. `default` writes the current default library, `remix`, into generated projects.
+
+The CLI detects the invoking package manager, with Bun as its fallback. Do not force a different manager into an existing project. See [the scaffold guide](guides/create.md) for complete commands.
