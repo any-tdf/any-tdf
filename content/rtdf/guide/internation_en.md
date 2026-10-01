@@ -1,28 +1,36 @@
 ## Configuring Language Pack
 
-RTDF uses ConfigProvider to provide internationalized text, with the default configuration being Simplified Chinese. Configure it at the app entry, for example:
+RTDF defaults to Simplified Chinese. Use ConfigProvider at the application root to provide a locale. Mount Feedback once inside it when using functional feedback APIs.
 
 ```tsx
-import { ConfigProvider } from 'rtdf';
+import { ConfigProvider, Feedback, TimePicker } from 'rtdf';
 import { en_US } from 'rtdf/lang';
 
 const App = () => (
 	<ConfigProvider locale={en_US}>
-		<Routes />
+		<TimePicker />
+		<Feedback />
 	</ConfigProvider>
 );
-```
 
-All descendant components (including RTDF components) read the current locale. For scoped language, wrap a subtree with another ConfigProvider.
+export default App;
+```
 
 ## ConfigProvider Props
 
-| Name     | Type                | Default | Description                                      |
-| -------- | ------------------- | ------- | ------------------------------------------------ |
-| locale   | `LangProps`         | `zh_CN` | Component internationalization text config.      |
-| theme    | `SwitchThemeInput`  | -       | Theme config. Passing it switches current theme. |
-| mode     | `'primary'\|'dark'` | -       | Light or dark mode config.                       |
-| iconPath | `string`            | -       | Global SVG symbol path used by Icon.             |
+| Name               | Type                 | Default   | Description                                                  |
+| ------------------ | -------------------- | --------- | ------------------------------------------------------------ |
+| locale             | `LangProps`          | `zh_CN`   | Component text.                                              |
+| builtInIconLibrary | `BuiltInIconLibrary` | `remix`   | Built-in component icon library.                             |
+| children           | `ReactNode`          | Not set   | Content rendered inside the provider.                        |
+| theme              | `SwitchThemeInput`   | `ANYTDF`  | Global theme when syncTheme is enabled.                      |
+| mode               | `'primary'\|'dark'`  | `primary` | Global light or dark mode.                                   |
+| iconPath           | `string`             | Not set   | External SVG Symbol path; Icon defaults to fonts/symbol.svg. |
+| syncTheme          | `boolean`            | `true`    | Synchronize theme and mode to the root element.              |
+
+Replacing locale updates descendant components through React Context. A nested provider can supply a local locale; set its syncTheme to false to avoid resetting the global theme and mode. Each ConfigProvider also writes the global functional feedback locale, so nested providers do not isolate it.
+
+Functional feedback has one global language configuration and does not infer a locale from the calling component. Keep one Feedback container and manage its locale centrally.
 
 Currently supported languages:
 
@@ -105,7 +113,7 @@ The basic steps are as follows:
 
 - Please fork the [Any TDF](https://github.com/any-tdf/any-tdf) repository. If you have already forked it, please sync the latest code from the main repository.
 - Clone your repository to your local machine.
-- Add language packs in the `packages/common/src/lang` folder.
-- (Optional) Update the [internation.md](https://github.com/any-tdf/any-tdf/edit/main/content/rtdf/guide/internation.md) and [internation_en.md](https://github.com/any-tdf/any-tdf/edit/main/content/rtdf/guide/internation_en.md) files in `content/rtdf/guide`. Please update them alphabetically according to the `lang` list.
+- Add a complete `LangProps` language pack under `packages/common/src/lang` and export it from `packages/common/src/lang/index.ts` so all three public language entries expose it.
+- Update the Chinese and English internationalization guide language lists in all three sites, keeping entries sorted by the language code.
 - Commit the modifications to your repository and then submit a Pull Request to the main repository.
 - Once the Pull Request is approved during the review process, it will be merged into the main repository and a new version will be released on npm.

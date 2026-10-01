@@ -1,4 +1,4 @@
-> 从 v1.1.0 开始，RTDF 支持 [Iconify](https://iconify.design) 方式使用图标。
+> RTDF 支持 [Iconify](https://iconify.design) 方式使用图标。
 
 ## 使用方式
 

@@ -1,12 +1,14 @@
-> STDF 3.0.0 基于 Svelte v5 与 Tailwind CSS v4。
+> STDF 3.0.0 基于 Svelte 5 和 Tailwind CSS 4。
 
 ## Svelte
 
-市面上能看到的浏览器版本基本都已经支持了 Svelte v5，旧版的 IE 浏览器需要 Polyfills，不过移动端没有 IE，况且微软也已经放弃了 IE，所以这里不做讨论。
+STDF 需要 Svelte 5。应用应使用满足下方 Tailwind CSS 4 基线的现代浏览器，Internet Explorer 不满足该基线。
+
+组件事件使用 API 中声明的小写回调 Props，例如 `onclick` 和 `onchange`；状态绑定使用对应的 `bind:` 属性，自定义内容使用 Snippet。不要直接照搬 React 的事件名或 Vue 的插槽语法。
 
 ## Tailwind CSS
 
-参考 [Browser Support](https://tailwindcss.com/docs/browser-support)，STDF 组件库内已有样式都支持现代浏览器。有问题请参考 [Can I Use](https://caniuse.com)。
+Tailwind CSS 4 的浏览器基线为 Chrome 111 及以上、Safari 16.4 及以上、Firefox 128 及以上，详见官方[浏览器兼容性文档](https://tailwindcss.com/docs/compatibility#browser-support)。JavaScript Polyfills 不能代替 Tailwind CSS 4 所依赖的 CSS 特性。
 
 ## 特殊情况
 

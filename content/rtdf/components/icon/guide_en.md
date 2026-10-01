@@ -1,4 +1,4 @@
-> Starting from v1.1.0, RTDF supports using icons via [Iconify](https://iconify.design).
+> RTDF supports using icons via [Iconify](https://iconify.design).
 
 ## Usage
 

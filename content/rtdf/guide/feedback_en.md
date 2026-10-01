@@ -7,15 +7,21 @@ RTDF provides functional API for 5 feedback components, allowing you to use them
 Before using the functional API, add the `Feedback` component to your app's root layout:
 
 ```tsx
-import { Feedback } from 'rtdf';
+import type { ReactNode } from 'react';
+import { ConfigProvider, Feedback } from 'rtdf';
+import { en_US } from 'rtdf/lang';
 
-const App = () => (
-	<>
-		<Routes />
+const App = ({ children }: { children: ReactNode }) => (
+	<ConfigProvider locale={en_US}>
+		{children}
 		<Feedback />
-	</>
+	</ConfigProvider>
 );
+
+export default App;
 ```
+
+Mount exactly one Feedback container. It uses global state; a local locale at a call site is not selected automatically. ConfigProvider configures the application but does not replace Feedback.
 
 ## Toast
 
@@ -124,18 +130,20 @@ loading.hide();
 // utils/request.ts
 import { toast, loading } from 'rtdf';
 
-export async function request(url: string) {
+export const request = async (url: string) => {
 	loading.show('Loading...');
-	const res = await fetch(url);
-	loading.hide();
 
-	if (!res.ok) {
-		toast.error('Request failed');
-		throw new Error('Request failed');
+	try {
+		const res = await fetch(url);
+		if (!res.ok) {
+			toast.error('Request failed');
+			throw new Error('Request failed');
+		}
+		return await res.json();
+	} finally {
+		loading.hide();
 	}
-
-	return res.json();
-}
+};
 ```
 
 ### Delete Confirmation
@@ -143,19 +151,23 @@ export async function request(url: string) {
 ```typescript
 import { toast, dialog, loading } from 'rtdf';
 
-async function deleteItem(id: string) {
-	const confirmed = await dialog.confirm('Are you sure to delete this record?', 'Delete Confirmation');
+const deleteItem = async (id: string) => {
+	const confirmed = await dialog.confirm('Delete this record?', 'Delete Confirmation');
+	if (!confirmed) return false;
 
-	if (confirmed) {
-		loading.show('Deleting...');
-		await fetch(`/api/items/${id}`, { method: 'DELETE' });
-		loading.hide();
+	loading.show('Deleting...');
+	try {
+		const res = await fetch(`/api/items/${id}`, { method: 'DELETE' });
+		if (!res.ok) {
+			toast.error('Deletion failed');
+			throw new Error('Deletion failed');
+		}
 		toast.success('Deleted successfully');
 		return true;
+	} finally {
+		loading.hide();
 	}
-
-	return false;
-}
+};
 ```
 
 ## Features

@@ -7,15 +7,20 @@ VTDF 提供了 5 种反馈组件的函数式调用方式，可以在任意位置
 在使用函数式 API 之前，需要在应用根布局中添加 `Feedback` 组件：
 
 ```vue
-import { Feedback } from 'vtdf';
+<script setup lang="ts">
+import { ConfigProvider, Feedback } from 'vtdf';
+import { en_US } from 'vtdf/lang';
+</script>
 
-const App = () => (
-  <>
-    <Routes />
-    <Feedback />
-  </>
-);
+<template>
+	<ConfigProvider :locale="en_US">
+		<slot />
+		<Feedback />
+	</ConfigProvider>
+</template>
 ```
+
+整个应用只挂载一个 Feedback 容器。函数式调用使用全局状态，不会自动选择调用位置的局部语言。ConfigProvider 提供配置，但不会代替 Feedback。
 
 ## Toast 轻提示
 
@@ -124,18 +129,20 @@ loading.hide();
 // utils/request.ts
 import { toast, loading } from 'vtdf';
 
-export async function request(url: string) {
-	loading.show('加载中...');
-	const res = await fetch(url);
-	loading.hide();
+export const request = async (url: string) => {
+	loading.show('加载中……');
 
-	if (!res.ok) {
-		toast.error('请求失败');
-		throw new Error('Request failed');
+	try {
+		const res = await fetch(url);
+		if (!res.ok) {
+			toast.error('请求失败');
+			throw new Error('Request failed');
+		}
+		return await res.json();
+	} finally {
+		loading.hide();
 	}
-
-	return res.json();
-}
+};
 ```
 
 ### 删除确认
@@ -143,19 +150,23 @@ export async function request(url: string) {
 ```typescript
 import { toast, dialog, loading } from 'vtdf';
 
-async function deleteItem(id: string) {
+const deleteItem = async (id: string) => {
 	const confirmed = await dialog.confirm('确定删除这条记录吗？', '删除确认');
+	if (!confirmed) return false;
 
-	if (confirmed) {
-		loading.show('删除中...');
-		await fetch(`/api/items/${id}`, { method: 'DELETE' });
-		loading.hide();
+	loading.show('删除中……');
+	try {
+		const res = await fetch(`/api/items/${id}`, { method: 'DELETE' });
+		if (!res.ok) {
+			toast.error('删除失败');
+			throw new Error('Deletion failed');
+		}
 		toast.success('删除成功');
 		return true;
+	} finally {
+		loading.hide();
 	}
-
-	return false;
-}
+};
 ```
 
 ## 特性说明
@@ -169,11 +180,11 @@ async function deleteItem(id: string) {
 
 函数式 API 为了简化调用，无法支持组件的全部功能：
 
-| 不支持的功能       | 说明                                                             |
-| ------------------ | ---------------------------------------------------------------- |
-| **render props**   | 无法传递 `children`、`contentChild`、`primaryChild` 等自定义内容 |
-| **受控 visible**   | 无法通过 `visible` 与 `@close` 进行状态同步                      |
-| **复杂自定义内容** | 无法在提示中插入自定义组件或复杂布局                             |
+| 不支持的功能       | 说明                                               |
+| ------------------ | -------------------------------------------------- |
+| **Slots**          | 无法传入默认插槽或具名插槽定制内容。               |
+| **双向绑定**       | 无法使用 `v-model:visible` 绑定函数式 API 的状态。 |
+| **复杂自定义内容** | 无法在提示中插入自定义组件或复杂布局               |
 
 ## 使用建议
 

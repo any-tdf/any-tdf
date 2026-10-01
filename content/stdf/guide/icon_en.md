@@ -10,7 +10,7 @@ You can think of it as a font, except this font is composed of SVG and can be co
 
 Compatibility is also completely fine. Refer to [MDN symbol](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol#browser_compatibility).
 
-STDF has developed a Rollup/Vite plugin for merging SVG files in projects into SVG Sprites. For specific usage, please refer to [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon). Due to the diversity of SVG formats, there may be cases where rollup-plugin-stdf-icon doesn't process accurately. Please submit an issue on [GitHub](https://github.com/any-tdf/any-tdf/issues) with specific details about the SVG file.
+STDF has developed a Rollup/Vite plugin for merging SVG files in projects into SVG Sprites. For specific usage, please refer to [@any-tdf/vite-plugin-svg-symbol](https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol). Due to the diversity of SVG formats, there may be cases where @any-tdf/vite-plugin-svg-symbol doesn't process accurately. Please submit an issue on [GitHub](https://github.com/any-tdf/any-tdf/issues) with specific details about the SVG file.
 
 Alternatively, you can use other SVG Sprites synthesis tools or manual synthesis, or ask designers to provide corresponding SVG Sprites along with design materials. Or use icon libraries like [Remix Icon](https://remixicon.com), which allows you to directly download multiple selected icons as SVG Sprites.
 
@@ -144,7 +144,7 @@ Some STDF components use built-in SVG icons internally, such as `Alert`, `Toast`
 </ConfigProvider>
 ```
 
-`builtInIconLibrary` only affects built-in SVG icons used inside components. It does not change the `Icon` component's `symbol`, `iconify`, or `iconify-color` usage. `iconPath` still only configures the external SVG Symbol file path.
+`builtInIconLibrary` only affects built-in SVG icons used inside components. It does not change the `Icon` component's `symbol`, `iconify`, or `iconify-color` usage. Set the Icon `path` prop for an external SVG Symbol file. STDF ConfigProvider does not expose `iconPath`.
 
 <!-- built-in-icon-gallery -->
 
@@ -154,10 +154,10 @@ Generally, there are several ways to use svg icons in STDF projects.
 
 1. Use svg files directly without any processing. You can use the svg tag directly without using the Icon component, but it will increase HTTP requests and project size, and it is also not convenient to adjust the attributes of these icons uniformly. Generally used for large and complex svg images, **not recommended for processing small svg icons**.
 
-2. Use the [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon) plugin. Merge the svg files into SVG symbol after compilation, but the svg files must conform to the standard, otherwise they may not be merged correctly. **Recommended**.
+2. Use the [@any-tdf/vite-plugin-svg-symbol](https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol) plugin. Merge the svg files into SVG symbol after compilation, but the svg files must conform to the standard, otherwise they may not be merged correctly. **Recommended**.
 
 3. Use [Iconify](https://iconify.design). Iconify's advantage is that the icon library is very rich, saves the trouble of finding icons, but requires manual installation of icon libraries and configuration plugins, and there may be some redundant icons in the project. **Recommended**.
 
-4. Already have a merged SVG symbol file. Some icon libraries support exporting SVG symbol files, some other tools support merging svg into SVG symbol files, or the material provided by the designer is already a SVG symbol file, then you can use the merged SVG symbol file path directly without using rollup-plugin-stdf-icon and Iconify. **Recommended depending on the situation**.
+4. Already have a merged SVG symbol file. Some icon libraries support exporting SVG symbol files, some other tools support merging svg into SVG symbol files, or the material provided by the designer is already a SVG symbol file, then you can use the merged SVG symbol file path directly without using @any-tdf/vite-plugin-svg-symbol and Iconify. **Recommended depending on the situation**.
 
 Of course, these methods are not mutually exclusive, and a project may use multiple methods at the same time.

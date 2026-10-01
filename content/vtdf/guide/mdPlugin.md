@@ -1,4 +1,4 @@
-[English](./mdPlugin_en.md)
+[English](/guide/md?lang=en_US)
 
 [![Public Status](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 
@@ -6,7 +6,7 @@
 
 ## 介绍
 
-一款 Vite 和 Rollup 插件，功能是将 Markdown 文件转换为 HTML 字符串，基于 [marked](https://github.com/markedjs/marked)。
+一款 Vite 和 Rollup 插件，将 Markdown 文件作为字符串导入。传入 `marked` 配置对象时，使用 [marked](https://github.com/markedjs/marked) 转换为 HTML；不传该参数时，导出原始 Markdown 字符串。
 
 实现思路参考 [rollup-plugin-md](https://github.com/xiaofuzi/rollup-plugin-md)，增加了 TypeScript 支持。
 
@@ -16,11 +16,11 @@ VTDF 文档站点使用了此插件。
 
 ## 参数
 
-| 参数    | 类型            | 默认          | 描述                                                  |
-| ------- | --------------- | ------------- | ----------------------------------------------------- |
-| marked  | `MarkedOptions` | `{}`          | [marked](https://github.com/markedjs/marked) 的配置。 |
-| include | `string[]`      | `['**/*.md']` | 要包含的 Markdown 文件路径。                          |
-| exclude | `string[]`      | `[]`          | 要排除的 Markdown 文件路径。                          |
+| 参数    | 类型            | 默认          | 描述                                          |
+| ------- | --------------- | ------------- | --------------------------------------------- |
+| marked  | `MarkedOptions` | 未设置        | 传入时启用 HTML 转换，`marked: {}` 也会启用。 |
+| include | `string[]`      | `['**/*.md']` | 要包含的 Markdown 文件路径。                  |
+| exclude | `string[]`      | `[]`          | 要排除的 Markdown 文件路径。                  |
 
 其中 include 和 exclude 是相对项目根目录（一般就是 vite.config.js 或 vite.config.ts 所在目录）的相对路径。
 
@@ -61,6 +61,7 @@ yarn add @any-tdf/vite-plugin-md-ts -D
 在 vite.config.js 或 vite.config.ts 中配置：
 
 ```javascript
+import { defineConfig } from 'vite';
 import md from '@any-tdf/vite-plugin-md-ts';
 
 export default defineConfig({
@@ -78,6 +79,29 @@ export default defineConfig({
 ```
 
 也可以在 rollup.config.js 或 rollup.config.ts 中使用。
+
+### 导入并渲染
+
+上方的 `marked: {}` 配置会导出 HTML。可以导入字符串，并使用当前框架的 HTML 渲染语法：
+
+```vue
+<script setup lang="ts">
+import html from './intro.md';
+</script>
+
+<template>
+	<article v-html="html" />
+</template>
+```
+
+TypeScript 项目还需要增加模块声明，例如 `src/markdown.d.ts`：
+
+```ts
+declare module '*.md' {
+	const content: string;
+	export default content;
+}
+```
 
 ## 为何创建
 

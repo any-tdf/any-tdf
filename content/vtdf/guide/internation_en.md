@@ -1,25 +1,37 @@
 ## Configuring Language Pack
 
-VTDF uses ConfigProvider to provide internationalized text, with the default configuration being Simplified Chinese. Configure it at the app entry, for example:
+VTDF defaults to Simplified Chinese. Use ConfigProvider at the application root to provide a locale. Mount Feedback once inside it when using functional feedback APIs.
 
 ```vue
-import { ConfigProvider } from 'vtdf'; import { en_US } from 'vtdf/lang'; const App = () => (
-<ConfigProvider locale="{en_US}">
-    <Routes />
-  </ConfigProvider>
-);
-```
+<script setup lang="ts">
+import { ConfigProvider, Feedback, TimePicker } from 'vtdf';
+import { en_US } from 'vtdf/lang';
+</script>
 
-All descendant components (including VTDF components) read the current locale. For scoped language, wrap a subtree with another ConfigProvider.
+<template>
+	<ConfigProvider :locale="en_US">
+		<TimePicker />
+		<Feedback />
+	</ConfigProvider>
+</template>
+```
 
 ## ConfigProvider Props
 
-| Name     | Type                | Default | Description                                      |
-| -------- | ------------------- | ------- | ------------------------------------------------ |
-| locale   | `LangProps`         | `zh_CN` | Component internationalization text config.      |
-| theme    | `SwitchThemeInput`  | -       | Theme config. Passing it switches current theme. |
-| mode     | `'primary'\|'dark'` | -       | Light or dark mode config.                       |
-| iconPath | `string`            | -       | Global SVG symbol path used by Icon.             |
+| Name               | Type                 | Default            | Description                                                  |
+| ------------------ | -------------------- | ------------------ | ------------------------------------------------------------ |
+| locale             | `LangProps`          | `zh_CN`            | Component text.                                              |
+| builtInIconLibrary | `BuiltInIconLibrary` | `remix`            | Built-in component icon library.                             |
+| theme              | `SwitchThemeInput`   | `ANYTDF`           | Global theme when syncTheme is enabled.                      |
+| mode               | `'primary'\|'dark'`  | `primary`          | Global light or dark mode.                                   |
+| iconPath           | `string`             | `fonts/symbol.svg` | External SVG Symbol path; Icon defaults to fonts/symbol.svg. |
+| syncTheme          | `boolean`            | `true`             | Synchronize theme and mode to the root element.              |
+
+Replacing locale updates descendant components through Vue reactive provide/inject. A nested provider can supply a local locale; set its syncTheme to false to avoid resetting the global theme and mode. Feedback synchronizes its provider locale to the global functional feedback state.
+
+Functional feedback has one global language configuration and does not infer a locale from the calling component. Keep one Feedback container and manage its locale centrally.
+
+VTDF renders provider content through the default Vue slot.
 
 Currently supported languages:
 
@@ -102,7 +114,7 @@ The basic steps are as follows:
 
 - Please fork the [Any TDF](https://github.com/any-tdf/any-tdf) repository. If you have already forked it, please sync the latest code from the main repository.
 - Clone your repository to your local machine.
-- Add language packs in the `packages/common/src/lang` folder.
-- (Optional) Update the [internation.md](https://github.com/any-tdf/any-tdf/edit/main/content/vtdf/guide/internation.md) and [internation_en.md](https://github.com/any-tdf/any-tdf/edit/main/content/vtdf/guide/internation_en.md) files in `content/vtdf/guide`. Please update them alphabetically according to the `lang` list.
+- Add a complete `LangProps` language pack under `packages/common/src/lang` and export it from `packages/common/src/lang/index.ts` so all three public language entries expose it.
+- Update the Chinese and English internationalization guide language lists in all three sites, keeping entries sorted by the language code.
 - Commit the modifications to your repository and then submit a Pull Request to the main repository.
 - Once the Pull Request is approved during the review process, it will be merged into the main repository and a new version will be released on npm.

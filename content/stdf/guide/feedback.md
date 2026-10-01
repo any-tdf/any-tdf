@@ -8,14 +8,20 @@ STDF 提供了 5 种反馈组件的函数式调用方式，可以在任意位置
 
 ```svelte
 <!-- +layout.svelte -->
-<script>
-    import { Feedback } from 'stdf';
-    let { children } = $props();
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	import { ConfigProvider, Feedback } from 'stdf';
+	import { en_US } from 'stdf/lang';
+	let { children }: { children: Snippet } = $props();
 </script>
 
-{@render children()}
-<Feedback />
+<ConfigProvider locale={en_US}>
+	{@render children()}
+	<Feedback />
+</ConfigProvider>
 ```
+
+整个应用只挂载一个 Feedback 容器。函数式调用使用全局状态，不会自动选择调用位置的局部语言。ConfigProvider 提供配置，但不会代替 Feedback。
 
 ## Toast 轻提示
 
@@ -124,25 +130,20 @@ loading.hide();
 // utils/request.ts
 import { toast, loading } from 'stdf';
 
-export async function request(url: string) {
-	loading.show('加载中...');
+export const request = async (url: string) => {
+	loading.show('加载中……');
 
 	try {
 		const res = await fetch(url);
-		loading.hide();
-
 		if (!res.ok) {
 			toast.error('请求失败');
 			throw new Error('Request failed');
 		}
-
-		return res.json();
-	} catch (e) {
+		return await res.json();
+	} finally {
 		loading.hide();
-		toast.error('网络错误');
-		throw e;
 	}
-}
+};
 ```
 
 ### 删除确认
@@ -150,19 +151,23 @@ export async function request(url: string) {
 ```typescript
 import { toast, dialog, loading } from 'stdf';
 
-async function deleteItem(id: string) {
+const deleteItem = async (id: string) => {
 	const confirmed = await dialog.confirm('确定删除这条记录吗？', '删除确认');
+	if (!confirmed) return false;
 
-	if (confirmed) {
-		loading.show('删除中...');
-		await fetch(`/api/items/${id}`, { method: 'DELETE' });
-		loading.hide();
+	loading.show('删除中……');
+	try {
+		const res = await fetch(`/api/items/${id}`, { method: 'DELETE' });
+		if (!res.ok) {
+			toast.error('删除失败');
+			throw new Error('Deletion failed');
+		}
 		toast.success('删除成功');
 		return true;
+	} finally {
+		loading.hide();
 	}
-
-	return false;
-}
+};
 ```
 
 ## 特性说明

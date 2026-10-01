@@ -1,35 +1,72 @@
 # create-any-tdf
 
-Unified scaffolding CLI for creating STDF, RTDF, and VTDF TypeScript projects.
-
-## Usage
+`create-any-tdf` is the unified Any TDF scaffolding command. Select the `vue` framework to create a VTDF Vue project:
 
 ```sh
-bun create any-tdf my-app -f svelte -t sktt -b lucide
-bun create any-tdf my-app -f react -t vrut -b phosphor
-bun create any-tdf my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f vue
 ```
+
+The quick command defaults to `vrtt`, `svg-symbol`, `multi`, `default` built-in icon library, and `bun`. `default` initializes the project with the current default, `remix`.
+
+Create a Tailwind CSS v4 project:
+
+```sh
+bun create any-tdf my-app -f vue -t vrtt -l en_US -i both -m all -b lucide
+```
+
+Create an UnoCSS project:
+
+```sh
+bun create any-tdf my-app -f vue -t vrut -l en_US -i both -m all -b lucide
+```
+
+## Template Presets
+
+| Short name | Template                                  | Description     |
+| ---------- | ----------------------------------------- | --------------- |
+| `vrtt`     | Vite & Vue & Tailwind CSS v4 & TypeScript | Default         |
+| `vrut`     | Vite & Vue & UnoCSS & TypeScript          | TypeScript only |
 
 ## Options
 
-| Option                         | Default                          | Description                                                                                                       |
-| ------------------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `-f / --framework`             | required in non-interactive mode | `svelte`, `react`, or `vue`.                                                                                      |
-| `-t / --template`              | first framework template         | Template name filtered by framework.                                                                              |
-| `-l / --language`              | `en_US`                          | Prompt language.                                                                                                  |
-| `-i / --icon-usage`            | `svg-symbol`                     | `svg-symbol`, `iconify`, `both`, or `none`. Also accepts legacy `any-tdf-icon`.                                   |
-| `-m / --theme-mode`            | `multi`                          | `single`, `multi`, or `all`.                                                                                      |
-| `-b / --built-in-icon-library` | `default`                        | `default`, `remix`, `lucide`, `phosphor`, `tabler`, `iconoir`, or `reicon`. Also supports `--builtInIconLibrary`. |
-| `-p / --package-manager`       | `bun`                            | `bun`, `npm`, `pnpm`, or `yarn`.                                                                                  |
+| Option                         | Default                                                  | Description                                                          |
+| ------------------------------ | -------------------------------------------------------- | -------------------------------------------------------------------- |
+| `-`                            | -                                                        | Project name, passed directly.                                       |
+| `-f / --framework`             | required in non-interactive mode                         | `svelte`, `react`, or `vue`. Use `vue` for VTDF.                     |
+| `-t / --template`              | `vrtt`                                                   | Template to use.                                                     |
+| `-l / --language`              | `en_US`                                                  | Prompt language.                                                     |
+| `-i / --icon-usage`            | `svg-symbol`                                             | Icon usage mode. Also accepts legacy `any-tdf-icon`.                 |
+| `-m / --theme-mode`            | `multi`                                                  | Theme mode.                                                          |
+| `-b / --built-in-icon-library` | `default`                                                | Initial built-in icon library. Also supports `--builtInIconLibrary`. |
+| `-p / --package-manager`       | Detected from the invoking package manager; bun fallback | bun, npm, pnpm, or yarn.                                             |
 
-`default` initializes the generated project with the current component default, `remix`.
+## Icon Usage
 
-## Templates
+| Short name   | Description                                                                                           |
+| ------------ | ----------------------------------------------------------------------------------------------------- |
+| `svg-symbol` | Use `@any-tdf/vite-plugin-svg-symbol` for SVG symbols.                                                |
+| `iconify`    | Use Iconify icon sets. Tailwind CSS v4 uses `@iconify/tailwind4`; UnoCSS uses `@unocss/preset-icons`. |
+| `both`       | Configure both SVG Symbol and Iconify.                                                                |
+| `none`       | Do not configure an icon solution. Configure it later.                                                |
 
-| Framework     | Templates                      |
-| ------------- | ------------------------------ |
-| Svelte / STDF | `sktt`, `skut`, `vstt`, `vsut` |
-| React / RTDF  | `vrtt`, `vrut`                 |
-| Vue / VTDF    | `vrtt`, `vrut`                 |
+The generated demo also supports switching VTDF built-in icon libraries from the theme panel.
 
-All templates are TypeScript projects. Tailwind CSS v4 and UnoCSS are both supported.
+## Built-in Icon Library
+
+| Short name | Description                        |
+| ---------- | ---------------------------------- |
+| `default`  | Use VTDF default, currently Remix. |
+| `remix`    | Remix Icon.                        |
+| `lucide`   | Lucide.                            |
+| `phosphor` | Phosphor Icons.                    |
+| `tabler`   | Tabler Icons.                      |
+| `iconoir`  | Iconoir.                           |
+| `reicon`   | Reicon.                            |
+
+## Theme Mode
+
+| Short name | Description                                              |
+| ---------- | -------------------------------------------------------- |
+| `single`   | Generate only the baseline ANYTDF theme.                 |
+| `multi`    | Generate the ANYTDF, Sage, and GoldWood built-in themes. |
+| `all`      | Generate all 42 built-in themes.                         |

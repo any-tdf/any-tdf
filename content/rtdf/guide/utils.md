@@ -73,6 +73,7 @@ import { debounce, throttle, rgbToOklch } from 'rtdf/utils';
 | oklchObjToHex    | OKLCH 对象转 HEX               |
 | oklchObjToRgbStr | OKLCH 对象转 RGB 字符串        |
 | oklchStrToHex    | OKLCH 字符串转 HEX             |
+| oklchStrToRgbStr | OKLCH 字符串转 RGB 字符串      |
 | hexToOklch       | HEX 转 OKLCH 对象              |
 | hexToOklchStr    | HEX 转 OKLCH 字符串            |
 | rgbStrToOklch    | RGB 字符串转 OKLCH 对象        |
@@ -924,6 +925,16 @@ import { oklchStrToHex } from 'rtdf/utils';
 
 oklchStrToHex('oklch(0.7 0.15 30)');
 // "#e8a266"
+```
+
+### oklchStrToRgbStr
+
+将 OKLCH 字符串转换为 RGB 字符串。无法解析的输入返回 `rgb(0, 0, 0)`。
+
+```javascript
+import { oklchStrToRgbStr } from 'rtdf/utils';
+
+oklchStrToRgbStr('oklch(0.7 0.15 30)');
 ```
 
 ### hexToOklchStr

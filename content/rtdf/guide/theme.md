@@ -5,7 +5,7 @@
 使用 Tailwind CSS 的暗模式配置，请在项目入口 CSS 文件中做如下 `@custom-variant` 配置，参考 [Dark Mode](https://tailwindcss.com/docs/dark-mode)。
 
 ```css
-@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=primary], [data-mode=primary] *):not([data-mode=dark], [data-mode=dark] *)));
 ```
 
 > 此配置支持嵌套模式切换，可以在暗色区域内嵌入亮色区域，反之亦然。
@@ -116,7 +116,7 @@ RTDF 内置了 42 套精心设计的主题，只需传入主题名称即可使�
 
 > **注意**：键名不需要 `--` 前缀，插件会自动添加。
 
-> 可到<a href="/guide/generator" target="_blank">主题生成器</a>快速选择颜色并生成配置文件。
+> 可到<a href="/generator" target="_blank">主题生成器</a>快速选择颜色并生成配置文件。
 
 ### 单主题模式
 
@@ -207,7 +207,11 @@ RTDF 内置了 42 套精心设计的主题，只需传入主题名称即可使�
 
 ### 主题变量说明
 
-#### 内置主题
+##
+
+`ConfigProvider` 默认使用 `theme="ANYTDF"`、`mode="primary"` 和 `syncTheme=true`，并将主题和模式同步到全局根元素。自行管理 CSS 变量或调用主题切换方法时，请将 `syncTheme` 设为 `false`，避免配置容器初始化时覆盖已有配置。嵌套的语言配置容器也应设置 `syncTheme=false`。
+
+## 内置主题
 
 使用内置主题时，只需传入主题名称，所有颜色值由插件自动计算生成。
 
@@ -259,45 +263,47 @@ import { getTheme } from 'rtdf/theme';
 const currentTheme = getTheme();
 ```
 
+`switchTheme` 可以接收主题名，也可以接收完整的 `ThemeConfig` 或 `ThemeProps` 对象。`ANYTDF` 等内置主题名会向根元素写入内联颜色变量；需要保留普通 CSS 定制时，请使用独立自定义主题名或传入定制对象。`getTheme()` 和 `getMode()` 在对应属性未设置或没有浏览器文档时返回 `null`。主题初始化应在客户端执行，服务端渲染的 HTML 属性需要单独设置。
+
 ### HTML 中使用
 
 主题切换通过 `data-theme` 属性实现：
 
 ```html
 <!-- 默认主题 -->
-<html>
-	<!-- 使用 Nintendo 主题 -->
-	<html data-theme="Nintendo">
-		<!-- 使用自定义主题 -->
-		<html data-theme="MyTheme"></html>
-	</html>
-</html>
+<html data-theme="ANYTDF"></html>
+
+<!-- Nintendo 主题 -->
+<html data-theme="Nintendo"></html>
+
+<!-- 自定义主题 -->
+<html data-theme="MyTheme"></html>
 ```
 
 ## 内置主题
 
 RTDF 内置了 42 套精心设计的主题，可直接使用：
 
-| 主题名       | 中文名   | 主题名     | 中文名   |
-| ------------ | -------- | ---------- | -------- |
-| RTDF         | RTDF     | Nintendo   | 红蓝天堂 |
-| Ocean        | 海蓝金沙 | Forest     | 翠林暖棕 |
-| Sunset       | 橙霞蓝天 | Cherry     | 粉樱翠影 |
-| Twilight     | 暮紫粉霞 | Amber      | 琥珀紫韵 |
-| Mint         | 薄荷玫红 | Coral      | 珊瑚碧蓝 |
-| Slate        | 石墨暖棕 | Emerald    | 翡翠丹霞 |
-| Crimson      | 绯红碧波 | Navy       | 藏蓝珊瑚 |
-| Olive        | 橄榄紫烟 | Plum       | 梅紫青翠 |
-| Cyan         | 青碧暖橙 | Tangerine  | 蜜橘深蓝 |
-| Sage         | 草绿粉紫 | Berry      | 浆紫嫩绿 |
-| Wine         | 酒红翠青 | IKEA       | 宜家蓝黄 |
-| Ferrari      | 法拉红金 | Tiffany    | 蒂芙蓝白 |
-| Pepsi        | 百事蓝红 | Spotify    | 声田绿米 |
-| Netflix      | 奈飞红白 | Hermes     | 爱马橙棕 |
-| CocaCola     | 可乐红白 | Starbucks  | 星巴绿棕 |
-| McDonalds    | 金拱红黄 | Gucci      | 古驰绿红 |
-| Chanel       | 香奈黑米 | Rolex      | 劳力绿金 |
-| LouisVuitton | 路威棕金 | Mastercard | 万事红橙 |
+| 主题名       | 中文名       | 主题名     | 中文名   |
+| ------------ | ------------ | ---------- | -------- |
+| ANYTDF       | 共享默认主题 | Nintendo   | 红蓝天堂 |
+| Ocean        | 海蓝金沙     | Forest     | 翠林暖棕 |
+| Sunset       | 橙霞蓝天     | Cherry     | 粉樱翠影 |
+| Twilight     | 暮紫粉霞     | Amber      | 琥珀紫韵 |
+| Mint         | 薄荷玫红     | Coral      | 珊瑚碧蓝 |
+| Slate        | 石墨暖棕     | Emerald    | 翡翠丹霞 |
+| Crimson      | 绯红碧波     | Navy       | 藏蓝珊瑚 |
+| Olive        | 橄榄紫烟     | Plum       | 梅紫青翠 |
+| Cyan         | 青碧暖橙     | Tangerine  | 蜜橘深蓝 |
+| Sage         | 草绿粉紫     | Berry      | 浆紫嫩绿 |
+| Wine         | 酒红翠青     | IKEA       | 宜家蓝黄 |
+| Ferrari      | 法拉红金     | Tiffany    | 蒂芙蓝白 |
+| Pepsi        | 百事蓝红     | Spotify    | 声田绿米 |
+| Netflix      | 奈飞红白     | Hermes     | 爱马橙棕 |
+| CocaCola     | 可乐红白     | Starbucks  | 星巴绿棕 |
+| McDonalds    | 金拱红黄     | Gucci      | 古驰绿红 |
+| Chanel       | 香奈黑米     | Rolex      | 劳力绿金 |
+| LouisVuitton | 路威棕金     | Mastercard | 万事红橙 |
 
 ## 总结
 

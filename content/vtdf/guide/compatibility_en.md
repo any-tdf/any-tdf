@@ -1,4 +1,4 @@
-> VTDF 0.0.1 is based on Vue 3.5 and Tailwind CSS v4.
+> VTDF 0.0.1 uses Vue 3.5 and Tailwind CSS 4.
 
 ## Vue
 
@@ -6,11 +6,11 @@ VTDF is built on Vue 3.5 and requires Vue 3.5 or later. If your target browsers 
 
 ## Event Syntax
 
-VTDF only supports Vue event listeners. In templates, use events such as `@change`, `@click`, and `@close`; callback props such as `onChange` and lowercase aliases such as `onclick` are no longer supported.
+Use Vue template listeners such as `@change`, `@click`, and `@close`, and use `v-model` or named models documented by each component. Vue render functions use the corresponding Vue event listener properties; follow the VTDF API instead of copying React callback props.
 
 ## Tailwind CSS
 
-According to [Browser Support](https://tailwindcss.com/docs/browser-support), the styles within the VTDF component library already support modern browsers. If you encounter any issues, please refer to [Can I Use](https://caniuse.com).
+Tailwind CSS 4 targets Chrome 111+, Safari 16.4+, and Firefox 128+. See the official [browser compatibility documentation](https://tailwindcss.com/docs/compatibility#browser-support). JavaScript polyfills do not replace support for the CSS features used by Tailwind CSS 4.
 
 ## Special Considerations
 

@@ -16,4 +16,4 @@ After experiencing Svelte and Tailwind, I found that developing with them is rea
 
 ## Applicable Scenarios
 
-There is a mobile business scenario where the application is not too complex, and developing with Vue or React may appear to be "overkill." The entire application package JS size may only be a few tens of KB, but using Vue or React would result in the base sizes of these two libraries exceeding tens of KB, which would be too costly. Additionally, it is not desirable to have a large volume of To C applications on mobile platforms. However, developing with pure native JS would appear to be inefficient. In such cases, Svelte is a good choice. Its concise syntax gives native JS code responsive capabilities.
+STDF is designed for mobile applications built with Svelte, especially projects that need configurable components, consistent themes, and direct control over interaction and page size. Evaluate the framework and component choices against the needs and build output of your own application.

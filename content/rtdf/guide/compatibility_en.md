@@ -1,16 +1,18 @@
-> RTDF 0.0.1 is based on React 18/19 and Tailwind CSS v4.
+> RTDF 0.0.1 uses React 18/19 and Tailwind CSS 4.
 
 ## React
 
 RTDF is built on React and requires React 18 or React 19. If your target browsers require polyfills in the React ecosystem, please include them in your project setup.
 
-## STDF Event Aliases
+## Events and State Binding
 
-RTDF recommends React-style event names such as `onChange`, `onClick`, and `onClose`. To reduce migration cost from STDF to RTDF, components also keep STDF-style lowercase event aliases such as `onchange`, `onclick`, and `onclose`. If both names are provided for the same event, the component calls both handlers.
+RTDF uses React-style event names such as `onChange`, `onClick`, and `onClose`. Only some components expose lowercase compatibility aliases, such as PullRefresh's `onrefresh` and `onchange`, and Input's `onkeydown`. Check each component API; STDF-style lowercase events cannot be applied to every RTDF component.
+
+React applications manage component state through props and callbacks. Custom content uses ReactNode or the render functions declared by each component. Svelte bindings and snippets, and Vue models and slots, do not apply to React JSX.
 
 ## Tailwind CSS
 
-According to [Browser Support](https://tailwindcss.com/docs/browser-support), the styles within the RTDF component library already support modern browsers. If you encounter any issues, please refer to [Can I Use](https://caniuse.com).
+Tailwind CSS 4 targets Chrome 111+, Safari 16.4+, and Firefox 128+. See the official [browser compatibility documentation](https://tailwindcss.com/docs/compatibility#browser-support). JavaScript polyfills do not replace support for the CSS features used by Tailwind CSS 4.
 
 ## Special Considerations
 

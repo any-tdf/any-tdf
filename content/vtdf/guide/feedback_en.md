@@ -7,15 +7,20 @@ VTDF provides functional API for 5 feedback components, allowing you to use them
 Before using the functional API, add the `Feedback` component to your app's root layout:
 
 ```vue
-import { Feedback } from 'vtdf';
+<script setup lang="ts">
+import { ConfigProvider, Feedback } from 'vtdf';
+import { en_US } from 'vtdf/lang';
+</script>
 
-const App = () => (
-  <>
-    <Routes />
-    <Feedback />
-  </>
-);
+<template>
+	<ConfigProvider :locale="en_US">
+		<slot />
+		<Feedback />
+	</ConfigProvider>
+</template>
 ```
+
+Mount exactly one Feedback container. It uses global state; a local locale at a call site is not selected automatically. ConfigProvider configures the application but does not replace Feedback.
 
 ## Toast
 
@@ -124,18 +129,20 @@ loading.hide();
 // utils/request.ts
 import { toast, loading } from 'vtdf';
 
-export async function request(url: string) {
+export const request = async (url: string) => {
 	loading.show('Loading...');
-	const res = await fetch(url);
-	loading.hide();
 
-	if (!res.ok) {
-		toast.error('Request failed');
-		throw new Error('Request failed');
+	try {
+		const res = await fetch(url);
+		if (!res.ok) {
+			toast.error('Request failed');
+			throw new Error('Request failed');
+		}
+		return await res.json();
+	} finally {
+		loading.hide();
 	}
-
-	return res.json();
-}
+};
 ```
 
 ### Delete Confirmation
@@ -143,19 +150,23 @@ export async function request(url: string) {
 ```typescript
 import { toast, dialog, loading } from 'vtdf';
 
-async function deleteItem(id: string) {
-	const confirmed = await dialog.confirm('Are you sure to delete this record?', 'Delete Confirmation');
+const deleteItem = async (id: string) => {
+	const confirmed = await dialog.confirm('Delete this record?', 'Delete Confirmation');
+	if (!confirmed) return false;
 
-	if (confirmed) {
-		loading.show('Deleting...');
-		await fetch(`/api/items/${id}`, { method: 'DELETE' });
-		loading.hide();
+	loading.show('Deleting...');
+	try {
+		const res = await fetch(`/api/items/${id}`, { method: 'DELETE' });
+		if (!res.ok) {
+			toast.error('Deletion failed');
+			throw new Error('Deletion failed');
+		}
 		toast.success('Deleted successfully');
 		return true;
+	} finally {
+		loading.hide();
 	}
-
-	return false;
-}
+};
 ```
 
 ## Features
@@ -169,11 +180,11 @@ async function deleteItem(id: string) {
 
 The functional API cannot support all component features for simplified calling:
 
-| Unsupported Feature        | Description                                                                     |
-| -------------------------- | ------------------------------------------------------------------------------- |
-| **Render Props**           | Cannot pass `children`, `contentChild`, `primaryChild` and other custom content |
-| **Controlled Visible**     | Cannot use `visible` with `@close` for state synchronization                    |
-| **Complex Custom Content** | Cannot insert custom components or complex layouts in prompts                   |
+| Unsupported Feature        | Description                                                   |
+| -------------------------- | ------------------------------------------------------------- |
+| **Slots**                  | Cannot pass default or named slots for custom content.        |
+| **Two-way binding**        | Cannot bind functional API visibility with `v-model:visible`. |
+| **Complex Custom Content** | Cannot insert custom components or complex layouts in prompts |
 
 ## Usage Recommendations
 

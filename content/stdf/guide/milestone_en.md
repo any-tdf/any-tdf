@@ -1,3 +1,7 @@
+## Stable Release
+
+STDF 3.0.0 has been published with the npm latest tag. The v3 release shares framework-neutral logic, themes, locales, and icons with RTDF and VTDF; existing v2 applications should follow the [upgrade guide](/guide/upgrade).
+
 ## 2026-08-04
 
 The project entered the v3 development cycle and evolved into the Any TDF Monorepo. STDF, RTDF, VTDF, the shared core, Demos, documentation sites, and build tooling now live in one workspace, supported by cross-framework parity checks and a unified release system for long-term coordinated development.
@@ -16,7 +20,7 @@ Support multi-theme configuration @0.4.0.
 
 ## 2023-08-24
 
-Completed the unified template scaffolding tool [create-any-tdf](https://www.npmjs.com/package/create-any-tdf), Vite/Rollup plugin [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon), and VS Code plugin [STDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension) for STDF.
+Completed the original STDF scaffold `create-stdf` (now consolidated into [create-any-tdf](https://www.npmjs.com/package/create-any-tdf)), Vite/Rollup plugin [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon), and VS Code plugin [STDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension) for STDF.
 
 ## 2023-07-23
 

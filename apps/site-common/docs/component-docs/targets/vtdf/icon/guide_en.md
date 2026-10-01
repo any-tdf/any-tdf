@@ -1,4 +1,4 @@
-> Starting from v1.1.0, VTDF supports using icons via [Iconify](https://iconify.design).
+> VTDF supports using icons via [Iconify](https://iconify.design).
 
 ## Usage
 

@@ -100,16 +100,21 @@ switchTheme('ANYTDF');
 <html data-theme="ANYTDF"></html>
 ```
 
-Migrate the old value if your project stores theme names in `localStorage`, a server-side user preference, or a URL parameter:
+Migrate the old value if your project stores theme names in `localStorage`, a server-side user preference, or a URL parameter. Code that accesses `localStorage` must run on the client. For example, use `onMount` in the SvelteKit root layout to avoid accessing browser APIs during server-side rendering:
 
-```ts
-import { switchTheme } from 'stdf/theme';
+```svelte
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { switchTheme } from 'stdf/theme';
 
-const savedTheme = localStorage.getItem('theme_color');
-const theme = savedTheme === 'STDF' ? 'ANYTDF' : (savedTheme ?? 'ANYTDF');
+	onMount(() => {
+		const savedTheme = localStorage.getItem('theme_color');
+		const theme = savedTheme === 'STDF' ? 'ANYTDF' : (savedTheme ?? 'ANYTDF');
 
-localStorage.setItem('theme_color', theme);
-switchTheme(theme);
+		localStorage.setItem('theme_color', theme);
+		switchTheme(theme);
+	});
+</script>
 ```
 
 Other built-in theme names and custom theme names are unchanged. The public theme import remains the same:
@@ -119,6 +124,8 @@ import { getMode, getTheme, switchMode, switchTheme, themes } from 'stdf/theme';
 ```
 
 In 3.x, `switchTheme` can also receive a `ThemeConfig` or `ThemeProps` object directly. Existing string calls remain supported.
+
+There is a runtime behavior change to check: in 2.x, `switchTheme('Sage')` only sets `data-theme`. In 3.x, a matching built-in theme also writes inline color variables on the root element. If your application overrides a built-in theme's colors through ordinary CSS, calling `switchTheme` may override those values with inline variables. Use a distinct custom theme name, or pass a complete `ThemeConfig` or `ThemeProps` object containing your customized values to `switchTheme`. See [Theme Configuration](/guide/theme) for configuration details.
 
 ## 4. Manage Global Configuration with ConfigProvider
 
@@ -298,16 +305,30 @@ bun create any-tdf stdf-app -f svelte
 
 Do not rerun the scaffold to upgrade an existing application. Apply the migration steps in this guide to the current project instead.
 
+## 9. Check the Initial TimePicker Date
+
+3.x fixes a mismatch between the initial TimePicker day column and the selected year and month. The day column now uses the effective initial year and month, and an `initDay` beyond the end of that month is clamped to its final day. The displayed selection and confirmation callback value agree. For example:
+
+```svelte
+<TimePicker type="YYYYMMDD" yearRange={[2024, 2025]} initYear="2024" initMonth="02" initDay="31" />
+```
+
+This configuration initially selects `2024-02-29`, and the confirmation callback's `timeStr` is also `2024-02-29`. Changing `initYear` to `2025` makes both values `2025-02-28`, regardless of the current month.
+
+Existing props and callback fields do not need to be renamed. Update any business logic or tests that depend on the previous out-of-range date behavior. Cover leap years, non-leap years, an initial month different from the current month, end-of-month clamping, and confirmation after scrolling.
+
 ## Migration Checklist
 
 - [ ] Upgrade `stdf` to 3.x while keeping Svelte 5 and Tailwind CSS 4.
 - [ ] Import `stdf/source.css` in the entry CSS and remove STDF-specific manual `@source` paths.
 - [ ] Rename the built-in `STDF` theme to `ANYTDF`.
 - [ ] Migrate persisted `STDF` values in `localStorage`, server-side settings, or URLs.
+- [ ] Run browser theme persistence logic on the client and check CSS overrides of built-in theme colors.
 - [ ] Update `LangProps` fields when using a full custom locale.
 - [ ] Adopt `ConfigProvider` for the locale and built-in icon library when useful.
 - [ ] Keep exactly one `<Feedback />` mounted when using functional feedback APIs.
 - [ ] Recheck styles and tests that depend on private component DOM or classes.
+- [ ] When using TimePicker, verify the initial date, end-of-month clamping, and confirmation callback value.
 - [ ] Run the application's type check, production build, and critical-page regression tests.
 
 Related documentation: [Quick Start](/guide), [Theme](/guide/theme), [Internationalization](/guide/internation), [Icon](/guide/icon), and [Functional Feedback](/guide/feedback).

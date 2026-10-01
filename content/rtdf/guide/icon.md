@@ -1,4 +1,4 @@
-> 从 v1.1.0 开始，RTDF 支持 [Iconify](https://iconify.design) 方式使用图标。
+> RTDF 支持 [Iconify](https://iconify.design) 方式使用图标。
 
 ## SVG Sprites
 
@@ -144,7 +144,7 @@ RTDF 的部分组件内部会使用内置 SVG，例如 `Alert`、`Toast`、`Chec
 </ConfigProvider>
 ```
 
-`builtInIconLibrary` 只影响组件内部使用的内置 SVG，不影响 `Icon` 组件自身的 `symbol`、`iconify` 和 `iconify-color` 用法。`iconPath` 仍然只用于配置外部 SVG Symbol 文件路径。
+`builtInIconLibrary` 只影响组件内部使用的内置 SVG，不影响 `Icon` 组件自身的 `symbol`、`iconify` 和 `iconify-color` 用法。ConfigProvider 的 `iconPath` 配置外部 SVG Symbol 文件路径，单个 Icon 可通过 `path` 覆盖。
 
 <!-- built-in-icon-gallery -->
 

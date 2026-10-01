@@ -29,15 +29,16 @@ bun create any-tdf my-app -f react -t vrut -l en_US -i both -m all -b lucide
 
 ## Options
 
-| Option                         | Default                          | Description                                                          |
-| ------------------------------ | -------------------------------- | -------------------------------------------------------------------- |
-| `-`                            | -                                | Project name, passed directly.                                       |
-| `-f / --framework`             | required in non-interactive mode | `svelte`, `react`, or `vue`. Use `react` for RTDF.                   |
-| `-t / --template`              | `vrtt`                           | Template to use.                                                     |
-| `-l / --language`              | `en_US`                          | Prompt language.                                                     |
-| `-i / --icon-usage`            | `svg-symbol`                     | Icon usage mode. Also accepts legacy `any-tdf-icon`.                 |
-| `-m / --theme-mode`            | `multi`                          | Theme mode.                                                          |
-| `-b / --built-in-icon-library` | `default`                        | Initial built-in icon library. Also supports `--builtInIconLibrary`. |
+| Option                         | Default                                                  | Description                                                          |
+| ------------------------------ | -------------------------------------------------------- | -------------------------------------------------------------------- |
+| `-`                            | -                                                        | Project name, passed directly.                                       |
+| `-f / --framework`             | required in non-interactive mode                         | `svelte`, `react`, or `vue`. Use `react` for RTDF.                   |
+| `-t / --template`              | `vrtt`                                                   | Template to use.                                                     |
+| `-l / --language`              | `en_US`                                                  | Prompt language.                                                     |
+| `-i / --icon-usage`            | `svg-symbol`                                             | Icon usage mode. Also accepts legacy `any-tdf-icon`.                 |
+| `-m / --theme-mode`            | `multi`                                                  | Theme mode.                                                          |
+| `-b / --built-in-icon-library` | `default`                                                | Initial built-in icon library. Also supports `--builtInIconLibrary`. |
+| `-p / --package-manager`       | Detected from the invoking package manager; bun fallback | bun, npm, pnpm, or yarn.                                             |
 
 ## Icon Usage
 

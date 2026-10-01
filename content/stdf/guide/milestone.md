@@ -1,3 +1,7 @@
+## 正式版
+
+STDF 3.0.0 已通过 npm 的 latest 标签发布。v3 版本与 RTDF、VTDF 共享框架无关逻辑、主题、语言和图标，已有 v2 项目请参考[升级指南](/guide/upgrade)。
+
 ## 2026-08-04
 
 进入 v3 大版本迭代，项目升级为 Any TDF Monorepo。STDF、RTDF、VTDF、共享核心、Demo、文档站与构建工具统一纳入同一工作区，并建立跨框架一致性校验和统一发布体系，为三套组件库长期协同演进奠定基础。
@@ -16,7 +20,7 @@ v1 版本发布，完整支持 Svelte v5、Tailwind CSS v4 与 TypeScript。
 
 ## 2023-08-24
 
-完成 STDF 配套的统一模板脚手架 [create-any-tdf](https://www.npmjs.com/package/create-any-tdf)，Vite/Rollup 插件 [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon)，VS Code 插件 [STDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension)。
+完成原 STDF 模板脚手架 `create-stdf`（现已整合为 [create-any-tdf](https://www.npmjs.com/package/create-any-tdf)），Vite/Rollup 插件 [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon)，VS Code 插件 [STDF for VS Code](https://marketplace.visualstudio.com/items?itemName=STDF.stdf-vscode-extension)。
 
 ## 2023-07-23
 

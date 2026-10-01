@@ -100,16 +100,21 @@ switchTheme('ANYTDF');
 <html data-theme="ANYTDF"></html>
 ```
 
-如果项目把主题名保存到了 `localStorage`、服务端用户配置或 URL 参数中，也要把旧值迁移为 `ANYTDF`。例如：
+如果项目把主题名保存到了 `localStorage`、服务端用户配置或 URL 参数中，也要把旧值迁移为 `ANYTDF`。访问 `localStorage` 的代码应在客户端执行。例如，在 SvelteKit 根布局中通过 `onMount` 迁移，避免服务端渲染时访问浏览器 API：
 
-```ts
-import { switchTheme } from 'stdf/theme';
+```svelte
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { switchTheme } from 'stdf/theme';
 
-const savedTheme = localStorage.getItem('theme_color');
-const theme = savedTheme === 'STDF' ? 'ANYTDF' : (savedTheme ?? 'ANYTDF');
+	onMount(() => {
+		const savedTheme = localStorage.getItem('theme_color');
+		const theme = savedTheme === 'STDF' ? 'ANYTDF' : (savedTheme ?? 'ANYTDF');
 
-localStorage.setItem('theme_color', theme);
-switchTheme(theme);
+		localStorage.setItem('theme_color', theme);
+		switchTheme(theme);
+	});
+</script>
 ```
 
 其他内置主题名和自定义主题名不受影响。以下公开路径也没有变化：
@@ -119,6 +124,8 @@ import { getMode, getTheme, switchMode, switchTheme, themes } from 'stdf/theme';
 ```
 
 `switchTheme` 在 3.x 中还可以直接接收 `ThemeConfig` 或 `ThemeProps` 对象，但已有的字符串调用方式仍然可用。
+
+需要注意运行时行为的变化：2.x 的 `switchTheme('Sage')` 只设置 `data-theme`，3.x 匹配到内置主题时还会向根元素写入内联颜色变量。因此，如果项目通过普通 CSS 覆盖同名内置主题的颜色，调用 `switchTheme` 后可能被内联变量覆盖。此类定制应使用独立的自定义主题名，或向 `switchTheme` 传入包含定制值的完整 `ThemeConfig` 或 `ThemeProps` 对象。具体配置见[主题配置](/guide/theme)。
 
 ## 4. 使用 ConfigProvider 管理全局配置
 
@@ -298,16 +305,30 @@ bun create any-tdf stdf-app -f svelte
 
 不要为了升级已有项目重新运行脚手架。脚手架只用于创建新项目，已有项目按本文逐项修改即可。
 
+## 9. 检查 TimePicker 初始日期
+
+3.x 修复了 TimePicker 初始日期列与所选年月不一致的问题。日期列按有效的初始年月生成，`initDay` 超过该月天数时会截到月末，显示的选中日期与确认回调值保持一致。例如：
+
+```svelte
+<TimePicker type="YYYYMMDD" yearRange={[2024, 2025]} initYear="2024" initMonth="02" initDay="31" />
+```
+
+此配置初始选中 `2024-02-29`，确认回调中的 `timeStr` 也是 `2024-02-29`。将 `initYear` 改为 `2025` 时，两者均为 `2025-02-28`，不受当前月份影响。
+
+已有 Props 和回调字段不需要改名。如果业务逻辑或测试依赖旧的越界日期行为，需要调整对应预期。建议覆盖闰年、非闰年、初始月份不同于当前月份、月末截断，以及滚动后的确认值。
+
 ## 迁移检查清单
 
 - [ ] 将 `stdf` 升级到 3.x，并保持 Svelte 5、Tailwind CSS 4。
 - [ ] 在入口 CSS 中引入 `stdf/source.css`，删除 STDF 专用的手动 `@source` 路径。
 - [ ] 将内置主题名 `STDF` 改为 `ANYTDF`。
 - [ ] 迁移 `localStorage`、服务端配置或 URL 中持久化的 `STDF` 主题值。
+- [ ] 将浏览器主题持久化逻辑放在客户端执行，并检查对内置主题颜色的 CSS 覆盖。
 - [ ] 如果使用完整自定义语言包，更新 `LangProps` 字段。
 - [ ] 根据需要使用 `ConfigProvider` 统一语言和内置图标库。
 - [ ] 使用函数式反馈 API 时，确认应用中仍然只挂载一个 `<Feedback />`。
 - [ ] 检查依赖组件内部 DOM 或 class 的自定义样式与测试。
+- [ ] 使用 TimePicker 时，验证初始日期、月末截断和确认回调值。
 - [ ] 执行项目的类型检查、构建和关键页面回归测试。
 
 相关文档：[快速上手](/guide)、[主题配置](/guide/theme)、[国际化](/guide/internation)、[图标](/guide/icon)和[函数式反馈](/guide/feedback)。

@@ -5,7 +5,7 @@
 Use the Tailwind CSS dark mode configuration, please make the following `@custom-variant` configuration in the project entry CSS file, reference [Dark Mode](https://tailwindcss.com/docs/dark-mode).
 
 ```css
-@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=light], [data-mode=light] *):not([data-mode=dark], [data-mode=dark] *)));
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *):not(:where([data-mode=primary], [data-mode=primary] *):not([data-mode=dark], [data-mode=dark] *)));
 ```
 
 > This configuration supports nested mode switching, allowing light areas within dark areas and vice versa.
@@ -116,7 +116,7 @@ When creating custom themes, **`color-primary` and `color-dark` only need base c
 
 > **Note**: Key names don't need the `--` prefix, the plugin will add it automatically.
 
-> Go to the <a href="/guide/generator" target="_blank">Theme Generator</a> to quickly select colors and generate configuration files.
+> Go to the <a href="/generator" target="_blank">Theme Generator</a> to quickly select colors and generate configuration files.
 
 ### Single Theme Mode
 
@@ -207,7 +207,11 @@ When using multiple themes, you need to declare **default theme** CSS variables 
 
 ### Theme Variable Reference
 
-#### Built-in Themes
+##
+
+`ConfigProvider` defaults to `theme="ANYTDF"`, `mode="primary"`, and `syncTheme=true`, and synchronizes them to the global root element. When managing CSS variables or switching themes yourself, set `syncTheme` to `false` to prevent provider initialization from replacing that configuration. Nested locale providers should also use `syncTheme=false`.
+
+## Built-in Themes
 
 When using built-in themes, you only need to pass the theme name, and all color values are automatically calculated by the plugin.
 
@@ -265,13 +269,13 @@ Theme switching is implemented through the `data-theme` attribute:
 
 ```html
 <!-- Default theme -->
-<html>
-	<!-- Use Nintendo theme -->
-	<html data-theme="Nintendo">
-		<!-- Use custom theme -->
-		<html data-theme="MyTheme"></html>
-	</html>
-</html>
+<html data-theme="ANYTDF"></html>
+
+<!-- Nintendo theme -->
+<html data-theme="Nintendo"></html>
+
+<!-- Custom theme -->
+<html data-theme="MyTheme"></html>
 ```
 
 ## Built-in Themes
@@ -280,7 +284,7 @@ RTDF comes with 42 carefully designed themes that can be used directly:
 
 | Theme        | Description             | Theme      | Description             |
 | ------------ | ----------------------- | ---------- | ----------------------- |
-| RTDF         | Default RTDF theme      | Nintendo   | Red & Blue Classic      |
+| ANYTDF       | Shared default theme    | Nintendo   | Red & Blue Classic      |
 | Ocean        | Ocean Blue & Sand       | Forest     | Forest & Warm Brown     |
 | Sunset       | Orange Sky & Blue       | Cherry     | Cherry & Teal           |
 | Twilight     | Purple & Gold           | Amber      | Amber & Purple          |

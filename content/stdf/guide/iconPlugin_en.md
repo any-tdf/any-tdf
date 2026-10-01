@@ -1,4 +1,4 @@
-[简体中文](./iconPlugin.md)
+[简体中文](/guide/icon-plugin?lang=zh_CN)
 
 [![Public Status](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 
@@ -48,18 +48,21 @@ Configure the plugin in vite.config.js or vite.config.ts:
 
 ```js
 // ...
+import { defineConfig } from 'vite';
 import svgSymbol from '@any-tdf/vite-plugin-svg-symbol';
 
 export default defineConfig({
 	// ...
 	plugins: [
 		// ...
-		svgSymbol()
+		svgSymbol([{ inFile: 'src/lib/symbol', outFile: 'static/fonts', fileName: 'symbol' }])
 		// ...
 	]
 	// ...
 });
 ```
+
+The examples above target SvelteKit and write sprites to `static/fonts`. For Vite Svelte, use `public/fonts` instead. The plugin default remains `public/fonts`.
 
 For Rollup, register the same plugin in rollup.config.js and it will run during build (no dev watcher).
 
@@ -72,12 +75,17 @@ Generally, you can simply place the SVG files in the default input folder withou
 If you need to modify the input/output folders and the filename of the combined file, or if you need to combine multiple folders, you can customize the configuration in vite.config.js or vite.config.ts:
 
 ```javascript
-// ...
-    svgSymbol([
-        { inFile: 'src/lib/svgs', outFile: 'public/fonts', fileName: 'symbol' },
-        { inFile: 'src/lib/icons', outFile: 'public/fonts', fileName: 'icon' },
-    ]),
-// ...
+import { defineConfig } from 'vite';
+import svgSymbol from '@any-tdf/vite-plugin-svg-symbol';
+
+export default defineConfig({
+	plugins: [
+		svgSymbol([
+			{ inFile: 'src/lib/svgs', outFile: 'static/fonts', fileName: 'symbol' },
+			{ inFile: 'src/lib/icons', outFile: 'static/fonts', fileName: 'icon' }
+		])
+	]
+});
 ```
 
 This configuration will combine two symbols. **When using the STDF Icon component, please update `path` to the corresponding `fonts/symbol.svg` or `fonts/icon.svg`**.

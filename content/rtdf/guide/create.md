@@ -29,15 +29,16 @@ bun create any-tdf my-app -f react -t vrut -l zh_CN -i both -m all -b lucide
 
 ## 命令选项
 
-| 命令                           | 默认           | 描述                                              |
-| ------------------------------ | -------------- | ------------------------------------------------- |
-| `-`                            | -              | 项目名称，可以直接输入。                          |
-| `-f / --framework`             | 非交互模式必填 | `svelte`、`react` 或 `vue`。RTDF 使用 `react`。   |
-| `-t / --template`              | `vrtt`         | 要使用的模板。                                    |
-| `-l / --language`              | `en_US`        | 提示语言。                                        |
-| `-i / --icon-usage`            | `svg-symbol`   | 图标使用方式，兼容旧值 `any-tdf-icon`。           |
-| `-m / --theme-mode`            | `multi`        | 主题模式。                                        |
-| `-b / --built-in-icon-library` | `default`      | 初始内置图标库，同时支持 `--builtInIconLibrary`。 |
+| 命令                           | 默认                                     | 描述                                              |
+| ------------------------------ | ---------------------------------------- | ------------------------------------------------- |
+| `-`                            | -                                        | 项目名称，可以直接输入。                          |
+| `-f / --framework`             | 非交互模式必填                           | `svelte`、`react` 或 `vue`。RTDF 使用 `react`。   |
+| `-t / --template`              | `vrtt`                                   | 要使用的模板。                                    |
+| `-l / --language`              | `en_US`                                  | 提示语言。                                        |
+| `-i / --icon-usage`            | `svg-symbol`                             | 图标使用方式，兼容旧值 `any-tdf-icon`。           |
+| `-m / --theme-mode`            | `multi`                                  | 主题模式。                                        |
+| `-b / --built-in-icon-library` | `default`                                | 初始内置图标库，同时支持 `--builtInIconLibrary`。 |
+| `-p / --package-manager`       | 自动识别调用所用包管理器，未识别时为 bun | bun、npm、pnpm 或 yarn。                          |
 
 ## 图标使用方式
 

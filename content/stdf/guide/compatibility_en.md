@@ -1,12 +1,14 @@
-> STDF 3.0.0 is based on Svelte v5 and Tailwind CSS v4.
+> STDF 3.0.0 uses Svelte 5 and Tailwind CSS 4.
 
 ## Svelte
 
-Most modern browsers on the market already support Svelte v5. Old versions of Internet Explorer may require polyfills, but since mobile devices generally do not use IE and Microsoft has also abandoned IE, we won't discuss it here.
+STDF requires Svelte 5. Applications should target modern browsers that meet the Tailwind CSS 4 baseline below. Internet Explorer does not meet that baseline.
+
+Use the lowercase callback props declared by each component, such as `onclick` and `onchange`, the corresponding Svelte bindings, and snippets for custom content. Do not copy React event names or Vue slot syntax directly.
 
 ## Tailwind CSS
 
-According to [Browser Support](https://tailwindcss.com/docs/browser-support), the styles within the STDF component library already support modern browsers. If you encounter any issues, please refer to [Can I Use](https://caniuse.com).
+Tailwind CSS 4 targets Chrome 111+, Safari 16.4+, and Firefox 128+. See the official [browser compatibility documentation](https://tailwindcss.com/docs/compatibility#browser-support). JavaScript polyfills do not replace support for the CSS features used by Tailwind CSS 4.
 
 ## Special Considerations
 

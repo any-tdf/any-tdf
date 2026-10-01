@@ -51,32 +51,33 @@ import { debounce, throttle, rgbToOklch } from 'rtdf/utils';
 
 ### Color Conversion
 
-| Function         | Description                            |
-| ---------------- | -------------------------------------- |
-| srgbToLinear     | sRGB to Linear RGB                     |
-| linearToSrgb     | Linear RGB to sRGB                     |
-| linearRgbToXyz   | Linear RGB to XYZ                      |
-| xyzToLinearRgb   | XYZ to Linear RGB                      |
-| xyzToOklab       | XYZ to Oklab                           |
-| oklabToXyz       | Oklab to XYZ                           |
-| oklabToOklch     | Oklab to OKLCH                         |
-| oklchToOklab     | OKLCH to Oklab                         |
-| rgbToOklch       | RGB to OKLCH                           |
-| oklchToRgb       | OKLCH to RGB                           |
-| rgbToHex         | RGB to HEX                             |
-| hexToRgb         | HEX to RGB                             |
-| hslToRgb         | HSL to RGB                             |
-| rgbToHsl         | RGB to HSL                             |
-| formatOklch      | Format OKLCH string                    |
-| formatRgb        | Format RGB string                      |
-| parseOklch       | Parse OKLCH string                     |
-| oklchObjToHex    | OKLCH object to HEX                    |
-| oklchObjToRgbStr | OKLCH object to RGB string             |
-| oklchStrToHex    | OKLCH string to HEX                    |
-| hexToOklch       | HEX to OKLCH object                    |
-| hexToOklchStr    | HEX to OKLCH string                    |
-| rgbStrToOklch    | RGB string to OKLCH object             |
-| oklchArrayToHex  | Batch convert OKLCH array to HEX array |
+| Function         | Description                              |
+| ---------------- | ---------------------------------------- |
+| srgbToLinear     | sRGB to Linear RGB                       |
+| linearToSrgb     | Linear RGB to sRGB                       |
+| linearRgbToXyz   | Linear RGB to XYZ                        |
+| xyzToLinearRgb   | XYZ to Linear RGB                        |
+| xyzToOklab       | XYZ to Oklab                             |
+| oklabToXyz       | Oklab to XYZ                             |
+| oklabToOklch     | Oklab to OKLCH                           |
+| oklchToOklab     | OKLCH to Oklab                           |
+| rgbToOklch       | RGB to OKLCH                             |
+| oklchToRgb       | OKLCH to RGB                             |
+| rgbToHex         | RGB to HEX                               |
+| hexToRgb         | HEX to RGB                               |
+| hslToRgb         | HSL to RGB                               |
+| rgbToHsl         | RGB to HSL                               |
+| formatOklch      | Format OKLCH string                      |
+| formatRgb        | Format RGB string                        |
+| parseOklch       | Parse OKLCH string                       |
+| oklchObjToHex    | OKLCH object to HEX                      |
+| oklchObjToRgbStr | OKLCH object to RGB string               |
+| oklchStrToHex    | OKLCH string to HEX                      |
+| oklchStrToRgbStr | Convert an OKLCH string to an RGB string |
+| hexToOklch       | HEX to OKLCH object                      |
+| hexToOklchStr    | HEX to OKLCH string                      |
+| rgbStrToOklch    | RGB string to OKLCH object               |
+| oklchArrayToHex  | Batch convert OKLCH array to HEX array   |
 
 ### Color Operations
 
@@ -924,6 +925,16 @@ import { oklchStrToHex } from 'rtdf/utils';
 
 oklchStrToHex('oklch(0.7 0.15 30)');
 // "#e8a266"
+```
+
+### oklchStrToRgbStr
+
+Convert an OKLCH string to an RGB string. An invalid input returns `rgb(0, 0, 0)`.
+
+```javascript
+import { oklchStrToRgbStr } from 'rtdf/utils';
+
+oklchStrToRgbStr('oklch(0.7 0.15 30)');
 ```
 
 ### hexToOklchStr

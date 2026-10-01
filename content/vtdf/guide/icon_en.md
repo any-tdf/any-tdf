@@ -1,4 +1,4 @@
-> Starting from v1.1.0, VTDF supports using icons via [Iconify](https://iconify.design).
+> VTDF supports using icons via [Iconify](https://iconify.design).
 
 ## SVG Sprites
 
@@ -144,7 +144,7 @@ Some VTDF components use built-in SVG icons internally, such as `Alert`, `Toast`
 </ConfigProvider>
 ```
 
-`builtInIconLibrary` only affects built-in SVG icons used inside components. It does not change the `Icon` component's `symbol`, `iconify`, or `iconify-color` usage. `iconPath` still only configures the external SVG Symbol file path.
+`builtInIconLibrary` only affects built-in SVG icons used inside components. It does not change the `Icon` component's `symbol`, `iconify`, or `iconify-color` usage. The ConfigProvider `iconPath` configures external SVG Symbol files; an individual Icon can override it through `path`.
 
 <!-- built-in-icon-gallery -->
 

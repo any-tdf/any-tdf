@@ -12,7 +12,7 @@ This file embeds the English component guide, API, FAQ, and version documentatio
 
 ## Guide
 
-> Starting from v1.1.0, RTDF supports using icons via [Iconify](https://iconify.design).
+> RTDF supports using icons via [Iconify](https://iconify.design).
 
 ## Usage
 

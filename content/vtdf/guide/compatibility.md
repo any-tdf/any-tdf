@@ -1,4 +1,4 @@
-> VTDF 0.0.1 基于 Vue 3.5 与 Tailwind CSS v4。
+> VTDF 0.0.1 基于 Vue 3.5 和 Tailwind CSS 4。
 
 ## Vue
 
@@ -6,11 +6,11 @@ VTDF 基于 Vue 3.5 构建，需配合 Vue 3.5 及以上版本使用。对于旧
 
 ## 事件写法
 
-VTDF 只支持 Vue 官方事件监听写法。模板中请使用 `@change`、`@click`、`@close` 等事件，不再支持 `onChange`、`onclick` 这类回调 Prop 或小写别名。
+模板中使用 Vue 事件监听写法，例如 `@change`、`@click` 和 `@close`，状态绑定使用对应组件声明的 `v-model` 或具名模型。使用 Vue 渲染函数时，应使用对应的 Vue 事件监听属性；请以 VTDF API 为准，避免直接照搬 React 的回调 Props。
 
 ## Tailwind CSS
 
-参考 [Browser Support](https://tailwindcss.com/docs/browser-support)，VTDF 组件库内已有样式都支持现代浏览器。有问题请参考 [Can I Use](https://caniuse.com)。
+Tailwind CSS 4 的浏览器基线为 Chrome 111 及以上、Safari 16.4 及以上、Firefox 128 及以上，详见官方[浏览器兼容性文档](https://tailwindcss.com/docs/compatibility#browser-support)。JavaScript Polyfills 不能代替 Tailwind CSS 4 所依赖的 CSS 特性。
 
 ## 特殊情况
 

@@ -1,4 +1,4 @@
-[English](./iconPlugin_en.md)
+[English](/guide/icon-plugin?lang=en_US)
 
 [![Public Status](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 
@@ -48,6 +48,7 @@ yarn add @any-tdf/vite-plugin-svg-symbol -D
 
 ```js
 // ...
+import { defineConfig } from 'vite';
 import svgSymbol from '@any-tdf/vite-plugin-svg-symbol';
 
 export default defineConfig({
@@ -72,12 +73,17 @@ export default defineConfig({
 如果需要修改输入输出文件夹以及合并的文件名，或者同时需要合并多个文件夹，可以在 vite.config.js 或 vite.config.ts 中修改配置：
 
 ```javascript
-// ...
-    svgSymbol([
-        { inFile: 'src/lib/svgs', outFile: 'public/fonts', fileName: 'symbol' },
-        { inFile: 'src/lib/icons', outFile: 'public/fonts', fileName: 'icon' },
-    ]),
-// ...
+import { defineConfig } from 'vite';
+import svgSymbol from '@any-tdf/vite-plugin-svg-symbol';
+
+export default defineConfig({
+	plugins: [
+		svgSymbol([
+			{ inFile: 'src/lib/svgs', outFile: 'public/fonts', fileName: 'symbol' },
+			{ inFile: 'src/lib/icons', outFile: 'public/fonts', fileName: 'icon' }
+		])
+	]
+});
 ```
 
 此配置会合并两个 symbol。**此时使用 RTDF 的 Icon 组件时，请配合修改 `path` 为对应的 `fonts/symbol.svg` 或 `fonts/icon.svg`。**

@@ -1,4 +1,4 @@
-[简体中文](./mdPlugin.md)
+[简体中文](/guide/md?lang=zh_CN)
 
 [![Public Status](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/any-tdf/any-tdf/actions/workflows/publish-npm.yml)
 
@@ -6,7 +6,7 @@
 
 ## Introduction
 
-This is a Vite and Rollup plugin that converts Markdown files to HTML strings, based on [marked](https://github.com/markedjs/marked).
+A Vite and Rollup plugin that imports Markdown files as strings. Passing a `marked` options object enables conversion to HTML using [marked](https://github.com/markedjs/marked); without that option, the exported string contains the original Markdown.
 
 The implementation idea is based on [rollup-plugin-md](https://github.com/xiaofuzi/rollup-plugin-md), adding TypeScript support.
 
@@ -14,11 +14,11 @@ The RTDF doc site uses this plugin.
 
 ## Parameters
 
-| Parameter | Type            | Default       | Description                                           |
-| --------- | --------------- | ------------- | ----------------------------------------------------- |
-| marked    | `MarkedOptions` | `{}`          | [marked](https://github.com/markedjs/marked) options. |
-| include   | `string[]`      | `['**/*.md']` | The path of the Markdown file to include.             |
-| exclude   | `string[]`      | `[]`          | The path of the Markdown file to exclude.             |
+| Parameter | Type            | Default       | Description                                                    |
+| --------- | --------------- | ------------- | -------------------------------------------------------------- |
+| marked    | `MarkedOptions` | Not set       | Enables HTML conversion when provided, including `marked: {}`. |
+| include   | `string[]`      | `['**/*.md']` | The path of the Markdown file to include.                      |
+| exclude   | `string[]`      | `[]`          | The path of the Markdown file to exclude.                      |
 
 The `include` and `exclude` parameters are relative to the project root directory (usually the directory where vite.config.js or vite.config.ts is located).
 
@@ -59,6 +59,7 @@ yarn add @any-tdf/vite-plugin-md-ts -D
 Configure in vite.config.js or vite.config.ts:
 
 ```javascript
+import { defineConfig } from 'vite';
 import md from '@any-tdf/vite-plugin-md-ts';
 
 export default defineConfig({
@@ -76,6 +77,27 @@ export default defineConfig({
 ```
 
 It also works in rollup.config.js or rollup.config.ts with the same plugin.
+
+### Import and Render
+
+The `marked: {}` configuration above exports HTML. Import it and render it with the framework's HTML rendering syntax:
+
+```tsx
+import html from './intro.md';
+
+const Introduction = () => <article dangerouslySetInnerHTML={{ __html: html }} />;
+
+export default Introduction;
+```
+
+For TypeScript, add a module declaration such as `src/markdown.d.ts`:
+
+```ts
+declare module '*.md' {
+	const content: string;
+	export default content;
+}
+```
 
 ## Why Create
 

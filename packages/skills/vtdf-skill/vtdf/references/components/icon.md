@@ -12,7 +12,7 @@ This file embeds the English component guide, API, FAQ, and version documentatio
 
 ## Guide
 
-> Starting from v1.1.0, VTDF supports using icons via [Iconify](https://iconify.design).
+> VTDF supports using icons via [Iconify](https://iconify.design).
 
 ## Usage
 

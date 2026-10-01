@@ -10,7 +10,7 @@ STDF 的 SVG Sprites 是使用 [SVG symbol](https://developer.mozilla.org/en-US/
 
 兼容性方面也完全没问题。参考 [MDN symbol](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol#browser_compatibility)。
 
-STDF 开发了一个 Rollup／Vite 插件，用于将项目中的 SVG 文件合并成 SVG Sprites，具体使用请参考 [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon)。由于 SVG 格式的多样性，可能存在 rollup-plugin-stdf-icon 处理不准确的情况，请到 [GitHub](https://github.com/any-tdf/any-tdf/issues) 提 Issue，注明 SVG 文件的具体情况。
+STDF 开发了一个 Rollup／Vite 插件，用于将项目中的 SVG 文件合并成 SVG Sprites，具体使用请参考 [@any-tdf/vite-plugin-svg-symbol](https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol)。由于 SVG 格式的多样性，可能存在 @any-tdf/vite-plugin-svg-symbol 处理不准确的情况，请到 [GitHub](https://github.com/any-tdf/any-tdf/issues) 提 Issue，注明 SVG 文件的具体情况。
 
 或使用其他 SVG Sprites 合成工具或手动合成，也可以请设计师提供设计物料时一并提供对应的 SVG Sprites。或类似 [Remix Icon](https://remixicon.com) 这样的图标库，可以直接将选定的多个图标下载为 SVG Sprites。
 
@@ -144,7 +144,7 @@ STDF 的部分组件内部会使用内置 SVG，例如 `Alert`、`Toast`、`Chec
 </ConfigProvider>
 ```
 
-`builtInIconLibrary` 只影响组件内部使用的内置 SVG，不影响 `Icon` 组件自身的 `symbol`、`iconify` 和 `iconify-color` 用法。`iconPath` 仍然只用于配置外部 SVG Symbol 文件路径。
+`builtInIconLibrary` 只影响组件内部使用的内置 SVG，不影响 `Icon` 组件自身的 `symbol`、`iconify` 和 `iconify-color` 用法。外部 SVG Symbol 文件路径通过 Icon 的 `path` 属性设置。STDF 的 ConfigProvider 不提供 `iconPath` 属性。
 
 <!-- built-in-icon-gallery -->
 
@@ -154,10 +154,10 @@ STDF 的部分组件内部会使用内置 SVG，例如 `Alert`、`Toast`、`Chec
 
 1. 不对 svg 文件做任何处理，直接使用。可以不需要使用 Icon 组件，直接使用 svg 标签，但是会增加 HTTP 请求和工程体积，也不方便统一调整这些图标的属性。一般用来处理比较大比较复杂的 svg 图片，**处理小 svg 图标不推荐**。
 
-2. 使用 [rollup-plugin-stdf-icon](https://www.npmjs.com/package/rollup-plugin-stdf-icon) 插件。将各个 svg 文件编译之后合并成 SVG symbol，但是要求 svg 文件符合常规标准，否则可能无法正确合并。**推荐使用**。
+2. 使用 [@any-tdf/vite-plugin-svg-symbol](https://www.npmjs.com/package/@any-tdf/vite-plugin-svg-symbol) 插件。将各个 svg 文件编译之后合并成 SVG symbol，但是要求 svg 文件符合常规标准，否则可能无法正确合并。**推荐使用**。
 
 3. 使用 [Iconify](https://iconify.design)。Iconify 的优点是图标库非常丰富，省去了找图标的麻烦，但是需要手动安装图标库和配置插件，而且项目中可能会有一些冗余图标。**推荐使用**。
 
-4. 已经有合并的 SVG symbol 文件。一些图标库本身就支持导出 SVG symbol 文件，还有一些其他工具支持合并 svg 为 SVG symbol 文件，或者设计师给的物料就是 SVG symbol 文件，那么可以不用 rollup-plugin-stdf-icon 和 Iconify，直接指定合并后的 SVG symbol 文件路径给 Icon 组件使用。**推荐视情况而定**。
+4. 已经有合并的 SVG symbol 文件。一些图标库本身就支持导出 SVG symbol 文件，还有一些其他工具支持合并 svg 为 SVG symbol 文件，或者设计师给的物料就是 SVG symbol 文件，那么可以不用 @any-tdf/vite-plugin-svg-symbol 和 Iconify，直接指定合并后的 SVG symbol 文件路径给 Icon 组件使用。**推荐视情况而定**。
 
 当然，以上这些方式不是互斥的，一个工程中可能同时使用多种方式。

@@ -1,35 +1,72 @@
 # create-any-tdf
 
-统一的 STDF、RTDF、VTDF TypeScript 项目创建工具。
-
-## 使用
+`create-any-tdf` 是统一的 Any TDF 脚手架命令。创建 VTDF Vue 项目时需要选择 `vue` 框架：
 
 ```sh
-bun create any-tdf my-app -f svelte -t sktt -b lucide
-bun create any-tdf my-app -f react -t vrut -b phosphor
-bun create any-tdf my-app -f vue -t vrtt -b tabler
+bun create any-tdf my-app -f vue
 ```
 
-## 参数
+快速创建默认等价于 `vrtt`、`svg-symbol`、`multi`、`default` 内置图标库和 `bun`。`default` 会按当前默认值初始化为 `remix`。
 
-| 参数                           | 默认值               | 说明                                                                                                         |
-| ------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `-f / --framework`             | 非交互模式必填       | `svelte`、`react` 或 `vue`。                                                                                 |
-| `-t / --template`              | 当前框架的第一个模板 | 按 framework 筛选后的模板名称。                                                                              |
-| `-l / --language`              | `en_US`              | 提示语言。                                                                                                   |
-| `-i / --icon-usage`            | `svg-symbol`         | `svg-symbol`、`iconify`、`both` 或 `none`。兼容旧值 `any-tdf-icon`。                                         |
-| `-m / --theme-mode`            | `multi`              | `single`、`multi` 或 `all`。                                                                                 |
-| `-b / --built-in-icon-library` | `default`            | `default`、`remix`、`lucide`、`phosphor`、`tabler`、`iconoir` 或 `reicon`。同时支持 `--builtInIconLibrary`。 |
-| `-p / --package-manager`       | `bun`                | `bun`、`npm`、`pnpm` 或 `yarn`。                                                                             |
+创建 Tailwind CSS v4 项目：
 
-`default` 会按当前组件默认值初始化为 `remix`。
+```sh
+bun create any-tdf my-app -f vue -t vrtt -l zh_CN -i both -m all -b lucide
+```
 
-## 模板
+创建 UnoCSS 项目：
 
-| 框架          | 模板                           |
-| ------------- | ------------------------------ |
-| Svelte / STDF | `sktt`、`skut`、`vstt`、`vsut` |
-| React / RTDF  | `vrtt`、`vrut`                 |
-| Vue / VTDF    | `vrtt`、`vrut`                 |
+```sh
+bun create any-tdf my-app -f vue -t vrut -l zh_CN -i both -m all -b lucide
+```
 
-所有模板都是 TypeScript 项目。Tailwind CSS v4 和 UnoCSS 都支持。
+## 模板预设
+
+| 简写   | 模板                                      | 描述          |
+| ------ | ----------------------------------------- | ------------- |
+| `vrtt` | Vite & Vue & Tailwind CSS v4 & TypeScript | 默认          |
+| `vrut` | Vite & Vue & UnoCSS & TypeScript          | 仅 TypeScript |
+
+## 命令选项
+
+| 命令                           | 默认                                     | 描述                                              |
+| ------------------------------ | ---------------------------------------- | ------------------------------------------------- |
+| `-`                            | -                                        | 项目名称，可以直接输入。                          |
+| `-f / --framework`             | 非交互模式必填                           | `svelte`、`react` 或 `vue`。VTDF 使用 `vue`。     |
+| `-t / --template`              | `vrtt`                                   | 要使用的模板。                                    |
+| `-l / --language`              | `en_US`                                  | 提示语言。                                        |
+| `-i / --icon-usage`            | `svg-symbol`                             | 图标使用方式，兼容旧值 `any-tdf-icon`。           |
+| `-m / --theme-mode`            | `multi`                                  | 主题模式。                                        |
+| `-b / --built-in-icon-library` | `default`                                | 初始内置图标库，同时支持 `--builtInIconLibrary`。 |
+| `-p / --package-manager`       | 自动识别调用所用包管理器，未识别时为 bun | bun、npm、pnpm 或 yarn。                          |
+
+## 图标使用方式
+
+| 简写         | 描述                                                                                                 |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| `svg-symbol` | 使用 `@any-tdf/vite-plugin-svg-symbol` 管理 SVG 图标。                                               |
+| `iconify`    | 使用 Iconify 图标集。Tailwind CSS v4 使用 `@iconify/tailwind4`，UnoCSS 使用 `@unocss/preset-icons`。 |
+| `both`       | 同时配置 SVG Symbol 和 Iconify。                                                                     |
+| `none`       | 不配置图标方案，后续自行接入。                                                                       |
+
+生成的示例项目也支持在主题面板中切换 VTDF 内置图标库。
+
+## 内置图标库
+
+| 简写       | 描述                             |
+| ---------- | -------------------------------- |
+| `default`  | 使用 VTDF 默认值，当前为 Remix。 |
+| `remix`    | Remix Icon。                     |
+| `lucide`   | Lucide。                         |
+| `phosphor` | Phosphor Icons。                 |
+| `tabler`   | Tabler Icons。                   |
+| `iconoir`  | Iconoir。                        |
+| `reicon`   | Reicon。                         |
+
+## 主题模式
+
+| 简写     | 描述                                       |
+| -------- | ------------------------------------------ |
+| `single` | 只生成基础 ANYTDF 主题，后续可自行扩展。   |
+| `multi`  | 生成 ANYTDF、Sage、GoldWood 3 个内置主题。 |
+| `all`    | 生成全部 42 个内置主题。                   |

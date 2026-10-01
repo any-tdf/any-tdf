@@ -1,20 +1,30 @@
 ## 配置语言包
 
-STDF 组件使用 Svelte 的 [Context](https://svelte.dev/docs/svelte/context) 实现国际化文案配置，默认配置是中文简体。一般在应用的入口如 `App.svelte` 或 `+layout.svelte` 中配置 Context，例如：
+STDF 默认使用简体中文。在应用根组件中通过 ConfigProvider 提供语言包；使用函数式反馈 API 时，在该容器内挂载一次 Feedback。
 
 ```svelte
-<!-- App.svelte/+layout.svelte -->
-<script>
-	import { setContext } from 'svelte'; // 引入 setContext
-	import { en_US } from 'stdf/lang'; // 导入语言文件
-
-	setContext('STDF_lang', en_US); // 设置语言
+<script lang="ts">
+	import { ConfigProvider, Feedback, TimePicker } from 'stdf';
+	import { en_US } from 'stdf/lang';
 </script>
+
+<ConfigProvider locale={en_US}>
+	<TimePicker />
+	<Feedback />
+</ConfigProvider>
 ```
 
-此组件的所有子孙组件（包含了 STDF 组件）都可以通过 `getContext('STDF_lang')` 获取到当前语言配置。更加灵活的是，甚至可以在应用内的某部分配置另一种语言。
+## ConfigProvider 配置
 
-注意 **Context 的切换不是响应式的**，一般应用中语言的切换也不需要实时响应。
+| 名称               | 类型                 | 默认值  | 说明             |
+| ------------------ | -------------------- | ------- | ---------------- |
+| locale             | `LangProps`          | `zh_CN` | 组件多语言文案。 |
+| builtInIconLibrary | `BuiltInIconLibrary` | `remix` | 组件内部图标库。 |
+| children           | `Snippet`            | 未设置  | 容器中的子内容。 |
+
+STDF 仍兼容原来的 `setContext('STDF_lang', locale)` 初始化方式。普通组件在初始化时读取 Context，因此替换语言包后需要重新挂载相关子树，例如使用 `{#key locale}`。ConfigProvider 会同步全局函数式反馈的语言。STDF 的 ConfigProvider 不提供 `theme`、`mode`、`iconPath` 或 `syncTheme`，主题方法从 `stdf/theme` 导入，外部图标路径通过 Icon 的 `path` 设置。
+
+函数式反馈只使用一份全局语言配置，不会根据调用所在的组件自动选择局部语言。请只保留一个 Feedback 容器，并统一管理其语言。
 
 目前支持以下语言：
 
@@ -97,7 +107,7 @@ STDF 组件使用 Svelte 的 [Context](https://svelte.dev/docs/svelte/context) �
 
 - 请先 fork 一份 [Any TDF](https://github.com/any-tdf/any-tdf) 代码到自己的仓库，如果已经 fork 过，请同步主仓库的最新代码。
 - 克隆你的仓库至本地。
-- 在 `packages/common/src/lang` 文件夹中增加语言包。
-- （可选）更新文档，在 `content/stdf/guide` 文件夹更新 [internation.md](https://github.com/any-tdf/any-tdf/edit/main/content/stdf/guide/internation.md) 和 [internation_en.md](https://github.com/any-tdf/any-tdf/edit/main/content/stdf/guide/internation_en.md) 文件，请在语言列表中按照 `lang` 的字母顺序更新。
+- 在 `packages/common/src/lang` 中增加完整的 `LangProps` 语言包，并从 `packages/common/src/lang/index.ts` 导出，使三个框架的公开语言入口都能使用它。
+- 同步更新三个站点的中英文国际化指南中的语言列表，按语言代码的字母顺序排列。
 - 提交修改内容至你的仓库，然后提 Pull Request 到主仓库。
 - Pull Request 会在 Review 通过后被合并到主仓库，并发布新版本至 npm。

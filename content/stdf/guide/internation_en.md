@@ -1,20 +1,30 @@
 ## Configuring Language Pack
 
-The STDF component uses Svelte's [Context](https://svelte.dev/docs/svelte/context) to implement internationalization configuration of text, with the default configuration being in Simplified Chinese. Usually, the Context is configured in the entry file `App.svelte` or `+layout.svelte`. For example:
+STDF defaults to Simplified Chinese. Use ConfigProvider at the application root to provide a locale. Mount Feedback once inside it when using functional feedback APIs.
 
 ```svelte
-<!-- App.svelte/+layout.svelte -->
-<script>
-	import { setContext } from 'svelte'; // import setContext
-	import { en_US } from 'stdf/lang'; // import language file
-
-	setContext('STDF_lang', en_US); // set language
+<script lang="ts">
+	import { ConfigProvider, Feedback, TimePicker } from 'stdf';
+	import { en_US } from 'stdf/lang';
 </script>
+
+<ConfigProvider locale={en_US}>
+	<TimePicker />
+	<Feedback />
+</ConfigProvider>
 ```
 
-All child components of this component (including STDF components) can obtain the current language configuration using `getContext('STDF_lang')`. More flexible is that another language can be configured in some parts of the application.
+## ConfigProvider Props
 
-Note that **Context switching is not reactive**, and language switching in most applications does not require real-time response.
+| Name               | Type                 | Default | Description                           |
+| ------------------ | -------------------- | ------- | ------------------------------------- |
+| locale             | `LangProps`          | `zh_CN` | Component text.                       |
+| builtInIconLibrary | `BuiltInIconLibrary` | `remix` | Built-in component icon library.      |
+| children           | `Snippet`            | Not set | Content rendered inside the provider. |
+
+STDF also supports the legacy `setContext('STDF_lang', locale)` initialization. Ordinary components capture the context at initialization, so replacing the locale requires remounting the relevant subtree, for example with `{#key locale}`. ConfigProvider updates the global functional feedback locale. STDF ConfigProvider provides neither `theme`, `mode`, `iconPath`, nor `syncTheme`; use `stdf/theme` for theme methods and Icon's `path` for external symbols.
+
+Functional feedback has one global language configuration and does not infer a locale from the calling component. Keep one Feedback container and manage its locale centrally.
 
 Currently supported languages:
 
@@ -97,7 +107,7 @@ The basic steps are as follows:
 
 - Please fork the [Any TDF](https://github.com/any-tdf/any-tdf) repository. If you have already forked it, please sync the latest code from the main repository.
 - Clone your repository to your local machine.
-- Add language packs in the `packages/common/src/lang` folder.
-- (Optional) Update the [internation.md](https://github.com/any-tdf/any-tdf/edit/main/content/stdf/guide/internation.md) and [internation_en.md](https://github.com/any-tdf/any-tdf/edit/main/content/stdf/guide/internation_en.md) files in `content/stdf/guide`. Please update them alphabetically according to the `lang` list.
+- Add a complete `LangProps` language pack under `packages/common/src/lang` and export it from `packages/common/src/lang/index.ts` so all three public language entries expose it.
+- Update the Chinese and English internationalization guide language lists in all three sites, keeping entries sorted by the language code.
 - Commit the modifications to your repository and then submit a Pull Request to the main repository.
 - Once the Pull Request is approved during the review process, it will be merged into the main repository and a new version will be released on npm.
