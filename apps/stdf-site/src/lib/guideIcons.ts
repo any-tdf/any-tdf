@@ -34,6 +34,7 @@ export const guideCategoryIconMap = {
 
 export const guideItemIconMap = {
 	'quick-start': Rocket,
+	changelog: FileText,
 	theme: Palette,
 	icon: Shapes,
 	feedback: MessageCircleReply,

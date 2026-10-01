@@ -60,7 +60,7 @@ const componentDocMissing = expectedComponents.flatMap((component) => {
 	return docs.filter((doc) => !existsSync(join(componentDocsRoot, component, doc))).map((doc) => `${component}/${doc}`);
 });
 
-const requiredGuideDocs = ['quickStart', 'theme', 'icon', 'internation', 'upgrade', 'skill'];
+const requiredGuideDocs = ['quickStart', 'changelog', 'theme', 'icon', 'internation', 'upgrade', 'skill'];
 const guideDocMissing = requiredGuideDocs.flatMap((doc) => {
 	const missing: string[] = [];
 	if (!existsSync(join(guideDocsRoot, `${doc}.md`))) missing.push(`${doc}.md`);
@@ -102,6 +102,7 @@ const requiredSiteFiles = [
 	'src/routes/generator/+page.svelte',
 	'src/routes/guide/+layout.svelte',
 	'src/routes/guide/+page.svelte',
+	'src/routes/guide/changelog/+page.svelte',
 	'src/routes/guide/create/+page.svelte',
 	'src/routes/guide/color/+page.svelte',
 	'src/lib/header/Header.svelte',

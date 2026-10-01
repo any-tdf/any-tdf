@@ -95,6 +95,7 @@ export const guideCategoryIconMap: Record<string, string> = {
 // 指南条目图标，key 为 guideMenuList 的 nav 字段。
 export const guideItemIconMap: Record<string, string> = {
 	'quick-start': 'Rocket',
+	changelog: 'FileText',
 	theme: 'Palette',
 	icon: 'Shapes',
 	feedback: 'MessageCircleReply',
