@@ -1,4 +1,4 @@
-## Stable Release
+## 2026-10-01
 
 RTDF 0.0.1 has been published with the npm latest tag. The initial stable release provides the Any TDF component system for React 18/19, with themes, locales, built-in icons, functional feedback, Demos, and bilingual documentation.
 

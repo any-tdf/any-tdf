@@ -1,4 +1,4 @@
-## Stable Release
+## 2026-10-01
 
 STDF 3.0.0 has been published with the npm latest tag. The v3 release shares framework-neutral logic, themes, locales, and icons with RTDF and VTDF; existing v2 applications should follow the [upgrade guide](/guide/upgrade).
 
