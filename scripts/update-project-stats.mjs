@@ -24,7 +24,7 @@ export const packageDefinitions = [
 	{ name: 'stdf', group: 'core' },
 	{ name: 'rtdf', group: 'core' },
 	{ name: 'vtdf', group: 'core' },
-	{ name: '@any-tdf/common', group: 'foundation' },
+	{ name: '@any-tdf/common', group: 'core' },
 	{ name: 'create-any-tdf', group: 'tooling' },
 	{ name: '@any-tdf/react-motion', group: 'motion' },
 	{ name: '@any-tdf/vue-motion', group: 'motion' },
@@ -554,7 +554,7 @@ export const renderProjectStatsSvg = (stats, mode, locale = 'en') => {
 	const cards = [
 		{ label: translation.stars, value: stats.current.github.stars, note: translation.starsNote },
 		{ label: translation.forks, value: stats.current.github.forks, note: translation.forksNote },
-		{ label: translation.core, value: stats.current.npm.coreWeeklyDownloads, note: 'STDF · RTDF · VTDF' },
+		{ label: translation.core, value: stats.current.npm.coreWeeklyDownloads, note: 'STDF · RTDF · VTDF · COMMON' },
 		{
 			label: translation.ecosystem,
 			value: stats.current.npm.ecosystemWeeklyDownloads,

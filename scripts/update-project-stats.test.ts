@@ -80,7 +80,8 @@ describe('project statistics collection', () => {
 
 		expect(current.github).toEqual({ stars: 771, forks: 44, openIssues: 5, openPullRequests: 2 });
 		expect(current.npm.packages).toHaveLength(11);
-		expect(current.npm.coreWeeklyDownloads).toBe(60);
+		expect(current.npm.packages.find(({ name }) => name === '@any-tdf/common')?.group).toBe('core');
+		expect(current.npm.coreWeeklyDownloads).toBe(100);
 		expect(current.npm.ecosystemWeeklyDownloads).toBe(660);
 	});
 
@@ -169,6 +170,7 @@ describe('project statistics history and SVG output', () => {
 
 		expect(lightSvg).toContain('Any TDF project statistics');
 		expect(lightSvg).toContain('2,433');
+		expect(lightSvg).toContain('STDF · RTDF · VTDF · COMMON');
 		expect(lightSvg).toContain('Tracking starts here');
 		expect(lightSvg).toContain('#f6f7ff');
 		expect(darkSvg).toContain('#101113');
