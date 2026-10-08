@@ -1181,7 +1181,7 @@ const scenarios: Scenario[] = [
 		steps: [
 			() => assertBodyIncludes('create-any-tdf'),
 			() => assertBodyIncludes('bun create any-tdf my-app -f vue'),
-			() => assertBodyIncludes('Templates')
+			() => assertBodyIncludes('Template Presets')
 		]
 	},
 	{
