@@ -1,76 +1,76 @@
 {
 	"schemaVersion": 2,
 	"repository": "any-tdf/any-tdf",
-	"updatedAt": "2026-11-02T09:31:03.032Z",
+	"updatedAt": "2026-11-09T09:49:27.400Z",
 	"current": {
 		"github": {
-			"stars": 779,
+			"stars": 780,
 			"forks": 44,
 			"openIssues": 2,
 			"openPullRequests": 0
 		},
 		"npm": {
 			"period": {
-				"start": "2026-10-23",
-				"end": "2026-10-29"
+				"start": "2026-11-02",
+				"end": "2026-11-08"
 			},
-			"coreWeeklyDownloads": 53,
-			"ecosystemWeeklyDownloads": 182,
+			"coreWeeklyDownloads": 106,
+			"ecosystemWeeklyDownloads": 174,
 			"packages": [
 				{
 					"name": "stdf",
 					"group": "core",
-					"weeklyDownloads": 28
+					"weeklyDownloads": 75
 				},
 				{
 					"name": "rtdf",
 					"group": "core",
-					"weeklyDownloads": 4
+					"weeklyDownloads": 8
 				},
 				{
 					"name": "vtdf",
 					"group": "core",
-					"weeklyDownloads": 5
+					"weeklyDownloads": 9
 				},
 				{
 					"name": "@any-tdf/common",
 					"group": "core",
-					"weeklyDownloads": 16
+					"weeklyDownloads": 14
 				},
 				{
 					"name": "create-any-tdf",
 					"group": "tooling",
-					"weeklyDownloads": 13
+					"weeklyDownloads": 5
 				},
 				{
 					"name": "@any-tdf/react-motion",
 					"group": "motion",
-					"weeklyDownloads": 13
+					"weeklyDownloads": 6
 				},
 				{
 					"name": "@any-tdf/vue-motion",
 					"group": "motion",
-					"weeklyDownloads": 11
+					"weeklyDownloads": 5
 				},
 				{
 					"name": "@any-tdf/react-confetti",
 					"group": "effects",
-					"weeklyDownloads": 11
+					"weeklyDownloads": 7
 				},
 				{
 					"name": "@any-tdf/vue-confetti",
 					"group": "effects",
-					"weeklyDownloads": 9
+					"weeklyDownloads": 6
 				},
 				{
 					"name": "@any-tdf/vite-plugin-md-ts",
 					"group": "tooling",
-					"weeklyDownloads": 8
+					"weeklyDownloads": 6
 				},
 				{
 					"name": "@any-tdf/vite-plugin-svg-symbol",
 					"group": "tooling",
-					"weeklyDownloads": 64
+					"weeklyDownloads": 33
 				}
 			]
 		}
@@ -262,6 +262,7 @@
 		["2026-10-12", 778, 44, 2, 0, 207, 341],
 		["2026-10-19", 779, 44, 2, 0, 122, 184],
 		["2026-10-26", 778, 44, 2, 0, 57, 113],
-		["2026-11-02", 779, 44, 2, 0, 53, 182]
+		["2026-11-02", 779, 44, 2, 0, 53, 182],
+		["2026-11-09", 780, 44, 2, 0, 106, 174]
 	]
 }
